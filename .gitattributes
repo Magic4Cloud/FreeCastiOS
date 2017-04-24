@@ -1,0 +1,2 @@
+presentationLiveDemo/RakLib/3rdParty/nabto/source/libnabto_client_api_static.a filter=lfs diff=lfs merge=lfs -text
+presentationLiveDemo/RakLib/3rdParty/nabto/source/libnabto_static_external.a filter=lfs diff=lfs merge=lfs -text
