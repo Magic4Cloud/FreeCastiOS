@@ -22,7 +22,7 @@
     CGFloat viewH=self.view.frame.size.height;
     CGFloat viewW=self.view.frame.size.width;
     CGFloat totalHeight=64+71+149+149+149+80+5;//各部分比例
-    CGFloat totalWeight=375;//各部分比例
+    //CGFloat totalWeight=375;//各部分比例
     
     //顶部
     _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
