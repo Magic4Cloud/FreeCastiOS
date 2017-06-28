@@ -64,9 +64,27 @@ static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 NSTimer* timer;
 
-@interface LiveViewViewController ()
+/**
+ 摄像头获取源
+ */
+typedef NS_ENUM(NSInteger, CameraSource) {
+    ExternalDevices  = 0 ,   // 外接硬件设备
+    IphoneBackCamera = 1 ,  // 手机后置摄像头
+};
+
+@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
 @property  bool videoisplaying;
 @property(strong, nonatomic) LFLiveSessionWithPicSource *session;
+
+/**
+ 系统摄像头 展示view
+ */
+@property (nonatomic, strong) UIView * livingPreView;
+
+/**
+ 视频数据来源
+ */
+@property (nonatomic, assign) CameraSource liveCameraSource;
 @end
 
 @implementation LiveViewViewController
@@ -114,6 +132,8 @@ NSTimer* timer;
 - (void)viewDidLoad {
     //[self _scaleBtnClick:1];
     [super viewDidLoad];
+    
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor blackColor];
@@ -143,19 +163,26 @@ NSTimer* timer;
     NSLog(@"viewH2=%f,viewW2=%f",viewH,viewW);
     _videoView.userInteractionEnabled = YES;
     _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*_height/_width)];
+    
+    _livingPreView = [[UIView alloc] initWithFrame:self.view.bounds];
     //视频预览
     if (viewH<viewW*_height/_width) {
         _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
+        _livingPreView.frame = CGRectMake(0, 0, viewH*_width/_height, viewH);
         [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
         NSLog(@"w1=%f,h1=%f",_videoView.frame.size.width,_videoView.frame.size.height);
     }
     else{
         _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
+        _livingPreView.frame = CGRectMake(0, 0, viewW, viewW*_height/_width);
+        
         [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
         NSLog(@"w2=%f,h2=%f",_videoView.frame.size.width,_videoView.frame.size.height);
     }
     
     _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
+    _livingPreView.center = CGPointMake(viewW*0.5, viewH*0.5);
+    
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
     [_videoView addGestureRecognizer:singleTap];
     _videoView.backgroundColor = [UIColor blackColor];
@@ -164,6 +191,13 @@ NSTimer* timer;
     [_videoView sound:YES];
     [_videoView delegate:self];
     [self.view addSubview:_videoView];
+    
+    
+    //添加系统相机展示view
+    
+    _livingPreView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_livingPreView];
+    _livingPreView.hidden = YES;
     
     [self liveViewInit];
     
@@ -178,9 +212,12 @@ NSTimer* timer;
         [self prefersStatusBarHidden:YES];
     }
     
+    
+
     if (play_success==NO){
         [self scanDevice];
     }
+    _liveCameraSource = ExternalDevices;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -726,11 +763,18 @@ bool VideoRecordIsEnable = NO;
 /**
  *  拍照
  */
+
+#pragma mark - 拍照
 -(void)_takephotoBtnClick{
-    if (!play_success) {
-        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-        return;
+    if (_liveCameraSource == IphoneBackCamera) {
+        
+        
     }
+    
+//    if (!play_success) {
+//        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+//        return;
+//    }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [_albumObject createAlbumInPhoneAlbum:album_name];
         [_albumObject getPathForRecord:album_name];
@@ -773,6 +817,7 @@ bool _isTakePhoto=NO;
 /**
  *  录像
  */
+#pragma mark - 录像
 -(void)_recordBtnClick{
     if (!play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
@@ -843,7 +888,13 @@ bool _isTakePhoto=NO;
 /**
  *  点击直播按钮
  */
+#pragma mark - 点击直播按钮
 -(void)_liveStreamBtnClick{
+    
+    //测试  开直播
+    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+    return;
+    
     if (!play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
         return;
@@ -914,6 +965,7 @@ int valOrientation;
 /**
  *  扫描设备
  */
+#pragma mark - 扫描设备--------------------------
 - (void)scanDevice
 {
     if (_isExit) {
@@ -942,7 +994,7 @@ int valOrientation;
 {
     if (result.Device_ID_Arr.count > 0) {
         //使用扫描到的第一个设备
-        NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
+        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         _userid = [result.Device_ID_Arr objectAtIndex:0];
         _subtitleViewController.ip=_userip;
@@ -960,8 +1012,8 @@ int valOrientation;
                 return;
             }
         }
-        NSLog(@"start play==%@",url);
-        [_videoView play:url useTcp:NO];
+        NSLog(@"start play==%@",urlString);
+        [_videoView play:urlString useTcp:NO];
         [_videoView sound:audioisEnable];
         self.videoisplaying = YES;
         if (_isLiveView) {
@@ -972,13 +1024,27 @@ int valOrientation;
     }
     else
     {
+
+        dispatch_async(dispatch_get_main_queue(),^ {
+            _tipLabel.hidden=YES;
+            [self stopActivityIndicatorView];
+            
+            self.session.captureDevicePosition = AVCaptureDevicePositionBack;
+            _livingPreView.hidden = NO;
+            play_success = YES;
+            _liveCameraSource = IphoneBackCamera;
+
+        });
+        
+        
         if (!_isLiveView){
             dispatch_async(dispatch_get_main_queue(),^ {
                 [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
             });
             return;
         }
-        [self scanDevice];
+        
+//        [self scanDevice];
     }
 }
 
@@ -995,6 +1061,7 @@ int valOrientation;
 #pragma mark LX520Delegate
 - (void)state_changed:(int)state
 {
+    
     NSLog(@"state = %d", state);
     switch (state) {
         case 0: //STATE_IDLE
@@ -1586,7 +1653,7 @@ CGFloat iy ;
         else if (_width==1920) {
             videoConfiguration .sessionPreset =3;
         }
-        videoConfiguration .landscape = NO;
+        videoConfiguration .landscape = YES;
         
         
         //默认音视频配置
@@ -1597,9 +1664,9 @@ CGFloat iy ;
         _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
         //_session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
         _session.delegate  = self;
-        _session.isRAK=YES;
+//        _session.isRAK=YES;
         _session.running =YES;
-        //_session.preView =self.view;
+        _session.preView =_livingPreView;
     }
     return _session;
 }
@@ -1607,9 +1674,11 @@ CGFloat iy ;
 /**
  *  开始直播
  */
+#pragma mark - 开始直播************************************
 -(void)openLivingSession:(LivingDataSouceType) type{
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
     stream.url=[self Get_String:STREAM_URL_KEY];
+    stream.url = @"rtmp://live.twitch.tv/app/live_160694976_dPlKCbQt5uwz8iYy7deEeOooR3YYF2?bandwidth_test=true";
     dispatch_async(dispatch_get_main_queue(), ^{
         if (stream.url==nil) {
             [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
@@ -1742,7 +1811,7 @@ CGFloat iy ;
 
     [_videoView take_imageRef:NO];
     _isLiving=2;
-    }
+}
 
 -(void)setStopStreamStatus{
     //直播界面
