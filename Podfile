@@ -5,4 +5,5 @@ target 'presentationLiveDemo' do
 	pod 'AFNetworking'
     #pod 'CocoaAsyncSocket'
     pod 'LFLiveKit',       '~> 1.9.6'
+    pod 'PureLayout'
 end
