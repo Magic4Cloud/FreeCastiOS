@@ -8,6 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		3D194C35844AFC4D19695778 /* libPods-presentationLiveDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */; };
+		7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A92FADA1F04FD5000DC9178 /* WebViewController.m */; };
+		7A92FADD1F04FD5000DC9178 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A92FADB1F04FD5000DC9178 /* WebViewController.xib */; };
+		7A9830D81F049C7D000FE44D /* UIColor+systemColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */; };
+		7A9830DC1F04A7AA000FE44D /* CollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830DA1F04A7AA000FE44D /* CollectionHeaderView.m */; };
+		7A9830DD1F04A7AA000FE44D /* CollectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9830DB1F04A7AA000FE44D /* CollectionHeaderView.xib */; };
+		7A9830E11F04B332000FE44D /* CollectionReusableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830DF1F04B332000FE44D /* CollectionReusableFooterView.m */; };
+		7A9830E21F04B332000FE44D /* CollectionReusableFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9830E01F04B332000FE44D /* CollectionReusableFooterView.xib */; };
+		7A9830E61F04D04D000FE44D /* Platform.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830E41F04D04D000FE44D /* Platform.xcdatamodeld */; };
+		7A9830EF1F04D25A000FE44D /* TTCoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830EE1F04D25A000FE44D /* TTCoreDataClass.m */; };
+		7A9830F51F04E558000FE44D /* TTYoutubuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830F31F04E558000FE44D /* TTYoutubuViewController.m */; };
+		7A9830F61F04E558000FE44D /* TTYoutubuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9830F41F04E558000FE44D /* TTYoutubuViewController.xib */; };
+		7A9830F91F04E603000FE44D /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830F81F04E603000FE44D /* UIViewController+Navigation.m */; };
+		7A9830FE1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830FB1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m */; };
+		7A9830FF1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830FD1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m */; };
+		7AF024761F039F800072CEED /* TTPlatformSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF024751F039F800072CEED /* TTPlatformSelectViewController.m */; };
+		7AF0247C1F03A6140072CEED /* TTPlatFormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF0247A1F03A6140072CEED /* TTPlatFormCell.m */; };
+		7AF0247D1F03A6140072CEED /* TTPlatFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AF0247B1F03A6140072CEED /* TTPlatFormCell.xib */; };
 		8403C9BD1DBC5FCF00894D7B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8403C9BC1DBC5FCF00894D7B /* libsqlite3.0.tbd */; };
 		8403C9BF1DBC600100894D7B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8403C9BE1DBC600100894D7B /* CoreTelephony.framework */; };
 		8403C9C11DBC65BA00894D7B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8403C9C01DBC65BA00894D7B /* Security.framework */; };
@@ -700,6 +717,36 @@
 /* Begin PBXFileReference section */
 		341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
 		71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-presentationLiveDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A92FAD91F04FD5000DC9178 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		7A92FADA1F04FD5000DC9178 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		7A92FADB1F04FD5000DC9178 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		7A9830D61F049C7D000FE44D /* UIColor+systemColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+systemColor.h"; sourceTree = "<group>"; };
+		7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+systemColor.m"; sourceTree = "<group>"; };
+		7A9830D91F04A7AA000FE44D /* CollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionHeaderView.h; sourceTree = "<group>"; };
+		7A9830DA1F04A7AA000FE44D /* CollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionHeaderView.m; sourceTree = "<group>"; };
+		7A9830DB1F04A7AA000FE44D /* CollectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionHeaderView.xib; sourceTree = "<group>"; };
+		7A9830DE1F04B332000FE44D /* CollectionReusableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionReusableFooterView.h; sourceTree = "<group>"; };
+		7A9830DF1F04B332000FE44D /* CollectionReusableFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableFooterView.m; sourceTree = "<group>"; };
+		7A9830E01F04B332000FE44D /* CollectionReusableFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionReusableFooterView.xib; sourceTree = "<group>"; };
+		7A9830E51F04D04D000FE44D /* Platform.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Platform.xcdatamodel; sourceTree = "<group>"; };
+		7A9830ED1F04D25A000FE44D /* TTCoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCoreDataClass.h; sourceTree = "<group>"; };
+		7A9830EE1F04D25A000FE44D /* TTCoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCoreDataClass.m; sourceTree = "<group>"; };
+		7A9830F21F04E558000FE44D /* TTYoutubuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTYoutubuViewController.h; sourceTree = "<group>"; };
+		7A9830F31F04E558000FE44D /* TTYoutubuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTYoutubuViewController.m; sourceTree = "<group>"; };
+		7A9830F41F04E558000FE44D /* TTYoutubuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTYoutubuViewController.xib; sourceTree = "<group>"; };
+		7A9830F71F04E603000FE44D /* UIViewController+Navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
+		7A9830F81F04E603000FE44D /* UIViewController+Navigation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
+		7A9830FA1F04FA3C000FE44D /* PlatformModel+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlatformModel+CoreDataClass.h"; sourceTree = "<group>"; };
+		7A9830FB1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlatformModel+CoreDataClass.m"; sourceTree = "<group>"; };
+		7A9830FC1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlatformModel+CoreDataProperties.h"; sourceTree = "<group>"; };
+		7A9830FD1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlatformModel+CoreDataProperties.m"; sourceTree = "<group>"; };
+		7AF024741F039F800072CEED /* TTPlatformSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlatformSelectViewController.h; sourceTree = "<group>"; };
+		7AF024751F039F800072CEED /* TTPlatformSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlatformSelectViewController.m; sourceTree = "<group>"; };
+		7AF024771F03A1890072CEED /* presentationLiveDemo.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = presentationLiveDemo.pch; sourceTree = "<group>"; };
+		7AF024791F03A6140072CEED /* TTPlatFormCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlatFormCell.h; sourceTree = "<group>"; };
+		7AF0247A1F03A6140072CEED /* TTPlatFormCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlatFormCell.m; sourceTree = "<group>"; };
+		7AF0247B1F03A6140072CEED /* TTPlatFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTPlatFormCell.xib; sourceTree = "<group>"; };
+		7AF0247E1F03A8C80072CEED /* MacroDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacroDefinition.h; sourceTree = "<group>"; };
 		8403C9BC1DBC5FCF00894D7B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		8403C9BE1DBC600100894D7B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		8403C9C01DBC65BA00894D7B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1675,6 +1722,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A9830D51F049AB1000FE44D /* Extend */ = {
+			isa = PBXGroup;
+			children = (
+				7A9830D61F049C7D000FE44D /* UIColor+systemColor.h */,
+				7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */,
+				7A9830F71F04E603000FE44D /* UIViewController+Navigation.h */,
+				7A9830F81F04E603000FE44D /* UIViewController+Navigation.m */,
+			);
+			path = Extend;
+			sourceTree = "<group>";
+		};
+		7A9830E31F04CFE5000FE44D /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7A9830FA1F04FA3C000FE44D /* PlatformModel+CoreDataClass.h */,
+				7A9830FB1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m */,
+				7A9830FC1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.h */,
+				7A9830FD1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m */,
+				7A9830E41F04D04D000FE44D /* Platform.xcdatamodeld */,
+				7A9830ED1F04D25A000FE44D /* TTCoreDataClass.h */,
+				7A9830EE1F04D25A000FE44D /* TTCoreDataClass.m */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		7A9830F11F04E4A8000FE44D /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7A9830F21F04E558000FE44D /* TTYoutubuViewController.h */,
+				7A9830F31F04E558000FE44D /* TTYoutubuViewController.m */,
+				7A9830F41F04E558000FE44D /* TTYoutubuViewController.xib */,
+				7A92FAD91F04FD5000DC9178 /* WebViewController.h */,
+				7A92FADA1F04FD5000DC9178 /* WebViewController.m */,
+				7A92FADB1F04FD5000DC9178 /* WebViewController.xib */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		7AF024731F039F000072CEED /* PlatformSelect */ = {
+			isa = PBXGroup;
+			children = (
+				7A9830F11F04E4A8000FE44D /* ViewController */,
+				7AF024781F03A5EC0072CEED /* View */,
+				7AF024741F039F800072CEED /* TTPlatformSelectViewController.h */,
+				7AF024751F039F800072CEED /* TTPlatformSelectViewController.m */,
+			);
+			path = PlatformSelect;
+			sourceTree = "<group>";
+		};
+		7AF024781F03A5EC0072CEED /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7AF024791F03A6140072CEED /* TTPlatFormCell.h */,
+				7AF0247A1F03A6140072CEED /* TTPlatFormCell.m */,
+				7AF0247B1F03A6140072CEED /* TTPlatFormCell.xib */,
+				7A9830D91F04A7AA000FE44D /* CollectionHeaderView.h */,
+				7A9830DA1F04A7AA000FE44D /* CollectionHeaderView.m */,
+				7A9830DB1F04A7AA000FE44D /* CollectionHeaderView.xib */,
+				7A9830DE1F04B332000FE44D /* CollectionReusableFooterView.h */,
+				7A9830DF1F04B332000FE44D /* CollectionReusableFooterView.m */,
+				7A9830E01F04B332000FE44D /* CollectionReusableFooterView.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		840705B01DD053FC00D7522C /* ProgressView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1883,6 +1995,8 @@
 		8464B9A71D95104700B67944 /* presentationLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7A9830E31F04CFE5000FE44D /* CoreData */,
+				7A9830D51F049AB1000FE44D /* Extend */,
 				842B2F9D1E56976E00996E3E /* jpg2bmp */,
 				84E634A31E5576F00049573E /* ImageHelper */,
 				8441F3761DE681B700B950B5 /* MarqueeLabel */,
@@ -1896,6 +2010,7 @@
 				8488BDF01DB77992006357AD /* HTTP1 */,
 				8488BC9B1DB776ED006357AD /* KWPPDisplayLiving */,
 				8488BDF91DB77992006357AD /* ViewController */,
+				7AF024731F039F000072CEED /* PlatformSelect */,
 				8488BCB11DB7792B006357AD /* res */,
 				8464BA361D95110100B67944 /* RakLib */,
 				8464B9A81D95104700B67944 /* AppDelegate.h */,
@@ -1905,6 +2020,8 @@
 				8464B9AD1D95104700B67944 /* Main.storyboard */,
 				8464B9DA1D95104700B67944 /* Info.plist */,
 				8464B9E21D95104700B67944 /* main.m */,
+				7AF024771F03A1890072CEED /* presentationLiveDemo.pch */,
+				7AF0247E1F03A8C80072CEED /* MacroDefinition.h */,
 			);
 			path = presentationLiveDemo;
 			sourceTree = "<group>";
@@ -3235,6 +3352,7 @@
 				84DA84FE1E88E7AC0027B06A /* back_nor@3x.png in Resources */,
 				84DA849B1E88E7AC0027B06A /* edit_delete_pre@3x.png in Resources */,
 				84DA84E91E88E7AC0027B06A /* set@3x.png in Resources */,
+				7A9830F61F04E558000FE44D /* TTYoutubuViewController.xib in Resources */,
 				84DA848B1E88E7AC0027B06A /* HDMI_nor@2x.png in Resources */,
 				84DA851A1E88E7AC0027B06A /* logo_nor.png in Resources */,
 				84DA848E1E88E7AC0027B06A /* HDMI_sel@2x.png in Resources */,
@@ -3322,6 +3440,7 @@
 				845A04A21DC3381E0055DADB /* live view_Pause button_pre@3x.png in Resources */,
 				84DA84E41E88E7AC0027B06A /* power_05.png in Resources */,
 				84DA84A51E88E7AC0027B06A /* browse.png in Resources */,
+				7AF0247D1F03A6140072CEED /* TTPlatFormCell.xib in Resources */,
 				84DA84AA1E88E7AC0027B06A /* browse_pre@3x.png in Resources */,
 				84DA848C1E88E7AC0027B06A /* HDMI_nor@3x.png in Resources */,
 				8488BDB41DB7792B006357AD /* subscript_add_button_nor@3x.png in Resources */,
@@ -3467,6 +3586,7 @@
 				84DA847D1E88E7AC0027B06A /* switch_on@3x.png in Resources */,
 				84DA84B91E88E7AC0027B06A /* logo@3x.png in Resources */,
 				8488BD9B1DB7792B006357AD /* live view_photo_icon@3x.png in Resources */,
+				7A9830E21F04B332000FE44D /* CollectionReusableFooterView.xib in Resources */,
 				84DA84791E88E7AC0027B06A /* switch_off@2x.png in Resources */,
 				841BEC3B1DBF00B100D03A97 /* Example image08@2x.png in Resources */,
 				8488BD5C1DB7792B006357AD /* button_rectangle_dis@3x.png in Resources */,
@@ -3492,6 +3612,7 @@
 				84DA848A1E88E7AC0027B06A /* HDMI_nor.png in Resources */,
 				84DA84B41E88E7AC0027B06A /* live view_pre.png in Resources */,
 				84DA84D71E88E7AC0027B06A /* photo @3x.png in Resources */,
+				7A92FADD1F04FD5000DC9178 /* WebViewController.xib in Resources */,
 				84DA844C1E88E7AC0027B06A /* rectangle_pre@2x.png in Resources */,
 				84123F8E1DBDE66000CC7B4C /* live stream_audio_icon@3x.png in Resources */,
 				84DA84651E88E7AC0027B06A /* go live_pre@3x.png in Resources */,
@@ -3512,6 +3633,7 @@
 				84123FA21DBDE66000CC7B4C /* live view_Indicator light_gray@3x.png in Resources */,
 				8488BD8C1DB7792B006357AD /* home_configure_bg@3x.png in Resources */,
 				8488BD9C1DB7792B006357AD /* live view_pilot lamp_off@3x.png in Resources */,
+				7A9830DD1F04A7AA000FE44D /* CollectionHeaderView.xib in Resources */,
 				84DA852E1E88E7AC0027B06A /* roll_sel@3x.png in Resources */,
 				84DA846A1E88E7AC0027B06A /* puase live_nor@2x.png in Resources */,
 				84DA84BD1E88E7AC0027B06A /* stream_pre.png in Resources */,
@@ -3791,15 +3913,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9830F51F04E558000FE44D /* TTYoutubuViewController.m in Sources */,
 				8464BA2C1D95104700B67944 /* main.m in Sources */,
 				84B988F41DC0B4E600BE7FCE /* DisclaimerViewController.m in Sources */,
 				84B988EE1DC0B4BB00BE7FCE /* FeedbackViewController.m in Sources */,
+				7A9830FF1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m in Sources */,
 				845B736B1DDF073F00847219 /* Brett.m in Sources */,
 				8488BE1D1DB77992006357AD /* HttpRequest.m in Sources */,
 				8488BE2A1DB77992006357AD /* UIViewLinkmanTouch.m in Sources */,
 				8488BCA71DB776ED006357AD /* LFLiveSessionWithPicSource.m in Sources */,
 				8464BAE61D95110200B67944 /* UIColor+Hex.m in Sources */,
 				8488BCA81DB776ED006357AD /* LivingView.m in Sources */,
+				7A9830E11F04B332000FE44D /* CollectionReusableFooterView.m in Sources */,
 				84B988C91DC084CE00BE7FCE /* SWRevealViewController.m in Sources */,
 				8488BE1E1DB77992006357AD /* BrowseViewController.m in Sources */,
 				8488BE231DB77992006357AD /* MediaData.m in Sources */,
@@ -3819,31 +3944,40 @@
 				849D6A861E10E9F400B9F4A2 /* H264HardwareCodec.m in Sources */,
 				8488BE271DB77992006357AD /* RotateNavigationControllerViewController.m in Sources */,
 				8488BE241DB77992006357AD /* MediaGroup.m in Sources */,
+				7A9830D81F049C7D000FE44D /* UIColor+systemColor.m in Sources */,
 				8466C5541DE55A1500E366F3 /* CAAutoCompleteObject.m in Sources */,
 				8488BE281DB77992006357AD /* StreamingViewController.m in Sources */,
 				84E375EE1DBB62B600217030 /* PlayPhotoViewController.m in Sources */,
 				8488BE251DB77992006357AD /* MenuViewController.m in Sources */,
+				7A9830E61F04D04D000FE44D /* Platform.xcdatamodeld in Sources */,
 				8464BAE81D95110200B67944 /* MBProgressHUD.m in Sources */,
 				84E634A71E5576F00049573E /* ImageHelper.m in Sources */,
 				84B988EB1DC0B4A500BE7FCE /* SupportViewController.m in Sources */,
 				8488BCA91DB776ED006357AD /* LivingViewController.m in Sources */,
+				7A9830F91F04E603000FE44D /* UIViewController+Navigation.m in Sources */,
 				84B988FD1DC0B53200BE7FCE /* EditionViewController.m in Sources */,
 				8488BE191DB77992006357AD /* KeychainManager.m in Sources */,
 				8488BE1C1DB77992006357AD /* GTMBase64.m in Sources */,
 				848312431DC6ECFB002CDF1D /* PauseScreenViewController.m in Sources */,
+				7AF0247C1F03A6140072CEED /* TTPlatFormCell.m in Sources */,
 				84B5370A1DD4864E004222A1 /* RAKAsyncUdpSocket.m in Sources */,
 				84123F481DBD9FB800CC7B4C /* UpdateFirmwareViewController.m in Sources */,
 				848312461DC70FB2002CDF1D /* AudioViewController.m in Sources */,
 				8464BAE41D95110200B67944 /* CommonFunc.m in Sources */,
 				84B988E81DC0B49200BE7FCE /* UserGuardViewController.m in Sources */,
 				84B537091DD4864E004222A1 /* RAKAsyncSocket.m in Sources */,
+				7A9830FE1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m in Sources */,
 				84E375EF1DBB62B600217030 /* PlayVideoViewController.m in Sources */,
+				7A9830DC1F04A7AA000FE44D /* CollectionHeaderView.m in Sources */,
 				84B988F71DC0B50300BE7FCE /* PrivacyPolicyViewController.m in Sources */,
 				8488BE2D1DB779D2006357AD /* AppDelegate.mm in Sources */,
 				8488BE181DB77992006357AD /* AlbumObject.m in Sources */,
+				7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */,
 				8488BE221DB77992006357AD /* LiveViewViewController.m in Sources */,
+				7AF024761F039F800072CEED /* TTPlatformSelectViewController.m in Sources */,
 				8466C5551DE55A1500E366F3 /* CAAutoFillTextField.m in Sources */,
 				848312491DC71D65002CDF1D /* NetworkViewController.m in Sources */,
+				7A9830EF1F04D25A000FE44D /* TTCoreDataClass.m in Sources */,
 				8488BE261DB77992006357AD /* PasswordViewController.m in Sources */,
 				849ECA5E1DC61BBB00482063 /* SubtitleViewController.m in Sources */,
 				84B988F11DC0B4C900BE7FCE /* ThemeViewController.m in Sources */,
@@ -4004,6 +4138,8 @@
 					"$(PROJECT_DIR)/presentationLiveDemo/Vendor/Weixin",
 					"$(PROJECT_DIR)/presentationLiveDemo/Vendor/libWeiboSDK",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/presentationLiveDemo/presentationLiveDemo.pch";
 				INFOPLIST_FILE = presentationLiveDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -4055,6 +4191,8 @@
 					"$(PROJECT_DIR)/presentationLiveDemo/Vendor/Weixin",
 					"$(PROJECT_DIR)/presentationLiveDemo/Vendor/libWeiboSDK",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/presentationLiveDemo/presentationLiveDemo.pch";
 				INFOPLIST_FILE = presentationLiveDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -4104,6 +4242,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7A9830E41F04D04D000FE44D /* Platform.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7A9830E51F04D04D000FE44D /* Platform.xcdatamodel */,
+			);
+			currentVersion = 7A9830E51F04D04D000FE44D /* Platform.xcdatamodel */;
+			path = Platform.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D8BA26AD1D6AD13500D28C0F /* Project object */;
 }

@@ -19,6 +19,9 @@
 #import "PasswordViewController.h"
 #import "CommanParameters.h"
 
+#import "TTPlatformSelectViewController.h"
+
+
 Rak_Lx52x_Device_Control *_Scan;
 
 
@@ -401,9 +404,13 @@ Rak_Lx52x_Device_Control *_Scan;
     _streamImgBtn.imgView.image=[UIImage imageNamed:@"stream_nor@3x.png"];
     _streamImgBtn.text.textColor=[UIColor whiteColor];
     [_streamImgBtn draw:MAIN_COLOR_T];
-    LiveViewViewController *v = [[LiveViewViewController alloc] init];
-    v.isLiveView=NO;
-    [self.navigationController pushViewController: v animated:true];
+    
+    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+//    LiveViewViewController *v = [[LiveViewViewController alloc] init];
+//    v.isLiveView=NO;
+//    [self.navigationController pushViewController: v animated:true];
     NSLog(@"直播");
 }
 

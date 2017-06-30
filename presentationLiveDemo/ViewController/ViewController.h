@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MainImageViewBtn.h"
 
+/**
+ 首页
+ */
 @interface ViewController : UIViewController
 {
     UIImageView *_Bg;
