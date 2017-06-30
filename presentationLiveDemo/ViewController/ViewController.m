@@ -66,10 +66,10 @@ Rak_Lx52x_Device_Control *_Scan;
     _topBg.contentMode=UIViewContentModeScaleToFill;
     _topBg.backgroundColor=[UIColor blackColor];
     _topBg.alpha=0.1;
-    [self.view addSubview:_topBg];
+//    [self.view addSubview:_topBg];
     
     _topFlag=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo@3x.png"]];
-    _topFlag.frame = CGRectMake(0, viewH*40/totalHeight, viewH*70/totalHeight, viewH*70/totalHeight);
+    _topFlag.frame = CGRectMake(0, viewH*80.5/totalHeight, viewH*73.5/totalHeight, viewH*73.5/totalHeight);
     _topFlag.center=CGPointMake(viewW/2, _topFlag.center.y);
     _topFlag.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topFlag];
@@ -212,7 +212,7 @@ Rak_Lx52x_Device_Control *_Scan;
     SWRevealViewController *revealController = self.revealViewController;
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
-    _liveViewImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*140/totalHeight, viewW*311/totalWeight, viewH*144/totalHeight)];
+    _liveViewImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*205/totalHeight, viewW*303.5/totalWeight, viewH*115/totalHeight)];
     _liveViewImgBtn.userInteractionEnabled=YES;
     _liveViewImgBtn.center=CGPointMake(viewW/2, _liveViewImgBtn.center.y);
     _liveViewImgBtn.imgView.frame=CGRectMake(_liveViewImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50*174/totalHeight/150, viewH*50/totalHeight);
@@ -228,7 +228,7 @@ Rak_Lx52x_Device_Control *_Scan;
     [self.view addSubview:_liveViewImgBtn];
     
     
-    _streamImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*300/totalHeight, viewW*311/totalWeight, viewH*144/totalHeight)];
+    _streamImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*335/totalHeight, viewW*303.5/totalWeight, viewH*115/totalHeight)];
     _streamImgBtn.userInteractionEnabled=YES;
     _streamImgBtn.center=CGPointMake(viewW/2, _streamImgBtn.center.y);
     _streamImgBtn.imgView.frame=CGRectMake(_streamImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50*174/totalHeight/150, viewH*50/totalHeight);
@@ -244,7 +244,7 @@ Rak_Lx52x_Device_Control *_Scan;
     [self.view addSubview:_streamImgBtn];
     
     
-    _configureImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*33/totalWeight, viewH*460/totalHeight, viewW*143.5/totalWeight, viewH*144/totalHeight)];
+    _configureImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*36/totalWeight, viewH*465/totalHeight, viewW*145/totalWeight, viewH*145/totalHeight)];
     _configureImgBtn.userInteractionEnabled=YES;
     _configureImgBtn.imgView.frame=CGRectMake(_configureImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50/totalHeight, viewH*50/totalHeight);
     _configureImgBtn.imgView.center=CGPointMake(_configureImgBtn.frame.size.width/2, _configureImgBtn.imgView.center.y);
@@ -259,7 +259,7 @@ Rak_Lx52x_Device_Control *_Scan;
     [self.view addSubview:_configureImgBtn];
     
     
-    _browseImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*198/totalWeight, viewH*460/totalHeight, viewW*143.5/totalWeight, viewH*144/totalHeight)];
+    _browseImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*194.5/totalWeight, viewH*465/totalHeight, viewW*145/totalWeight, viewH*145/totalHeight)];
     _browseImgBtn.userInteractionEnabled=YES;
     _browseImgBtn.imgView.frame=CGRectMake(_browseImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50/totalHeight, viewH*50/totalHeight);
     _browseImgBtn.imgView.center=CGPointMake(_browseImgBtn.frame.size.width/2, _browseImgBtn.imgView.center.y);

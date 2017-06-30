@@ -298,7 +298,7 @@
     self.revealViewController.rightViewController = nil;
     
     //浮动层离左边距的宽度
-    self.revealViewController.rearViewRevealWidth = self.homePageVC.view.frame.size.width*281/375;
+    self.revealViewController.rearViewRevealWidth = self.homePageVC.view.frame.size.width*209.5/375;
     //    revealViewController.rightViewRevealWidth = 230;
     //是否让浮动层弹回原位
     //mainRevealController.bounceBackOnOverdraw = NO;

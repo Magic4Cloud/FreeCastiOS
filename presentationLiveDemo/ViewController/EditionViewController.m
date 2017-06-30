@@ -28,11 +28,13 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _Exit=NO;
-    self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    self.view.backgroundColor=[UIColor colorWithRed:244/255.0 green:245/255.0 blue:247/255.0 alpha:1.0];
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+//    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
+    _topBg=[[UIImageView alloc]init];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
+    _topBg.backgroundColor = [UIColor whiteColor];
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
@@ -60,23 +62,23 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     
     _topLogo=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo@3x.png"]];
-    _topLogo.frame = CGRectMake(0, viewH*30/totalHeight+_topBg.frame.size.height+_topBg.frame.origin.y,viewH*98/totalHeight, viewH*98/totalHeight);
+    _topLogo.frame = CGRectMake(0, viewH*117/totalHeight,viewH*73.5/totalHeight, viewH*73.5/totalHeight);
     _topLogo.center=CGPointMake(viewW*0.5, _topLogo.center.y);
     _topLogo.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topLogo];
 
     _topName=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav_title_image@3x.png"]];
-    _topName.frame = CGRectMake(0, viewH*14/totalHeight+_topLogo.frame.size.height+_topLogo.frame.origin.y, viewH*20*474/totalHeight/60, viewH*20/totalHeight);
+    _topName.frame = CGRectMake(0, viewH*17/totalHeight+_topLogo.frame.size.height+_topLogo.frame.origin.y, viewH*20*474/totalHeight/60, viewH*17.5/totalHeight);
     _topName.center=CGPointMake(viewW*0.5-viewW*25/totalWeight, _topName.center.y);
     _topName.contentMode=UIViewContentModeScaleToFill;
     //[self.view addSubview:_topName];
     
-    _appVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*20/totalHeight)];
+    _appVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*17.5/totalHeight)];
     _appVersionLabel.center=CGPointMake(_appVersionLabel.center.x, _topName.center.y);
     _appVersionLabel.text = [NSString stringWithFormat:@"Freecast %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
-    _appVersionLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _appVersionLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _appVersionLabel.backgroundColor = [UIColor clearColor];
-    _appVersionLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _appVersionLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _appVersionLabel.lineBreakMode = UILineBreakModeWordWrap;
     _appVersionLabel.textAlignment=UITextAlignmentCenter;
     _appVersionLabel.numberOfLines = 0;
@@ -84,11 +86,11 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     //ID
     _deviceIdView=[[UIView alloc]init];
-    _deviceIdView.frame=CGRectMake(0, viewH*33/totalHeight+_topName.frame.size.height+_topName.frame.origin.y, viewW, viewH*74/totalHeight);
-    _deviceIdView.backgroundColor=[UIColor whiteColor];
+    _deviceIdView.frame=CGRectMake(0, viewH*75/totalHeight+_appVersionLabel.frame.size.height+_appVersionLabel.frame.origin.y, viewW, viewH*47.5/totalHeight);
+    _deviceIdView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_deviceIdView];
     
-    _deviceIdLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*12/totalHeight, viewW, viewH*20/totalHeight)];
+    _deviceIdLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*17.5/totalHeight)];
     _deviceIdLabel.text = NSLocalizedString(@"version_id_text", nil);;
     _deviceIdLabel.backgroundColor = [UIColor clearColor];
     _deviceIdLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
@@ -97,22 +99,23 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     _deviceIdLabel.numberOfLines = 0;
     [_deviceIdView addSubview:_deviceIdLabel];
     
-    _deviceIdValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*10/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*20/totalHeight)];
-    _deviceIdValue.text = @"";
+    _deviceIdValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*5/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*25/totalHeight)];
+    _deviceIdValue.text = @"0123456789";
     _deviceIdValue.backgroundColor = [UIColor clearColor];
-    _deviceIdValue.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
+    _deviceIdValue.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _deviceIdValue.lineBreakMode = UILineBreakModeWordWrap;
     _deviceIdValue.textAlignment=UITextAlignmentCenter;
+    _deviceIdValue.font = [UIFont systemFontOfSize:viewH*25/totalHeight*0.8];
     _deviceIdValue.numberOfLines = 0;
     [_deviceIdView addSubview:_deviceIdValue];
     
     //IP
     _deviceIpView=[[UIView alloc]init];
-    _deviceIpView.frame=CGRectMake(0, viewH*10/totalHeight+_deviceIdView.frame.size.height+_deviceIdView.frame.origin.y, viewW, viewH*74/totalHeight);
-    _deviceIpView.backgroundColor=[UIColor whiteColor];
+    _deviceIpView.frame=CGRectMake(0, viewH*75/totalHeight+_deviceIdView.frame.size.height+_deviceIdView.frame.origin.y, viewW, viewH*47.5/totalHeight);
+    _deviceIpView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_deviceIpView];
     
-    _deviceIpLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*12/totalHeight, viewW, viewH*20/totalHeight)];
+    _deviceIpLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*17.5/totalHeight)];
     _deviceIpLabel.text = NSLocalizedString(@"version_ip_text", nil);;
     _deviceIpLabel.backgroundColor = [UIColor clearColor];
     _deviceIpLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
@@ -121,36 +124,52 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     _deviceIpLabel.numberOfLines = 0;
     [_deviceIpView addSubview:_deviceIpLabel];
     
-    _deviceIpValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*10/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*20/totalHeight)];
-    _deviceIpValue.text = @"";
+    _deviceIpValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*5/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*25/totalHeight)];
+    _deviceIpValue.text = @"171.222.222.22";
     _deviceIpValue.backgroundColor = [UIColor clearColor];
-    _deviceIpValue.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
+    _deviceIpValue.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _deviceIpValue.lineBreakMode = UILineBreakModeWordWrap;
     _deviceIpValue.textAlignment=UITextAlignmentCenter;
+    _deviceIpValue.font = [UIFont systemFontOfSize:viewH*25/totalHeight*0.8];
     _deviceIpValue.numberOfLines = 0;
     [_deviceIpView addSubview:_deviceIpValue];
     
+    
     //Upgrade Firmware
-    _firmwareUpgradeView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(0,_deviceIpView.frame.origin.y+_deviceIpView.frame.size.height+viewH*20/totalHeight,viewW,viewH*44/totalHeight)];
-    _firmwareUpgradeView.backgroundColor=[UIColor whiteColor];
+    UILabel *firmwareUpgradeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_deviceIpView.frame.origin.y+_deviceIpView.frame.size.height+viewH*60.5/totalHeight,viewW*299/totalWeight,viewH*72/totalHeight)];
+    firmwareUpgradeLabel.center=CGPointMake(viewW*0.5, firmwareUpgradeLabel.center.y);
+    firmwareUpgradeLabel.layer.cornerRadius = 5;
+    firmwareUpgradeLabel.layer.borderColor = MAIN_COLOR.CGColor;
+    firmwareUpgradeLabel.layer.borderWidth = 2;
+    firmwareUpgradeLabel.userInteractionEnabled = YES;
+    [self.view addSubview:firmwareUpgradeLabel];
+    
+    UILabel *linelabel = [[UILabel alloc] initWithFrame:CGRectMake(2,viewH*36/totalHeight - 1,viewW*296/totalWeight,2)];
+    linelabel.backgroundColor = MAIN_COLOR;
+    [firmwareUpgradeLabel addSubview:linelabel];
+    
+    
+    //Upgrade Firmware
+    _firmwareUpgradeView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(2,0,viewW*296/totalWeight,viewH*36/totalHeight)];
+    _firmwareUpgradeView.backgroundColor=[UIColor clearColor];
     _firmwareUpgradeView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_firmwareUpgradeViewClick)];
     [_firmwareUpgradeView addGestureRecognizer:singleTap];
-    [self.view addSubview:_firmwareUpgradeView];
+    [firmwareUpgradeLabel addSubview:_firmwareUpgradeView];
     
-    _firmwareUpgradeLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight, 0, viewW, viewH*44/totalHeight)];
+    _firmwareUpgradeLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight, 0, viewW*296/totalWeight, viewH*36/totalHeight)];
     _firmwareUpgradeLabel.text = NSLocalizedString(@"version_ip_upgrade_firmware", nil);
-    _firmwareUpgradeLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _firmwareUpgradeLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _firmwareUpgradeLabel.backgroundColor = [UIColor clearColor];
-    _firmwareUpgradeLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _firmwareUpgradeLabel.textColor = MAIN_COLOR;
     _firmwareUpgradeLabel.lineBreakMode = UILineBreakModeWordWrap;
     _firmwareUpgradeLabel.textAlignment=UITextAlignmentLeft;
     _firmwareUpgradeLabel.numberOfLines = 0;
     [_firmwareUpgradeView addSubview:_firmwareUpgradeLabel];
     
-    _firmwareUpgradeValue= [[UILabel alloc] initWithFrame:CGRectMake(viewW-viewW*144/totalWeight, 0, viewW*100/totalWeight, viewH*44/totalHeight)];
-    _firmwareUpgradeValue.text = @"";
-    _firmwareUpgradeValue.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _firmwareUpgradeValue= [[UILabel alloc] initWithFrame:CGRectMake(viewW*296/totalWeight-viewW*144/totalWeight, 0, viewW*100/totalWeight, viewH*36/totalHeight)];
+    _firmwareUpgradeValue.text = @"123123123";
+    _firmwareUpgradeValue.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _firmwareUpgradeValue.backgroundColor = [UIColor clearColor];
     _firmwareUpgradeValue.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _firmwareUpgradeValue.lineBreakMode = UILineBreakModeWordWrap;
@@ -159,32 +178,32 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [_firmwareUpgradeView addSubview:_firmwareUpgradeValue];
     
     _firmwareUpgradeImg=[[UIImageView alloc]init];
-    _firmwareUpgradeImg.frame = CGRectMake(viewW-viewW*44/totalWeight, 0, viewH*44/totalHeight, viewH*44/totalHeight);
+    _firmwareUpgradeImg.frame = CGRectMake(viewW*296/totalWeight-viewW*30.5/totalWeight, viewH*8/totalHeight, viewH*20/totalHeight, viewH*20/totalHeight);
     [_firmwareUpgradeImg setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"]];
     CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI);
     [_firmwareUpgradeImg setTransform:rotate];
     [_firmwareUpgradeView  addSubview:_firmwareUpgradeImg];
 
     //Upgrade APP
-    _newVersionView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(0,_firmwareUpgradeView.frame.origin.y+_firmwareUpgradeView.frame.size.height+1,viewW,viewH*44/totalHeight)];
-    _newVersionView.backgroundColor=[UIColor whiteColor];
+    _newVersionView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(2,_firmwareUpgradeView.frame.origin.y+_firmwareUpgradeView.frame.size.height+1,viewW*296/totalWeight,viewH*36/totalHeight)];
+    _newVersionView.backgroundColor=[UIColor clearColor];
     _newVersionView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_newVersionViewClick)];
     [_newVersionView addGestureRecognizer:singleTap2];
-    [self.view addSubview:_newVersionView];
+    [firmwareUpgradeLabel addSubview:_newVersionView];
     
-    _newVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight, 0, viewW, viewH*44/totalHeight)];
+    _newVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight, 0, viewW*296/totalWeight, viewH*36/totalHeight)];
     _newVersionLabel.text = NSLocalizedString(@"version_ip_upgrade_app", nil);
-    _newVersionLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _newVersionLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _newVersionLabel.backgroundColor = [UIColor clearColor];
-    _newVersionLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _newVersionLabel.textColor = MAIN_COLOR;
     _newVersionLabel.lineBreakMode = UILineBreakModeWordWrap;
     _newVersionLabel.textAlignment=UITextAlignmentLeft;
     _newVersionLabel.numberOfLines = 0;
     [_newVersionView addSubview:_newVersionLabel];
     
     _newVersionImg=[[UIImageView alloc]init];
-    _newVersionImg.frame = CGRectMake(viewW-viewW*44/totalWeight, 0, viewH*44/totalHeight, viewH*44/totalHeight);
+    _newVersionImg.frame = CGRectMake(viewW*296/totalWeight-viewW*30.5/totalWeight, viewH*8/totalHeight, viewH*20/totalHeight, viewH*20/totalHeight);
     [_newVersionImg setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"]];
     [_newVersionImg setTransform:rotate];
     [_newVersionView  addSubview:_newVersionImg];

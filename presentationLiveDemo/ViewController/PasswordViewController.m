@@ -33,8 +33,9 @@ Rak_Lx52x_Device_Control *_configScan;
     configPort=80;
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]init];
+    _topBg.backgroundColor = [UIColor whiteColor];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
@@ -43,7 +44,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _Bg.contentMode=UIViewContentModeScaleToFill;
     _Bg.backgroundColor=[UIColor blackColor];
     _Bg.alpha=0.1;
-    [self.view addSubview:_Bg];
+//    [self.view addSubview:_Bg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
@@ -75,10 +76,11 @@ Rak_Lx52x_Device_Control *_configScan;
     segmentedControl.tintColor = [UIColor whiteColor];
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引
     
-    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor whiteColor],UITextAttributeTextShadowColor ,nil];
+    
+    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,GRAY_COLOR,UITextAttributeTextShadowColor ,nil];
     [segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateSelected];
     
-    NSDictionary *highlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor whiteColor],UITextAttributeTextShadowColor ,nil];
+    NSDictionary *highlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:GRAY_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,MAIN_COLOR,UITextAttributeTextShadowColor ,nil];
     
     [segmentedControl setTitleTextAttributes:highlightedAttributes2 forState:UIControlStateNormal];
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
@@ -91,9 +93,9 @@ Rak_Lx52x_Device_Control *_configScan;
     [self.view  addSubview:_passwordView];
     
     _passwordImg=[[UIImageView alloc]init];
-    _passwordImg.frame = CGRectMake(0, 0, viewW, viewH*186/totalHeight);
+    _passwordImg.frame = CGRectMake(0, 0, viewW, viewH*156.5/totalHeight);
     [_passwordImg setImage:[UIImage imageNamed:@"configure_password_banner_image@3x.png"]];
-    [_passwordView  addSubview:_passwordImg];
+//    [_passwordView  addSubview:_passwordImg];
     
     //SSID
     _ssidView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _passwordImg.frame.origin.y+_passwordImg.frame.size.height+viewH*13/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
