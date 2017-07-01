@@ -38,11 +38,11 @@ static  TTCoreDataClass * _instance;
     NSError * error;
     [store addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:sqlUrl options:nil error:&error];
     if (error) {
-        //        EVLog(@"创建数据库失败 error:%@",error);
+                NSLog(@"创建数据库失败 error:%@",error);
     }
     else
     {
-        //        EVLog(@"创建数据库成功 sqlUrl:%@",sqlUrl);
+                NSLog(@"创建数据库成功 sqlUrl:%@",sqlUrl);
     }
     
     
@@ -109,14 +109,18 @@ static  TTCoreDataClass * _instance;
                                             inManagedObjectContext:self.context];
     request.entity = desc;
     //    3.设置排序顺序NSSortDescriptor对象集合(可选)
-    //   request.sortDescriptors = descriptorArray;
-    NSString * filterStr = [NSString stringWithFormat:@"name = %@",name];
+//    request.sortDescriptors = descriptorArray;
+    NSString * filterStr = [NSString stringWithFormat:@"name == '%@'",name];
     //    4.设置条件过滤（可选）
     NSPredicate *predicate = [NSPredicate predicateWithFormat:filterStr];
     request.predicate = predicate;
+    NSError * error1;
     // NSManagedObject对象集合
-    NSArray *objs = [self.context executeFetchRequest:request error:nil];
-
+    NSArray *objs = [self.context executeFetchRequest:request error:&error1];
+    if (error1) {
+        NSLog(@"error1:%@",error1);
+    }
+    
     
     // 查询结果数目
     NSUInteger count = objs.count;
@@ -135,16 +139,16 @@ static  TTCoreDataClass * _instance;
     {
         
         //    1.根据Entity名称和NSManagedObjectContext获取一个新的NSManagedObject
-        NSManagedObject *newEntity = [NSEntityDescription
+        PlatformModel *newEntity = [NSEntityDescription
                                       insertNewObjectForEntityForName:entityName
                                       inManagedObjectContext:self.context];
         //    2.根据Entity中的键值，一一对应通过setValue:forkey:给NSManagedObject对象赋值
-        [newEntity setValue:name forKey:@"name"];
-        [newEntity setValue:rtmp forKey:@"rtmp"];
-        [newEntity setValue:streamKey forKey:@"streamKey"];
-        [newEntity setValue:@(enable) forKey:@"isEnable"];
-        [newEntity setValue:customString forKey:@"customString"];
-        [newEntity setValue:@(isSelected) forKey:@"isSelected"];
+        newEntity.name = name;
+        newEntity.rtmp = rtmp;
+        newEntity.streamKey = streamKey;
+        newEntity.isEnable = enable;
+        newEntity.customString = customString;
+        newEntity.isSelected = isSelected;
     }
     
         //    3.保存修改
@@ -177,6 +181,67 @@ static  TTCoreDataClass * _instance;
     
     // 查询结果数目
     return objs;
+}
+
+
+- (PlatformModel *)localSelectedPlatform
+{
+    //    1.创建NSFetchRequest查询请求对象
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    //    2.设置需要查询的实体描述NSEntityDescription
+    NSEntityDescription *desc = [NSEntityDescription entityForName:entityName
+                                            inManagedObjectContext:self.context];
+    request.entity = desc;
+    
+    NSString * filterStr = [NSString stringWithFormat:@"isSelected = 1"];
+    //    4.设置条件过滤（可选）
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:filterStr];
+    request.predicate = predicate;
+    //    5.执行查询请求
+    NSError *error = nil;
+    // NSManagedObject对象集合
+    NSArray *objs = [self.context executeFetchRequest:request error:&error];
+    // 查询结果
+    if (objs)
+    {
+        return [objs firstObject];
+    }
+    else
+    {
+        return nil;
+    }
+    
+}
+
+- (void)setlocalSelectedPlatformName:(NSString *)platformName
+{
+    //    1.创建NSFetchRequest查询请求对象
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    //    2.设置需要查询的实体描述NSEntityDescription
+    NSEntityDescription *desc = [NSEntityDescription entityForName:entityName
+                                            inManagedObjectContext:self.context];
+    request.entity = desc;
+    
+    //    5.执行查询请求
+    NSError *error = nil;
+    // NSManagedObject对象集合
+    NSArray *objs = [self.context executeFetchRequest:request error:&error];
+    [objs enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PlatformModel * model = obj;
+        if ([model.name isEqualToString:platformName]) {
+            model.isSelected = YES;
+        }
+        else
+        {
+            model.isSelected = NO;
+        }
+    }];
+    NSError * saveError;
+    [self.context save:&saveError];
+    if (saveError) {
+        NSLog(@"saveError:%@",saveError);
+    }
+    
 }
 
 #pragma mark - getter

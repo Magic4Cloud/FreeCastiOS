@@ -15,14 +15,16 @@
             <rect key="frame" x="0.0" y="0.0" width="351" height="151"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xte-2y-TV8">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xte-2y-TV8">
                     <rect key="frame" x="65.5" y="45" width="220" height="35"/>
-                    <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="220" id="Oc1-JJ-HAS"/>
                         <constraint firstAttribute="height" constant="35" id="icd-d5-Ek9"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
+                    <state key="normal" title="Go Live Now" backgroundImage="button_nor">
+                        <color key="titleColor" red="0.0" green="0.69803921568627447" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="highlighted" backgroundImage="button_pre"/>
                 </button>
             </subviews>
             <constraints>
@@ -35,4 +37,8 @@
             <point key="canvasLocation" x="49.5" y="104.5"/>
         </collectionReusableView>
     </objects>
+    <resources>
+        <image name="button_nor" width="440" height="70"/>
+        <image name="button_pre" width="440" height="70"/>
+    </resources>
 </document>

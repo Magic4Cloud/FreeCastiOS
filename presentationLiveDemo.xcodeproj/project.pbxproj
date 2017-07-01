@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D194C35844AFC4D19695778 /* libPods-presentationLiveDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */; };
+		7A4E13621F05F60C00E53E38 /* TTNetMannger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E13611F05F60C00E53E38 /* TTNetMannger.m */; };
 		7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A92FADA1F04FD5000DC9178 /* WebViewController.m */; };
 		7A92FADD1F04FD5000DC9178 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A92FADB1F04FD5000DC9178 /* WebViewController.xib */; };
 		7A9830D81F049C7D000FE44D /* UIColor+systemColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */; };
@@ -717,6 +718,8 @@
 /* Begin PBXFileReference section */
 		341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
 		71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-presentationLiveDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A4E13601F05F60C00E53E38 /* TTNetMannger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTNetMannger.h; sourceTree = "<group>"; };
+		7A4E13611F05F60C00E53E38 /* TTNetMannger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTNetMannger.m; sourceTree = "<group>"; };
 		7A92FAD91F04FD5000DC9178 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		7A92FADA1F04FD5000DC9178 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		7A92FADB1F04FD5000DC9178 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
@@ -1722,6 +1725,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A4E135F1F05F60C00E53E38 /* NetWorkMannger */ = {
+			isa = PBXGroup;
+			children = (
+				7A4E13601F05F60C00E53E38 /* TTNetMannger.h */,
+				7A4E13611F05F60C00E53E38 /* TTNetMannger.m */,
+			);
+			path = NetWorkMannger;
+			sourceTree = "<group>";
+		};
 		7A9830D51F049AB1000FE44D /* Extend */ = {
 			isa = PBXGroup;
 			children = (
@@ -1995,6 +2007,7 @@
 		8464B9A71D95104700B67944 /* presentationLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7A4E135F1F05F60C00E53E38 /* NetWorkMannger */,
 				7A9830E31F04CFE5000FE44D /* CoreData */,
 				7A9830D51F049AB1000FE44D /* Extend */,
 				842B2F9D1E56976E00996E3E /* jpg2bmp */,
@@ -3965,6 +3978,7 @@
 				848312461DC70FB2002CDF1D /* AudioViewController.m in Sources */,
 				8464BAE41D95110200B67944 /* CommonFunc.m in Sources */,
 				84B988E81DC0B49200BE7FCE /* UserGuardViewController.m in Sources */,
+				7A4E13621F05F60C00E53E38 /* TTNetMannger.m in Sources */,
 				84B537091DD4864E004222A1 /* RAKAsyncSocket.m in Sources */,
 				7A9830FE1F04FA3C000FE44D /* PlatformModel+CoreDataClass.m in Sources */,
 				84E375EF1DBB62B600217030 /* PlayVideoViewController.m in Sources */,

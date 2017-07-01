@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSManagedObjectContext *context;
 - (long long)getDbFileSize;
 
++ (instancetype)shareInstance;
+
 /**
  本地存储的所有平台
 
@@ -38,8 +40,19 @@
 - (BOOL)updatePlatformWithName:(NSString *)name rtmp:(NSString * )rtmp streamKey:(NSString *)streamKey customString:(NSString *)customString enabel:(BOOL)enable selected:(BOOL)isSelected;
 
 /**
+ 选中的推流平台
+
+ @return 
+ */
+- (PlatformModel *)localSelectedPlatform;
+/**
+ 选中某个平台
+
+ @param platformName 平台名字
+ */
+- (void)setlocalSelectedPlatformName:(NSString *)platformName;
+/**
  清除所有数据
  */
 - (void)cleanUpAllData;
-+ (instancetype)shareInstance;
 @end

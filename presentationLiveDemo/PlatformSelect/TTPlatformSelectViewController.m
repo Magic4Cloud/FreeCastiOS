@@ -10,13 +10,21 @@
 #import "TTPlatFormCell.h"
 #import "CollectionHeaderView.h"
 #import "CollectionReusableFooterView.h"
+#import "LiveViewViewController.h"
+#import "SubtitleViewController.h"
+#import "BannerViewController.h"
+#import "AudioViewController.h"
 
+#import "Rak_Lx52x_Device_Control.h"
 
 #import "TTCoreDataClass.h"
 
 #import "TTYoutubuViewController.h"
 
 @interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@property (nonatomic, strong)Rak_Lx52x_Device_Control * device_Scan;
+
+@property (nonatomic, copy) NSString * userip;
 
 @property (nonatomic, strong) UICollectionView * collectionView;
 
@@ -45,6 +53,7 @@
     NSArray * array = [[TTCoreDataClass shareInstance] localAllPlatforms];
     _platformsArray = [NSMutableArray arrayWithArray:array];
     
+    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
 }
 
 - (void)initUI
@@ -87,6 +96,32 @@
     
 }
 
+#pragma mark - 扫描设备--------------------------
+- (void)scanDevice
+{
+    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
+}
+
+- (void)scanDeviceTask
+{
+    Lx52x_Device_Info *result = [_device_Scan ScanDeviceWithTime:3.0f];
+    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
+}
+
+- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
+{
+    if (result.Device_ID_Arr.count > 0) {
+        
+//        NSString *video_type=@"h264";
+//        //使用扫描到的第一个设备
+//        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
+        _userip = [result.Device_IP_Arr objectAtIndex:0];
+        
+        
+    }
+   
+}
+
 #pragma mark - actions
 - (void)_backBtnClick
 {
@@ -95,7 +130,9 @@
 
 - (void)goliVeNowButtonClick
 {
-    
+    LiveViewViewController *v = [[LiveViewViewController alloc] init];
+    v.isLiveView=YES;
+    [self.navigationController pushViewController: v animated:true];
 }
 
 #pragma mark - praivate methods
@@ -174,32 +211,32 @@
         switch (indexPath.row) {
             case 0://facebook
             {
-                cell.model = [self getPlatformByName:faceBook];
+                [cell setModel:[self getPlatformByName:faceBook] andPlatformName:faceBook];
             }
                 break;
             case 1://youtubu
             {
-                cell.model = [self getPlatformByName:youtubu];
+                [cell setModel:[self getPlatformByName:youtubu] andPlatformName:youtubu];
             }
                 break;
             case 2://uStream
             {
-                cell.model = [self getPlatformByName:uStream];
+                [cell setModel:[self getPlatformByName:uStream] andPlatformName:uStream];
             }
                 break;
             case 3://Twitch
             {
-                cell.model = [self getPlatformByName:twitch];
+                [cell setModel:[self getPlatformByName:twitch] andPlatformName:twitch];
             }
                 break;
             case 4://LiveStream
             {
-                cell.model = [self getPlatformByName:liveStream];
+                [cell setModel:[self getPlatformByName:liveStream] andPlatformName:liveStream];
             }
                 break;
             case 5://Custom
             {
-                cell.model = [self getPlatformByName:custom];
+                [cell setModel:[self getPlatformByName:custom] andPlatformName:custom];
             }
                 break;
                 
@@ -209,7 +246,26 @@
     }
     else
     {
-        
+        switch (indexPath.row) {
+            case 0:
+            {
+                cell.cellImageView.image = [UIImage imageNamed:@"button_subtitle"];
+            }
+                break;
+            case 1:
+            {
+                cell.cellImageView.image = [UIImage imageNamed:@"button_logo_nor"];
+            }
+                break;
+            case 2:
+            {
+                cell.cellImageView.image = [UIImage imageNamed:@"button_subtitle"];
+            }
+                break;
+                
+            default:
+                break;
+        }
     }
     return cell;
 }
@@ -264,7 +320,34 @@
     }
     else
     {
-        
+        switch (indexPath.row) {
+            case 0:
+            {
+                SubtitleViewController * subtitleViewController = [[SubtitleViewController alloc] init];
+                subtitleViewController.ip = _userip;
+                [self.navigationController pushViewController:subtitleViewController animated:YES];
+                
+            }
+                break;
+            case 1:
+            {
+                BannerViewController * bannerViewController = [[BannerViewController alloc] init];
+                bannerViewController.ip = _userip;
+                [self.navigationController pushViewController:bannerViewController animated:YES];
+
+            }
+                break;
+            case 2:
+            {
+                AudioViewController * audioViewController = [[AudioViewController alloc] init];
+                audioViewController.ip = _userip;
+                [self.navigationController pushViewController:audioViewController animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
     }
     
     
@@ -296,6 +379,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 /*
 #pragma mark - Navigation
 

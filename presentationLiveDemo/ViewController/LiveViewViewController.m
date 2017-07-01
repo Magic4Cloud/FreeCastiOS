@@ -37,6 +37,8 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "NetworkViewController.h"
 
+
+#import "TTCoreDataClass.h"
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 int _width=1280;
 int _height=720;
@@ -502,6 +504,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
+    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
     _isPlaying=YES;
     if(_isLiving==2){
         [self.session upload_PauseImg];
@@ -892,8 +895,8 @@ bool _isTakePhoto=NO;
 -(void)_liveStreamBtnClick{
     
     //测试  开直播
-    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
-    return;
+//    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+//    return;
     
     if (!play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
@@ -993,6 +996,13 @@ int valOrientation;
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
+        self.session.isRAK=YES;
+        //[_videoView take_imageRef:YES];
+        [_videoView startGetAudioData:YES];
+        [_videoView startGetH264Data:YES];
+        _isLiving=1;
+
+        
         //使用扫描到的第一个设备
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
@@ -1021,6 +1031,8 @@ int valOrientation;
             [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
             [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
         }
+        
+        
     }
     else
     {
@@ -1597,6 +1609,7 @@ CGFloat iy ;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
+    NSLog(@"GetAudioData==%d  _isLiving:%d",size,_isLiving);
     if(_isLiving==1){
         //NSLog(@"data=%x,%x,%x,%x,%x,%x,%x,%x,%x,%x",data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]);
         AudioBufferList audioBufferList;
@@ -1613,7 +1626,7 @@ CGFloat iy ;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-//    NSLog(@"size==%d",size);
+    NSLog(@"GetH264Data==%d  _isLiving:%d",size,_isLiving);
     if(_isLiving==1){
         [self.session upload_h264:size :data];
     }
@@ -1657,12 +1670,18 @@ CGFloat iy ;
         
         
         //默认音视频配置
-        LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfiguration];
-        LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfiguration];
+//        LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfiguration];
+//        LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfiguration];
         
+        LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
+        LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
+        defaultVideoConfiguration.videoSize = CGSizeMake(960, 540);
+        defaultVideoConfiguration.sessionPreset = LFCaptureSessionPreset540x960;
+        defaultVideoConfiguration.landscape = YES;
+
         //利用两设备配置 来构造一个直播会话
-        _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-        //_session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
+//        _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+        _session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
         _session.delegate  = self;
 //        _session.isRAK=YES;
         _session.running =YES;
@@ -1677,8 +1696,23 @@ CGFloat iy ;
 #pragma mark - 开始直播************************************
 -(void)openLivingSession:(LivingDataSouceType) type{
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
-    stream.url=[self Get_String:STREAM_URL_KEY];
-    stream.url = @"rtmp://live.twitch.tv/app/live_160694976_dPlKCbQt5uwz8iYy7deEeOooR3YYF2?bandwidth_test=true";
+//    stream.url=[self Get_String:STREAM_URL_KEY];
+    
+    PlatformModel * model = [[TTCoreDataClass shareInstance] localSelectedPlatform];
+    NSString * rtmpUrl;
+    if (model) {
+        rtmpUrl = [NSString stringWithFormat:@"%@/%@",model.rtmp,model.streamKey];
+    }
+    if (rtmpUrl) {
+        stream.url = rtmpUrl;
+    }
+//    else
+//    {
+//        //没有推流地址
+//        
+//        
+//    }
+//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
     dispatch_async(dispatch_get_main_queue(), ^{
         if (stream.url==nil) {
             [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
@@ -1696,6 +1730,7 @@ CGFloat iy ;
     });
     [self Save_Paths:stream.url :STREAM_URL_KEY];
     [self addUrls];
+    _isLiving = 1;
     self.session.dataSoureType = type;
     [self.session startLive:stream];
 }

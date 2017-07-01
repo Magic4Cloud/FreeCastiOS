@@ -21,4 +21,5 @@
 
 @property (nonatomic, strong) PlatformModel * model;
 
+- (void)setModel:(PlatformModel *)model andPlatformName:(NSString *)name;
 @end
