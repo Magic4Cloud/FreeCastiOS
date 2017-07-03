@@ -353,60 +353,47 @@
 
 
 - (void)init_View{
+    UIImageView *topFlag = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo@3x.png"]];
+    topFlag.frame = CGRectMake(viewW*36/totalWeight, viewH*77.5/totalHeight, viewH*58.5/totalHeight, viewH*58.5/totalHeight);
+    topFlag.contentMode=UIViewContentModeScaleToFill;
+    [self.view addSubview:topFlag];
+
+    
     for(int i=0;i<7;i++){
-        CGFloat init_X=viewW*57/totalWeight;
-        CGFloat init_Y=viewH*80/totalHeight;
+        CGFloat init_X=viewW*34/totalWeight;
+        CGFloat init_Y=viewH*170/totalHeight;
         UIButton *_menuBtn=[UIButton buttonWithType:UIButtonTypeCustom];
         _menuBtn.tag=i;
         switch (i) {
             case 0:
-                init_X=0;
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight, viewW, viewH*34/totalHeight);
-                [_menuBtn setTitle: @"" forState: UIControlStateNormal];
-                _menuBtn.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
-//                [_menuBtn setTitle: NSLocalizedString(@"using_help", nil) forState: UIControlStateNormal];
-//                _menuBtn.backgroundColor=[UIColor clearColor];
+                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
+                [_menuBtn setTitle: NSLocalizedString(@"edition", nil) forState: UIControlStateNormal];
+                _menuBtn.backgroundColor = [UIColor clearColor];
                 break;
             case 1:
 //                [_menuBtn setTitle: NSLocalizedString(@"theme", nil) forState: UIControlStateNormal];
 //                _menuBtn.backgroundColor=[UIColor clearColor];
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight+viewH*14/totalHeight, viewW, viewH*20/totalHeight);
+                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
                 [_menuBtn setTitle: NSLocalizedString(@"disclaimer", nil) forState: UIControlStateNormal];
-                _menuBtn.backgroundColor=[UIColor clearColor];
-                break;
+                _menuBtn.backgroundColor = [UIColor clearColor];                break;
             case 2:
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight+viewH*14/totalHeight, viewW, viewH*20/totalHeight);
+                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
                 [_menuBtn setTitle: NSLocalizedString(@"privacy_policy", nil) forState: UIControlStateNormal];
-                _menuBtn.backgroundColor=[UIColor clearColor];
+                _menuBtn.backgroundColor = [UIColor clearColor];
 //                [_menuBtn setTitle: @"" forState: UIControlStateNormal];
 //                _menuBtn.backgroundColor=[UIColor colorWithRed:49/255.0 green:49/255.0 blue:56/255.0 alpha:1.0];
 //                init_X=0;
                 break;
             case 3:
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight+viewH*14/totalHeight, viewW, viewH*20/totalHeight);
+                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
                 [_menuBtn setTitle: NSLocalizedString(@"copyright_info", nil) forState: UIControlStateNormal];
                 _menuBtn.backgroundColor=[UIColor clearColor];
                 break;
-            case 4:
-                init_X=0;
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight+viewH*14/totalHeight, viewW, viewH*34/totalHeight);
-                [_menuBtn setTitle: @"" forState: UIControlStateNormal];
-                _menuBtn.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
-                break;
-            case 5:
-                _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*40*i/totalHeight+viewH*28/totalHeight, viewW, viewH*20/totalHeight);
-                [_menuBtn setTitle: NSLocalizedString(@"edition", nil) forState: UIControlStateNormal];
-                _menuBtn.backgroundColor=[UIColor clearColor];
-                break;
-            case 6:
-                
-                break;
-                
             default:
                 break;
         }
-        [_menuBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-        _menuBtn.titleLabel.font = [UIFont boldSystemFontOfSize:viewH*20/totalHeight];
+        [_menuBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+        _menuBtn.titleLabel.font = [UIFont boldSystemFontOfSize:viewH*17.5/totalHeight];
         [_menuBtn setTitleColor:[UIColor whiteColor]forState:UIControlStateHighlighted];
         _menuBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
         [_menuBtn addTarget:nil action:@selector(_menuBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,8 +411,12 @@
     switch ((int)button.tag) {
         case 0:
         {
-            NSLog(@"_useHelpViewClick");
-            UserGuardViewController *v = [[UserGuardViewController alloc] init];
+//            NSLog(@"_useHelpViewClick");
+//            UserGuardViewController *v = [[UserGuardViewController alloc] init];
+//            [self.navigationController pushViewController: v animated:true];
+//            break;
+            NSLog(@"_editionViewClick");
+            EditionViewController *v = [[EditionViewController alloc] init];
             [self.navigationController pushViewController: v animated:true];
             break;
         }
@@ -453,22 +444,7 @@
             [self.navigationController pushViewController: v animated:true];
             break;
         }
-        case 4:
-        {
-            break;
-        }
-        case 5:
-        {
-            NSLog(@"_editionViewClick");
-            EditionViewController *v = [[EditionViewController alloc] init];
-            [self.navigationController pushViewController: v animated:true];
-            break;
-        }
-        case 6:
-        {
-            
-            break;
-        }
+        
         default:
             break;
     }

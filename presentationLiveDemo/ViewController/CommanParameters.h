@@ -16,6 +16,8 @@
 #define MENU_BG0_COLOR [UIColor colorWithRed:(29 / 255.0f) green:(27 / 255.0f) blue:(27 / 255.0f) alpha:1.0]
 #define MENU_BG1_COLOR [UIColor colorWithRed:(52 / 255.0f) green:(52 / 255.0f) blue:(52 / 255.0f) alpha:1.0]
 
+//灰色字体
+#define GRAY_COLOR [UIColor colorWithRed:(190.43 / 255.0f) green:(190.43 / 255.0f) blue:(190.43 / 255.0f) alpha:1.0]
 
 #define totalHeight 667  //UI设计时总高度，通过这个值和屏幕高度的比例，设置每个控件的高度
 #define totalWeight 375   //UI设计时总宽度，通过这个值和屏幕宽度的比例，设置每个控件的宽度
