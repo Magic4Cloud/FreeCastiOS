@@ -20,19 +20,45 @@
     _cellEditButton.hidden = YES;
 }
 
-- (void)setModel:(PlatformModel *)model
+- (void)setModel:(PlatformModel *)model andPlatformName:(NSString *)name
 {
+    NSString * suffixString;
+    
     if (model)
     {
+        _model = model;
+        if (model.isEnable)
+        {
+            if (model.isSelected)
+            {
+                suffixString = @"_pre";
+            }
+            else
+            {
+                suffixString = @"_activation";
+            }
+            
+        }
+        else
+        {
+            suffixString = @"_nor";
+        }
+        
         _cellImageView.highlighted = model.isEnable;
-        _contentBgView.backgroundColor = model.isSelected ? [UIColor blueColor] : [UIColor whiteColor];
+        _contentBgView.backgroundColor = model.isSelected ? [UIColor TTLightBlueColor] : [UIColor whiteColor];
         _cellEditButton.hidden = !model.isSelected;
     }
     else
     {
+        suffixString = @"_nor";
         _cellImageView.highlighted = NO;
         _contentBgView.backgroundColor = [UIColor whiteColor];
         _cellEditButton.hidden = YES;
     }
+    UIImage * iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"button_%@%@",name,suffixString]];
+    
+    _cellImageView.image = iconImage;
+    
 }
+
 @end

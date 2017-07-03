@@ -57,7 +57,7 @@ and paste the code displayed above</string>
                         <constraint firstAttribute="height" constant="30" id="O1D-GO-yQn"/>
                         <constraint firstAttribute="width" constant="167" id="yiK-OL-yhq"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
+                    <state key="normal" title="Loading..."/>
                     <connections>
                         <action selector="copyCodeButtonClick:" destination="-1" eventType="touchUpInside" id="wyQ-CZ-AmR"/>
                     </connections>

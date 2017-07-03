@@ -193,6 +193,7 @@ BOOL isShowSubtitle=NO;
  *  将实时画面推流到指定直播地址
  */
 - (void)upload_h264:(int)size :(Byte*)data{
+    NSLog(@"将实时画面推流到指定直播地址 upload_h264");
     CVPixelBufferRef tbuffer =[_h264HardwareCodec deCompressedCMSampleBufferWithData:data andLength:size andOffset:0];
     [self.videoEncoder encodeVideoData:tbuffer timeStamp:self.currentTimestamp];
     CVPixelBufferRelease(tbuffer);

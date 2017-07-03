@@ -10,11 +10,11 @@
 #define MacroDefinition_h
 
 //platform
-#define faceBook    @"faceBook"
-#define youtubu     @"youtubu"
+#define faceBook    @"facebook"
+#define youtubu     @"youtube"
 #define twitch      @"twitch"
-#define uStream     @"uStream"
-#define liveStream  @"liveStream"
+#define uStream     @"ustream"
+#define liveStream  @"livestream"
 #define custom      @"custom"
 
 //appkey or cilentid
