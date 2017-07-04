@@ -39,6 +39,7 @@
 
 
 #import "TTCoreDataClass.h"
+#import "TTPlatformSelectViewController.h"
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 int _width=1280;
 int _height=720;
@@ -78,6 +79,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 @property  bool videoisplaying;
 @property(strong, nonatomic) LFLiveSessionWithPicSource *session;
 
+@property (nonatomic, strong) PlatformModel * selectedPlatformModel;
 /**
  系统摄像头 展示view
  */
@@ -87,6 +89,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
  视频数据来源
  */
 @property (nonatomic, assign) CameraSource liveCameraSource;
+
+@property (nonatomic, strong) UIButton * platformButton;
 @end
 
 @implementation LiveViewViewController
@@ -130,6 +134,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     CGFloat r_control_pos;
     NSMutableArray *_recordUrl;
 }
+
 
 - (void)viewDidLoad {
     //[self _scaleBtnClick:1];
@@ -189,6 +194,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     [_videoView addGestureRecognizer:singleTap];
     _videoView.backgroundColor = [UIColor blackColor];
     [_videoView startGetYUVData:YES];
+
+    
     [_videoView set_log_level:4];
     [_videoView sound:YES];
     [_videoView delegate:self];
@@ -215,11 +222,50 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     }
     
     
-
+    
     if (play_success==NO){
         [self scanDevice];
     }
     _liveCameraSource = ExternalDevices;
+}
+
+- (void)getSelectedPlatform
+{
+    _selectedPlatformModel =  [[TTCoreDataClass shareInstance] localSelectedPlatform];
+    if (_selectedPlatformModel) {
+        NSString * name = _selectedPlatformModel.name;
+        NSString * imageName;
+        if ([name isEqualToString:youtubu]) {
+            imageName = @"icon_youtube_02";
+        }
+        else if ([name isEqualToString:faceBook])
+        {
+            imageName = @"icon_facebook_02";
+        }
+        else if ([name isEqualToString:twitch])
+        {
+            imageName = @"icon_twitch";
+        }
+        
+        else if ([name isEqualToString:uStream])
+        {
+            imageName = @"icon_ustream";
+        }
+        
+        else if ([name isEqualToString:liveStream])
+        {
+            imageName = @"icon_livestream";
+        }
+        else if ([name isEqualToString:custom])
+        {
+            imageName = @"icon_choose";
+        }
+        else
+        {
+            imageName = @"icon_choose";
+        }
+        [_platformButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -319,73 +365,72 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _topLabel.numberOfLines = 0;
     [_topBg addSubview:_topLabel];
     
+    
+    NSMutableArray * buttonFrameArray = [NSMutableArray array];
+    CGFloat buttonWidth = 30.f;
+    CGFloat buttonMargin = 31.5;
+    CGFloat firstX = (ScreenWidth - buttonWidth*6 - buttonMargin*5)/2;
+    for (int i =0; i<6; i++) {
+        
+        CGRect rect = CGRectMake(firstX + i *(buttonWidth +buttonMargin), 12, buttonWidth, buttonWidth);
+        [buttonFrameArray addObject: [NSValue valueWithCGRect:rect]];
+    }
+    
     //底部
-    _bottomBg=[[UIImageView alloc]init];
+    _bottomBg=[[UIImageView alloc] init];
     _bottomBg.userInteractionEnabled=YES;
     _bottomBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _bottomBg.frame = CGRectMake(0, viewH-viewH*49/totalHeight, viewW, viewH*49/totalHeight);
+    _bottomBg.frame = CGRectMake(0, viewH-55, viewW, 55);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
     
     _takephotoBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _takephotoBtn.frame = CGRectMake(0, 0, viewH*30/totalHeight*150/90, viewH*30/totalHeight);
-    _takephotoBtn.center=CGPointMake(viewW*0.1, _bottomBg.frame.size.height*0.5);
-    [_takephotoBtn setImage:[UIImage imageNamed:@"photo @3x.png"] forState:UIControlStateNormal];
-    _takephotoBtn.contentMode=UIViewContentModeScaleToFill;
-    _takephotoBtn.alpha=0.4;
-    _takephotoBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
+    _takephotoBtn.frame =  [buttonFrameArray[0] CGRectValue];
+    
+    [_takephotoBtn setImage:[UIImage imageNamed:@"icon_camera_nor"] forState:UIControlStateNormal];
+    [_takephotoBtn setImage:[UIImage imageNamed:@"icon_camera_pre"] forState:UIControlStateHighlighted];
+    
     [_takephotoBtn addTarget:nil action:@selector(_takephotoBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg addSubview:_takephotoBtn];
     
     _recordBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _recordBtn.frame = CGRectMake(0, 0, viewH*30/totalHeight*150/90, viewH*30/totalHeight);
-    _recordBtn.center=CGPointMake(viewW*0.3, _bottomBg.frame.size.height*0.5);
-    [_recordBtn setImage:[UIImage imageNamed:@"video_start@3x.png"] forState:UIControlStateNormal];
-    _recordBtn.contentMode=UIViewContentModeScaleToFill;
-    _recordBtn.alpha=0.4;
-    _recordBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_recordBtn addTarget:nil action:@selector(_recordBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    _recordBtn.frame = [buttonFrameArray[1] CGRectValue];
+    
+    [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
+    [_recordBtn setImage:[UIImage imageNamed:@"icon_play_pre"] forState:UIControlStateHighlighted];
+    
+    [_recordBtn addTarget:self action:@selector(_recordBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_recordBtn];
     
     _liveStreamBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _liveStreamBtn.frame = CGRectMake(0, viewH*4/totalHeight, viewH*30/totalHeight, viewH*30/totalHeight);
-    _liveStreamBtn.center=CGPointMake(viewW*0.5, _liveStreamBtn.center.y);
-    [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_nor@3x.png"] forState:UIControlStateNormal];
-    _liveStreamBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    _liveStreamBtn.contentMode=UIViewContentModeScaleToFill;
-    [_liveStreamBtn addTarget:nil action:@selector(_liveStreamBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    _liveStreamBtn.frame = [buttonFrameArray[2] CGRectValue];
+    [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_nor"] forState:UIControlStateNormal];
+    [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_pre"] forState:UIControlStateHighlighted];
+    [_liveStreamBtn addTarget:self action:@selector(_liveStreamBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_liveStreamBtn];
     
-    _liveStreamLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _liveStreamBtn.frame.origin.y+_liveStreamBtn.frame.size.height, viewH*50/totalHeight, viewH*12/totalHeight)];
-    _liveStreamLabel.text = NSLocalizedString(@"live_stream_label", nil);
-    _liveStreamLabel.font = [UIFont systemFontOfSize: viewH*12/totalHeight*0.8];
-    _liveStreamLabel.backgroundColor = [UIColor clearColor];
-    _liveStreamLabel.textColor = [UIColor colorWithRed:0/255.0 green:179/255.0 blue:227/255.0 alpha:1.0];
-    _liveStreamLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _liveStreamLabel.textAlignment=UITextAlignmentCenter;
-    _liveStreamLabel.numberOfLines = 0;
-    _liveStreamLabel.center=CGPointMake(viewW*0.5, _liveStreamLabel.center.y);
-    [_bottomBg addSubview:_liveStreamLabel];
     
     _browserBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _browserBtn.frame = CGRectMake(0, 0, viewH*30/totalHeight*150/90, viewH*30/totalHeight);
-    _browserBtn.center=CGPointMake(viewW*0.7, _bottomBg.frame.size.height*0.5);
-    [_browserBtn setImage:[UIImage imageNamed:@"library@3x.png"] forState:UIControlStateNormal];
-    _browserBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    _browserBtn.contentMode=UIViewContentModeScaleToFill;
-    _browserBtn.alpha=0.4;
-    [_browserBtn addTarget:nil action:@selector(_browserBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    _browserBtn.frame = [buttonFrameArray[3] CGRectValue];
+    [_browserBtn setImage:[UIImage imageNamed:@"icon_library_nor"] forState:UIControlStateNormal];
+    [_browserBtn setImage:[UIImage imageNamed:@"icon_library_pre"] forState:UIControlStateHighlighted];
+    [_browserBtn addTarget:self action:@selector(_browserBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_browserBtn];
     
     _configureBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _configureBtn.frame = CGRectMake(0, 0, viewH*30/totalHeight*150/90, viewH*30/totalHeight);
-    _configureBtn.center=CGPointMake(viewW*0.9, _bottomBg.frame.size.height*0.5);
-    [_configureBtn setImage:[UIImage imageNamed:@"set@3x.png"] forState:UIControlStateNormal];
-    _configureBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
+    _configureBtn.frame = [buttonFrameArray[4] CGRectValue];
+    [_configureBtn setImage:[UIImage imageNamed:@"icon_configure_nor"] forState:UIControlStateNormal];
+    [_configureBtn setImage:[UIImage imageNamed:@"icon_configure_pre"] forState:UIControlStateHighlighted];
     [_configureBtn addTarget:nil action:@selector(_configureBtnClick) forControlEvents:UIControlEventTouchUpInside];
     _configureBtn.contentMode=UIViewContentModeScaleToFill;
-    _configureBtn.alpha=0.4;
     [_bottomBg  addSubview:_configureBtn];
+    
+    _platformButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_platformButton setImage:[UIImage imageNamed:@"icon_choose"] forState:UIControlStateNormal];
+    _platformButton.frame = [buttonFrameArray[5] CGRectValue];
+    [_platformButton addTarget:self action:@selector(platformButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomBg addSubview:_platformButton];
+    
     
     _livePauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _livePauseBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
@@ -475,10 +520,10 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _onliveLabel.hidden=YES;
     _audioView.hidden=YES;
     _powerView.hidden=YES;
-    _takephotoBtn.alpha=0.4;
-    _recordBtn.alpha=0.4;
-    _browserBtn.alpha=0.4;
-    _configureBtn.alpha=0.4;
+    //    _takephotoBtn.alpha=0.4;
+    //    _recordBtn.alpha=0.4;
+    //    _browserBtn.alpha=0.4;
+    //    _configureBtn.alpha=0.4;
 }
 
 /**
@@ -560,11 +605,11 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _statusBg.hidden=NO;
     if (_isLiving==1) {
         _livePauseBtn.hidden=NO;
-         _liveStopBtn.hidden=NO;
+        _liveStopBtn.hidden=NO;
     }
     else if (_isLiving==2) {
         _livePauseBtn.hidden=NO;
-         _liveStopBtn.hidden=NO;
+        _liveStopBtn.hidden=NO;
     }
     CATransition *anima = [CATransition animation];
     anima.type = kCATransitionMoveIn;//设置动画的类型
@@ -659,12 +704,7 @@ bool VideoRecordIsEnable = NO;
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
-//    if (_isLiveView) {
-//        [self _scaleBtnClick:1];//切换到横屏
-//    }
-//    else{
-//        [self _scaleBtnClick:0];//切换到竖屏
-//    }
+    [self getSelectedPlatform];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -713,24 +753,32 @@ bool VideoRecordIsEnable = NO;
     
     if (_isLiveView) {
         dispatch_async(dispatch_get_main_queue(),^ {
-            [_tipLabel removeFromSuperview];
+            if (_tipLabel) {
+                [_tipLabel removeFromSuperview];
+            }
             [self stopActivityIndicatorView];
-            [ActivityIndicatorView removeFromSuperview];
         });
-        _recordTimeLabel.hidden=YES;
-        [CheckVideoPlay invalidate];
-        CheckVideoPlay = nil;
+        if (_recordTimeLabel) {
+            _recordTimeLabel.hidden=YES;
+        }
+        
+        if (CheckVideoPlay) {
+            [CheckVideoPlay invalidate];
+            CheckVideoPlay = nil;
+        }
     }
     
     if (play_success) {
-        [_videoView stop];
+        if (_videoView) {
+            [_videoView stop];
+        }
+        
         NSLog(@"stop play");
     }
     self.videoisplaying = NO;
     play_success=NO;
     
     [self.navigationController popViewControllerAnimated:YES];
-    //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -774,10 +822,10 @@ bool VideoRecordIsEnable = NO;
         
     }
     
-//    if (!play_success) {
-//        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-//        return;
-//    }
+    //    if (!play_success) {
+    //        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+    //        return;
+    //    }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [_albumObject createAlbumInPhoneAlbum:album_name];
         [_albumObject getPathForRecord:album_name];
@@ -841,7 +889,7 @@ bool _isTakePhoto=NO;
         [mutaArray addObjectsFromArray:video_timesamp];
         [mutaArray addObject:timesamp];
         [self Save_Urls:mutaArray :@"video_flag"];
-
+        
         [_videoView begin_record:0];
         VideoRecordTimerTick_s = 0;
         VideoRecordTimerTick_m = 0;
@@ -867,6 +915,18 @@ bool _isTakePhoto=NO;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     BrowseViewController *v = [[BrowseViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
+}
+
+
+/**
+ 推流平台选择
+ */
+- (void)platformButtonClick
+{
+    _isBroswer=YES;
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /**
@@ -895,8 +955,13 @@ bool _isTakePhoto=NO;
 -(void)_liveStreamBtnClick{
     
     //测试  开直播
-//    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
-//    return;
+    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+    return;
+    if (_liveCameraSource == IphoneBackCamera) {
+        [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+        return;
+    }
+    
     
     if (!play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
@@ -998,10 +1063,11 @@ int valOrientation;
     if (result.Device_ID_Arr.count > 0) {
         self.session.isRAK=YES;
         //[_videoView take_imageRef:YES];
+        [_videoView startGetYUVData:YES];
         [_videoView startGetAudioData:YES];
         [_videoView startGetH264Data:YES];
         _isLiving=1;
-
+        
         
         //使用扫描到的第一个设备
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
@@ -1036,7 +1102,7 @@ int valOrientation;
     }
     else
     {
-
+        
         dispatch_async(dispatch_get_main_queue(),^ {
             _tipLabel.hidden=YES;
             [self stopActivityIndicatorView];
@@ -1045,7 +1111,7 @@ int valOrientation;
             _livingPreView.hidden = NO;
             play_success = YES;
             _liveCameraSource = IphoneBackCamera;
-
+            
         });
         
         
@@ -1056,7 +1122,7 @@ int valOrientation;
             return;
         }
         
-//        [self scanDevice];
+        //        [self scanDevice];
     }
 }
 
@@ -1217,65 +1283,19 @@ CGFloat iy ;
     NSLog(@"startActivityIndicatorView");
     ix = self.view.frame.origin.x+(viewW/2-25);
     iy = self.view.frame.origin.y+(viewH/2-25);
-//    dispatch_async(dispatch_get_main_queue(),^ {
-        ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-        
-//        NSArray *gifArray = [NSArray arrayWithObjects:
-//                             [UIImage imageNamed:@"01_00016.png"],
-//                             [UIImage imageNamed:@"01_00017.png"],
-//                             [UIImage imageNamed:@"01_00018.png"],
-//                             [UIImage imageNamed:@"01_00019.png"],
-//                             [UIImage imageNamed:@"01_00020.png"],
-//                             [UIImage imageNamed:@"01_00021.png"],
-//                             [UIImage imageNamed:@"01_00022.png"],
-//                             [UIImage imageNamed:@"01_00023.png"],
-//                             [UIImage imageNamed:@"01_00024.png"],
-//                             [UIImage imageNamed:@"01_00025.png"],
-//                             [UIImage imageNamed:@"01_00026.png"],
-//                             [UIImage imageNamed:@"01_00027.png"],
-//                             [UIImage imageNamed:@"01_00028.png"],
-//                             [UIImage imageNamed:@"01_00029.png"],
-//                             [UIImage imageNamed:@"01_00030.png"],
-//                             [UIImage imageNamed:@"01_00031.png"],
-//                             [UIImage imageNamed:@"01_00032.png"],
-//                             [UIImage imageNamed:@"01_00033.png"],
-//                             [UIImage imageNamed:@"01_00034.png"],
-//                             [UIImage imageNamed:@"01_00035.png"],
-//                             [UIImage imageNamed:@"01_00036.png"],
-//                             [UIImage imageNamed:@"01_00037.png"],
-//                             [UIImage imageNamed:@"01_00038.png"],
-//                             [UIImage imageNamed:@"01_00039.png"],
-//                             [UIImage imageNamed:@"01_00040.png"],
-//                             [UIImage imageNamed:@"01_00041.png"],
-//                             [UIImage imageNamed:@"01_00042.png"],
-//                             [UIImage imageNamed:@"01_00043.png"],
-//                             [UIImage imageNamed:@"01_00044.png"],
-//                             [UIImage imageNamed:@"01_00045.png"],
-//                             [UIImage imageNamed:@"01_00046.png"],
-//                             [UIImage imageNamed:@"01_00047.png"],
-//                             [UIImage imageNamed:@"01_00048.png"],
-//                             [UIImage imageNamed:@"01_00049.png"],
-//                             [UIImage imageNamed:@"01_00050.png"],
-//                             [UIImage imageNamed:@"01_00051.png"],
-//                             nil];
-//        ActivityIndicatorView.animationDuration=1;
-//        ActivityIndicatorView.animationImages = gifArray; //动画图片数组
-//        ActivityIndicatorView.animationRepeatCount = 1;  //动画重复次数
-//        [ActivityIndicatorView startAnimating];
-//        [self.view addSubview:ActivityIndicatorView];
-        
-        ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-        ActivityIndicatorView.image=[UIImage imageNamed:@"06_00038.png"];
-        CABasicAnimation* rotationAnimation;
-        rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-        rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
-        rotationAnimation.duration = 0.5;
-        rotationAnimation.cumulative = YES;
-        rotationAnimation.repeatCount = 10000000000000;
-        [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
-        ;
-        [self.view addSubview:ActivityIndicatorView];
-//    });
+    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
+    
+    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
+    ActivityIndicatorView.image=[UIImage imageNamed:@"06_00038.png"];
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    rotationAnimation.duration = 0.5;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = 10000000000000;
+    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
+    ;
+    [self.view addSubview:ActivityIndicatorView];
     ActivityIndicatorViewisenable = YES;
     
     _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
@@ -1289,13 +1309,19 @@ CGFloat iy ;
 }
 
 -(void)stopActivityIndicatorView{
-    [_tipLabel removeFromSuperview];
     if (ActivityIndicatorViewisenable == NO) {
         return;
     }
     NSLog(@"stopActivityIndicatorView");
     dispatch_async(dispatch_get_main_queue(),^ {
-        [ActivityIndicatorView removeFromSuperview];
+        if (_tipLabel) {
+            [_tipLabel removeFromSuperview];
+        }
+        
+        if (ActivityIndicatorView) {
+            [ActivityIndicatorView removeFromSuperview];
+            
+        }
     });
     ActivityIndicatorViewisenable = NO;
 }
@@ -1670,20 +1696,20 @@ CGFloat iy ;
         
         
         //默认音视频配置
-//        LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfiguration];
-//        LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfiguration];
+        //        LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfiguration];
+        //        LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfiguration];
         
         LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
         LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
         defaultVideoConfiguration.videoSize = CGSizeMake(960, 540);
         defaultVideoConfiguration.sessionPreset = LFCaptureSessionPreset540x960;
         defaultVideoConfiguration.landscape = YES;
-
+        
         //利用两设备配置 来构造一个直播会话
-//        _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+        //        _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
         _session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
         _session.delegate  = self;
-//        _session.isRAK=YES;
+        //        _session.isRAK=YES;
         _session.running =YES;
         _session.preView =_livingPreView;
     }
@@ -1696,24 +1722,26 @@ CGFloat iy ;
 #pragma mark - 开始直播************************************
 -(void)openLivingSession:(LivingDataSouceType) type{
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
-//    stream.url=[self Get_String:STREAM_URL_KEY];
+    //    stream.url=[self Get_String:STREAM_URL_KEY];
     
-    PlatformModel * model = [[TTCoreDataClass shareInstance] localSelectedPlatform];
-    NSString * rtmpUrl;
-    if (model) {
-        rtmpUrl = [NSString stringWithFormat:@"%@/%@",model.rtmp,model.streamKey];
-    }
-    if (rtmpUrl) {
-        stream.url = rtmpUrl;
-    }
-//    else
-//    {
-//        //没有推流地址
-//        
-//        
+    
+//    NSString * rtmpUrl;
+//    rtmpUrl = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=533c7891d289e51ff38f0e464feaead2&time=1499076000&wm=2&wml=1&vr=0";
+//    if (_selectedPlatformModel) {
+//        rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
 //    }
-//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-    dispatch_async(dispatch_get_main_queue(), ^{
+    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
+
+//    if (rtmpUrl) {
+//        stream.url = rtmpUrl;
+//    }
+    //    else
+    //    {
+    //        //没有推流地址
+    //
+    //
+    //    }
+            dispatch_async(dispatch_get_main_queue(), ^{
         if (stream.url==nil) {
             [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
             return;
@@ -1726,7 +1754,7 @@ CGFloat iy ;
             [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
             return;
         }
-
+        
     });
     [self Save_Paths:stream.url :STREAM_URL_KEY];
     [self addUrls];
@@ -1811,7 +1839,7 @@ CGFloat iy ;
     _onliveLabel.text = NSLocalizedString(@"on_live", nil);
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_dis@3x.png"] forState:UIControlStateNormal];
-    _liveStreamLabel.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
+    
     _onliveView.image=[UIImage imageNamed:@"live view_pilot lamp_on@3x.png"];
     _livePauseBtn.hidden=NO;
     _liveStopBtn.hidden=NO;
@@ -1819,7 +1847,7 @@ CGFloat iy ;
     [_streamingStartBtn setImage:[UIImage imageNamed:@"go live_dis@3x.png"] forState:UIControlStateNormal];
     [_streamingPauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
-
+    
     _streamingAddress.enabled=NO;
     _addressView.userInteractionEnabled=NO;
     _platformView.userInteractionEnabled=NO;
@@ -1836,14 +1864,14 @@ CGFloat iy ;
     _onliveLabel.text = NSLocalizedString(@"pause_live", nil);
     [_livePauseBtn setImage:[UIImage imageNamed:@"continue live_pre@3x.png"] forState:UIControlStateNormal];
     [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_dis@3x.png"] forState:UIControlStateNormal];
-    _liveStreamLabel.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
+    
     _livePauseBtn.hidden=NO;
     _liveStopBtn.hidden=NO;
     //推流界面
     [_streamingStartBtn setImage:[UIImage imageNamed:@"go live_dis@3x.png"] forState:UIControlStateNormal];
     [_streamingPauseBtn setImage:[UIImage imageNamed:@"continue live_nor@3x.png"] forState:UIControlStateNormal];
     [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
-
+    
     [_videoView take_imageRef:NO];
     _isLiving=2;
 }
@@ -1851,7 +1879,7 @@ CGFloat iy ;
 -(void)setStopStreamStatus{
     //直播界面
     [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_nor@3x.png"] forState:UIControlStateNormal];
-    _liveStreamLabel.textColor = [UIColor colorWithRed:0/255.0 green:179/255.0 blue:227/255.0 alpha:1.0];
+    
     _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
     _onliveLabel.text = NSLocalizedString(@"not_live", nil);
     _livePauseBtn.hidden=YES;
@@ -2066,7 +2094,7 @@ int posStep=1;
                     _lowerRightImg.frame=CGRectMake(newViewW-CGImageGetWidth(_lowerRightImg.image.CGImage)*newViewH/6/CGImageGetHeight(_lowerRightImg.image.CGImage),newViewH*5/6, CGImageGetWidth(_lowerRightImg.image.CGImage)*newViewH/6/CGImageGetHeight(_lowerRightImg.image.CGImage), newViewH/6);
                     _lowerRightImg.hidden=NO;
                 }
-
+                
                 _wordImg.hidden=YES;
                 posCount=0;
             }
@@ -2893,7 +2921,7 @@ int posStep=1;
             _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
             [view setCenter:(CGPoint){l_control_pos, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-
+            
             [self closeLivingSession];
             _isExit=YES;
         }

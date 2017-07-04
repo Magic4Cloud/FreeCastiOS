@@ -29,7 +29,6 @@
     UIButton *_takephotoBtn;
     UIButton *_recordBtn;
     UIButton *_liveStreamBtn;
-    UILabel *_liveStreamLabel;
     UIButton *_browserBtn;
     UIButton *_configureBtn;
     UIButton *_livePauseBtn;
