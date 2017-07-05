@@ -21,6 +21,9 @@
 
 #import "TTYoutubuViewController.h"
 
+#import "CommanParameters.h"
+
+
 @interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong)Rak_Lx52x_Device_Control * device_Scan;
 
@@ -69,8 +72,8 @@
     [self.view addSubview:_topBg];
     
      UIButton * _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 20, 44, 44);
-    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;

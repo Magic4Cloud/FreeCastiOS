@@ -39,9 +39,9 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -50,8 +50,9 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"edition", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+//    _titleLabel.text = NSLocalizedString(@"edition", nil);
+    _titleLabel.text = @"Version";
+    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
@@ -100,7 +101,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [_deviceIdView addSubview:_deviceIdLabel];
     
     _deviceIdValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*5/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*25/totalHeight)];
-    _deviceIdValue.text = @"0123456789";
+    _deviceIdValue.text = @"";
     _deviceIdValue.backgroundColor = [UIColor clearColor];
     _deviceIdValue.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _deviceIdValue.lineBreakMode = UILineBreakModeWordWrap;
@@ -125,7 +126,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [_deviceIpView addSubview:_deviceIpLabel];
     
     _deviceIpValue= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*5/totalHeight+_deviceIdLabel.frame.origin.y+_deviceIdLabel.frame.size.height, viewW, viewH*25/totalHeight)];
-    _deviceIpValue.text = @"171.222.222.22";
+    _deviceIpValue.text = @"";
     _deviceIpValue.backgroundColor = [UIColor clearColor];
     _deviceIpValue.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _deviceIpValue.lineBreakMode = UILineBreakModeWordWrap;
@@ -168,7 +169,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [_firmwareUpgradeView addSubview:_firmwareUpgradeLabel];
     
     _firmwareUpgradeValue= [[UILabel alloc] initWithFrame:CGRectMake(viewW*296/totalWeight-viewW*144/totalWeight, 0, viewW*100/totalWeight, viewH*36/totalHeight)];
-    _firmwareUpgradeValue.text = @"123123123";
+    _firmwareUpgradeValue.text = @"";
     _firmwareUpgradeValue.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _firmwareUpgradeValue.backgroundColor = [UIColor clearColor];
     _firmwareUpgradeValue.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
@@ -179,9 +180,9 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     _firmwareUpgradeImg=[[UIImageView alloc]init];
     _firmwareUpgradeImg.frame = CGRectMake(viewW*296/totalWeight-viewW*30.5/totalWeight, viewH*8/totalHeight, viewH*20/totalHeight, viewH*20/totalHeight);
-    [_firmwareUpgradeImg setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"]];
-    CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI);
-    [_firmwareUpgradeImg setTransform:rotate];
+    [_firmwareUpgradeImg setImage:[UIImage imageNamed:@"icon_right"]];
+//    CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI);
+//    [_firmwareUpgradeImg setTransform:rotate];
     [_firmwareUpgradeView  addSubview:_firmwareUpgradeImg];
 
     //Upgrade APP
@@ -204,8 +205,8 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     _newVersionImg=[[UIImageView alloc]init];
     _newVersionImg.frame = CGRectMake(viewW*296/totalWeight-viewW*30.5/totalWeight, viewH*8/totalHeight, viewH*20/totalHeight, viewH*20/totalHeight);
-    [_newVersionImg setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"]];
-    [_newVersionImg setTransform:rotate];
+    [_newVersionImg setImage:[UIImage imageNamed:@"icon_right"]];
+//    [_newVersionImg setTransform:rotate];
     [_newVersionView  addSubview:_newVersionImg];
 }
 

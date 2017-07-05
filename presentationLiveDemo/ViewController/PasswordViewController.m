@@ -47,8 +47,8 @@ Rak_Lx52x_Device_Control *_configScan;
 //    [self.view addSubview:_Bg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -144,7 +144,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _ssidImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap0 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_ssidImgClick)];
     [_ssidImg addGestureRecognizer:singleTap0];
-    _ssidImg.frame = CGRectMake(viewW*318/totalWeight, _ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*10/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
+    _ssidImg.frame = CGRectMake(viewW*313/totalWeight, _ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*5/totalHeight, viewH*25/totalHeight, viewH*25/totalHeight);
     _ssidImg.contentMode=UIViewContentModeScaleToFill;
     [_passwordView addSubview:_ssidImg];
     
@@ -171,7 +171,7 @@ Rak_Lx52x_Device_Control *_configScan;
 //    _initPasswordLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
 //    [_initPasswordView addSubview:_initPasswordLine];
     
-    _initPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"]];
+    _initPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _initPasswordImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_initPasswordImgShowPskClick)];
     [_initPasswordImg addGestureRecognizer:singleTap2];
@@ -221,7 +221,7 @@ Rak_Lx52x_Device_Control *_configScan;
 //    _newPasswordLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
 //    [_newPasswordView addSubview:_newPasswordLine];
     
-    _newPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"]];
+    _newPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _newPasswordImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_newPasswordImgShowPskClick)];
     [_newPasswordImg addGestureRecognizer:singleTap3];
@@ -260,7 +260,7 @@ Rak_Lx52x_Device_Control *_configScan;
 //    _confirmLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
 //    [_confirmView addSubview:_confirmLine];
     
-    _confirmPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"]];
+    _confirmPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _confirmPasswordImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_confirmImgShowPskClick)];
     [_confirmPasswordImg addGestureRecognizer:singleTap4];
@@ -580,7 +580,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionSlider.minimumTrackTintColor = MAIN_COLOR;
     _videoResolutionSlider.continuous=NO;
     
-    UIImage *imagea=[self OriginImage:[UIImage imageNamed:@"Icon-60"] scaleToSize:CGSizeMake(11, 11)];
+    UIImage *imagea=[self OriginImage:[UIImage imageNamed:@"circle"] scaleToSize:CGSizeMake(11, 11)];
     [_videoResolutionSlider  setThumbImage:imagea forState:UIControlStateNormal];
     
     [_videoResolutionSlider addTarget:self action:@selector(_videoResolutionSliderValue:) forControlEvents:UIControlEventValueChanged];
@@ -659,7 +659,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateSlider.value = 6000;
     _videoRateSlider.thumbTintColor = MAIN_COLOR;
     _videoRateSlider.minimumTrackTintColor = MAIN_COLOR;
-    UIImage *Rateimagea=[self OriginImage:[UIImage imageNamed:@"Icon-60"] scaleToSize:CGSizeMake(11, 11)];
+    UIImage *Rateimagea=[self OriginImage:[UIImage imageNamed:@"circle"] scaleToSize:CGSizeMake(11, 11)];
     [_videoRateSlider  setThumbImage:Rateimagea forState:UIControlStateNormal];
     [_videoRateSlider addTarget:self action:@selector(_videoRateSliderValue:) forControlEvents:UIControlEventValueChanged];
     [_videoRateView addSubview:_videoRateSlider];
@@ -717,7 +717,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateSlider.value = 25;
     _videoFrameRateSlider.thumbTintColor = MAIN_COLOR;
     _videoFrameRateSlider.minimumTrackTintColor = MAIN_COLOR;
-    UIImage *Frameimagea=[self OriginImage:[UIImage imageNamed:@"Icon-60"] scaleToSize:CGSizeMake(11, 11)];
+    UIImage *Frameimagea=[self OriginImage:[UIImage imageNamed:@"circle"] scaleToSize:CGSizeMake(11, 11)];
     [_videoFrameRateSlider  setThumbImage:Frameimagea forState:UIControlStateNormal];
     [_videoFrameRateSlider addTarget:self action:@selector(_videoFrameRateSliderValue:) forControlEvents:UIControlEventValueChanged];
     [_videoFrameRateView addSubview:_videoFrameRateSlider];
@@ -1497,33 +1497,33 @@ bool _modifyOK=YES;
 - (void)_initPasswordImgShowPskClick{
     if (_initPasswordText.secureTextEntry) {
         _initPasswordText.secureTextEntry = NO;
-        _initPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_On@3x.png"];
+        _initPasswordImg.image=[UIImage imageNamed:@"icon_display_pre"];
     }
     else{
         _initPasswordText.secureTextEntry = YES;
-        _initPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"];
+        _initPasswordImg.image=[UIImage imageNamed:@"icon_display_nor"];
     }
 }
 
 - (void)_confirmImgShowPskClick{
     if (_confirmText.secureTextEntry) {
         _confirmText.secureTextEntry = NO;
-        _confirmPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_On@3x.png"];
+        _confirmPasswordImg.image=[UIImage imageNamed:@"icon_display_pre"];
     }
     else{
         _confirmText.secureTextEntry = YES;
-        _confirmPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"];
+        _confirmPasswordImg.image=[UIImage imageNamed:@"icon_display_nor"];
     }
 }
 
 - (void)_newPasswordImgShowPskClick{
     if (_newPasswordText.secureTextEntry) {
         _newPasswordText.secureTextEntry = NO;
-        _newPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_On@3x.png"];
+        _newPasswordImg.image=[UIImage imageNamed:@"icon_display_pre"];
     }
     else{
         _newPasswordText.secureTextEntry = YES;
-        _newPasswordImg.image=[UIImage imageNamed:@"password_eyes_icon_Off@3x.png"];
+        _newPasswordImg.image=[UIImage imageNamed:@"icon_display_nor"];
     }
 }
 

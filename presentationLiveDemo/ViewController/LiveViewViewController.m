@@ -37,6 +37,7 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "NetworkViewController.h"
 
+#import "TTPlatformSelectViewController.h"
 
 #import "TTCoreDataClass.h"
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
@@ -289,23 +290,27 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     //顶部
     _topBg=[[UIImageView alloc]init];
     _topBg.userInteractionEnabled=YES;
-    _topBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*44/totalHeight);
+    _topBg.backgroundColor=[UIColor colorWithRed:97/255.0 green:98/255.0 blue:100/255.0 alpha:0.4];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*55/totalHeight);
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
+    UIImageView *backImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_back"]];
+    backImage.frame = CGRectMake(viewW*13/totalHeight, viewH*20/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_topBg addSubview:backImage];
+    
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 0, viewH*60/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(0, 20, viewH*60/totalHeight, viewH*44/totalHeight);
+//    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
     
     _connectImg=[[UIImageView alloc]init];
-    _connectImg.image=[UIImage imageNamed:@"WIFI@3x.png"];
-    _connectImg.frame = CGRectMake(viewH*66/totalHeight, 0, viewH*16/totalHeight, viewH*16/totalHeight);
-    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
+    _connectImg.image=[UIImage imageNamed:@"wifi"];
+    _connectImg.frame = CGRectMake(viewH*66/totalHeight, viewH*20.5/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
+//    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
     _connectImg.contentMode=UIViewContentModeScaleToFill;
     [_topBg addSubview:_connectImg];
     
@@ -880,12 +885,17 @@ bool _isTakePhoto=NO;
     //[self presentViewController:v animated:YES completion:nil];
     _isConfig=YES;
     //[self _scaleBtnClick:0];
-    _streamView.hidden=NO;
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    [self prefersStatusBarHidden:YES];
+//    _streamView.hidden=NO;
+//    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+//    [self prefersStatusBarHidden:YES];
+//    
+//    self.view.transform=CGAffineTransformIdentity;
+//    self.view.frame=CGRectMake(0, 0, viewW, viewH);
     
-    self.view.transform=CGAffineTransformIdentity;
-    self.view.frame=CGRectMake(0, 0, viewW, viewH);
+    
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /**
