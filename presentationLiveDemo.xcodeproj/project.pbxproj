@@ -281,7 +281,6 @@
 		8488BCA71DB776ED006357AD /* LFLiveSessionWithPicSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BC9D1DB776ED006357AD /* LFLiveSessionWithPicSource.m */; };
 		8488BCA81DB776ED006357AD /* LivingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BC9F1DB776ED006357AD /* LivingView.m */; };
 		8488BCA91DB776ED006357AD /* LivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BCA11DB776ED006357AD /* LivingViewController.m */; };
-		8488BCAA1DB776ED006357AD /* ModuleLivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BCA31DB776ED006357AD /* ModuleLivingViewController.m */; };
 		8488BCAB1DB776ED006357AD /* PicToBufferToPic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BCA51DB776ED006357AD /* PicToBufferToPic.m */; };
 		8488BCB01DB778B7006357AD /* libLX520View.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8488BCAE1DB778B7006357AD /* libLX520View.a */; };
 		8488BD511DB7792B006357AD /* begin_record.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8488BCB31DB7792B006357AD /* begin_record.mp3 */; };
@@ -1175,8 +1174,6 @@
 		8488BC9F1DB776ED006357AD /* LivingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivingView.m; sourceTree = "<group>"; };
 		8488BCA01DB776ED006357AD /* LivingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivingViewController.h; sourceTree = "<group>"; };
 		8488BCA11DB776ED006357AD /* LivingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivingViewController.m; sourceTree = "<group>"; };
-		8488BCA21DB776ED006357AD /* ModuleLivingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleLivingViewController.h; sourceTree = "<group>"; };
-		8488BCA31DB776ED006357AD /* ModuleLivingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleLivingViewController.m; sourceTree = "<group>"; };
 		8488BCA41DB776ED006357AD /* PicToBufferToPic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicToBufferToPic.h; sourceTree = "<group>"; };
 		8488BCA51DB776ED006357AD /* PicToBufferToPic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicToBufferToPic.m; sourceTree = "<group>"; };
 		8488BCAE1DB778B7006357AD /* libLX520View.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libLX520View.a; sourceTree = "<group>"; };
@@ -2243,8 +2240,6 @@
 				8488BC9F1DB776ED006357AD /* LivingView.m */,
 				8488BCA01DB776ED006357AD /* LivingViewController.h */,
 				8488BCA11DB776ED006357AD /* LivingViewController.m */,
-				8488BCA21DB776ED006357AD /* ModuleLivingViewController.h */,
-				8488BCA31DB776ED006357AD /* ModuleLivingViewController.m */,
 				8488BCA41DB776ED006357AD /* PicToBufferToPic.h */,
 				8488BCA51DB776ED006357AD /* PicToBufferToPic.m */,
 			);
@@ -3953,7 +3948,6 @@
 				84B988FA1DC0B51B00BE7FCE /* CopyrightViewController.m in Sources */,
 				8488BCAB1DB776ED006357AD /* PicToBufferToPic.m in Sources */,
 				8488BE1B1DB77992006357AD /* BASE64.m in Sources */,
-				8488BCAA1DB776ED006357AD /* ModuleLivingViewController.m in Sources */,
 				849D6A861E10E9F400B9F4A2 /* H264HardwareCodec.m in Sources */,
 				8488BE271DB77992006357AD /* RotateNavigationControllerViewController.m in Sources */,
 				8488BE241DB77992006357AD /* MediaGroup.m in Sources */,

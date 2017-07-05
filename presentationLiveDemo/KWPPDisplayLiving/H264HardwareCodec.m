@@ -294,10 +294,16 @@ static void decompressionOutputCallbackRecord(void * CM_NULLABLE decompressionOu
                     CGImageRelease(videoImage);
                 }
             }
-            CFRelease(sampleBufferRef);
+//            if (sampleBufferRef) {
+//                CFRelease(sampleBufferRef);
+//            }
+            
         }
     }
-    CFRelease(blockBufferRef);
+//    if (blockBufferRef) {
+//        CFRelease(blockBufferRef);
+//
+//    }
     return outputPixelBufferRef;
 }
 

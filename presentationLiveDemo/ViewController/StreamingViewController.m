@@ -8,7 +8,7 @@
 
 #import "StreamingViewController.h"
 #import "CommanParameter.h"
-#import "ModuleLivingViewController.h"
+//#import "ModuleLivingViewController.h"
 #import "Rak_Lx52x_Device_Control.h"
 #import "LX520View.h"
 #import "MBProgressHUD.h"
