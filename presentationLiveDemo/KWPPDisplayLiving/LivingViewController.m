@@ -140,7 +140,6 @@ int count11 =1;
 //    [[NSRunLoop mainRunLoop] addTimer:newTimer forMode:NSDefaultRunLoopMode];
     
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new ];
-    stream .url = @"rtmp://test.uplive.ksyun.com/live/room1";
     stream .url=@"rtmp://rak.uplive.ks-cdn.com/live/LIVEQU15612334A4A?vdoid=1474526229";
     self.session.dataSoureType = type;
     [self.session startLive:stream];

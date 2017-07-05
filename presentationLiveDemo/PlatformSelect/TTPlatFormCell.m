@@ -20,6 +20,15 @@
     _cellEditButton.hidden = YES;
 }
 
+- (void)setImageviewImageWithImageName:(NSString *)imageName
+{
+    self.cellImageView.image = [UIImage imageNamed:imageName];
+    _cellImageView.highlighted = NO;
+    _contentBgView.backgroundColor = [UIColor whiteColor];
+    _cellEditButton.hidden = YES;
+
+}
+
 - (void)setModel:(PlatformModel *)model andPlatformName:(NSString *)name
 {
     NSString * suffixString;

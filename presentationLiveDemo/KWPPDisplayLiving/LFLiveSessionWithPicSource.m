@@ -200,7 +200,7 @@ BOOL isShowSubtitle=NO;
 }
 
 - (void)upload_imageRef:(CGImageRef)imageRef{
-//    //NSLog(@"take_imageRef");
+    //NSLog(@"take_imageRef");
 //    CVImageBufferRef pixelBuffer = [self pixelBufferFromCGImage:imageRef];
 //    [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
 //    CGImageRelease(imageRef);
@@ -360,7 +360,8 @@ UIImage *pauseImage=nil;
         return;
     }
     NSLog(@"处理音频数据11");
-    if(!_isPausing)[self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+    if(!_isPausing)
+    [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
     else return ;
 }
 
@@ -371,7 +372,8 @@ UIImage *pauseImage=nil;
         return;
     }
     NSLog(@"处理视频数据11");
-    if(_isPausing){ //暂停时，显示暂停图片
+    if(_isPausing)
+    { //暂停时，显示暂停图片
         int num = (pauseTimeLen++/10)%8+1;
         NSString *picName = [NSString stringWithFormat:@"pauseLiving%d.png",num ];
         NSLog(@"暂停： %@",picName);
@@ -431,8 +433,10 @@ UIImage *pauseImage=nil;
 
 #pragma mark -- 实现编码委托
 - (void)audioEncoder:(nullable id<LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame*)frame{
+    
     if(self.uploading)
     {
+        NSLog(@"audioEncoder [self.socket sendFrame:frame];//<音频上传成功");
         [self.socket sendFrame:frame];//<上传
     }
 }
@@ -440,6 +444,8 @@ UIImage *pauseImage=nil;
 - (void)videoEncoder:(nullable id<LFVideoEncoding>)encoder videoFrame:(nullable LFVideoFrame*)frame{
     if(self.uploading)
     {
+        NSLog(@"videoEncoder [self.socket sendFrame:frame];//<视频上传成功");
+
         [self.socket sendFrame:frame];//<上传
     }
 }
@@ -474,6 +480,7 @@ UIImage *pauseImage=nil;
     if(self.showDebugInfo){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(self.delegate && [self.delegate respondsToSelector:@selector(liveSession:debugInfo:)]){
+                NSLog(@"socketDebug");
                 [self.delegate liveSession:self debugInfo:debugInfo];
             }
         });
@@ -587,12 +594,12 @@ UIImage *pauseImage=nil;
 }
 
 - (LFAudioCapture*)audioCaptureSource{
-//    if (_isRAK) {
-//        return _audioCaptureSource;
-//    }
+    if (_isRAK) {
+        return _audioCaptureSource;
+    }
     if(!_audioCaptureSource){
         _audioCaptureSource = [[LFAudioCapture alloc] initWithAudioConfiguration:_audioConfiguration];
-        _audioCaptureSource.delegate = self;
+            _audioCaptureSource.delegate = self;
     }
     return _audioCaptureSource;
 }

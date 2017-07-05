@@ -8,7 +8,7 @@
 
 #import "StreamingViewController.h"
 #import "CommanParameter.h"
-#import "ModuleLivingViewController.h"
+//#import "ModuleLivingViewController.h"
 #import "Rak_Lx52x_Device_Control.h"
 #import "LX520View.h"
 #import "MBProgressHUD.h"
@@ -1100,10 +1100,10 @@ Rak_Lx52x_Device_Control *_LiveScan;
  */
 LFLiveStreamInfo *stream;
 -(void)openLivingSession:(LivingDataSouceType) type{
-    if (([_streamingAddress.text compare:@""]==NSOrderedSame)||
-        ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame)) {
-        return;
-    }
+//    if (([_streamingAddress.text compare:@""]==NSOrderedSame)||
+//        ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame)) {
+//        return;
+//    }
     stream = [LFLiveStreamInfo new];
     stream.url=_streamingAddress.text;
     //stream.url=@"rtmp://115.231.182.113:1935/livestream/daxvab6i";//哔哩哔哩

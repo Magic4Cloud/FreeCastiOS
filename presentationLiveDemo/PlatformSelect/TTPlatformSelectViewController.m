@@ -39,13 +39,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self initData];
+    
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self initData];
+    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
     
     [self initUI];
     // Do any additional setup after loading the view.
@@ -55,8 +58,8 @@
 {
     NSArray * array = [[TTCoreDataClass shareInstance] localAllPlatforms];
     _platformsArray = [NSMutableArray arrayWithArray:array];
+    [self.collectionView reloadData];
     
-    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
 }
 
 - (void)initUI
@@ -138,6 +141,49 @@
     [self.navigationController pushViewController: v animated:true];
 }
 
+- (void)cellEditButtonClick:(UIButton *)button
+{
+    NSInteger index = button.tag;
+    switch (index) {
+        case 0://facebook
+        {
+            
+        }
+            break;
+        case 1://youtubu
+        {
+            TTYoutubuViewController * vc = [[TTYoutubuViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 2://uStream
+        {
+            
+        }
+            break;
+        case 3://Twitch
+        {
+            
+        }
+            break;
+        case 4://LiveStream
+        {
+            
+        }
+            break;
+        case 5://Custom
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+
+
+}
+
 #pragma mark - praivate methods
 - (PlatformModel *)getPlatformByName:(NSString *)name
 {
@@ -211,6 +257,10 @@
     TTPlatFormCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TTPlatFormCell" forIndexPath:indexPath];
     if (indexPath.section == 0)
     {
+        
+        [cell.cellEditButton addTarget:self action:@selector(cellEditButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        cell.cellEditButton.tag = indexPath.row;
+        
         switch (indexPath.row) {
             case 0://facebook
             {
@@ -252,17 +302,19 @@
         switch (indexPath.row) {
             case 0:
             {
-                cell.cellImageView.image = [UIImage imageNamed:@"button_subtitle"];
+                [cell setImageviewImageWithImageName:@"button_subtitle"];
+                
             }
                 break;
             case 1:
             {
-                cell.cellImageView.image = [UIImage imageNamed:@"button_logo_nor"];
+                [cell setImageviewImageWithImageName:@"button_logo_nor"];
+                
             }
                 break;
             case 2:
             {
-                cell.cellImageView.image = [UIImage imageNamed:@"button_subtitle"];
+                [cell setImageviewImageWithImageName:@"button_subtitle"];
             }
                 break;
                 
@@ -279,9 +331,13 @@
     {
         TTPlatFormCell * cell = (TTPlatFormCell *)[collectionView cellForItemAtIndexPath:indexPath];
         PlatformModel * model = cell.model;
-        if(cell.cellEditButton.hidden)
+        if (model.isEnable)
         {
-            
+            if (!model.isSelected) {
+                model.isSelected = YES;
+                [collectionView reloadData];
+            }
+            return;
         }
         switch (indexPath.row) {
             case 0://facebook

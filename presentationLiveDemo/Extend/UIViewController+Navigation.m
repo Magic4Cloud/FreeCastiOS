@@ -21,7 +21,7 @@
     
     UIButton * _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(0, 20, 44, 44);
-    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back_blue"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;

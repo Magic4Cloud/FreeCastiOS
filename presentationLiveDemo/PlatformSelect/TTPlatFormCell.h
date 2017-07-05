@@ -22,4 +22,6 @@
 @property (nonatomic, strong) PlatformModel * model;
 
 - (void)setModel:(PlatformModel *)model andPlatformName:(NSString *)name;
+
+- (void)setImageviewImageWithImageName:(NSString *)imageName;
 @end
