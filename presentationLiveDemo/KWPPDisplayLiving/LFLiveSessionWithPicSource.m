@@ -219,6 +219,8 @@ BOOL isShowSubtitle=NO;
  */
 UIImage *pauseImage=nil;
 - (void)upload_PauseImg{
+    NSLog(@"将暂停画面推流到指定直播地址 ");
+
     if([[self Get_Paths:PAUSE_SCREEN_PHOTO_ENABLE_KEY] compare:@"off"]==NSOrderedSame){
         return;
     }
@@ -434,6 +436,8 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现编码委托
 - (void)audioEncoder:(nullable id<LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame*)frame{
     
+//    NSLog(@"audioEncoder [self.socket sendFrame:frame];//<音频上传成功");
+
     if(self.uploading)
     {
         NSLog(@"audioEncoder [self.socket sendFrame:frame];//<音频上传成功");
@@ -452,6 +456,7 @@ UIImage *pauseImage=nil;
 
 #pragma mark -- LFStreamTcpSocketDelegate
 - (void)socketStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveState)status{
+    debugMethod();
     if(status == LFLiveStart){
         if(!self.uploading){
             self.timestamp = 0;
@@ -468,6 +473,8 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketDidError:(nullable id<LFStreamSocket>)socket errorCode:(LFLiveSocketErrorCode)errorCode{
+    debugMethod();
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.delegate && [self.delegate respondsToSelector:@selector(liveSession:errorCode:)]){
             [self.delegate liveSession:self errorCode:errorCode];
@@ -476,6 +483,8 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketDebug:(nullable id<LFStreamSocket>)socket debugInfo:(nullable LFLiveDebug*)debugInfo{
+    debugMethod();
+
     self.debugInfo = debugInfo;
     if(self.showDebugInfo){
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -488,6 +497,8 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketBufferStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveBuffferState)status{
+    debugMethod();
+
     NSUInteger videoBitRate = [_videoEncoder videoBitRate];
     if(status == LFLiveBuffferIncrease){
         if(videoBitRate < _videoConfiguration.videoMaxBitRate){

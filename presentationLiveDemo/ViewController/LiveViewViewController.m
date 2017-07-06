@@ -77,6 +77,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 
 @interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
 
+
 @property (nonatomic, strong)LX520View * videoView;
 
 @property  bool videoisplaying;
@@ -137,6 +138,10 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     CGFloat c_control_pos;
     CGFloat r_control_pos;
     NSMutableArray *_recordUrl;
+    
+    NSString *resolution;
+    NSString *fps;
+    NSString *quality;
 }
 
 
@@ -1035,7 +1040,6 @@ int valOrientation;
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
-        _session = [self getSessionWithRakisrak:YES];
         
                 //[_videoView take_imageRef:YES];
 //        _isLiving=1;
@@ -1060,6 +1064,9 @@ int valOrientation;
                 return;
             }
         }
+        
+        [self getDeviceConfig];
+        
         NSLog(@"start play==%@",urlString);
         [_videoView play:urlString useTcp:NO];
         [_videoView sound:audioisEnable];
@@ -1069,9 +1076,9 @@ int valOrientation;
 
         self.videoisplaying = YES;
         if (_isLiveView) {
-//            [NSThread detachNewThreadSelector:@selector(GetStreamStatus) toTarget:self withObject:nil];
-//            [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
-//            [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
+            [NSThread detachNewThreadSelector:@selector(GetStreamStatus) toTarget:self withObject:nil];
+            [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
+            [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
         }
         
         
@@ -1104,6 +1111,83 @@ int valOrientation;
         //        [self scanDevice];
     }
 }
+
+#pragma mark - 获取设备的参数  码率 fps 等 --------------------
+
+- (void)getDeviceConfig
+{
+    int configPort=80;
+    NSString * configIP = _userip;
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",configIP,configPort];
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        resolution=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            if ([resolution compare:@"3"]==NSOrderedSame) {
+//                [self set1080P];
+            }
+            else if ([resolution compare:@"2"]==NSOrderedSame) {
+//                [self set720P];
+            }
+            else{
+//                [self set480P];
+            }
+        });
+        NSLog(@"resolution=%@",resolution);
+    }
+//    else{
+//        dispatch_async(dispatch_get_main_queue(),^ {
+//            [self showAllTextDialog:NSLocalizedString(@"get_reslution_failed", nil)];
+//        });
+//    }
+    
+    //get quality
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        quality=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            float value=[quality intValue]*3000/52.0;
+            if (((int)value%100)!=0) {
+                value=value+100;
+            }
+//            [self setVideoRate:value];
+        });
+        NSLog(@"quality=%@",quality);
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_quality_failed", nil)];
+        });
+    }
+    
+    //get fps
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",configIP,configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        fps=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+//            [self setVideoFrameRate:[fps intValue]];
+        });
+        
+        NSLog(@"fps=%@",fps);
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_fps_failed", nil)];
+        });
+    }
+    
+    _session = [self getSessionWithRakisrak:YES];
+
+}
+
 
 /**
  *  用于判断是否断开，需要重连
@@ -1176,6 +1260,7 @@ int valOrientation;
  *  回调获取视频imageRef
  */
 - (void)take_imageRef:(CGImageRef)imageRef{
+    debugMethod();
     if(_isLiving==1){
         if (_isTakePhoto) {
             _isTakePhoto=NO;
@@ -1192,9 +1277,10 @@ int valOrientation;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-    NSLog(@"GetAudioData size==%d  _isLiving:%d",size,_isLiving);
     if(_isLiving==1){
-        NSLog(@"data=%x,%x,%x,%x,%x,%x,%x,%x,%x,%x",data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]);
+        NSLog(@"GetAudioData size==%d  _isLiving:%d",size,_isLiving);
+
+//        NSLog(@"data=%x,%x,%x,%x,%x,%x,%x,%x,%x,%x",data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]);
         AudioBufferList audioBufferList;
         audioBufferList.mNumberBuffers = 1;
         audioBufferList.mBuffers[0].mNumberChannels=2;
@@ -1209,8 +1295,9 @@ int valOrientation;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-    NSLog(@"GetH264Data==%d  _isLiving:%d",size,_isLiving);
+    
     if(_isLiving==1){
+        NSLog(@"GetH264Data==%d  _isLiving:%d",size,_isLiving);
         [self.session upload_h264:size :data];
     }
 }
@@ -1504,120 +1591,120 @@ CGFloat iy ;
 }
 
 #pragma mark-- 获取电量
-//-(void)GetPower{
-//    while(!_isExit){
-//        NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_adc&type=h264&pipe=0",_userip,80];
-//        HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
-//        NSLog(@"====>%@",http_request.ResponseString);
-//        if(http_request.StatusCode==200)
-//        {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                NSString *_signal=[self parseJsonString:http_request.ResponseString];
-//                int strength=0;
-//                if (([_signal compare:@"76"] == NSOrderedAscending)) {
-//                    strength=1;
-//                }
-//                else if (([_signal compare:@"75"] == NSOrderedDescending)
-//                         &&([_signal compare:@"51"] == NSOrderedAscending)) {
-//                    strength=2;
-//                }
-//                else if (([_signal compare:@"50"] == NSOrderedDescending)
-//                         &&([_signal compare:@"26"] == NSOrderedAscending)) {
-//                    strength=3;
-//                }
-//                else if (([_signal compare:@"25"] == NSOrderedDescending)) {
-//                    strength=4;
-//                }
-//                
-//                NSString *param = [NSString stringWithFormat:@"power_01@3x.png", strength];
-//                _powerView.image = [UIImage imageNamed:param];
-//            });
-//        }
-//        
-//        [NSThread sleepForTimeInterval:5.0f];
-//    }
-//}
+-(void)GetPower{
+    while(!_isExit){
+        NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_adc&type=h264&pipe=0",_userip,80];
+        HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
+        NSLog(@"====>%@",http_request.ResponseString);
+        if(http_request.StatusCode==200)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *_signal=[self parseJsonString:http_request.ResponseString];
+                int strength=0;
+                if (([_signal compare:@"76"] == NSOrderedAscending)) {
+                    strength=1;
+                }
+                else if (([_signal compare:@"75"] == NSOrderedDescending)
+                         &&([_signal compare:@"51"] == NSOrderedAscending)) {
+                    strength=2;
+                }
+                else if (([_signal compare:@"50"] == NSOrderedDescending)
+                         &&([_signal compare:@"26"] == NSOrderedAscending)) {
+                    strength=3;
+                }
+                else if (([_signal compare:@"25"] == NSOrderedDescending)) {
+                    strength=4;
+                }
+                
+                NSString *param = [NSString stringWithFormat:@"power_01@3x.png", strength];
+                _powerView.image = [UIImage imageNamed:param];
+            });
+        }
+        
+        [NSThread sleepForTimeInterval:5.0f];
+    }
+}
 
 #pragma mark-- 获取音频输入
-//-(void)GetAudioInput{
-//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_audio_source&type=h264&pipe=0",_userip,80];
-//    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
-//    NSLog(@"====>%@",http_request.ResponseString);
-//    if(http_request.StatusCode==200)
-//    {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSString *_signal=[self parseJsonString:http_request.ResponseString];
-//            if (([_signal compare:@"0"] == NSOrderedSame)) {
-//                
-//            }
-//            else if (([_signal compare:@"1"] == NSOrderedSame)) {
-//                _audioView.image=[UIImage imageNamed:@"audio mode 1@3x.png"];
-//            }
-//            else if (([_signal compare:@"2"] == NSOrderedSame)) {
-//                _audioView.image=[UIImage imageNamed:@"audio mode 2@3x.png"];
-//            }
-//        });
-//    }
-//}
+-(void)GetAudioInput{
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_audio_source&type=h264&pipe=0",_userip,80];
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
+    NSLog(@"====>%@",http_request.ResponseString);
+    if(http_request.StatusCode==200)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            if (([_signal compare:@"0"] == NSOrderedSame)) {
+                
+            }
+            else if (([_signal compare:@"1"] == NSOrderedSame)) {
+                _audioView.image=[UIImage imageNamed:@"audio mode 1@3x.png"];
+            }
+            else if (([_signal compare:@"2"] == NSOrderedSame)) {
+                _audioView.image=[UIImage imageNamed:@"audio mode 2@3x.png"];
+            }
+        });
+    }
+}
 
 #pragma mark-- 获取直播状态
-//-(void)GetStreamStatus{
-//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=is_pipe_live&type=h264&pipe=0",_userip,80];
-//    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
-//    NSLog(@"====>%@",http_request.ResponseString);
-//    if(http_request.StatusCode==200)
-//    {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSString *_signal=[self parseJsonString:http_request.ResponseString];
-//            if (([_signal compare:@"0"] == NSOrderedSame)) {
-//                _onliveLabel.text = NSLocalizedString(@"not_live", nil);
-//                _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
-//            }
-//            else if (([_signal compare:@"1"] == NSOrderedSame)) {
-//                _onliveLabel.text = NSLocalizedString(@"on_live", nil);
-//                _onliveView.image=[UIImage imageNamed:@"live view_pilot lamp_on@3x.png"];
-//            }
-//            else if (([_signal compare:@"2"] == NSOrderedSame)) {
-//                
-//            }
-//        });
-//    }
-//}
+-(void)GetStreamStatus{
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=is_pipe_live&type=h264&pipe=0",_userip,80];
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
+    NSLog(@"====>%@",http_request.ResponseString);
+    if(http_request.StatusCode==200)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            if (([_signal compare:@"0"] == NSOrderedSame)) {
+                _onliveLabel.text = NSLocalizedString(@"not_live", nil);
+                _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
+            }
+            else if (([_signal compare:@"1"] == NSOrderedSame)) {
+                _onliveLabel.text = NSLocalizedString(@"on_live", nil);
+                _onliveView.image=[UIImage imageNamed:@"live view_pilot lamp_on@3x.png"];
+            }
+            else if (([_signal compare:@"2"] == NSOrderedSame)) {
+                
+            }
+        });
+    }
+}
 
 #pragma mark-- 停止或开启直播
 //option:0 表示停止直播； 1表示开始直播； 2 表示暂停直播
-//-(void)SetStreamStatus:(int)option{
-//    NSString *URL;
-//    
-//    if (option==0) {
-//        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=stop_live&type=h264&pipe=0",_userip,80];
-//    }
-//    else if (option==1) {
-//        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=start_live_pipe&type=h264&pipe=0&pipeip=%@",_userip,80,[self getDeviceIPIpAddresses]];
-//    }
-//    else if (option==2) {
-//        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=hold_live_pipe&type=h264&pipe=0",_userip,80];
-//    }
-//    
-//    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
-//    NSLog(@"====>%@",http_request.ResponseString);
-//    if(http_request.StatusCode==200)
-//    {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSString *_signal=[self parseJsonString:http_request.ResponseString];
-//            if (([_signal compare:@"0"] == NSOrderedSame)) {
-//                if ([_onliveLabel.text compare:NSLocalizedString(@"on_live", nil)]==NSOrderedSame){
-//                    _onliveLabel.text = NSLocalizedString(@"not_live", nil);
-//                    _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
-//                }
-//                else{
-//                    _onliveLabel.text = NSLocalizedString(@"on_live", nil);
-//                    _onliveView.image=[UIImage imageNamed:@"live view_pilot lamp_on@3x.png"];
-//                }
-//            }
-//        });
-//    }
-//}
+-(void)SetStreamStatus:(int)option{
+    NSString *URL;
+    
+    if (option==0) {
+        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=stop_live&type=h264&pipe=0",_userip,80];
+    }
+    else if (option==1) {
+        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=start_live_pipe&type=h264&pipe=0&pipeip=%@",_userip,80,[self getDeviceIPIpAddresses]];
+    }
+    else if (option==2) {
+        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=hold_live_pipe&type=h264&pipe=0",_userip,80];
+    }
+    
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
+    NSLog(@"====>%@",http_request.ResponseString);
+    if(http_request.StatusCode==200)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            if (([_signal compare:@"0"] == NSOrderedSame)) {
+                if ([_onliveLabel.text compare:NSLocalizedString(@"on_live", nil)]==NSOrderedSame){
+                    _onliveLabel.text = NSLocalizedString(@"not_live", nil);
+                    _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
+                }
+                else{
+                    _onliveLabel.text = NSLocalizedString(@"on_live", nil);
+                    _onliveView.image=[UIImage imageNamed:@"live view_pilot lamp_on@3x.png"];
+                }
+            }
+        });
+    }
+}
 
 -(NSString*)parseJsonString:(NSString *)srcStr{
     NSString *Str=@"";
@@ -1705,40 +1792,163 @@ CGFloat iy ;
      */
     NSLog(@"_width=%d,_height=%d",_width,_height);
     LFLiveVideoConfiguration  *videoConfiguration = [LFLiveVideoConfiguration new];
-    videoConfiguration .videoSize = CGSizeMake(_width, _height);  //视频大小
-    videoConfiguration .videoBitRate = 800*1024;        //比特率
-    videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
-    videoConfiguration .videoMinBitRate = 500*1024;     //最小比特率
-    videoConfiguration .videoFrameRate = 30;
-    videoConfiguration .videoFrameRate = 24;//帧率
-    videoConfiguration .videoMaxKeyframeInterval = 25; //最大关键帧间隔数
+    
+    //    videoConfiguration .videoBitRate = 800*1024;        //比特率
+    videoConfiguration .videoBitRate = [quality integerValue] *1024;        //比特率
+
+    videoConfiguration .videoMaxBitRate = ([quality integerValue] +100) * 1024;    //最大比特率
+    videoConfiguration .videoMinBitRate = ([quality integerValue] -300) *1024;     //最小比特率
+    videoConfiguration .videoFrameRate = [fps integerValue];
+//    videoConfiguration .videoFrameRate = 24;//帧率
+//    videoConfiguration .videoMaxKeyframeInterval = 25; //最大关键帧间隔数
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
-    videoConfiguration .sessionPreset =1;
-    if (_width==1280) {
-        videoConfiguration .sessionPreset =2;
-    }
-    else if (_width==1920) {
-        videoConfiguration .sessionPreset =3;
-    }
+    
+    /* case LFLiveVideoQuality_Low1:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset360x640;
+     configuration.videoFrameRate = 15;
+     configuration.videoMaxFrameRate = 15;
+     configuration.videoMinFrameRate = 10;
+     configuration.videoBitRate = 500 * 1000;
+     configuration.videoMaxBitRate = 600 * 1000;
+     configuration.videoMinBitRate = 400 * 1000;
+     configuration.videoSize = CGSizeMake(360, 640);
+     }
+     break;
+     case LFLiveVideoQuality_Low2:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset360x640;
+     configuration.videoFrameRate = 24;
+     configuration.videoMaxFrameRate = 24;
+     configuration.videoMinFrameRate = 12;
+     configuration.videoBitRate = 600 * 1000;
+     configuration.videoMaxBitRate = 720 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(360, 640);
+     }
+     break;
+     case LFLiveVideoQuality_Low3:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset360x640;
+     configuration.videoFrameRate = 30;
+     configuration.videoMaxFrameRate = 30;
+     configuration.videoMinFrameRate = 15;
+     configuration.videoBitRate = 800 * 1000;
+     configuration.videoMaxBitRate = 960 * 1000;
+     configuration.videoMinBitRate = 600 * 1000;
+     configuration.videoSize = CGSizeMake(360, 640);
+     }
+     break;
+     case LFLiveVideoQuality_Medium1:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset540x960;
+     configuration.videoFrameRate = 15;
+     configuration.videoMaxFrameRate = 15;
+     configuration.videoMinFrameRate = 10;
+     configuration.videoBitRate = 800 * 1000;
+     configuration.videoMaxBitRate = 960 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(540, 960);
+     }
+     break;
+     case LFLiveVideoQuality_Medium2:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset540x960;
+     configuration.videoFrameRate = 24;
+     configuration.videoMaxFrameRate = 24;
+     configuration.videoMinFrameRate = 12;
+     configuration.videoBitRate = 800 * 1000;
+     configuration.videoMaxBitRate = 960 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(540, 960);
+     }
+     break;
+     case LFLiveVideoQuality_Medium3:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset540x960;
+     configuration.videoFrameRate = 30;
+     configuration.videoMaxFrameRate = 30;
+     configuration.videoMinFrameRate = 15;
+     configuration.videoBitRate = 1000 * 1000;
+     configuration.videoMaxBitRate = 1200 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(540, 960);
+     }
+     break;
+     case LFLiveVideoQuality_High1:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
+     configuration.videoFrameRate = 15;
+     configuration.videoMaxFrameRate = 15;
+     configuration.videoMinFrameRate = 10;
+     configuration.videoBitRate = 1000 * 1000;
+     configuration.videoMaxBitRate = 1200 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(720, 1280);
+     }
+     break;
+     case LFLiveVideoQuality_High2:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
+     configuration.videoFrameRate = 24;
+     configuration.videoMaxFrameRate = 24;
+     configuration.videoMinFrameRate = 12;
+     configuration.videoBitRate = 1200 * 1000;
+     configuration.videoMaxBitRate = 1440 * 1000;
+     configuration.videoMinBitRate = 800 * 1000;
+     configuration.videoSize = CGSizeMake(720, 1280);
+     }
+     break;
+     case LFLiveVideoQuality_High3:
+     {
+     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
+     configuration.videoFrameRate = 30;
+     configuration.videoMaxFrameRate = 30;
+     configuration.videoMinFrameRate = 15;
+     configuration.videoBitRate = 1200 * 1000;
+     configuration.videoMaxBitRate = 1440 * 1000;
+     configuration.videoMinBitRate = 500 * 1000;
+     configuration.videoSize = CGSizeMake(720, 1280);
+     }
+     */
+//    videoConfiguration .sessionPreset = LFCaptureSessionPreset360x640;
+//    if (_width==1280) {
+//        videoConfiguration .sessionPreset = LFCaptureSessionPreset540x960;
+//    }
+//    else if (_width==1920) {
+//        videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
+//    }
+    videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
+
     videoConfiguration .landscape = YES;
+    if (videoConfiguration .landscape) {
+        videoConfiguration .videoSize = CGSizeMake(1080, 720);  //视频大小
+    }
+    else
+    {
+        videoConfiguration .videoSize = CGSizeMake(720, 1080);  //视频大小
+
+    }
+
     
     
     //默认音视频配置
     
     
-            LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
-            LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
-            defaultVideoConfiguration.videoSize = CGSizeMake(960, 540);
-            defaultVideoConfiguration.sessionPreset = LFCaptureSessionPreset540x960;
-            defaultVideoConfiguration.landscape = YES;
+//            LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
+//            LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
+//            defaultVideoConfiguration.videoSize = CGSizeMake(960, 540);
+//            defaultVideoConfiguration.sessionPreset = LFCaptureSessionPreset540x960;
+//            defaultVideoConfiguration.landscape = YES;
     
     //利用两设备配置 来构造一个直播会话
-//    _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-            _session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
+    _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+//            _session =[[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:defaultAudioConfiguration videoConfiguration:defaultVideoConfiguration];
     _session.delegate  = self;
     _session.isRAK=rak;
     _session.running =YES;
     _session.preView =_livingPreView;
+    _session.dataSoureType = CameraAndPicture;
     return _session;
 }
 
@@ -1815,8 +2025,8 @@ CGFloat iy ;
 //    if (_selectedPlatformModel) {
 //        rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
 //    }
-    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-    stream.url = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=ae9381cd7246ad14e46ad8253b98845d&time=1499221217&wm=2&wml=1&vr=0";
+//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
+    stream.url = @"rtmp://send1a.douyu.com/live/2205675rRAXqNk7S?wsSecret=7b3e0ee0f6623dc30369229e8c40e65d&wsTime=595cb177&wsSeek=off";
 //    if (rtmpUrl) {
 //        stream.url = rtmpUrl;
 //    }
@@ -1844,7 +2054,7 @@ CGFloat iy ;
 //    [self Save_Paths:stream.url :STREAM_URL_KEY];
 //    [self addUrls];
     _isLiving = 1;
-    self.session.dataSoureType = type;
+    self.session.dataSoureType = CameraOnly;
     [self.session startLive:stream];
 }
 
