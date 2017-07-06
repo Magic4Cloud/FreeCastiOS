@@ -79,24 +79,27 @@ NSMutableArray *Medias;
     [self.panelView addSubview:self.loadingView];
     
     // Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor=[UIColor colorWithRed:244/255.0 green:245/255.0 blue:247/255.0 alpha:1.0];
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
+    _topBg.backgroundColor = [UIColor whiteColor];
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
-    UIImageView *_Bg=[[UIImageView alloc]init];
-    _Bg.frame = CGRectMake(0, 0, viewW, viewH*20/totalHeight);
-    _Bg.contentMode=UIViewContentModeScaleToFill;
-    _Bg.backgroundColor=[UIColor blackColor];
-    _Bg.alpha=0.1;
-    [self.view addSubview:_Bg];
+//    UIImageView *_Bg=[[UIImageView alloc]init];
+//    _Bg.frame = CGRectMake(0, 0, viewW, viewH*20/totalHeight);
+//    _Bg.contentMode=UIViewContentModeScaleToFill;
+//    _Bg.backgroundColor=[UIColor blackColor];
+//    _Bg.alpha=0.1;
+//    [self.view addSubview:_Bg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
+//    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -105,9 +108,9 @@ NSMutableArray *Medias;
     
     
     _editBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _editBtn.frame = CGRectMake(viewW-viewW*90/totalWeight, diff_top, viewW*84/totalWeight, viewH*44/totalHeight);
+    _editBtn.frame = CGRectMake(viewW-viewW*99/totalWeight, diff_top, viewW*84/totalWeight, viewH*44/totalHeight);
     [_editBtn setTitle:NSLocalizedString(@"edit", nil) forState:UIControlStateNormal];
-    [_editBtn setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
+    [_editBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [_editBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _editBtn.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
     _editBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentRight;
@@ -119,16 +122,28 @@ NSMutableArray *Medias;
     segmentedControl.frame = CGRectMake(0,0,viewW*152/totalWeight,viewH*29/totalHeight);
     segmentedControl.center=CGPointMake(viewW*0.5, _backBtn.center.y);
     segmentedControl.tintColor = [UIColor whiteColor];
+    segmentedControl.layer.borderWidth = 2.0;
+    segmentedControl.layer.borderColor = MAIN_COLOR.CGColor;
+    segmentedControl.layer.cornerRadius = viewW*5/totalWeight;
+    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBezeled;
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引
+
     
-    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor whiteColor],UITextAttributeTextShadowColor ,nil];
+    
+    
+    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor colorWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1.0],UITextAttributeTextShadowColor ,nil];
     [segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateSelected];
     
-    NSDictionary *highlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor whiteColor],UITextAttributeTextShadowColor ,nil];
+    NSDictionary *highlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1.0],UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,[UIColor whiteColor],UITextAttributeTextShadowColor ,nil];
     
     [segmentedControl setTitleTextAttributes:highlightedAttributes2 forState:UIControlStateNormal];
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:segmentedControl];
+    
+    UILabel *videoline =  [[UILabel alloc] initWithFrame:CGRectMake(0,0,2,segmentedControl.frame.size.height)];
+    videoline.center = segmentedControl.center;
+    videoline.backgroundColor = MAIN_COLOR;
+    [self.view addSubview:videoline];
     
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];

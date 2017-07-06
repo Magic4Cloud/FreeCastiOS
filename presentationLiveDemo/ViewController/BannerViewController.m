@@ -72,15 +72,16 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     NSLog(@"_rightDownPath=%@",_rightDownPath);
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
+    _topBg.backgroundColor = [UIColor whiteColor];
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -89,8 +90,9 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"banner_title", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+    _titleLabel.text = @"Logo";
+//    _titleLabel.text = NSLocalizedString(@"banner_title", nil);
+    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
@@ -100,59 +102,62 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [self.view addSubview:_titleLabel];
     
     //Display btn
-    _bannerDisplayView=[[UIView alloc]initWithFrame:CGRectMake(0,_topBg.frame.origin.y+_topBg.frame.size.height,viewW,viewH*44/totalHeight)];
-    _bannerDisplayView.backgroundColor=[UIColor whiteColor];
-    [self.view addSubview:_bannerDisplayView];
+//    _bannerDisplayView=[[UIView alloc]initWithFrame:CGRectMake(0,_topBg.frame.origin.y+_topBg.frame.size.height,viewW,viewH*44/totalHeight)];
+//    _bannerDisplayView.backgroundColor=[UIColor whiteColor];
+//    [self.view addSubview:_bannerDisplayView];
     
-    _bannerDisplayLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height, viewW*150/totalWeight, viewH*44/totalHeight)];
-    _bannerDisplayLabel.text = NSLocalizedString(@"banner_display", nil);
-    _bannerDisplayLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _bannerDisplayLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW*16.5/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height + viewH*26/totalHeight, viewW*150/totalWeight, viewH*15/totalHeight)];
+//    _bannerDisplayLabel.text = NSLocalizedString(@"banner_display", nil);
+    _bannerDisplayLabel.text = @"Logo Display";
+    _bannerDisplayLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _bannerDisplayLabel.backgroundColor = [UIColor clearColor];
-    _bannerDisplayLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerDisplayLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _bannerDisplayLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerDisplayLabel.textAlignment=UITextAlignmentLeft;
     _bannerDisplayLabel.numberOfLines = 0;
     [self.view addSubview:_bannerDisplayLabel];
     
     _bannerDisplayBtn= [[UISwitch alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height,viewW*51/totalWeight, viewH*31/totalHeight)];
-    _bannerDisplayBtn.center=CGPointMake(viewW*342/totalWeight, _bannerDisplayLabel.center.y);
+    _bannerDisplayBtn.center=CGPointMake(viewW*288.5/totalWeight, _bannerDisplayLabel.center.y);
     _bannerDisplayBtn.on = NO;
     _bannerDisplayBtn.onTintColor =MAIN_COLOR;
     [_bannerDisplayBtn addTarget:self action:@selector(_bannerDisplayBtnAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_bannerDisplayBtn];
     
     //bannerLayout
-    _bannerLayoutView=[[UIView alloc]initWithFrame:CGRectMake(0,_bannerDisplayView.frame.origin.y+_bannerDisplayView.frame.size.height+viewH*20/totalHeight,viewW,viewH*355/totalHeight)];
+    _bannerLayoutView=[[UIView alloc]initWithFrame:CGRectMake(0,_bannerDisplayLabel.frame.origin.y+_bannerDisplayLabel.frame.size.height+viewH*28.5/totalHeight,viewW,viewH*375/totalHeight)];
     _bannerLayoutView.backgroundColor=[UIColor whiteColor];
+    _bannerLayoutView.layer.borderWidth = 1.5;
+    _bannerLayoutView.layer.borderColor = [UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0].CGColor;
     [self.view addSubview:_bannerLayoutView];
     
     UIView *line=[[UIView alloc]init];
-    line.frame=CGRectMake(viewW*187/totalWeight, _bannerDisplayView.frame.origin.y+_bannerDisplayView.frame.size.height+viewH*20/totalHeight, viewW*1/totalWeight,viewH*355/totalHeight);
-    line.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    [self.view addSubview:line];
+    line.frame=CGRectMake(viewW*187.2/totalWeight, 0, 1.5,viewH*375/totalHeight);
+    line.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
+    [_bannerLayoutView addSubview:line];
     
-    _bannerLayoutUpperLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0, viewW*187/totalWeight, viewH*28/totalHeight)];
+    _bannerLayoutUpperLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,viewH*20/totalHeight, viewW*187/totalWeight, viewH*12.5/totalHeight)];
     _bannerLayoutUpperLeftLabel.text = NSLocalizedString(@"banner_u_left", nil);
-    _bannerLayoutUpperLeftLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-    _bannerLayoutUpperLeftLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _bannerLayoutUpperLeftLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerLayoutUpperLeftLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
+//    _bannerLayoutUpperLeftLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+    _bannerLayoutUpperLeftLabel.textColor = [UIColor colorWithRed:184.548/255.0 green:184.548/255.0 blue:184.548/255.0 alpha:1.0];
     _bannerLayoutUpperLeftLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerLayoutUpperLeftLabel.textAlignment=UITextAlignmentCenter;
     _bannerLayoutUpperLeftLabel.numberOfLines = 0;
     [_bannerLayoutView addSubview:_bannerLayoutUpperLeftLabel];
     
-    _bannerLayoutUpperRightLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*188/totalWeight,0, viewW*187/totalWeight, viewH*28/totalHeight)];
+    _bannerLayoutUpperRightLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*188/totalWeight,viewH*20/totalHeight, viewW*187/totalWeight, viewH*12.5/totalHeight)];
     _bannerLayoutUpperRightLabel.text = NSLocalizedString(@"banner_u_right", nil);
-    _bannerLayoutUpperRightLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-    _bannerLayoutUpperRightLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _bannerLayoutUpperRightLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerLayoutUpperRightLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
+//    _bannerLayoutUpperRightLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+    _bannerLayoutUpperRightLabel.textColor = [UIColor colorWithRed:184.548/255.0 green:184.548/255.0 blue:184.548/255.0 alpha:1.0];
     _bannerLayoutUpperRightLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerLayoutUpperRightLabel.textAlignment=UITextAlignmentCenter;
     _bannerLayoutUpperRightLabel.numberOfLines = 0;
     [_bannerLayoutView addSubview:_bannerLayoutUpperRightLabel];
     
     _bannerLayoutUpperLeftImg=[UIButton buttonWithType:UIButtonTypeCustom];
-    _bannerLayoutUpperLeftImg.frame = CGRectMake(viewW*34/totalWeight,viewH*40/totalHeight, viewW*120/totalWeight, viewH*120/totalHeight);
+    _bannerLayoutUpperLeftImg.frame = CGRectMake(viewW*41/totalWeight,viewH*53/totalHeight, viewW*105/totalWeight, viewH*105/totalHeight);
     [_bannerLayoutUpperLeftImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_nor@3x.png"] forState:UIControlStateNormal];
     [_bannerLayoutUpperLeftImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_pre@3x.png"] forState:UIControlStateHighlighted];
      _bannerLayoutUpperLeftImg.contentMode=UIViewContentModeScaleToFill;
@@ -162,7 +167,7 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_bannerLayoutView addSubview:_bannerLayoutUpperLeftImg];
     
     _bannerLayoutUpperRightImg=[UIButton buttonWithType:UIButtonTypeCustom];
-    _bannerLayoutUpperRightImg.frame = CGRectMake(viewW*222/totalWeight,viewH*40/totalHeight, viewW*120/totalWeight, viewH*120/totalHeight);
+    _bannerLayoutUpperRightImg.frame = CGRectMake(viewW*229.5/totalWeight,viewH*53/totalHeight, viewW*105/totalWeight, viewH*105/totalHeight);
     [_bannerLayoutUpperRightImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_nor@3x.png"] forState:UIControlStateNormal];
     [_bannerLayoutUpperRightImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_pre@3x.png"] forState:UIControlStateHighlighted];
     _bannerLayoutUpperRightImg.contentMode=UIViewContentModeScaleToFill;
@@ -172,7 +177,7 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_bannerLayoutView addSubview:_bannerLayoutUpperRightImg];
     
     _bannerLayoutLowerLeftImg=[UIButton buttonWithType:UIButtonTypeCustom];
-    _bannerLayoutLowerLeftImg.frame = CGRectMake(viewW*34/totalWeight,viewH*190/totalHeight, viewW*120/totalWeight, viewH*120/totalHeight);
+    _bannerLayoutLowerLeftImg.frame = CGRectMake(viewW*41/totalWeight,viewH*241.5/totalHeight, viewW*105/totalWeight, viewH*105/totalHeight);
     [_bannerLayoutLowerLeftImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_nor@3x.png"] forState:UIControlStateNormal];
     [_bannerLayoutLowerLeftImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_pre@3x.png"] forState:UIControlStateHighlighted];
     _bannerLayoutLowerLeftImg.contentMode=UIViewContentModeScaleToFill;
@@ -182,7 +187,7 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_bannerLayoutView addSubview:_bannerLayoutLowerLeftImg];
     
     _bannerLayoutLowerRightImg=[UIButton buttonWithType:UIButtonTypeCustom];
-    _bannerLayoutLowerRightImg.frame = CGRectMake(viewW*222/totalWeight,viewH*190/totalHeight, viewW*120/totalWeight, viewH*120/totalHeight);
+    _bannerLayoutLowerRightImg.frame = CGRectMake(viewW*229.5/totalWeight,viewH*241.5/totalHeight, viewW*105/totalWeight, viewH*105/totalHeight);
     [_bannerLayoutLowerRightImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_nor@3x.png"] forState:UIControlStateNormal];
     [_bannerLayoutLowerRightImg setImage:[UIImage imageNamed:@"stream_banner_addbutoon_pre@3x.png"] forState:UIControlStateHighlighted];
     _bannerLayoutLowerRightImg.contentMode=UIViewContentModeScaleToFill;
@@ -191,120 +196,135 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_bannerLayoutLowerRightImg addTarget:nil action:@selector(_bannerLayoutLowerRightImgClick) forControlEvents:UIControlEventTouchUpInside];
     [_bannerLayoutView addSubview:_bannerLayoutLowerRightImg];
     
-    _bannerLayoutLowerLeftLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,viewH*327/totalHeight, viewW*187/totalWeight, viewH*28/totalHeight)];
-    _bannerLayoutLowerLeftLabel.text = NSLocalizedString(@"banner_l_left", nil);
-    _bannerLayoutLowerLeftLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-    _bannerLayoutLowerLeftLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _bannerLayoutLowerLeftLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerLayoutLowerLeftLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,viewH*210/totalHeight, viewW*187/totalWeight, viewH*12.5/totalHeight)];
+//    _bannerLayoutLowerLeftLabel.text = NSLocalizedString(@"banner_l_left", nil);
+    _bannerLayoutLowerLeftLabel.text = @"Bottom Left";
+    _bannerLayoutLowerLeftLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
+//    _bannerLayoutLowerLeftLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+    _bannerLayoutLowerLeftLabel.textColor = [UIColor colorWithRed:184.548/255.0 green:184.548/255.0 blue:184.548/255.0 alpha:1.0];
     _bannerLayoutLowerLeftLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerLayoutLowerLeftLabel.textAlignment=UITextAlignmentCenter;
     _bannerLayoutLowerLeftLabel.numberOfLines = 0;
     [_bannerLayoutView addSubview:_bannerLayoutLowerLeftLabel];
     
-    _bannerLayoutLowerRightLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*188/totalWeight,viewH*327/totalHeight, viewW*187/totalWeight, viewH*28/totalHeight)];
-    _bannerLayoutLowerRightLabel.text = NSLocalizedString(@"banner_u_right", nil);
-    _bannerLayoutLowerRightLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-    _bannerLayoutLowerRightLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _bannerLayoutLowerRightLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerLayoutLowerRightLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*188/totalWeight,viewH*210/totalHeight, viewW*187/totalWeight, viewH*12.5/totalHeight)];
+//    _bannerLayoutLowerRightLabel.text = NSLocalizedString(@"banner_u_right", nil);
+    _bannerLayoutLowerRightLabel.text = @"Bottom Right";
+    _bannerLayoutLowerRightLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
+//    _bannerLayoutLowerRightLabel.backgroundColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+    _bannerLayoutLowerRightLabel.textColor = [UIColor colorWithRed:184.548/255.0 green:184.548/255.0 blue:184.548/255.0 alpha:1.0];
     _bannerLayoutLowerRightLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerLayoutLowerRightLabel.textAlignment=UITextAlignmentCenter;
     _bannerLayoutLowerRightLabel.numberOfLines = 0;
     [_bannerLayoutView addSubview:_bannerLayoutLowerRightLabel];
     
+    
+    UIView *line2=[[UIView alloc]init];
+    line2.frame=CGRectMake(0, 0, viewW*375/totalWeight,1.5);
+    line2.center = CGPointMake(_bannerLayoutView.center.x,viewH*186.5/totalHeight);
+    line2.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
+    [_bannerLayoutView addSubview:line2];
+    
     //Settings
-    _bannerSettingsView=[[UIView alloc]initWithFrame:CGRectMake(0,_bannerLayoutView.frame.origin.y+_bannerLayoutView.frame.size.height,viewW,viewH*53/totalHeight)];
+    _bannerSettingsView=[[UIView alloc]initWithFrame:CGRectMake(0,_bannerLayoutView.frame.origin.y+_bannerLayoutView.frame.size.height,viewW,viewH*89/totalHeight)];
     _bannerSettingsView.userInteractionEnabled=YES;
     _bannerSettingsView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_bannerSettingsView];
     
-    _bannerDurationLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-    _bannerDurationLabel.text = NSLocalizedString(@"subtitle_duration", nil);
-    _bannerDurationLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerDurationLabel.backgroundColor = [UIColor clearColor];
-    _bannerDurationLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _bannerDurationLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _bannerDurationLabel.textAlignment=UITextAlignmentLeft;
-    _bannerDurationLabel.numberOfLines = 0;
+//    _bannerDurationLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight,viewH*30/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
+//    _bannerDurationLabel.text = NSLocalizedString(@"subtitle_duration", nil);
+//    _bannerDurationLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
+//    _bannerDurationLabel.backgroundColor = [UIColor clearColor];
+//    _bannerDurationLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+//    _bannerDurationLabel.lineBreakMode = UILineBreakModeWordWrap;
+//    _bannerDurationLabel.textAlignment=UITextAlignmentLeft;
+//    _bannerDurationLabel.numberOfLines = 0;
     //[_bannerSettingsView addSubview:_bannerDurationLabel];
     
-    _bannerDurationField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*14/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-    _bannerDurationField.text = @"5";
-    [_bannerDurationField addTarget:self action:@selector(_bannerDurationFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _bannerDurationField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerDurationField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    _bannerDurationField.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
-    _bannerDurationField.delegate=self;
-    _bannerDurationField.textAlignment=UITextAlignmentCenter;
+//    _bannerDurationField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*14/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
+//    _bannerDurationField.text = @"5";
+//    [_bannerDurationField addTarget:self action:@selector(_bannerDurationFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    _bannerDurationField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _bannerDurationField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+//    _bannerDurationField.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
+//    _bannerDurationField.delegate=self;
+//    _bannerDurationField.textAlignment=UITextAlignmentCenter;
     //[_bannerSettingsView addSubview:_bannerDurationField];
     
-    _bannerDurationKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*14/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-    _bannerDurationKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-    _bannerDurationKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerDurationKit.backgroundColor = [UIColor clearColor];
-    _bannerDurationKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _bannerDurationKit.lineBreakMode = UILineBreakModeWordWrap;
-    _bannerDurationKit.textAlignment=UITextAlignmentCenter;
-    _bannerDurationKit.numberOfLines = 0;
+//    _bannerDurationKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*14/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
+//    _bannerDurationKit.text = NSLocalizedString(@"subtitle_seconds", nil);
+//    _bannerDurationKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _bannerDurationKit.backgroundColor = [UIColor clearColor];
+//    _bannerDurationKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+//    _bannerDurationKit.lineBreakMode = UILineBreakModeWordWrap;
+//    _bannerDurationKit.textAlignment=UITextAlignmentCenter;
+//    _bannerDurationKit.numberOfLines = 0;
     //[_bannerSettingsView addSubview:_bannerDurationKit];
     
-    _bannerIntervalLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*66/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-    _bannerIntervalLabel.text = NSLocalizedString(@"subtitle_interval", nil);
-    _bannerIntervalLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerIntervalLabel.backgroundColor = [UIColor clearColor];
-    _bannerIntervalLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _bannerIntervalLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _bannerIntervalLabel.textAlignment=UITextAlignmentLeft;
-    _bannerIntervalLabel.numberOfLines = 0;
+//    _bannerIntervalLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*66/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
+//    _bannerIntervalLabel.text = NSLocalizedString(@"subtitle_interval", nil);
+//    _bannerIntervalLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
+//    _bannerIntervalLabel.backgroundColor = [UIColor clearColor];
+//    _bannerIntervalLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+//    _bannerIntervalLabel.lineBreakMode = UILineBreakModeWordWrap;
+//    _bannerIntervalLabel.textAlignment=UITextAlignmentLeft;
+//    _bannerIntervalLabel.numberOfLines = 0;
     //[_bannerSettingsView addSubview:_bannerIntervalLabel];
     
-    _bannerIntervalField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*66/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-    _bannerIntervalField.text = @"10";
-    _bannerIntervalField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerIntervalField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    _bannerIntervalField.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
-    [_bannerIntervalField addTarget:self action:@selector(_bannerIntervalFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _bannerIntervalField.delegate=self;
-    _bannerIntervalField.textAlignment=UITextAlignmentCenter;
+//    _bannerIntervalField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*66/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
+//    _bannerIntervalField.text = @"10";
+//    _bannerIntervalField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _bannerIntervalField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+//    _bannerIntervalField.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
+//    [_bannerIntervalField addTarget:self action:@selector(_bannerIntervalFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    _bannerIntervalField.delegate=self;
+//    _bannerIntervalField.textAlignment=UITextAlignmentCenter;
     //[_bannerSettingsView addSubview:_bannerIntervalField];
     
-    _bannerIntervalKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*66/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-    _bannerIntervalKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-    _bannerIntervalKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerIntervalKit.backgroundColor = [UIColor clearColor];
-    _bannerIntervalKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _bannerIntervalKit.lineBreakMode = UILineBreakModeWordWrap;
-    _bannerIntervalKit.textAlignment=UITextAlignmentCenter;
-    _bannerIntervalKit.numberOfLines = 0;
+//    _bannerIntervalKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*66/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
+//    _bannerIntervalKit.text = NSLocalizedString(@"subtitle_seconds", nil);
+//    _bannerIntervalKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _bannerIntervalKit.backgroundColor = [UIColor clearColor];
+//    _bannerIntervalKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+//    _bannerIntervalKit.lineBreakMode = UILineBreakModeWordWrap;
+//    _bannerIntervalKit.textAlignment=UITextAlignmentCenter;
+//    _bannerIntervalKit.numberOfLines = 0;
     //[_bannerSettingsView addSubview:_bannerIntervalKit];
     
-    _bannerOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*53/totalWeight, viewH*25/totalHeight)];
+    _bannerOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*30/totalWeight,viewH*37/totalHeight, viewW*53/totalWeight, viewH*25/totalHeight)];
     _bannerOpacityLabel.text = NSLocalizedString(@"subtitle_opacity", nil);
-    _bannerOpacityLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
+    _bannerOpacityLabel.font = [UIFont boldSystemFontOfSize: viewH*15/totalHeight*0.8];
     _bannerOpacityLabel.backgroundColor = [UIColor clearColor];
-    _bannerOpacityLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerOpacityLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _bannerOpacityLabel.lineBreakMode = UILineBreakModeWordWrap;
     _bannerOpacityLabel.textAlignment=UITextAlignmentLeft;
     _bannerOpacityLabel.numberOfLines = 0;
     [_bannerSettingsView addSubview:_bannerOpacityLabel];
     
-    _bannerOpacitySlider= [[UISlider alloc] initWithFrame:CGRectMake(viewW*103/totalWeight, viewH*14/totalHeight, viewW*200/totalWeight, viewH*25/totalHeight)];
+    
+    _bannerOpacitySlider= [[UISlider alloc] initWithFrame:CGRectMake(viewW*114.5/totalWeight, viewH*14/totalHeight, viewW*219/totalWeight, viewH*25/totalHeight)];
+    _bannerOpacitySlider.center = CGPointMake(viewW*223.5/totalWeight, _bannerOpacityLabel.center.y);
     _bannerOpacitySlider.minimumValue = 0;
     _bannerOpacitySlider.maximumValue = 128;
     _bannerOpacitySlider.value = 128;
-    _bannerOpacitySlider.thumbTintColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _bannerOpacitySlider.minimumTrackTintColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+    _bannerOpacitySlider.thumbTintColor = MAIN_COLOR;
+    _bannerOpacitySlider.minimumTrackTintColor = MAIN_COLOR;
     _bannerOpacitySlider.continuous=YES;
     [_bannerOpacitySlider addTarget:self action:@selector(_bannerOpacitySliderValue:) forControlEvents:UIControlEventValueChanged];
     [_bannerOpacitySlider addTarget:self action:@selector(_bannerOpacitySliderClick) forControlEvents:UIControlEventTouchUpInside];
     [_bannerSettingsView addSubview:_bannerOpacitySlider];
     
-    _bannerOpacityValue = [[UITextField alloc] initWithFrame:CGRectMake(viewW*311/totalWeight, viewH*14/totalHeight, viewW*44/totalWeight, viewH*25/totalHeight)];
+    UIImage *imagea=[self OriginImage:[UIImage imageNamed:@"circle"] scaleToSize:CGSizeMake(11, 11)];
+    [_bannerOpacitySlider  setThumbImage:imagea forState:UIControlStateNormal];
+    
+    
+    _bannerOpacityValue = [[UITextField alloc] initWithFrame:CGRectMake(viewW*308/totalWeight, viewH*60/totalHeight, viewW*44/totalWeight, viewH*12.5/totalHeight)];
     _bannerOpacityValue.text = @"100%";
-    _bannerOpacityValue.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _bannerOpacityValue.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    _bannerOpacityValue.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
+//    _bannerOpacityValue.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     [_bannerOpacityValue addTarget:self action:@selector(_bannerOpacityValueDidChange:) forControlEvents:UIControlEventEditingChanged];
     _bannerOpacityValue.delegate=self;
-    _bannerOpacityValue.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _bannerOpacityValue.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
     _bannerOpacityValue.textAlignment=UITextAlignmentCenter;
     [_bannerSettingsView addSubview:_bannerOpacityValue];
 
@@ -1165,5 +1185,20 @@ NSString *bannerAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
         //HUD = nil;
     }];
 }
+
+/*
+ 对原来的图片的大小进行处理
+ @param image 要处理的图片
+ @param size  处理过图片的大小
+ */
+-(UIImage *)OriginImage:(UIImage *)image scaleToSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
+    UIImage *scaleImage=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaleImage;
+}
+
 
 @end

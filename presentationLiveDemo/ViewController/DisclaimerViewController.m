@@ -29,9 +29,9 @@
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -40,8 +40,9 @@
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"disclaimer", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+//    _titleLabel.text = NSLocalizedString(@"disclaimer", nil);
+    _titleLabel.text = @"Disclaimer";
+    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;

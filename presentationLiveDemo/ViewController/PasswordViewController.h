@@ -55,6 +55,7 @@
     UIButton *_goodBtn;
     UIButton *_bestBtn;
     UIButton *_customBtn;
+    UISegmentedControl *VediosegmentedControl;
     
     UIView *_videoLabelView;
     UILabel *_videoLabel1;

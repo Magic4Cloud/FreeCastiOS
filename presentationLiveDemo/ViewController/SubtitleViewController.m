@@ -44,7 +44,7 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    self.view.backgroundColor=[UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     self.view.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap0 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesForView)];
     [self.view addGestureRecognizer:singleTap0];
@@ -80,15 +80,16 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     NSLog(@"_bmpPath=%@",_bmpPath);
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
+    _topBg.backgroundColor = [UIColor whiteColor];
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -97,8 +98,9 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"subtitle_title", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+//    _titleLabel.text = NSLocalizedString(@"subtitle_title", nil);
+    _titleLabel.text = @"Subtitle";
+    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
@@ -111,20 +113,22 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     //Display btn
     _subtitleDisplayView=[[UIView alloc]initWithFrame:CGRectMake(0,_topBg.frame.origin.y+_topBg.frame.size.height,viewW,viewH*44/totalHeight)];
     _subtitleDisplayView.backgroundColor=[UIColor whiteColor];
-    [self.view addSubview:_subtitleDisplayView];
+//    [self.view addSubview:_subtitleDisplayView];
     
-    _subtitleDisplayLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height, viewW*150/totalWeight, viewH*44/totalHeight)];
+    _subtitleDisplayLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height + viewH*26/totalHeight, viewW*150/totalWeight, viewH*15/totalHeight)];
     _subtitleDisplayLabel.text = NSLocalizedString(@"subtitle_display", nil);
-    _subtitleDisplayLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _subtitleDisplayLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _subtitleDisplayLabel.backgroundColor = [UIColor clearColor];
-    _subtitleDisplayLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _subtitleDisplayLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _subtitleDisplayLabel.lineBreakMode = UILineBreakModeWordWrap;
     _subtitleDisplayLabel.textAlignment=UITextAlignmentLeft;
     _subtitleDisplayLabel.numberOfLines = 0;
     [self.view addSubview:_subtitleDisplayLabel];
     
-    _subtitleDisplayBtn= [[UISwitch alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height,viewW*51/totalWeight, viewH*31/totalHeight)];
-    _subtitleDisplayBtn.center=CGPointMake(viewW*342/totalWeight, _subtitleDisplayLabel.center.y);
+    _subtitleDisplayBtn= [[UISwitch alloc] initWithFrame:CGRectMake(viewW*16/totalWeight,_topBg.frame.origin.y+_topBg.frame.size.height,viewW*64.5/totalWeight, viewH*26/totalHeight)];
+    _subtitleDisplayBtn.onImage = [UIImage imageNamed:@"button_switch_open"];
+    _subtitleDisplayBtn.offImage = [UIImage imageNamed:@"button_switch_clouse"];
+    _subtitleDisplayBtn.center=CGPointMake(viewW*288.5/totalWeight, _subtitleDisplayLabel.center.y);
     _subtitleDisplayBtn.on = NO;
     _subtitleDisplayBtn.onTintColor =MAIN_COLOR;
     [_subtitleDisplayBtn addTarget:self action:@selector(_subtitleDisplayBtnAction:) forControlEvents:UIControlEventValueChanged];
@@ -132,8 +136,11 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
 
     //Display Type
-    _subtitleTypeView=[[UIView alloc]initWithFrame:CGRectMake(0,_subtitleDisplayView.frame.origin.y+_subtitleDisplayView.frame.size.height+viewH*20/totalHeight,viewW,viewH*44/totalHeight)];
+    _subtitleTypeView=[[UIView alloc]initWithFrame:CGRectMake(0,_subtitleDisplayView.frame.origin.y+_subtitleDisplayView.frame.size.height+viewH*20/totalHeight,viewW,viewH*59.5/totalHeight)];
     _subtitleTypeView.userInteractionEnabled=YES;
+    _subtitleTypeView.layer.borderColor =[[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0] CGColor];
+    _subtitleTypeView.layer.borderWidth = 1.5;
+
     CAGradientLayer *_gradientLayer = [CAGradientLayer layer];  // 设置渐变效果
     _gradientLayer.bounds = _subtitleTypeView.bounds;
     _gradientLayer.borderWidth = 0;
@@ -147,7 +154,7 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [self.view addSubview:_subtitleTypeView];
 
     _subtitleTypeSizeImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream banner_Fonts size_icon@3x.png"]];
-    _subtitleTypeSizeImg.frame = CGRectMake(viewW*17/totalWeight, viewH*10/totalHeight, viewH*87*24/totalHeight/75, viewH*24/totalHeight);
+    _subtitleTypeSizeImg.frame = CGRectMake(viewW*27.5/totalWeight, viewH*19.5/totalHeight, viewW*28/totalWeight, viewH*20/totalHeight);
     _subtitleTypeSizeImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTapTypeSize = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeSizeBtnClick)];
     [_subtitleTypeSizeImg addGestureRecognizer:singleTapTypeSize];
@@ -155,22 +162,22 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_subtitleTypeView addSubview:_subtitleTypeSizeImg];
     
     _subtitleTypeSizeBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _subtitleTypeSizeBtn.frame = CGRectMake(viewW*52/totalWeight, viewH*10/totalHeight, viewW*50/totalWeight, viewH*24/totalHeight);
+    _subtitleTypeSizeBtn.frame = CGRectMake(viewW*62.5/totalWeight, viewH*23.5/totalHeight, viewW*40/totalWeight, viewH*15/totalHeight);
     [_subtitleTypeSizeBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    _subtitleTypeSizeBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleTypeSizeBtn.backgroundColor=[UIColor whiteColor];
+    _subtitleTypeSizeBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
+    _subtitleTypeSizeBtn.backgroundColor=[UIColor clearColor];
     _subtitleTypeSizeBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_subtitleTypeSizeBtn setTitle:@"20pt" forState:UIControlStateNormal];
     [_subtitleTypeSizeBtn addTarget:nil action:@selector(_subtitleTypeSizeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_subtitleTypeView  addSubview:_subtitleTypeSizeBtn];
     
     UIView *line1=[[UIView alloc]init];
-    line1.frame=CGRectMake(viewW*118/totalWeight, 0, 1, viewH*44/totalHeight);
-    line1.backgroundColor= [UIColor colorWithRed:219/255.0 green:220/255.0 blue:233/255.0 alpha:1.0];
+    line1.frame=CGRectMake(viewW*125.5/totalWeight, 0, 1.5, viewH*58/totalHeight);
+    line1.backgroundColor= [UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
     [_subtitleTypeView  addSubview:line1];
     
-    _subtitleTypeColorImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream banner_Fonts color_icon@3x.png"]];
-    _subtitleTypeColorImg.frame = CGRectMake(viewW*133/totalWeight, viewH*10/totalHeight, viewH*84*23/totalHeight/72, viewH*23/totalHeight);
+    _subtitleTypeColorImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"colour"]];
+    _subtitleTypeColorImg.frame = CGRectMake(viewW*144.5/totalWeight, viewH*19/totalHeight, viewW*30/totalWeight, viewH*20/totalHeight);
     _subtitleTypeColorImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTapTypeColor = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeColorBtnClick)];
     [_subtitleTypeColorImg addGestureRecognizer:singleTapTypeColor];
@@ -178,61 +185,67 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_subtitleTypeView addSubview:_subtitleTypeColorImg];
     
     _subtitleTypeColorBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _subtitleTypeColorBtn.frame = CGRectMake(viewW*175/totalWeight, viewH*13/totalHeight, viewW*32/totalWeight, viewH*18/totalHeight);
+    _subtitleTypeColorBtn.frame = CGRectMake(viewW*194.5/totalWeight, viewH*12.5/totalHeight, viewW*34/totalWeight, viewH*34/totalHeight);
     _subtitleTypeColorBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _subtitleTypeColorBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_subtitleTypeColorBtn addTarget:nil action:@selector(_subtitleTypeColorBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_subtitleTypeView  addSubview:_subtitleTypeColorBtn];
     
     UIView *line2=[[UIView alloc]init];
-    line2.frame=CGRectMake(viewW*228/totalWeight, 0, 1, viewH*44/totalHeight);
-    line2.backgroundColor= [UIColor colorWithRed:219/255.0 green:220/255.0 blue:233/255.0 alpha:1.0];
+    line2.frame=CGRectMake(viewW*251.5/totalWeight, 0, 1.5, viewH*58/totalHeight);
+    line2.backgroundColor= [UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
     [_subtitleTypeView  addSubview:line2];
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeFixedClick)];
     
     subtitleTypeFixedLabel=[UIButton buttonWithType:UIButtonTypeCustom];
-    subtitleTypeFixedLabel.frame = CGRectMake(viewW*236/totalWeight,viewH*13/totalHeight, viewW*34/totalWeight, viewH*17/totalHeight);
+    subtitleTypeFixedLabel.frame = CGRectMake(viewW*273/totalWeight,viewH*23.5/totalHeight, viewW*22.5/totalWeight, viewH*15/totalHeight);
     subtitleTypeFixedLabel.backgroundColor=[UIColor clearColor];
     subtitleTypeFixedLabel.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [subtitleTypeFixedLabel addTarget:nil action:@selector(_subtitleTypeFixedClick) forControlEvents:UIControlEventTouchUpInside];
-    [subtitleTypeFixedLabel setTitle:NSLocalizedString(@"subtitle_fixed", nil) forState:UIControlStateNormal];
-    [subtitleTypeFixedLabel setTitleColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:0.4] forState:UIControlStateNormal];
-    subtitleTypeFixedLabel.titleLabel.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+    [subtitleTypeFixedLabel setTitle:@"Fix" forState:UIControlStateNormal];
+//    [subtitleTypeFixedLabel setTitle:NSLocalizedString(@"subtitle_fixed", nil) forState:UIControlStateNormal];
+    [subtitleTypeFixedLabel setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1] forState:UIControlStateNormal];
+    subtitleTypeFixedLabel.titleLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     [_subtitleTypeView  addSubview:subtitleTypeFixedLabel];
     
-    subtitleTypeFixedImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nora@3x.png"]];
-    subtitleTypeFixedImg.userInteractionEnabled=YES;
-    subtitleTypeFixedImg.frame = CGRectMake(viewW*272/totalWeight, viewH*10/totalHeight, viewH*23/totalHeight, viewH*23/totalHeight);
-    subtitleTypeFixedImg.contentMode=UIViewContentModeScaleToFill;
-    [subtitleTypeFixedImg addGestureRecognizer:singleTap];
-    [_subtitleTypeView addSubview:subtitleTypeFixedImg];
+//    subtitleTypeFixedImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nora@3x.png"]];
+//    subtitleTypeFixedImg.userInteractionEnabled=YES;
+//    subtitleTypeFixedImg.frame = CGRectMake(viewW*272/totalWeight, viewH*10/totalHeight, viewH*23/totalHeight, viewH*23/totalHeight);
+//    subtitleTypeFixedImg.contentMode=UIViewContentModeScaleToFill;
+//    [subtitleTypeFixedImg addGestureRecognizer:singleTap];
+//    [_subtitleTypeView addSubview:subtitleTypeFixedImg];
+    
+    UIView *line3=[[UIView alloc]init];
+    line3.frame=CGRectMake(viewW*310.5/totalWeight, viewH*20/totalHeight, 1.5, viewH*19.5/totalHeight);
+    line3.backgroundColor= [UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
+    [_subtitleTypeView  addSubview:line3];
     
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeRollClick)];
     subtitleTypeRollLabel=[UIButton buttonWithType:UIButtonTypeCustom];
-    subtitleTypeRollLabel.frame = CGRectMake(viewW*309/totalWeight,viewH*13/totalHeight, viewW*34/totalWeight, viewH*17/totalHeight);
+    subtitleTypeRollLabel.frame = CGRectMake(viewW*326.5/totalWeight,viewH*23.5/totalHeight, viewW*28/totalWeight, viewH*15/totalHeight);
     subtitleTypeRollLabel.backgroundColor=[UIColor clearColor];
     subtitleTypeRollLabel.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [subtitleTypeRollLabel addTarget:nil action:@selector(_subtitleTypeRollClick) forControlEvents:UIControlEventTouchUpInside];
     [subtitleTypeRollLabel setTitle:NSLocalizedString(@"subtitle_roll", nil) forState:UIControlStateNormal];
-    [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:0.4] forState:UIControlStateNormal];
-    subtitleTypeRollLabel.titleLabel.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+    [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1] forState:UIControlStateNormal];
+    subtitleTypeRollLabel.titleLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     [_subtitleTypeView  addSubview:subtitleTypeRollLabel];
     
-    subtitleTypeRollImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nor@3x.png"]];
-    subtitleTypeRollImg.frame = CGRectMake(viewW*338/totalWeight, viewH*11/totalHeight, viewH*19*93/totalHeight/60, viewH*19/totalHeight);
-    subtitleTypeRollImg.userInteractionEnabled=YES;
-    [subtitleTypeRollImg addGestureRecognizer:singleTap2];
-    subtitleTypeRollImg.contentMode=UIViewContentModeScaleToFill;
-    [_subtitleTypeView addSubview:subtitleTypeRollImg];
+//    subtitleTypeRollImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nor@3x.png"]];
+//    subtitleTypeRollImg.frame = CGRectMake(viewW*338/totalWeight, viewH*11/totalHeight, viewH*19*93/totalHeight/60, viewH*19/totalHeight);
+//    subtitleTypeRollImg.userInteractionEnabled=YES;
+//    [subtitleTypeRollImg addGestureRecognizer:singleTap2];
+//    subtitleTypeRollImg.contentMode=UIViewContentModeScaleToFill;
+//    [_subtitleTypeView addSubview:subtitleTypeRollImg];
     
-    _subtitleTextView=[[UIView alloc]initWithFrame:CGRectMake(0,_subtitleTypeView.frame.origin.y+_subtitleTypeView.frame.size.height,viewW,viewH*144/totalHeight)];
+    _subtitleTextView=[[UIView alloc]initWithFrame:CGRectMake(0,_subtitleTypeView.frame.origin.y+_subtitleTypeView.frame.size.height,viewW,viewH*159/totalHeight)];
     _subtitleTextView.userInteractionEnabled=YES;
     _subtitleTextView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_subtitleTextView];
     
     _subtitleTextField=[[UITextField alloc]init];
-    _subtitleTextField.frame=CGRectMake(viewW*123/totalWeight,viewH*110/totalHeight, 100, 100);
+    _subtitleTextField.frame=CGRectMake(0,viewH*69.5/totalHeight, viewW, 100);
     _subtitleTextField.center=CGPointMake(_subtitleTextView.frame.size.width*0.5, _subtitleTextView.frame.size.height*0.5);
     //[_subtitleTextField addTarget:self  action:@selector(_subtitleTextFieldChanged)  forControlEvents:UIControlEventAllEditingEvents];
     _subtitleTextField.font=[UIFont systemFontOfSize: viewH*curSize/totalHeight];
@@ -244,112 +257,116 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     _subtitleTextField.text=NSLocalizedString(@"subtitle_text", nil);
     [_subtitleTextView addSubview:_subtitleTextField];
 
-    subtitleTypeTipsLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,_subtitleTextView.frame.origin.y+_subtitleTextView.frame.size.height, viewW, viewH*30/totalHeight)];
-    subtitleTypeTipsLabel.text = NSLocalizedString(@"subtitle_tips", nil);
-    subtitleTypeTipsLabel.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
+    subtitleTypeTipsLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,_subtitleTextView.frame.origin.y+_subtitleTextView.frame.size.height + viewH*17.5/totalHeight, viewW, viewH*15/totalHeight)];
+//    subtitleTypeTipsLabel.text = NSLocalizedString(@"subtitle_tips", nil);
+    subtitleTypeTipsLabel.text = @"Limit message to 20 characters";
+    subtitleTypeTipsLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     subtitleTypeTipsLabel.backgroundColor = [UIColor clearColor];
-    subtitleTypeTipsLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:0.4];
+    subtitleTypeTipsLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1];
     subtitleTypeTipsLabel.lineBreakMode = UILineBreakModeWordWrap;
-    subtitleTypeTipsLabel.textAlignment=UITextAlignmentCenter;
+    subtitleTypeTipsLabel.textAlignment=NSTextAlignmentCenter;
     subtitleTypeTipsLabel.numberOfLines = 0;
     [self.view addSubview:subtitleTypeTipsLabel];
     
     //Settings
-    _subtitleSettingsView=[[UIView alloc]initWithFrame:CGRectMake(0,subtitleTypeTipsLabel.frame.origin.y+subtitleTypeTipsLabel.frame.size.height,viewW,viewH*53/totalHeight)];
+    _subtitleSettingsView=[[UIView alloc]initWithFrame:CGRectMake(0,subtitleTypeTipsLabel.frame.origin.y+subtitleTypeTipsLabel.frame.size.height + viewH*21/totalHeight,viewW,viewH*89/totalHeight)];
     //CGRectMake(0,subtitleTypeTipsLabel.frame.origin.y+subtitleTypeTipsLabel.frame.size.height,viewW,viewH*160/totalHeight)];
     _subtitleSettingsView.userInteractionEnabled=YES;
     _subtitleSettingsView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_subtitleSettingsView];
     
-    _subtitleDurationLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-    _subtitleDurationLabel.text = NSLocalizedString(@"subtitle_duration", nil);
-    _subtitleDurationLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleDurationLabel.backgroundColor = [UIColor clearColor];
-    _subtitleDurationLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _subtitleDurationLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _subtitleDurationLabel.textAlignment=UITextAlignmentLeft;
-    _subtitleDurationLabel.numberOfLines = 0;
+//    _subtitleDurationLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
+//    _subtitleDurationLabel.text = NSLocalizedString(@"subtitle_duration", nil);
+//    _subtitleDurationLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleDurationLabel.backgroundColor = [UIColor clearColor];
+//    _subtitleDurationLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+//    _subtitleDurationLabel.lineBreakMode = UILineBreakModeWordWrap;
+//    _subtitleDurationLabel.textAlignment=UITextAlignmentLeft;
+//    _subtitleDurationLabel.numberOfLines = 0;
     //[_subtitleSettingsView addSubview:_subtitleDurationLabel];
     
-    _subtitleDurationField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*14/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-    _subtitleDurationField.text = @"5";
-    [_subtitleDurationField addTarget:self action:@selector(_subtitleDurationFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _subtitleDurationField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleDurationField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    _subtitleDurationField.textColor = MAIN_COLOR;
-    _subtitleDurationField.delegate=self;
-    _subtitleDurationField.textAlignment=UITextAlignmentCenter;
+//    _subtitleDurationField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*14/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
+//    _subtitleDurationField.text = @"5";
+//    [_subtitleDurationField addTarget:self action:@selector(_subtitleDurationFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    _subtitleDurationField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleDurationField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+//    _subtitleDurationField.textColor = MAIN_COLOR;
+//    _subtitleDurationField.delegate=self;
+//    _subtitleDurationField.textAlignment=UITextAlignmentCenter;
     //[_subtitleSettingsView addSubview:_subtitleDurationField];
     
-    _subtitleDurationKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*14/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-    _subtitleDurationKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-    _subtitleDurationKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleDurationKit.backgroundColor = [UIColor clearColor];
-    _subtitleDurationKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _subtitleDurationKit.lineBreakMode = UILineBreakModeWordWrap;
-    _subtitleDurationKit.textAlignment=UITextAlignmentCenter;
-    _subtitleDurationKit.numberOfLines = 0;
+//    _subtitleDurationKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*14/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
+//    _subtitleDurationKit.text = NSLocalizedString(@"subtitle_seconds", nil);
+//    _subtitleDurationKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleDurationKit.backgroundColor = [UIColor clearColor];
+//    _subtitleDurationKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+//    _subtitleDurationKit.lineBreakMode = UILineBreakModeWordWrap;
+//    _subtitleDurationKit.textAlignment=UITextAlignmentCenter;
+//    _subtitleDurationKit.numberOfLines = 0;
     //[_subtitleSettingsView addSubview:_subtitleDurationKit];
 
-    _subtitleIntervalLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*66/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-    _subtitleIntervalLabel.text = NSLocalizedString(@"subtitle_interval", nil);
-    _subtitleIntervalLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleIntervalLabel.backgroundColor = [UIColor clearColor];
-    _subtitleIntervalLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _subtitleIntervalLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _subtitleIntervalLabel.textAlignment=UITextAlignmentLeft;
-    _subtitleIntervalLabel.numberOfLines = 0;
+//    _subtitleIntervalLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*66/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
+//    _subtitleIntervalLabel.text = NSLocalizedString(@"subtitle_interval", nil);
+//    _subtitleIntervalLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleIntervalLabel.backgroundColor = [UIColor clearColor];
+//    _subtitleIntervalLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+//    _subtitleIntervalLabel.lineBreakMode = UILineBreakModeWordWrap;
+//    _subtitleIntervalLabel.textAlignment=UITextAlignmentLeft;
+//    _subtitleIntervalLabel.numberOfLines = 0;
     //[_subtitleSettingsView addSubview:_subtitleIntervalLabel];
     
-    _subtitleIntervalField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*66/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-    _subtitleIntervalField.text = @"10";
-    [_subtitleIntervalField addTarget:self action:@selector(_subtitleIntervalFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _subtitleIntervalField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleIntervalField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    _subtitleIntervalField.textColor = MAIN_COLOR;
-    _subtitleIntervalField.delegate=self;
-    _subtitleIntervalField.textAlignment=UITextAlignmentCenter;
+//    _subtitleIntervalField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*66/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
+//    _subtitleIntervalField.text = @"10";
+//    [_subtitleIntervalField addTarget:self action:@selector(_subtitleIntervalFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    _subtitleIntervalField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleIntervalField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+//    _subtitleIntervalField.textColor = MAIN_COLOR;
+//    _subtitleIntervalField.delegate=self;
+//    _subtitleIntervalField.textAlignment=UITextAlignmentCenter;
     //[_subtitleSettingsView addSubview:_subtitleIntervalField];
     
-    _subtitleIntervalKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*66/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-    _subtitleIntervalKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-    _subtitleIntervalKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleIntervalKit.backgroundColor = [UIColor clearColor];
-    _subtitleIntervalKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _subtitleIntervalKit.lineBreakMode = UILineBreakModeWordWrap;
-    _subtitleIntervalKit.textAlignment=UITextAlignmentCenter;
-    _subtitleIntervalKit.numberOfLines = 0;
+//    _subtitleIntervalKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*66/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
+//    _subtitleIntervalKit.text = NSLocalizedString(@"subtitle_seconds", nil);
+//    _subtitleIntervalKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
+//    _subtitleIntervalKit.backgroundColor = [UIColor clearColor];
+//    _subtitleIntervalKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+//    _subtitleIntervalKit.lineBreakMode = UILineBreakModeWordWrap;
+//    _subtitleIntervalKit.textAlignment=UITextAlignmentCenter;
+//    _subtitleIntervalKit.numberOfLines = 0;
     //[_subtitleSettingsView addSubview:_subtitleIntervalKit];
     
     
-    _subtitleOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*53/totalWeight, viewH*25/totalHeight)];
+    _subtitleOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*30/totalWeight,viewH*37/totalHeight, viewW*53/totalWeight, viewH*15/totalHeight)];
     //CGRectMake(viewW*22/totalWeight,viewH*119/totalHeight, viewW*53/totalWeight, viewH*25/totalHeight)];
     _subtitleOpacityLabel.text = NSLocalizedString(@"subtitle_opacity", nil);
-    _subtitleOpacityLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
+    _subtitleOpacityLabel.font = [UIFont boldSystemFontOfSize: viewH*15/totalHeight*0.8];
     _subtitleOpacityLabel.backgroundColor = [UIColor clearColor];
-    _subtitleOpacityLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _subtitleOpacityLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _subtitleOpacityLabel.lineBreakMode = UILineBreakModeWordWrap;
     _subtitleOpacityLabel.textAlignment=UITextAlignmentLeft;
     _subtitleOpacityLabel.numberOfLines = 0;
     [_subtitleSettingsView addSubview:_subtitleOpacityLabel];
     
-    _subtitleOpacitySlider= [[UISlider alloc] initWithFrame:CGRectMake(viewW*103/totalWeight, viewH*14/totalHeight, viewW*200/totalWeight, viewH*25/totalHeight)];
+    _subtitleOpacitySlider= [[UISlider alloc] initWithFrame:CGRectMake(viewW*114/totalWeight, viewH*44/totalHeight, viewW*219/totalWeight, viewH*25/totalHeight)];
+    _subtitleOpacitySlider.center = CGPointMake(viewW*223.5/totalWeight, _subtitleOpacityLabel.center.y);
     _subtitleOpacitySlider.minimumValue = 0;
     _subtitleOpacitySlider.maximumValue = 128;
     _subtitleOpacitySlider.value = 128;
-    _subtitleOpacitySlider.thumbTintColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _subtitleOpacitySlider.minimumTrackTintColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+    _subtitleOpacitySlider.thumbTintColor = MAIN_COLOR;
+    _subtitleOpacitySlider.minimumTrackTintColor = MAIN_COLOR;
     _subtitleOpacitySlider.continuous=YES;
+    UIImage *imagea=[self OriginImage:[UIImage imageNamed:@"circle"] scaleToSize:CGSizeMake(11, 11)];
+    [_subtitleOpacitySlider  setThumbImage:imagea forState:UIControlStateNormal];
     [_subtitleOpacitySlider addTarget:self action:@selector(_subtitleOpacitySliderValue:) forControlEvents:UIControlEventValueChanged];
     [_subtitleOpacitySlider addTarget:self action:@selector(_subtitleOpacitySliderClick)  forControlEvents:UIControlEventTouchUpInside];
     [_subtitleSettingsView addSubview:_subtitleOpacitySlider];
     
-    _subtitleOpacityValue = [[UITextField alloc] initWithFrame:CGRectMake(viewW*311/totalWeight, viewH*14/totalHeight, viewW*44/totalWeight, viewH*25/totalHeight)];
+    _subtitleOpacityValue = [[UITextField alloc] initWithFrame:CGRectMake(viewW*308/totalWeight, viewH*55/totalHeight, viewW*44/totalWeight, viewH*10/totalHeight)];
     _subtitleOpacityValue.text = @"100%";
     [_subtitleOpacityValue addTarget:self action:@selector(_subtitleOpacityValueDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _subtitleOpacityValue.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-    _subtitleOpacityValue.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    _subtitleOpacityValue.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _subtitleOpacityValue.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
+    _subtitleOpacityValue.backgroundColor = [UIColor clearColor];
+    _subtitleOpacityValue.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];;
     _subtitleOpacityValue.delegate=self;
     _subtitleOpacityValue.textAlignment=UITextAlignmentCenter;
     [_subtitleSettingsView addSubview:_subtitleOpacityValue];
@@ -504,15 +521,15 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
 }
 
 - (void)_subtitleDisplayBtnAction:(UISwitch*)sender{
-    if (sender.on) {
-        NSLog(@"on");
-        _enableSubtitle=1;
-    }
-    else{
-        NSLog(@"off");
-        _enableSubtitle=0;
-    }
-    [NSThread detachNewThreadSelector:@selector(SetSubtitleStatus) toTarget:self withObject:nil];
+//    if (sender.on) {
+//        NSLog(@"on");
+//        _enableSubtitle=1;
+//    }
+//    else{
+//        NSLog(@"off");
+//        _enableSubtitle=0;
+//    }
+//    [NSThread detachNewThreadSelector:@selector(SetSubtitleStatus) toTarget:self withObject:nil];
 }
 
 - (void)_subtitleTypeSizeBtnClick{
@@ -603,20 +620,20 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
 
 - (void)_subtitleTypeFixedClick{
     NSLog(@"_subtitleTypeFixedClick");
-    [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:0.4] forState:UIControlStateNormal];
-    subtitleTypeFixedImg.image=[UIImage imageNamed:@"subtitle_Fonts fixed_icon_sel@3x.png"];
-    [subtitleTypeFixedLabel setTitleColor:[UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0] forState:UIControlStateNormal];
-    subtitleTypeRollImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nor@3x.png"];
+    [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1] forState:UIControlStateNormal];
+//    subtitleTypeFixedImg.image=[UIImage imageNamed:@"subtitle_Fonts fixed_icon_sel@3x.png"];
+    [subtitleTypeFixedLabel setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    subtitleTypeRollImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nor@3x.png"];
     _roll=0;
     [NSThread detachNewThreadSelector:@selector(SetSubtitleFormart) toTarget:self withObject:nil];
 }
 
 - (void)_subtitleTypeRollClick{
     NSLog(@"_subtitleTypeRollClick");
-    [subtitleTypeFixedLabel setTitleColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:0.4] forState:UIControlStateNormal];
-    subtitleTypeFixedImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nora@3x.png"];
-    [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0] forState:UIControlStateNormal];
-    subtitleTypeRollImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_sel@3x.png"];
+    [subtitleTypeFixedLabel setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1] forState:UIControlStateNormal];
+//    subtitleTypeFixedImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_nora@3x.png"];
+    [subtitleTypeRollLabel setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    subtitleTypeRollImg.image=[UIImage imageNamed:@"stream_banner_Fonts fixed_icon_sel@3x.png"];
     _roll=1;
     [NSThread detachNewThreadSelector:@selector(SetSubtitleFormart) toTarget:self withObject:nil];
 }
@@ -1257,6 +1274,20 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [self getImageFromView:_subtitleTextField];
 }
 
+
+/*
+ 对原来的图片的大小进行处理
+ @param image 要处理的图片
+ @param size  处理过图片的大小
+ */
+-(UIImage *)OriginImage:(UIImage *)image scaleToSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
+    UIImage *scaleImage=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaleImage;
+}
 
 
 @end

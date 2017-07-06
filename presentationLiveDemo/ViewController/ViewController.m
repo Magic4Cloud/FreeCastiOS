@@ -218,10 +218,10 @@ Rak_Lx52x_Device_Control *_Scan;
     _liveViewImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*205/totalHeight, viewW*303.5/totalWeight, viewH*115/totalHeight)];
     _liveViewImgBtn.userInteractionEnabled=YES;
     _liveViewImgBtn.center=CGPointMake(viewW/2, _liveViewImgBtn.center.y);
-    _liveViewImgBtn.imgView.frame=CGRectMake(_liveViewImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50*174/totalHeight/150, viewH*50/totalHeight);
-    _liveViewImgBtn.imgView.center=CGPointMake(_liveViewImgBtn.frame.size.width/2, _liveViewImgBtn.imgView.center.y);
-    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"live view_nor@3x.png"];
-    _liveViewImgBtn.text.text=NSLocalizedString(@"live_view_label", nil);
+    _liveViewImgBtn.imgView.frame=CGRectMake(viewW*111.5/totalWeight, viewH*17.5/totalHeight, viewW*80/totalWeight, viewW*80/totalWeight);
+//    _liveViewImgBtn.imgView.center=CGPointMake(_liveViewImgBtn.frame.size.width/2, _liveViewImgBtn.imgView.center.y);
+    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"button_view_nor"];
+//    _liveViewImgBtn.text.text=NSLocalizedString(@"live_view_label", nil);
     [_liveViewImgBtn addTarget:nil action:@selector(_liveViewClick) forControlEvents:UIControlEventTouchUpInside];
     [_liveViewImgBtn addTarget:nil action:@selector(_liveViewDown) forControlEvents:UIControlEventTouchDown];
     [_liveViewImgBtn addTarget:nil action:@selector(_liveViewCancel) forControlEvents:UIControlEventTouchUpOutside];
@@ -234,10 +234,10 @@ Rak_Lx52x_Device_Control *_Scan;
     _streamImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(0, viewH*335/totalHeight, viewW*303.5/totalWeight, viewH*115/totalHeight)];
     _streamImgBtn.userInteractionEnabled=YES;
     _streamImgBtn.center=CGPointMake(viewW/2, _streamImgBtn.center.y);
-    _streamImgBtn.imgView.frame=CGRectMake(_streamImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50*174/totalHeight/150, viewH*50/totalHeight);
-    _streamImgBtn.imgView.center=CGPointMake(_streamImgBtn.frame.size.width/2, _streamImgBtn.imgView.center.y);
-    _streamImgBtn.imgView.image=[UIImage imageNamed:@"stream_nor@3x.png"];
-    _streamImgBtn.text.text=NSLocalizedString(@"live_stream_label", nil);
+    _streamImgBtn.imgView.frame=CGRectMake(viewW*111.5/totalWeight, viewH*17.5/totalHeight, viewW*80/totalWeight, viewW*80/totalWeight);
+//    _streamImgBtn.imgView.center=CGPointMake(_streamImgBtn.frame.size.width/2, _streamImgBtn.imgView.center.y);
+    _streamImgBtn.imgView.image=[UIImage imageNamed:@"button_stream_nor"];
+//    _streamImgBtn.text.text=NSLocalizedString(@"live_stream_label", nil);
     [_streamImgBtn addTarget:nil action:@selector(_liveStreamClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamImgBtn addTarget:nil action:@selector(_liveStreamDown) forControlEvents:UIControlEventTouchDown];
     [_streamImgBtn addTarget:nil action:@selector(_liveStreamCancel) forControlEvents:UIControlEventTouchUpOutside];
@@ -249,10 +249,10 @@ Rak_Lx52x_Device_Control *_Scan;
     
     _configureImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*36/totalWeight, viewH*465/totalHeight, viewW*145/totalWeight, viewH*145/totalHeight)];
     _configureImgBtn.userInteractionEnabled=YES;
-    _configureImgBtn.imgView.frame=CGRectMake(_configureImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50/totalHeight, viewH*50/totalHeight);
-    _configureImgBtn.imgView.center=CGPointMake(_configureImgBtn.frame.size.width/2, _configureImgBtn.imgView.center.y);
-    _configureImgBtn.imgView.image=[UIImage imageNamed:@"configure_nor@3x.png"];
-    _configureImgBtn.text.text=NSLocalizedString(@"configure_label", nil);
+    _configureImgBtn.imgView.frame=CGRectMake(viewW*32.5/totalWeight, viewH*32.5/totalHeight, viewW*80/totalWeight, viewW*80/totalWeight);
+//    _configureImgBtn.imgView.center=CGPointMake(_configureImgBtn.frame.size.width/2, _configureImgBtn.center.y);
+    _configureImgBtn.imgView.image=[UIImage imageNamed:@"button_configure_nor"];
+//    _configureImgBtn.text.text=NSLocalizedString(@"configure_label", nil);
     [_configureImgBtn addTarget:nil action:@selector(_configureClick) forControlEvents:UIControlEventTouchUpInside];
     [_configureImgBtn addTarget:nil action:@selector(_configureDown) forControlEvents:UIControlEventTouchDown];
     [_configureImgBtn addTarget:nil action:@selector(_configureCancel) forControlEvents:UIControlEventTouchUpOutside];
@@ -264,10 +264,10 @@ Rak_Lx52x_Device_Control *_Scan;
     
     _browseImgBtn=[[MainImageViewBtn alloc]initWithFrame:CGRectMake(viewW*194.5/totalWeight, viewH*465/totalHeight, viewW*145/totalWeight, viewH*145/totalHeight)];
     _browseImgBtn.userInteractionEnabled=YES;
-    _browseImgBtn.imgView.frame=CGRectMake(_browseImgBtn.frame.size.width*0.5, viewH*32/totalHeight, viewH*50/totalHeight, viewH*50/totalHeight);
-    _browseImgBtn.imgView.center=CGPointMake(_browseImgBtn.frame.size.width/2, _browseImgBtn.imgView.center.y);
-    _browseImgBtn.imgView.image=[UIImage imageNamed:@"browse@3x.png"];
-    _browseImgBtn.text.text=NSLocalizedString(@"browse_label", nil);
+    _browseImgBtn.imgView.frame=CGRectMake(viewW*32.5/totalWeight, viewH*32.5/totalHeight, viewW*80/totalWeight, viewW*80/totalWeight);
+//    _browseImgBtn.imgView.center=CGPointMake(_browseImgBtn.frame.size.width/2, _browseImgBtn.imgView.center.y);
+    _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_nor"];
+//    _browseImgBtn.text.text=NSLocalizedString(@"browse_label", nil);
     [_browseImgBtn addTarget:nil action:@selector(_browseClick) forControlEvents:UIControlEventTouchUpInside];
     [_browseImgBtn addTarget:nil action:@selector(_browseDown) forControlEvents:UIControlEventTouchDown];
     [_browseImgBtn addTarget:nil action:@selector(_browseCancel) forControlEvents:UIControlEventTouchUpOutside];
@@ -354,7 +354,7 @@ Rak_Lx52x_Device_Control *_Scan;
 -(void)_liveViewClick{
     NSLog(@"预览");
     _Exit=YES;
-    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"live view_nor@3x.png"];
+    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"button_view_nor"];
     _liveViewImgBtn.text.textColor=[UIColor whiteColor];
     [_liveViewImgBtn draw:MAIN_COLOR_T];
     LiveViewViewController *v = [[LiveViewViewController alloc] init];
@@ -364,13 +364,13 @@ Rak_Lx52x_Device_Control *_Scan;
 }
 
 -(void)_liveViewDown{
-    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"live view_pre@3x.png"];
+    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"button_view_pre"];
     _liveViewImgBtn.text.textColor=MAIN_COLOR;
     [_liveViewImgBtn draw:MAIN_COLOR];
 }
 
 -(void)_liveViewCancel{
-    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"live view_nor@3x.png"];
+    _liveViewImgBtn.imgView.image=[UIImage imageNamed:@"button_view_nor"];
     _liveViewImgBtn.text.textColor=[UIColor whiteColor];
     [_liveViewImgBtn draw:MAIN_COLOR_T];
 }
@@ -378,7 +378,7 @@ Rak_Lx52x_Device_Control *_Scan;
 //回放
 -(void)_browseClick{
     _Exit=YES;
-    _browseImgBtn.imgView.image=[UIImage imageNamed:@"browse@3x.png"];
+    _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_nor"];
     _browseImgBtn.text.textColor=[UIColor whiteColor];
     [_browseImgBtn draw:MAIN_COLOR_T];
     BrowseViewController *v = [[BrowseViewController alloc] init];
@@ -387,13 +387,13 @@ Rak_Lx52x_Device_Control *_Scan;
 }
 
 -(void)_browseDown{
-    _browseImgBtn.imgView.image=[UIImage imageNamed:@"browse_pre@3x.png"];
+    _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_pre"];
     _browseImgBtn.text.textColor=MAIN_COLOR;
     [_browseImgBtn draw:MAIN_COLOR];
 }
 
 -(void)_browseCancel{
-    _browseImgBtn.imgView.image=[UIImage imageNamed:@"browse@3x.png"];
+    _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_nor"];
     _browseImgBtn.text.textColor=[UIColor whiteColor];
     [_browseImgBtn draw:MAIN_COLOR_T];
 }
@@ -401,7 +401,7 @@ Rak_Lx52x_Device_Control *_Scan;
 //直播
 -(void)_liveStreamClick{
     _Exit=YES;
-    _streamImgBtn.imgView.image=[UIImage imageNamed:@"stream_nor@3x.png"];
+    _streamImgBtn.imgView.image=[UIImage imageNamed:@"button_stream_nor"];
     _streamImgBtn.text.textColor=[UIColor whiteColor];
     [_streamImgBtn draw:MAIN_COLOR_T];
     
@@ -415,13 +415,13 @@ Rak_Lx52x_Device_Control *_Scan;
 }
 
 -(void)_liveStreamDown{
-    _streamImgBtn.imgView.image=[UIImage imageNamed:@"stream_pre@3x.png"];
+    _streamImgBtn.imgView.image=[UIImage imageNamed:@"button_stream_pre"];
     _streamImgBtn.text.textColor=MAIN_COLOR;
     [_streamImgBtn draw:MAIN_COLOR];
 }
 
 -(void)_liveStreamCancel{
-    _streamImgBtn.imgView.image=[UIImage imageNamed:@"stream_nor@3x.png"];
+    _streamImgBtn.imgView.image=[UIImage imageNamed:@"button_stream_nor"];
     _streamImgBtn.text.textColor=[UIColor whiteColor];
     [_streamImgBtn draw:MAIN_COLOR_T];
 }
@@ -429,7 +429,7 @@ Rak_Lx52x_Device_Control *_Scan;
 //配置
 -(void)_configureClick{
     _Exit=YES;
-    _configureImgBtn.imgView.image=[UIImage imageNamed:@"configure_nor@3x.png"];
+    _configureImgBtn.imgView.image=[UIImage imageNamed:@"button_configure_nor"];
     _configureImgBtn.text.textColor=[UIColor whiteColor];
     [_configureImgBtn draw:MAIN_COLOR_T];
     PasswordViewController *v = [[PasswordViewController alloc] init];
@@ -438,13 +438,13 @@ Rak_Lx52x_Device_Control *_Scan;
 }
 
 -(void)_configureDown{
-    _configureImgBtn.imgView.image=[UIImage imageNamed:@"configure_pre@3x.png"];
+    _configureImgBtn.imgView.image=[UIImage imageNamed:@"button_configure_pre"];
     _configureImgBtn.text.textColor=MAIN_COLOR;
     [_configureImgBtn draw:MAIN_COLOR];
 }
 
 -(void)_configureCancel{
-    _configureImgBtn.imgView.image=[UIImage imageNamed:@"configure_nor@3x.png"];
+    _configureImgBtn.imgView.image=[UIImage imageNamed:@"button_configure_nor"];
     _configureImgBtn.text.textColor=[UIColor whiteColor];
     [_configureImgBtn draw:MAIN_COLOR_T];
 }

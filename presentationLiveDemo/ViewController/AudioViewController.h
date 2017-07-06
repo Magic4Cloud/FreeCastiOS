@@ -17,6 +17,7 @@
     UIView *_audioView;
     UIImageView *_audioHDMIImg;
     UIImageView *_audioExternalImg;
+    UIImageView *_NOaudioImg;
     UIButton *_audioHDMIBtn;
     UIButton *_audioExternalBtn;
     

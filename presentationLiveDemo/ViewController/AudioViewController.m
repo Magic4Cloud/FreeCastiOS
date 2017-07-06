@@ -26,15 +26,16 @@
     self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];
+    _topBg.backgroundColor = [UIColor whiteColor];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -43,8 +44,9 @@
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"audio_title", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+//    _titleLabel.text = NSLocalizedString(@"audio_title", nil);
+    _titleLabel.text = @"Audio";
+    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
@@ -56,11 +58,11 @@
     _audioView=[[UIView alloc]init];
     _audioView.frame=CGRectMake(0, _topBg.frame.origin.y+_topBg.frame.size.height, viewW, viewH*163/totalHeight);
     _audioView.userInteractionEnabled=YES;
-    _audioView.backgroundColor=[UIColor whiteColor];
+//    _audioView.backgroundColor=[UIColor whiteColor];
     [self.view  addSubview:_audioView];
     
-    _audioHDMIImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HDMI_nor@3x.png"]];
-    _audioHDMIImg.frame = CGRectMake(0, viewH*36/totalHeight, viewH*50*104/totalHeight/51, viewH*50/totalHeight);
+    _audioHDMIImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_hdmi aduio_nor"]];
+    _audioHDMIImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
     _audioHDMIImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_audioHDMIBtnClick)];
     [_audioHDMIImg addGestureRecognizer:singleTap];
@@ -68,76 +70,96 @@
     _audioHDMIImg.contentMode=UIViewContentModeScaleToFill;
     [_audioView addSubview:_audioHDMIImg];
     
-    _audioExternalImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"external_sel@3x.png"]];
+    _audioExternalImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_external aduio_nor"]];
     _audioExternalImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_audioExternalBtnClick)];
     [_audioExternalImg addGestureRecognizer:singleTap2];
-    _audioExternalImg.frame = CGRectMake(0, viewH*36/totalHeight, viewH*50*100/totalHeight/50, viewH*50/totalHeight);
+    _audioExternalImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
     _audioExternalImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y);
     _audioExternalImg.contentMode=UIViewContentModeScaleToFill;
     [_audioView addSubview:_audioExternalImg];
     
+//    _NOaudioImg =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_external aduio_nor"]];
+//    _NOaudioImg.userInteractionEnabled=YES;
+//    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_NOaudioBtnClick)];
+//    [_NOaudioImg addGestureRecognizer:singleTap3];
+//    _NOaudioImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
+//    _NOaudioImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y);
+//    _NOaudioImg.contentMode=UIViewContentModeScaleToFill;
+//    [_audioView addSubview:_NOaudioImg];
+
     
-    _audioHDMIBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _audioHDMIBtn.frame = CGRectMake(0, viewH*119/totalHeight, viewW*100/totalWeight, viewH*24/totalHeight);
-    _audioHDMIBtn.center=CGPointMake(_audioView.frame.size.width*0.25, _audioHDMIBtn.center.y);
-    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_audioHDMIBtn setTitle:NSLocalizedString(@"audio_hdmi", nil) forState:UIControlStateNormal];
-    [[_audioHDMIBtn layer] setBorderWidth:0.0];//画线的宽度
-    _audioHDMIBtn.titleLabel.font=[UIFont systemFontOfSize:viewH*15/totalHeight*0.8];
-    [[_audioHDMIBtn layer]setCornerRadius:viewW*10/totalWeight];//圆角
-    [_audioHDMIBtn setBackgroundColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0]];
-    _audioHDMIBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_audioHDMIBtn addTarget:nil action:@selector(_audioHDMIBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_audioView addSubview:_audioHDMIBtn];
     
-    _audioExternalBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _audioExternalBtn.frame = CGRectMake(0, viewH*119/totalHeight, viewW*100/totalWeight, viewH*24/totalHeight);
-    _audioExternalBtn.titleLabel.font=[UIFont systemFontOfSize:viewH*15/totalHeight*0.8];
-    _audioExternalBtn.center=CGPointMake(_audioView.frame.size.width*0.75, _audioExternalBtn.center.y);
-    [_audioExternalBtn setTitle:NSLocalizedString(@"audio_external", nil) forState:UIControlStateNormal];
-    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [[_audioExternalBtn layer] setBorderWidth:0.0];//画线的宽度
-    [[_audioExternalBtn layer]setCornerRadius:viewW*10/totalWeight];//圆角
-    [_audioExternalBtn setBackgroundColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0]];
-    _audioExternalBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_audioExternalBtn addTarget:nil action:@selector(_audioExternalBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_audioView addSubview:_audioExternalBtn];
+//    _audioHDMIBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+//    _audioHDMIBtn.frame = CGRectMake(0, viewH*119/totalHeight, viewW*100/totalWeight, viewH*24/totalHeight);
+//    _audioHDMIBtn.center=CGPointMake(_audioView.frame.size.width*0.25, _audioHDMIBtn.center.y);
+//    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [_audioHDMIBtn setTitle:NSLocalizedString(@"audio_hdmi", nil) forState:UIControlStateNormal];
+//    [[_audioHDMIBtn layer] setBorderWidth:0.0];//画线的宽度
+//    _audioHDMIBtn.titleLabel.font=[UIFont systemFontOfSize:viewH*15/totalHeight*0.8];
+//    [[_audioHDMIBtn layer]setCornerRadius:viewW*10/totalWeight];//圆角
+//    [_audioHDMIBtn setBackgroundColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0]];
+//    _audioHDMIBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
+//    [_audioHDMIBtn addTarget:nil action:@selector(_audioHDMIBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//    [_audioView addSubview:_audioHDMIBtn];
+//    
+//    _audioExternalBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+//    _audioExternalBtn.frame = CGRectMake(0, viewH*119/totalHeight, viewW*100/totalWeight, viewH*24/totalHeight);
+//    _audioExternalBtn.titleLabel.font=[UIFont systemFontOfSize:viewH*15/totalHeight*0.8];
+//    _audioExternalBtn.center=CGPointMake(_audioView.frame.size.width*0.75, _audioExternalBtn.center.y);
+//    [_audioExternalBtn setTitle:NSLocalizedString(@"audio_external", nil) forState:UIControlStateNormal];
+//    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    [[_audioExternalBtn layer] setBorderWidth:0.0];//画线的宽度
+//    [[_audioExternalBtn layer]setCornerRadius:viewW*10/totalWeight];//圆角
+//    [_audioExternalBtn setBackgroundColor:[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0]];
+//    _audioExternalBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
+//    [_audioExternalBtn addTarget:nil action:@selector(_audioExternalBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//    [_audioView addSubview:_audioExternalBtn];
     
     UIView *line=[[UIView alloc]init];
-    line.frame=CGRectMake(viewW*187/totalWeight, viewH*18/totalHeight, viewW*1/totalWeight, viewH*120/totalHeight);
-    line.backgroundColor=[UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+    line.frame=CGRectMake(0, viewH*179/totalHeight, viewW, viewH*1.5/totalHeight);
+    line.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
     [_audioView addSubview:line];
     
-    _audioTips1Label= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*250/totalHeight, viewW, viewH*15/totalHeight)];
-    _audioTips1Label.text = NSLocalizedString(@"audio_tips1", nil);
-    _audioTips1Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
-    _audioTips1Label.backgroundColor = [UIColor clearColor];
-    _audioTips1Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _audioTips1Label.lineBreakMode = UILineBreakModeWordWrap;
-    _audioTips1Label.textAlignment=UITextAlignmentCenter;
-    _audioTips1Label.numberOfLines = 0;
-    [self.view addSubview:_audioTips1Label];
+//    UIView *line2=[[UIView alloc]init];
+//    line2.frame=CGRectMake(0, viewH*371.5/totalHeight, viewW, viewH*1.5/totalHeight);
+//    line2.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
+//    [_audioView addSubview:line2];
     
-    _audioTips2Label= [[UILabel alloc] initWithFrame:CGRectMake(0, _audioTips1Label.frame.origin.y+_audioTips1Label.frame.size.height, viewW, viewH*15/totalHeight)];
-    _audioTips2Label.text = NSLocalizedString(@"audio_tips2", nil);
-    _audioTips2Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
-    _audioTips2Label.backgroundColor = [UIColor clearColor];
-    _audioTips2Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _audioTips2Label.lineBreakMode = UILineBreakModeWordWrap;
-    _audioTips2Label.textAlignment=UITextAlignmentCenter;
-    _audioTips2Label.numberOfLines = 0;
-    [self.view addSubview:_audioTips2Label];
+    UIView *line3=[[UIView alloc]init];
+    line3.frame=CGRectMake(viewW*186.5/totalWeight, 0, viewW*1.5/totalWeight, viewH*179/totalHeight);
+    line3.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
+    [_audioView addSubview:line3];
     
-    _audioTips3Label= [[UILabel alloc] initWithFrame:CGRectMake(0, _audioTips2Label.frame.origin.y+_audioTips2Label.frame.size.height, viewW, viewH*15/totalHeight)];
-    _audioTips3Label.text = NSLocalizedString(@"audio_tips3", nil);
-    _audioTips3Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
-    _audioTips3Label.backgroundColor = [UIColor clearColor];
-    _audioTips3Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _audioTips3Label.lineBreakMode = UILineBreakModeWordWrap;
-    _audioTips3Label.textAlignment=UITextAlignmentCenter;
-    _audioTips3Label.numberOfLines = 0;
-    [self.view addSubview:_audioTips3Label];
+//    _audioTips1Label= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*250/totalHeight, viewW, viewH*15/totalHeight)];
+//    _audioTips1Label.text = NSLocalizedString(@"audio_tips1", nil);
+//    _audioTips1Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
+//    _audioTips1Label.backgroundColor = [UIColor clearColor];
+//    _audioTips1Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+//    _audioTips1Label.lineBreakMode = UILineBreakModeWordWrap;
+//    _audioTips1Label.textAlignment=UITextAlignmentCenter;
+//    _audioTips1Label.numberOfLines = 0;
+//    [self.view addSubview:_audioTips1Label];
+//    
+//    _audioTips2Label= [[UILabel alloc] initWithFrame:CGRectMake(0, _audioTips1Label.frame.origin.y+_audioTips1Label.frame.size.height, viewW, viewH*15/totalHeight)];
+//    _audioTips2Label.text = NSLocalizedString(@"audio_tips2", nil);
+//    _audioTips2Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
+//    _audioTips2Label.backgroundColor = [UIColor clearColor];
+//    _audioTips2Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+//    _audioTips2Label.lineBreakMode = UILineBreakModeWordWrap;
+//    _audioTips2Label.textAlignment=UITextAlignmentCenter;
+//    _audioTips2Label.numberOfLines = 0;
+//    [self.view addSubview:_audioTips2Label];
+//    
+//    _audioTips3Label= [[UILabel alloc] initWithFrame:CGRectMake(0, _audioTips2Label.frame.origin.y+_audioTips2Label.frame.size.height, viewW, viewH*15/totalHeight)];
+//    _audioTips3Label.text = NSLocalizedString(@"audio_tips3", nil);
+//    _audioTips3Label.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
+//    _audioTips3Label.backgroundColor = [UIColor clearColor];
+//    _audioTips3Label.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
+//    _audioTips3Label.lineBreakMode = UILineBreakModeWordWrap;
+//    _audioTips3Label.textAlignment=UITextAlignmentCenter;
+//    _audioTips3Label.numberOfLines = 0;
+//    [self.view addSubview:_audioTips3Label];
     [NSThread detachNewThreadSelector:@selector(GetAudioFormart) toTarget:self withObject:nil];
 
 }
@@ -163,8 +185,8 @@
     _audioStatus=1;
     _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
     _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _audioExternalImg.image =[UIImage imageNamed:@"external_nor@3x.png"];
-    _audioHDMIImg.image =[UIImage imageNamed:@"HDMI_sel@3x.png"];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
     [_audioHDMIBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [_audioExternalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
@@ -175,12 +197,25 @@
     _audioStatus=2;
     _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
     _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _audioExternalImg.image =[UIImage imageNamed:@"external_sel@3x.png"];
-    _audioHDMIImg.image =[UIImage imageNamed:@"HDMI_nor@3x.png"];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
+    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
     [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
 }
+
+- (void)_NOaudioBtnClick{
+    NSLog(@"_NOaudioBtnClick");
+    _audioStatus=0;
+//    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
+//    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
+    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
+}
+
 
 #pragma mark-- 设置音频输入    0:禁止  1:HDMI  2:外部音源输入
 -(void)SetAudioFormart
