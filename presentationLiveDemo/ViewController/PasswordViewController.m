@@ -404,7 +404,7 @@ Rak_Lx52x_Device_Control *_configScan;
     
     //设置分段控件点击相应事件
     NSArray *VediosegmentedData = [[NSArray alloc]initWithObjects:@"Smooth",@"Good",@"Best",@"Custom",nil];
-    UISegmentedControl *VediosegmentedControl = [[UISegmentedControl alloc]initWithItems:VediosegmentedData];
+    VediosegmentedControl = [[UISegmentedControl alloc]initWithItems:VediosegmentedData];
     VediosegmentedControl.frame = CGRectMake(viewW*37.5/totalWeight,_videoParametersLabel.frame.origin.y+_videoParametersLabel.frame.size.height+viewH*15.5/totalHeight,viewW*300/totalWeight,viewH*32.5/totalHeight);
 //    VediosegmentedControl.center=CGPointMake(viewW*0.5, _backBtn.center.y);
     
@@ -489,7 +489,7 @@ Rak_Lx52x_Device_Control *_configScan;
 //    [[_videoLabelView layer] setBorderColor:[UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0].CGColor];//颜色
 //    [[_videoLabelView layer]setCornerRadius:viewW*14/totalWeight];//圆角
 //    [_videoLabelView.layer setMasksToBounds:YES];
-    //[_videoView  addSubview:_videoLabelView];
+//    [_videoView  addSubview:_videoLabelView];
     
 //    _videoLabel1= [[UILabel alloc] initWithFrame:CGRectMake(0, 2*viewH/totalHeight, _videoLabelView.frame.size.width, 20*viewH/totalHeight)];
 //    _videoLabel1.text = NSLocalizedString(@"smooth_text", nil);
@@ -875,20 +875,24 @@ NSString *quality;
             if (([resolution compare:@"2"]==NSOrderedSame)
                 &&([quality compare:@"26"]==NSOrderedSame)
                 &&([fps compare:@"25"]==NSOrderedSame)) {
-                [self _videoBtnClick:_goodBtn];
+                VediosegmentedControl.selectedSegmentIndex = 1;
+                [self _videoBtnClick:VediosegmentedControl];
             }
             else if (([resolution compare:@"3"]==NSOrderedSame)
                     &&([quality compare:@"86"]==NSOrderedSame)
                     &&([fps compare:@"30"]==NSOrderedSame)) {
-                [self _videoBtnClick:_bestBtn];
+                VediosegmentedControl.selectedSegmentIndex = 2;
+                [self _videoBtnClick:VediosegmentedControl];
             }
             else if ((([resolution compare:@"0"]==NSOrderedSame)||([resolution compare:@"1"]==NSOrderedSame))
                      &&([quality compare:@"14"]==NSOrderedSame)
                      &&([fps compare:@"20"]==NSOrderedSame)) {
-                [self _videoBtnClick:_smoothBtn];
+                VediosegmentedControl.selectedSegmentIndex = 0;
+                [self _videoBtnClick:VediosegmentedControl];
             }
             else{
-                [self _videoBtnClick:_customBtn];
+                VediosegmentedControl.selectedSegmentIndex = 3;
+                [self _videoBtnClick:VediosegmentedControl];
             }
         });
     }
@@ -1067,17 +1071,19 @@ NSString *quality;
     _videoFrameRateValueLabel.center=CGPointMake((_videoFrameRateSlider.value-10)/20.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y);
 }
 
+//-(void)_videoBtnClick:(UIButton *)Seg
 -(void)_videoBtnClick:(UISegmentedControl *)Seg
 {
-//    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
     NSInteger Index = Seg.selectedSegmentIndex;
+//    NSInteger Index = Seg.tag;
     switch (Index)
     {
         case 0:

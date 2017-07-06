@@ -79,14 +79,14 @@
     _audioExternalImg.contentMode=UIViewContentModeScaleToFill;
     [_audioView addSubview:_audioExternalImg];
     
-    _NOaudioImg =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_external aduio_pre"]];
-    _NOaudioImg.userInteractionEnabled=YES;
-    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_NOaudioBtnClick)];
-    [_NOaudioImg addGestureRecognizer:singleTap3];
-    _NOaudioImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
-    _NOaudioImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y);
-    _NOaudioImg.contentMode=UIViewContentModeScaleToFill;
-    [_audioView addSubview:_NOaudioImg];
+//    _NOaudioImg =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_external aduio_nor"]];
+//    _NOaudioImg.userInteractionEnabled=YES;
+//    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_NOaudioBtnClick)];
+//    [_NOaudioImg addGestureRecognizer:singleTap3];
+//    _NOaudioImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
+//    _NOaudioImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y);
+//    _NOaudioImg.contentMode=UIViewContentModeScaleToFill;
+//    [_audioView addSubview:_NOaudioImg];
 
     
     
