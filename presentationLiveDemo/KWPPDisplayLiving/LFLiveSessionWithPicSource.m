@@ -194,6 +194,12 @@ BOOL isShowSubtitle=NO;
  */
 - (void)upload_h264:(int)size :(Byte*)data{
     NSLog(@"将实时画面推流到指定直播地址 upload_h264");
+    
+    NSLog(@"videoConfiguration .videoBitRate:%lu",(unsigned long)_videoConfiguration .videoBitRate);
+    NSLog(@"videoConfiguration .videoFrameRate:%lu",(unsigned long)_videoConfiguration .videoFrameRate);
+    NSLog(@"videoConfiguration .videoSize:%@",NSStringFromCGSize(_videoConfiguration.videoSize));
+
+    
     CVPixelBufferRef tbuffer =[_h264HardwareCodec deCompressedCMSampleBufferWithData:data andLength:size andOffset:0];
     [self.videoEncoder encodeVideoData:tbuffer timeStamp:self.currentTimestamp];
     CVPixelBufferRelease(tbuffer);
@@ -357,11 +363,11 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现委托方法
 /** 处理音频数据 */
 - (void)captureOutput:(nullable LFAudioCapture*)capture audioBuffer:(AudioBufferList)inBufferList{
-    NSLog(@"处理音频数据00");
+//    NSLog(@"处理音频数据00");
     if (_isRAK) {
         return;
     }
-    NSLog(@"处理音频数据11");
+//    NSLog(@"处理音频数据11");
     if(!_isPausing)
     [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
     else return ;
@@ -369,11 +375,11 @@ UIImage *pauseImage=nil;
 
 /** 处理视频数据 */
 - (void)captureOutput:(nullable LFVideoCapture*)capture pixelBuffer:(nullable CVImageBufferRef)pixelBuffer{
-    NSLog(@"处理视频数据00");
+//    NSLog(@"处理视频数据00");
     if (_isRAK) {
         return;
     }
-    NSLog(@"处理视频数据11");
+//    NSLog(@"处理视频数据11");
     if(_isPausing)
     { //暂停时，显示暂停图片
         int num = (pauseTimeLen++/10)%8+1;
@@ -448,7 +454,7 @@ UIImage *pauseImage=nil;
 - (void)videoEncoder:(nullable id<LFVideoEncoding>)encoder videoFrame:(nullable LFVideoFrame*)frame{
     if(self.uploading)
     {
-        NSLog(@"videoEncoder [self.socket sendFrame:frame];//<视频上传成功");
+        NSLog(@"videoEncoder [self.socket sendFrame:frame]   LFVideoFrame.isKeyFrame:%d//<视频上传成功",frame.isKeyFrame);
 
         [self.socket sendFrame:frame];//<上传
     }
@@ -456,7 +462,7 @@ UIImage *pauseImage=nil;
 
 #pragma mark -- LFStreamTcpSocketDelegate
 - (void)socketStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveState)status{
-    debugMethod();
+    NSLog(@"%s   %d",__func__,status);
     if(status == LFLiveStart){
         if(!self.uploading){
             self.timestamp = 0;
@@ -473,8 +479,8 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketDidError:(nullable id<LFStreamSocket>)socket errorCode:(LFLiveSocketErrorCode)errorCode{
-    debugMethod();
 
+    NSLog(@"%s  %d",__func__,errorCode);
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.delegate && [self.delegate respondsToSelector:@selector(liveSession:errorCode:)]){
             [self.delegate liveSession:self errorCode:errorCode];
@@ -483,8 +489,7 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketDebug:(nullable id<LFStreamSocket>)socket debugInfo:(nullable LFLiveDebug*)debugInfo{
-    debugMethod();
-
+    NSLog(@"%s   ",__func__);
     self.debugInfo = debugInfo;
     if(self.showDebugInfo){
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -497,7 +502,7 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketBufferStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveBuffferState)status{
-    debugMethod();
+    NSLog(@"%s   ",__func__);
 
     NSUInteger videoBitRate = [_videoEncoder videoBitRate];
     if(status == LFLiveBuffferIncrease){
