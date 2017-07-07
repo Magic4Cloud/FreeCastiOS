@@ -41,6 +41,8 @@
 
 #import "TTCoreDataClass.h"
 #import "TTPlatformSelectViewController.h"
+
+
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 int _width=1280;
 int _height=720;
@@ -363,22 +365,22 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     _connectImg=[[UIImageView alloc]init];
     _connectImg.image=[UIImage imageNamed:@"wifi"];
-    _connectImg.frame = CGRectMake(viewH*66/totalHeight, viewH*20.5/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
+    _connectImg.frame = CGRectMake(viewH*66/totalHeight, viewH*23/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
 //    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
     _connectImg.contentMode=UIViewContentModeScaleToFill;
     [_topBg addSubview:_connectImg];
     
-    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewH*88/totalHeight, 0, viewH*150/totalHeight, viewH*44/totalHeight)];
+    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewH*88/totalHeight, viewH*23/totalHeight, viewH*150/totalHeight, viewH*15/totalHeight)];
     _topLabel.text = [self getWifiName];
     _topLabel.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
     _topLabel.backgroundColor = [UIColor clearColor];
-    _topLabel.textColor = [UIColor whiteColor];
+    _topLabel.textColor = MAIN_COLOR;
     _topLabel.lineBreakMode = UILineBreakModeWordWrap;
     _topLabel.textAlignment=UITextAlignmentLeft;
     _topLabel.numberOfLines = 0;
     [_topBg addSubview:_topLabel];
     
-    
+        
     NSMutableArray * buttonFrameArray = [NSMutableArray array];
     CGFloat buttonWidth = 30.f;
     CGFloat buttonMargin = 31.5;
@@ -911,6 +913,7 @@ bool _isTakePhoto=NO;
     //[self.navigationController pushViewController: v animated:true];
     //[self presentViewController:v animated:YES completion:nil];
     _isConfig=YES;
+    _isBroswer=YES;
     //[self _scaleBtnClick:0];
 //    _streamView.hidden=NO;
 //    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
@@ -1430,24 +1433,27 @@ CGFloat iy ;
     NSLog(@"startActivityIndicatorView");
     ix = self.view.frame.origin.x+(viewW/2-25);
     iy = self.view.frame.origin.y+(viewH/2-25);
-    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
+//    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
+    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(viewW*304/totalWeight,129*viewH/totalHeight, viewW*58.5/totalWeight, viewH*58.5/totalHeight)];
     
-    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-    ActivityIndicatorView.image=[UIImage imageNamed:@"06_00038.png"];
-    CABasicAnimation* rotationAnimation;
-    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
-    rotationAnimation.duration = 0.5;
-    rotationAnimation.cumulative = YES;
-    rotationAnimation.repeatCount = 10000000000000;
-    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
+    ActivityIndicatorView.image=[UIImage imageNamed:@"logo_148"];
+//    CABasicAnimation* rotationAnimation;
+//    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+//    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+//    rotationAnimation.duration = 0.5;
+//    rotationAnimation.cumulative = YES;
+//    rotationAnimation.repeatCount = 10000000000000;
+//    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
     ;
     [self.view addSubview:ActivityIndicatorView];
     ActivityIndicatorViewisenable = YES;
     
-    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
-    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
-    _tipLabel.textColor = [UIColor colorWithRed:183/255.0 green:229/255.0 blue:1.0 alpha:1.0];
+//    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
+    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(viewW*295/totalWeight,202.5*viewH/totalHeight, viewW*79.5/totalWeight, viewH*12.5/totalHeight)];
+//    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
+    _tipLabel.text = @"Connecting…";
+    _tipLabel.textColor = MAIN_COLOR;
+    _tipLabel.font = [UIFont systemFontOfSize:12.5];
     _tipLabel.adjustsFontSizeToFitWidth = YES;
     _tipLabel.textAlignment = NSTextAlignmentLeft;
     _tipLabel.numberOfLines = 1;

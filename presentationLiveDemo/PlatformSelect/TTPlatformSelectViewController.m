@@ -314,7 +314,7 @@
                 break;
             case 2:
             {
-                [cell setImageviewImageWithImageName:@"button_subtitle"];
+                [cell setImageviewImageWithImageName:@"button_audio_nor"];
             }
                 break;
                 
