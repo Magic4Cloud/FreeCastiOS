@@ -1799,14 +1799,40 @@ CGFloat iy ;
     NSLog(@"_width=%d,_height=%d",_width,_height);
     LFLiveVideoConfiguration  *videoConfiguration = [LFLiveVideoConfiguration new];
     
-    //    videoConfiguration .videoBitRate = 800*1024;        //比特率
-    videoConfiguration .videoBitRate = [quality integerValue] *1024;        //比特率
+    
+    //原来的
+    videoConfiguration .videoBitRate = 800*1024;        //比特率
+    videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
+    videoConfiguration .videoMinBitRate = 500*1024;     //最小比特率
+    videoConfiguration .videoFrameRate = 30;            //帧率
+    videoConfiguration .videoMaxKeyframeInterval = 25; //最大关键帧间隔数
+    //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
 
-    videoConfiguration .videoMaxBitRate = ([quality integerValue] +100) * 1024;    //最大比特率
-    videoConfiguration .videoMinBitRate = ([quality integerValue] -300) *1024;     //最小比特率
-    videoConfiguration .videoFrameRate = [fps integerValue];
+    
+    
+    
+    
+    
+    //现在的
+    //    videoConfiguration .videoBitRate = 800*1024;        //比特率
+//    NSInteger videoBitRate = [quality integerValue];
+//    if (videoBitRate>15) {
+//        videoBitRate = 15;
+//    }
+//    videoBitRate = 800;
+//    videoConfiguration .videoBitRate = videoBitRate *1024;        //比特率
+//    NSLog(@"videoConfiguration .videoBitRate:%d",videoConfiguration .videoBitRate);
+//    videoConfiguration .videoMaxBitRate = (videoBitRate+300) * 1024;    //最大比特率
+//    videoConfiguration .videoMinBitRate = (videoBitRate -300) *1024;     //最小比特率
+//    
+//    NSInteger pushFps = [fps integerValue];
+//    if (pushFps>30) {
+//        pushFps = 30;
+//    }
+//    pushFps = 30;
+//    videoConfiguration .videoFrameRate = pushFps; //帧率
 //    videoConfiguration .videoFrameRate = 24;//帧率
-//    videoConfiguration .videoMaxKeyframeInterval = 25; //最大关键帧间隔数
+//    videoConfiguration .videoMaxKeyframeInterval = [fps integerValue] +1; //最大关键帧间隔数
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
     
     /* case LFLiveVideoQuality_Low1:
@@ -1941,11 +1967,11 @@ CGFloat iy ;
     //默认音视频配置
     
     
-//            LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
-//            LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
+            LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Low];
+            LFLiveVideoConfiguration *defaultVideoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low1];
 //            defaultVideoConfiguration.videoSize = CGSizeMake(960, 540);
 //            defaultVideoConfiguration.sessionPreset = LFCaptureSessionPreset540x960;
-//            defaultVideoConfiguration.landscape = YES;
+            defaultVideoConfiguration.landscape = YES;
     
     //利用两设备配置 来构造一个直播会话
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
@@ -1954,7 +1980,7 @@ CGFloat iy ;
     _session.isRAK=rak;
     _session.running =YES;
     _session.preView =_livingPreView;
-    _session.dataSoureType = CameraAndPicture;
+//    _session.dataSoureType = CameraAndPicture;
     return _session;
 }
 
@@ -1965,7 +1991,7 @@ CGFloat iy ;
          *  双声道， 128Kbps的比特率，44100HZ的采样率
          */
         LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration new];
-        audioConfiguration .numberOfChannels =2;
+        audioConfiguration .numberOfChannels =1;
         audioConfiguration .audioBitrate = LFLiveAudioBitRate_128Kbps;
         audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_44100Hz;
         
@@ -2032,7 +2058,7 @@ CGFloat iy ;
 //        rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
 //    }
 //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-    stream.url = @"rtmp://send1a.douyu.com/live/2205675rRAXqNk7S?wsSecret=7b3e0ee0f6623dc30369229e8c40e65d&wsTime=595cb177&wsSeek=off";
+    stream.url = @"rtmp://send1a.douyu.com/live/2205675raubQWBwz?wsSecret=c40b107ff19b9233ec324c440c419b25&wsTime=595dd663&wsSeek=off";
 //    if (rtmpUrl) {
 //        stream.url = rtmpUrl;
 //    }
@@ -2060,7 +2086,7 @@ CGFloat iy ;
 //    [self Save_Paths:stream.url :STREAM_URL_KEY];
 //    [self addUrls];
     _isLiving = 1;
-    self.session.dataSoureType = CameraOnly;
+    self.session.dataSoureType = type;
     [self.session startLive:stream];
 }
 
