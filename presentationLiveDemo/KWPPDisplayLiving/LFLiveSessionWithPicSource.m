@@ -185,8 +185,22 @@ BOOL isShowBanner=NO;
 BOOL isShowSubtitle=NO;
 
 - (void)upload_audio:(AudioBufferList)inBufferList{
-    [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+    
+    LFAudioFrame *audioFrame = [LFAudioFrame new];
+    audioFrame.timestamp = self.currentTimestamp;
+
+    audioFrame.data = [NSData dataWithBytes:inBufferList.mBuffers[0].mData length:inBufferList.mBuffers[0].mDataByteSize];
+    
+    char exeData[2];
+    exeData[0] = _audioConfiguration.asc[0];
+    exeData[1] = _audioConfiguration.asc[1];
+    audioFrame.audioInfo = [NSData dataWithBytes:exeData length:2];
+
+    [self audioEncoder:self.audioEncoder audioFrame:audioFrame];
+    
+//    [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
 }
+
 
 
 /**
@@ -195,15 +209,12 @@ BOOL isShowSubtitle=NO;
 - (void)upload_h264:(int)size :(Byte*)data{
     NSLog(@"将实时画面推流到指定直播地址 upload_h264");
     
-    NSLog(@"videoConfiguration .videoBitRate:%lu",(unsigned long)_videoConfiguration .videoBitRate);
-    NSLog(@"videoConfiguration .videoFrameRate:%lu",(unsigned long)_videoConfiguration .videoFrameRate);
-    NSLog(@"videoConfiguration .videoSize:%@",NSStringFromCGSize(_videoConfiguration.videoSize));
-
-    
     CVPixelBufferRef tbuffer =[_h264HardwareCodec deCompressedCMSampleBufferWithData:data andLength:size andOffset:0];
+
     [self.videoEncoder encodeVideoData:tbuffer timeStamp:self.currentTimestamp];
     CVPixelBufferRelease(tbuffer);
 }
+
 
 - (void)upload_imageRef:(CGImageRef)imageRef{
     //NSLog(@"take_imageRef");
@@ -363,13 +374,22 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现委托方法
 /** 处理音频数据 */
 - (void)captureOutput:(nullable LFAudioCapture*)capture audioBuffer:(AudioBufferList)inBufferList{
-//    NSLog(@"处理音频数据00");
-    if (_isRAK) {
-        return;
-    }
+    NSLog(@"处理音频数据00");
+    
+    AudioBuffer bufer = inBufferList.mBuffers[0];
+//    NSLog(@"系统摄像头的音频data：%s   mDataByteSize:%d",bufer.mData,bufer.mDataByteSize);
+    
+    
+//    if (_isRAK) {
+//        return;
+//    }
 //    NSLog(@"处理音频数据11");
     if(!_isPausing)
-    [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+    {
+        NSLog(@"处理音频数据11");
+        [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+ 
+    }
     else return ;
 }
 
@@ -442,16 +462,19 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现编码委托
 - (void)audioEncoder:(nullable id<LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame*)frame{
     
-//    NSLog(@"audioEncoder [self.socket sendFrame:frame];//<音频上传成功");
+    NSLog(@"audioEncoder 音频转码后的数据：audioInfo.length:%lu  header:%@ timestamp:%llu ",frame.audioInfo.length,frame.header,frame.timestamp);
 
     if(self.uploading)
     {
-        NSLog(@"audioEncoder [self.socket sendFrame:frame];//<音频上传成功");
+        NSLog(@"audioEncoder [self.socket sendFrame:frame] LFAudioFrame data:%@;//<音频上传成功",frame.data);
         [self.socket sendFrame:frame];//<上传
     }
 }
 
 - (void)videoEncoder:(nullable id<LFVideoEncoding>)encoder videoFrame:(nullable LFVideoFrame*)frame{
+    
+    NSLog(@"videoEncoder 视频转码后的数据：sps:%@  pps:%@  timestamp:%llu",frame.sps,frame.pps,frame.timestamp);
+
     if(self.uploading)
     {
         NSLog(@"videoEncoder [self.socket sendFrame:frame]   LFVideoFrame.isKeyFrame:%d//<视频上传成功",frame.isKeyFrame);

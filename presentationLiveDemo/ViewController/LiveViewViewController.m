@@ -42,6 +42,7 @@
 #import "TTCoreDataClass.h"
 #import "TTPlatformSelectViewController.h"
 
+#import "PasswordViewController.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 int _width=1280;
@@ -924,8 +925,10 @@ bool _isTakePhoto=NO;
     
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    PasswordViewController *v = [[PasswordViewController alloc] init];
+    [self.navigationController pushViewController: v animated:true];
+
 }
 
 /**
@@ -935,10 +938,9 @@ bool _isTakePhoto=NO;
 -(void)_liveStreamBtnClick{
     
     //测试  开直播
-//    [self openLivingSession:CameraOnly];
-    
 //    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
 //    return;
+    
     if (_liveCameraSource == IphoneBackCamera) {
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
         return;
@@ -1067,10 +1069,12 @@ int valOrientation;
                 return;
             }
         }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self getDeviceConfig];
+        
+        [self getDeviceConfig];
 
-        });
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//        });
         
         
         NSLog(@"start play==%@",urlString);
@@ -1167,11 +1171,6 @@ int valOrientation;
         });
         
         NSLog(@"fps**************************=%@",fps);
-    }
-    else{
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self showAllTextDialog:NSLocalizedString(@"get_fps_failed", nil)];
-        });
     }
     
     _session = [self getSessionWithRakisrak:YES];
@@ -1273,7 +1272,7 @@ int valOrientation;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-    NSLog(@"GetAudioData size==%d  _isLiving:%d",size,_isLiving);
+    NSLog(@"GetAudioData size==%d  _isLiving:%d  data：%s",size,_isLiving,data);
     if(_isLiving==1){
         
         AudioBufferList audioBufferList;
@@ -1769,7 +1768,7 @@ CGFloat iy ;
 }
 
 
-#pragma mark - session 99999999999999999999
+#pragma mark - *********************** session 推流参数配置***********************************
 /**
  *  重写构造器：构造直播会话，包括配置录制的音视频格式数据
  */
@@ -1781,9 +1780,9 @@ CGFloat iy ;
      *  双声道， 128Kbps的比特率，44100HZ的采样率
      */
     LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration new];
-    audioConfiguration .numberOfChannels =2;
-    audioConfiguration .audioBitrate = LFLiveAudioBitRate_128Kbps;
-    audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_44100Hz;
+    audioConfiguration .numberOfChannels = 2;
+    audioConfiguration .audioBitrate = LFLiveAudioBitRate_96Kbps;
+    audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_48000Hz;
     
     /**
      * 构造视频配置
@@ -1794,17 +1793,16 @@ CGFloat iy ;
     
     
     //原来的
-    videoConfiguration .videoBitRate = 800*1024;        //比特率
+    videoConfiguration .videoBitRate    = 800*1024;       //比特率
     videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
-    videoConfiguration .videoMinBitRate = 500*1024;     //最小比特率
-    videoConfiguration .videoFrameRate = 30;            //帧率
-//    videoConfiguration .videoMaxFrameRate = 30;         //视频的最大帧率，即 fps
-//    videoConfiguration .videoMinFrameRate = 15;         // 视频的最小帧率，即 fps
+    videoConfiguration .videoMinBitRate = 200*1024;     //最小比特率
+    videoConfiguration .videoFrameRate  = 30;            //帧率
 
-    videoConfiguration .videoMaxKeyframeInterval = videoConfiguration .videoFrameRate*2; //最大关键帧间隔数
+    videoConfiguration .videoMaxKeyframeInterval = 60; //最大关键帧间隔数
+    
+    
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
     
-
     //现在的
     //    videoConfiguration .videoBitRate = 800*1024;        //比特率
 //    NSInteger videoBitRate = [quality integerValue];
@@ -1974,23 +1972,32 @@ CGFloat iy ;
     //    stream.url=[self Get_String:STREAM_URL_KEY];
     
     
-//    NSString * rtmpUrl;
+    NSString * rtmpUrl;
 //    rtmpUrl = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=533c7891d289e51ff38f0e464feaead2&time=1499076000&wm=2&wml=1&vr=0";
-//    if (_selectedPlatformModel) {
-//        rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
-//    }
+    if (_selectedPlatformModel) {
+        rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
+    }
 //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-    stream.url = @"rtmp://send1a.douyu.com/live/2205675robBLZFBY?wsSecret=100327c1943413aade8cf2bea0d350a7&wsTime=595eef06&wsSeek=off";
-//    if (rtmpUrl) {
-//        stream.url = rtmpUrl;
-//    }
-    //    else
-    //    {
-    //        //没有推流地址
-    //
-    //
-    //    }
-            dispatch_async(dispatch_get_main_queue(), ^{
+//    stream.url = @"rtmp://send1a.douyu.com/live/2205675rQWONEYgN?wsSecret=c50cb20b505243cf097fa648aebe9de0&wsTime=596099d2&wsSeek=off";
+    ;
+    
+    
+//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju";
+    
+    //rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju
+//    stream.url = @"rtmp://pub.mudu.tv/watch/9zee4c";
+//    stream.url = @"rtmp://wspush.easyvaas.com/live/6k1KgpA6UlNqSBJj?key=6N9D7Qmi6NQEU8D24lJp82G4fi4IiRqRSv6T0nGVVYyRQoMwZYBbnGoampbI82g8I";
+    if (rtmpUrl) {
+        stream.url = rtmpUrl;
+    }
+        else
+        {
+            //没有推流地址
+    
+    
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
         if (stream.url==nil) {
             [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
             return;
@@ -2222,14 +2229,17 @@ int posStep=1;
             duration=[[self Get_Keys:BANNER_DURATION_KEY] intValue];
             interval=[[self Get_Keys:BANNER_INTERVAL_KEY] intValue];
         }
-        else{
+        else
+        {
             isShowBanner=NO;
         }
         
         if([[self Get_Keys:SUBTITLE_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
             subtitle_duration=[[self Get_Keys:SUBTITLE_DURATION_KEY] intValue];
             subtitle_interval=[[self Get_Keys:SUBTITLE_INTERVAL_KEY] intValue];
-        }else{
+        }
+        else
+        {
             isShowSubtitle=NO;
         }
         
@@ -2248,8 +2258,8 @@ int posStep=1;
                 subtitle_count_duration=0;
                 subtitle_count_interval=0;
             }
-            
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             CGFloat newViewW=viewW;
             CGFloat newViewH=viewH;

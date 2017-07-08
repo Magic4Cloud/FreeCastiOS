@@ -3,6 +3,12 @@
  CloudCompanion
  Copyright (c) 2015年 rak. All rights reserved.
  */
+//新添加的
+getyoutubeStreamKeyError = "not get streamkey!";
+
+
+
+
 "main_scan_indicator_title"="Search Device";
 "main_scan_indicator"="Searching Device...";
 "main_scan_failed"="No Device Found";
