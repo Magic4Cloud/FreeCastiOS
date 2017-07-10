@@ -5,7 +5,9 @@
  */
 //新添加的
 getyoutubeStreamKeyError = "没拿到youtube推流地址";
-
+CustomUrlFillError       = "请填写正确的推流地址";
+SaveSuccess              = "保存成功";
+SaveFail                 = "保存失败";
 
 "main_scan_indicator_title"="Search Device";
 "main_scan_indicator"="Searching Device...";

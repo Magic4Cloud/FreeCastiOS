@@ -219,11 +219,19 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 
 - (IBAction)copyCodeButtonClick:(id)sender {
     UIButton * button = (UIButton *)sender;
-    UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = button.currentTitle;
     
-    [self showHudMessage:@"Has been copied!"];
-
+    if ([button.currentTitle isEqualToString:@"Loading..."])
+    {
+        UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = button.currentTitle;
+        
+        [self showHudMessage:@"Has been copied!"];
+    }
+    else
+    {
+        [self showHudMessage:@"wating for get code!"];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -20,6 +20,7 @@
 #import "TTCoreDataClass.h"
 
 #import "TTYoutubuViewController.h"
+#import "TTPlatformCustomViewController.h"
 
 #import "CommanParameters.h"
 
@@ -67,31 +68,9 @@
     self.title = @"Stream";
     
     self.view.backgroundColor = [UIColor TTBackLightGrayColor];
-    //顶部
-    UIImageView *  _topBg=[[UIImageView alloc] initWithImage:nil];
-    _topBg.backgroundColor = [UIColor whiteColor];
-    _topBg.frame = CGRectMake(0, 0, ScreenWidth, 64);
-    _topBg.contentMode=UIViewContentModeScaleToFill;
-    [self.view addSubview:_topBg];
     
-     UIButton * _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
-    [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-    [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view  addSubview:_backBtn];
+    [self configNavigationWithTitle:@"stream" rightButtonTitle:nil];
     
-     UILabel * _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, ScreenWidth - 80*2, 44)];
-
-    _titleLabel.text = @"Stream";
-    _titleLabel.font = [UIFont systemFontOfSize: 20];
-    _titleLabel.backgroundColor = [UIColor clearColor];
-    _titleLabel.textColor = [UIColor TTLightBlueColor];
-    _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.numberOfLines = 0;
-    [self.view addSubview:_titleLabel];
     
     [self.view addSubview:self.collectionView];
     
@@ -173,7 +152,8 @@
             break;
         case 5://Custom
         {
-            
+            TTPlatformCustomViewController * vc = [[TTPlatformCustomViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
             
@@ -368,7 +348,8 @@
                 break;
             case 5://Custom
             {
-                
+                TTPlatformCustomViewController * vc = [[TTPlatformCustomViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
                 

@@ -20,8 +20,8 @@
     [self.view addSubview:_topBg];
     
     UIButton * _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 20, 44, 44);
-    [_backBtn setImage:[UIImage imageNamed:@"icon_back_blue"] forState:UIControlStateNormal];
+    _backBtn.frame = CGRectMake(15, 20, 44, 44);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -59,6 +59,7 @@
 
 - (void)showHudMessage:(NSString *)string
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:HUD];
         HUD.labelText = string;
@@ -70,6 +71,7 @@
             //[HUD release];
             //HUD = nil;
         }];
+    });
     
 }
 

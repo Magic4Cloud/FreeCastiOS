@@ -45,6 +45,14 @@
  @return 
  */
 - (PlatformModel *)localSelectedPlatform;
+
+/**
+ 根据名字获取平台信息
+
+ @param name 平台名字
+ @return PlatformModel
+ */
+- (PlatformModel *)getPlatformWithName:(NSString *)name;
 /**
  选中某个平台
 
@@ -55,4 +63,5 @@
  清除所有数据
  */
 - (void)cleanUpAllData;
+
 @end

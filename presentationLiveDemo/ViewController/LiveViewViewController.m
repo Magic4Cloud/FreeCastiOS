@@ -205,8 +205,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
     [_videoView addGestureRecognizer:singleTap];
     _videoView.backgroundColor = [UIColor blackColor];
-//    [_videoView startGetYUVData:YES];
-
+    //    [_videoView startGetYUVData:YES];
+    
     
     [_videoView set_log_level:4];
     [_videoView sound:YES];
@@ -358,8 +358,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(0, 20, viewH*60/totalHeight, viewH*44/totalHeight);
-//    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-//    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
+    //    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
@@ -367,7 +367,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _connectImg=[[UIImageView alloc]init];
     _connectImg.image=[UIImage imageNamed:@"wifi"];
     _connectImg.frame = CGRectMake(viewH*66/totalHeight, viewH*23/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
-//    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
+    //    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
     _connectImg.contentMode=UIViewContentModeScaleToFill;
     [_topBg addSubview:_connectImg];
     
@@ -381,7 +381,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _topLabel.numberOfLines = 0;
     [_topBg addSubview:_topLabel];
     
-        
+    
     NSMutableArray * buttonFrameArray = [NSMutableArray array];
     CGFloat buttonWidth = 30.f;
     CGFloat buttonMargin = 31.5;
@@ -916,19 +916,19 @@ bool _isTakePhoto=NO;
     _isConfig=YES;
     _isBroswer=YES;
     //[self _scaleBtnClick:0];
-//    _streamView.hidden=NO;
-//    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-//    [self prefersStatusBarHidden:YES];
-//    
-//    self.view.transform=CGAffineTransformIdentity;
-//    self.view.frame=CGRectMake(0, 0, viewW, viewH);
+    //    _streamView.hidden=NO;
+    //    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    //    [self prefersStatusBarHidden:YES];
+    //
+    //    self.view.transform=CGAffineTransformIdentity;
+    //    self.view.frame=CGRectMake(0, 0, viewW, viewH);
     
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     
     PasswordViewController *v = [[PasswordViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
-
+    
 }
 
 /**
@@ -938,8 +938,8 @@ bool _isTakePhoto=NO;
 -(void)_liveStreamBtnClick{
     
     //测试  开直播
-//    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
-//    return;
+    //    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+    //    return;
     
     if (_liveCameraSource == IphoneBackCamera) {
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
@@ -953,11 +953,11 @@ bool _isTakePhoto=NO;
     }
     NSLog(@"直播");
     if(_isLiving==0){
-//        if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
-//             ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
-//            [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
-//            return;
-//        }
+        //        if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
+        //             ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
+        //            [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
+        //            return;
+        //        }
         
         _isExit=NO;
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
@@ -1046,8 +1046,8 @@ int valOrientation;
 {
     if (result.Device_ID_Arr.count > 0) {
         
-                //[_videoView take_imageRef:YES];
-//        _isLiving=1;
+        //[_videoView take_imageRef:YES];
+        //        _isLiving=1;
         
         
         //使用扫描到的第一个设备
@@ -1071,10 +1071,10 @@ int valOrientation;
         }
         
         [self getDeviceConfig];
-
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//
-//        });
+        
+        //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //
+        //        });
         
         
         NSLog(@"start play==%@",urlString);
@@ -1083,13 +1083,13 @@ int valOrientation;
         [_videoView startGetYUVData:YES];
         [_videoView startGetAudioData:YES];
         [_videoView startGetH264Data:YES];
-
+        
         self.videoisplaying = YES;
         if (_isLiveView) {
             
-//            [NSThread detachNewThreadSelector:@selector(GetStreamStatus) toTarget:self withObject:nil];
-//            [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
-//            [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
+            //            [NSThread detachNewThreadSelector:@selector(GetStreamStatus) toTarget:self withObject:nil];
+            //            [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
+            //            [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
         }
         
         
@@ -1125,13 +1125,13 @@ int valOrientation;
         resolution=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
             if ([resolution compare:@"3"]==NSOrderedSame) {
-//                [self set1080P];
+                //                [self set1080P];
             }
             else if ([resolution compare:@"2"]==NSOrderedSame) {
-//                [self set720P];
+                //                [self set720P];
             }
             else{
-//                [self set480P];
+                //                [self set480P];
             }
         });
         NSLog(@"resolution=%@",resolution);
@@ -1149,7 +1149,7 @@ int valOrientation;
             if (((int)value%100)!=0) {
                 value=value+100;
             }
-//            [self setVideoRate:value];
+            //            [self setVideoRate:value];
         });
         NSLog(@"quality******************=%@",quality);
     }
@@ -1167,14 +1167,14 @@ int valOrientation;
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
         fps=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
-//            [self setVideoFrameRate:[fps intValue]];
+            //            [self setVideoFrameRate:[fps intValue]];
         });
         
         NSLog(@"fps**************************=%@",fps);
     }
     
     _session = [self getSessionWithRakisrak:YES];
-
+    
 }
 
 
@@ -1219,12 +1219,12 @@ int valOrientation;
             else
             {
                 //[self openLivingSession:1];
-//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                    [self openLivingSession:5];
-//                    
-//                });
-
-//                [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+                //                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                //                    [self openLivingSession:5];
+                //
+                //                });
+                
+                //                [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
             }
             
             break;
@@ -1304,7 +1304,7 @@ int valOrientation;
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
-//    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
+    //    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
     _isPlaying=YES;
     if(_isLiving==2){
         [self.session upload_PauseImg];
@@ -1432,24 +1432,24 @@ CGFloat iy ;
     NSLog(@"startActivityIndicatorView");
     ix = self.view.frame.origin.x+(viewW/2-25);
     iy = self.view.frame.origin.y+(viewH/2-25);
-//    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
+    //    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
     ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(viewW*304/totalWeight,129*viewH/totalHeight, viewW*58.5/totalWeight, viewH*58.5/totalHeight)];
     
     ActivityIndicatorView.image=[UIImage imageNamed:@"logo_148"];
-//    CABasicAnimation* rotationAnimation;
-//    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-//    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
-//    rotationAnimation.duration = 0.5;
-//    rotationAnimation.cumulative = YES;
-//    rotationAnimation.repeatCount = 10000000000000;
-//    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
+    //    CABasicAnimation* rotationAnimation;
+    //    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    //    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    //    rotationAnimation.duration = 0.5;
+    //    rotationAnimation.cumulative = YES;
+    //    rotationAnimation.repeatCount = 10000000000000;
+    //    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
     ;
     [self.view addSubview:ActivityIndicatorView];
     ActivityIndicatorViewisenable = YES;
     
-//    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
+    //    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
     _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(viewW*295/totalWeight,202.5*viewH/totalHeight, viewW*79.5/totalWeight, viewH*12.5/totalHeight)];
-//    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
+    //    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     _tipLabel.text = @"Connecting…";
     _tipLabel.textColor = MAIN_COLOR;
     _tipLabel.font = [UIFont systemFontOfSize:12.5];
@@ -1575,17 +1575,24 @@ CGFloat iy ;
 
 #pragma mark-- Toast显示示例
 -(void)showAllTextDialog:(NSString *)str{
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    HUD.labelText = str;
-    HUD.mode = MBProgressHUDModeText;
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        sleep(1);
-    } completionBlock:^{
-        [HUD removeFromSuperview];
-        //[HUD release];
-        //HUD = nil;
-    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        //更新UI操作
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        HUD.labelText = str;
+        HUD.mode = MBProgressHUDModeText;
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            sleep(1);
+        } completionBlock:^{
+            [HUD removeFromSuperview];
+            //[HUD release];
+            //HUD = nil;
+        }];
+        
+    });
+
 }
 
 #pragma mark-- 获取电量
@@ -1797,7 +1804,7 @@ CGFloat iy ;
     videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
     videoConfiguration .videoMinBitRate = 200*1024;     //最小比特率
     videoConfiguration .videoFrameRate  = 30;            //帧率
-
+    
     videoConfiguration .videoMaxKeyframeInterval = 60; //最大关键帧间隔数
     
     
@@ -1805,21 +1812,21 @@ CGFloat iy ;
     
     //现在的
     //    videoConfiguration .videoBitRate = 800*1024;        //比特率
-//    NSInteger videoBitRate = [quality integerValue];
+    //    NSInteger videoBitRate = [quality integerValue];
     
     
     
-//    float value =[quality intValue]*3000/60.0;
-//    
-//    videoConfiguration.videoBitRate = value *1000;                   //比特率
-//    videoConfiguration.videoMaxBitRate = (value+100) *1000;           //最大比特率
-//    videoConfiguration.videoMinBitRate = (value -100) *1000;          //最小比特率
-//
-//    NSInteger pushFps = [fps integerValue];
-//    videoConfiguration.videoFrameRate = pushFps;               //帧率 fps
-//    videoConfiguration.videoMaxFrameRate = pushFps;
-//    videoConfiguration.videoMinFrameRate = pushFps-5;
-////    videoConfiguration .videoMaxKeyframeInterval = pushFps +1;  //最大关键帧间隔数
+    //    float value =[quality intValue]*3000/60.0;
+    //
+    //    videoConfiguration.videoBitRate = value *1000;                   //比特率
+    //    videoConfiguration.videoMaxBitRate = (value+100) *1000;           //最大比特率
+    //    videoConfiguration.videoMinBitRate = (value -100) *1000;          //最小比特率
+    //
+    //    NSInteger pushFps = [fps integerValue];
+    //    videoConfiguration.videoFrameRate = pushFps;               //帧率 fps
+    //    videoConfiguration.videoMaxFrameRate = pushFps;
+    //    videoConfiguration.videoMinFrameRate = pushFps-5;
+    ////    videoConfiguration .videoMaxKeyframeInterval = pushFps +1;  //最大关键帧间隔数
     videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
     
     videoConfiguration .landscape = YES;
@@ -1832,128 +1839,14 @@ CGFloat iy ;
         
     }
     
-
-    
-    /* case LFLiveVideoQuality_Low1:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset360x640;
-     configuration.videoFrameRate = 15;
-     configuration.videoMaxFrameRate = 15;
-     configuration.videoMinFrameRate = 10;
-     configuration.videoBitRate = 500 * 1000;
-     configuration.videoMaxBitRate = 600 * 1000;
-     configuration.videoMinBitRate = 400 * 1000;
-     configuration.videoSize = CGSizeMake(360, 640);
-     }
-     break;
-     case LFLiveVideoQuality_Low2:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset360x640;
-     configuration.videoFrameRate = 24;
-     configuration.videoMaxFrameRate = 24;
-     configuration.videoMinFrameRate = 12;
-     configuration.videoBitRate = 600 * 1000;
-     configuration.videoMaxBitRate = 720 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(360, 640);
-     }
-     break;
-     case LFLiveVideoQuality_Low3:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset360x640;
-     configuration.videoFrameRate = 30;
-     configuration.videoMaxFrameRate = 30;
-     configuration.videoMinFrameRate = 15;
-     configuration.videoBitRate = 800 * 1000;
-     configuration.videoMaxBitRate = 960 * 1000;
-     configuration.videoMinBitRate = 600 * 1000;
-     configuration.videoSize = CGSizeMake(360, 640);
-     }
-     break;
-     case LFLiveVideoQuality_Medium1:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset540x960;
-     configuration.videoFrameRate = 15;
-     configuration.videoMaxFrameRate = 15;
-     configuration.videoMinFrameRate = 10;
-     configuration.videoBitRate = 800 * 1000;
-     configuration.videoMaxBitRate = 960 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(540, 960);
-     }
-     break;
-     case LFLiveVideoQuality_Medium2:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset540x960;
-     configuration.videoFrameRate = 24;
-     configuration.videoMaxFrameRate = 24;
-     configuration.videoMinFrameRate = 12;
-     configuration.videoBitRate = 800 * 1000;
-     configuration.videoMaxBitRate = 960 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(540, 960);
-     }
-     break;
-     case LFLiveVideoQuality_Medium3:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset540x960;
-     configuration.videoFrameRate = 30;
-     configuration.videoMaxFrameRate = 30;
-     configuration.videoMinFrameRate = 15;
-     configuration.videoBitRate = 1000 * 1000;
-     configuration.videoMaxBitRate = 1200 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(540, 960);
-     }
-     break;
-     case LFLiveVideoQuality_High1:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
-     configuration.videoFrameRate = 15;
-     configuration.videoMaxFrameRate = 15;
-     configuration.videoMinFrameRate = 10;
-     configuration.videoBitRate = 1000 * 1000;
-     configuration.videoMaxBitRate = 1200 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(720, 1280);
-     }
-     break;
-     case LFLiveVideoQuality_High2:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
-     configuration.videoFrameRate = 24;
-     configuration.videoMaxFrameRate = 24;
-     configuration.videoMinFrameRate = 12;
-     configuration.videoBitRate = 1200 * 1000;
-     configuration.videoMaxBitRate = 1440 * 1000;
-     configuration.videoMinBitRate = 800 * 1000;
-     configuration.videoSize = CGSizeMake(720, 1280);
-     }
-     break;
-     case LFLiveVideoQuality_High3:
-     {
-     configuration.sessionPreset = LFCaptureSessionPreset720x1280;
-     configuration.videoFrameRate = 30;
-     configuration.videoMaxFrameRate = 30;
-     configuration.videoMinFrameRate = 15;
-     configuration.videoBitRate = 1200 * 1000;
-     configuration.videoMaxBitRate = 1440 * 1000;
-     configuration.videoMinBitRate = 500 * 1000;
-     configuration.videoSize = CGSizeMake(720, 1280);
-     }
-     */
-
-
-    
-
     
     //利用两设备配置 来构造一个直播会话
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-
+    
     NSLog(@"videoConfiguration .videoBitRate:%lu",(unsigned long)videoConfiguration .videoBitRate);
     NSLog(@"videoConfiguration .videoFrameRate:%lu",(unsigned long)videoConfiguration .videoFrameRate);
     NSLog(@"videoConfiguration .videoSize:%@",NSStringFromCGSize(videoConfiguration.videoSize));
-
+    
     
     _session.delegate  = self;
     _session.isRAK=rak;
@@ -1973,48 +1866,42 @@ CGFloat iy ;
     
     
     NSString * rtmpUrl;
-//    rtmpUrl = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=533c7891d289e51ff38f0e464feaead2&time=1499076000&wm=2&wml=1&vr=0";
+    //    rtmpUrl = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=533c7891d289e51ff38f0e464feaead2&time=1499076000&wm=2&wml=1&vr=0";
     if (_selectedPlatformModel) {
         rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
     }
-//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-//    stream.url = @"rtmp://send1a.douyu.com/live/2205675rQWONEYgN?wsSecret=c50cb20b505243cf097fa648aebe9de0&wsTime=596099d2&wsSeek=off";
+    //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
+    //    stream.url = @"rtmp://send1a.douyu.com/live/2205675rQWONEYgN?wsSecret=c50cb20b505243cf097fa648aebe9de0&wsTime=596099d2&wsSeek=off";
     ;
     
     
-//    stream.url = @"rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju";
+    //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju";
     
     //rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju
-//    stream.url = @"rtmp://pub.mudu.tv/watch/9zee4c";
-//    stream.url = @"rtmp://wspush.easyvaas.com/live/6k1KgpA6UlNqSBJj?key=6N9D7Qmi6NQEU8D24lJp82G4fi4IiRqRSv6T0nGVVYyRQoMwZYBbnGoampbI82g8I";
+    //    stream.url = @"rtmp://pub.mudu.tv/watch/9zee4c";
+    //    stream.url = @"rtmp://wspush.easyvaas.com/live/6k1KgpA6UlNqSBJj?key=6N9D7Qmi6NQEU8D24lJp82G4fi4IiRqRSv6T0nGVVYyRQoMwZYBbnGoampbI82g8I";
     if (rtmpUrl) {
         stream.url = rtmpUrl;
     }
-        else
-        {
-            //没有推流地址
     
-    
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-        if (stream.url==nil) {
-            [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
-            return;
-        }
-        if ([stream.url isEqualToString:@""]) {
-            [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
-            return;
-        }
-        if ([stream.url isEqualToString:NSLocalizedString(@"address_text", nil)]) {
-            [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
-            return;
-        }
+    else
+    {
+        //没有推流地址
         
-    });
-//    [self Save_Paths:stream.url :STREAM_URL_KEY];
-//    [self addUrls];
+        
+    }
+    
+    
+    if (stream.url==nil || stream.url.length == 0) {
+        [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
+        return;
+    }
+    
+    
+    //    [self Save_Paths:stream.url :STREAM_URL_KEY];
+    //    [self addUrls];
     _isLiving = 1;
+    
     if (_session) {
         _session.dataSoureType = type;
         [_session startLive:stream];
@@ -2023,7 +1910,7 @@ CGFloat iy ;
     {
         [self showAllTextDialog:NSLocalizedString(@"还没准备好直播", nil)];
     }
-
+    
 }
 
 /**
@@ -2067,7 +1954,7 @@ CGFloat iy ;
 
 -(void)liveSession:(LFLiveSession *)session liveStateDidChange:(LFLiveState)state{
     NSString *networkStatusInfo;
-
+    
     switch (state) {
         case LFLiveReady:
             networkStatusInfo = @"准备....";
@@ -2091,7 +1978,7 @@ CGFloat iy ;
     }
     
     NSLog(@"liveStateDidChange : networkStatusInfo :%@",networkStatusInfo);
-
+    
 }
 
 
