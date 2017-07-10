@@ -69,7 +69,6 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     [_activity2 startAnimating];
 
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
-
         _accessTokenDic = dic;
         [self getstream];
     }];
@@ -91,8 +90,6 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     NSString * url = @"https://www.googleapis.com/youtube/v3/liveBroadcasts?part=contentDetails&broadcastStatus=all&broadcastType=persistent";
     [TTNetMannger getRequestUrl:url param:nil headerDic:headerDic completionHandler:^(NSDictionary *dic) {
     
-        
-        
         NSArray * item = dic[@"items"];
         NSDictionary * firstDic = [item firstObject];
         NSDictionary * contentDetails = firstDic[@"contentDetails"];
@@ -203,8 +200,14 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 //done
 - (void)TTRightButtonClick
 {
-    if (_streamName) {
+    
+    if (_streamName)
+    {
         [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        [self showHudMessage:NSLocalizedString(@"getyoutubeStreamKeyError", nil)];
     }
 }
 
@@ -218,11 +221,19 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 
 - (IBAction)copyCodeButtonClick:(id)sender {
     UIButton * button = (UIButton *)sender;
-    UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = button.currentTitle;
     
-    [self showHudMessage:@"Has been copied!"];
-
+    if ([button.currentTitle isEqualToString:@"Loading..."])
+    {
+        UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = button.currentTitle;
+        
+        [self showHudMessage:@"Has been copied!"];
+    }
+    else
+    {
+        [self showHudMessage:@"wating for get code!"];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -785,7 +785,6 @@ NSString *_lastDate=@"";
 {
     CollectionViewCell *cell = (CollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
 
-    NSLog(@"选择%ld",indexPath.row);
     NSInteger sec = indexPath.section;
     NSInteger row = indexPath.row;
     NSMutableArray *media=[Medias[sec] getMedias];

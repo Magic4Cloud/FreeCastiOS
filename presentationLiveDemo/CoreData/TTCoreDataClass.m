@@ -210,8 +210,36 @@ static  TTCoreDataClass * _instance;
     {
         return nil;
     }
-    
 }
+
+- (PlatformModel *)getPlatformWithName:(NSString *)name
+{
+    //    1.创建NSFetchRequest查询请求对象
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    //    2.设置需要查询的实体描述NSEntityDescription
+    NSEntityDescription *desc = [NSEntityDescription entityForName:entityName
+                                            inManagedObjectContext:self.context];
+    request.entity = desc;
+    
+    NSString * filterStr = [NSString stringWithFormat:@"name = '%@'",name];
+    //    4.设置条件过滤（可选）
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:filterStr];
+    request.predicate = predicate;
+    //    5.执行查询请求
+    NSError *error = nil;
+    // NSManagedObject对象集合
+    NSArray *objs = [self.context executeFetchRequest:request error:&error];
+    // 查询结果
+    if (objs)
+    {
+        return [objs firstObject];
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 
 - (void)setlocalSelectedPlatformName:(NSString *)platformName
 {

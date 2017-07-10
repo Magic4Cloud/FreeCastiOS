@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3D194C35844AFC4D19695778 /* libPods-presentationLiveDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */; };
+		7A3A9B741F132EE1001EDAAF /* TTTwicthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */; };
+		7A3A9B7C1F13337C001EDAAF /* TTPlatformCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */; };
+		7A3A9B7D1F13337C001EDAAF /* TTPlatformCustomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */; };
 		7A4E13621F05F60C00E53E38 /* TTNetMannger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E13611F05F60C00E53E38 /* TTNetMannger.m */; };
 		7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A92FADA1F04FD5000DC9178 /* WebViewController.m */; };
 		7A92FADD1F04FD5000DC9178 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A92FADB1F04FD5000DC9178 /* WebViewController.xib */; };
@@ -717,6 +720,11 @@
 /* Begin PBXFileReference section */
 		341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
 		71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-presentationLiveDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A3A9B721F132EE1001EDAAF /* TTTwicthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTwicthViewController.h; sourceTree = "<group>"; };
+		7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTwicthViewController.m; sourceTree = "<group>"; };
+		7A3A9B791F13337C001EDAAF /* TTPlatformCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlatformCustomViewController.h; sourceTree = "<group>"; };
+		7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlatformCustomViewController.m; sourceTree = "<group>"; };
+		7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTPlatformCustomViewController.xib; sourceTree = "<group>"; };
 		7A4E13601F05F60C00E53E38 /* TTNetMannger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTNetMannger.h; sourceTree = "<group>"; };
 		7A4E13611F05F60C00E53E38 /* TTNetMannger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTNetMannger.m; sourceTree = "<group>"; };
 		7A92FAD91F04FD5000DC9178 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
@@ -1722,6 +1730,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A3A9B711F132EBA001EDAAF /* Twicth */ = {
+			isa = PBXGroup;
+			children = (
+				7A3A9B721F132EE1001EDAAF /* TTTwicthViewController.h */,
+				7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */,
+			);
+			path = Twicth;
+			sourceTree = "<group>";
+		};
+		7A3A9B751F1332D2001EDAAF /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				7A3A9B791F13337C001EDAAF /* TTPlatformCustomViewController.h */,
+				7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */,
+				7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
 		7A4E135F1F05F60C00E53E38 /* NetWorkMannger */ = {
 			isa = PBXGroup;
 			children = (
@@ -1759,6 +1786,8 @@
 		7A9830F11F04E4A8000FE44D /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				7A3A9B751F1332D2001EDAAF /* Custom */,
+				7A3A9B711F132EBA001EDAAF /* Twicth */,
 				7A9830F21F04E558000FE44D /* TTYoutubuViewController.h */,
 				7A9830F31F04E558000FE44D /* TTYoutubuViewController.m */,
 				7A9830F41F04E558000FE44D /* TTYoutubuViewController.xib */,
@@ -3696,6 +3725,7 @@
 				84DA848F1E88E7AC0027B06A /* HDMI_sel@3x.png in Resources */,
 				8488BD7B1DB7792B006357AD /* 01_00039.png in Resources */,
 				844E02931DE42F0600A31374 /* Firmware update_update_icon@3x.png in Resources */,
+				7A3A9B7D1F13337C001EDAAF /* TTPlatformCustomViewController.xib in Resources */,
 				8488BD821DB7792B006357AD /* 01_00046.png in Resources */,
 				84725C391E5C016E00E80045 /* 22.png in Resources */,
 				84DA85531E88E7AC0027B06A /* 06_00044.png in Resources */,
@@ -3930,6 +3960,7 @@
 				8488BE1D1DB77992006357AD /* HttpRequest.m in Sources */,
 				8488BE2A1DB77992006357AD /* UIViewLinkmanTouch.m in Sources */,
 				8488BCA71DB776ED006357AD /* LFLiveSessionWithPicSource.m in Sources */,
+				7A3A9B741F132EE1001EDAAF /* TTTwicthViewController.m in Sources */,
 				8464BAE61D95110200B67944 /* UIColor+Hex.m in Sources */,
 				8488BCA81DB776ED006357AD /* LivingView.m in Sources */,
 				7A9830E11F04B332000FE44D /* CollectionReusableFooterView.m in Sources */,
@@ -3960,6 +3991,7 @@
 				8464BAE81D95110200B67944 /* MBProgressHUD.m in Sources */,
 				84E634A71E5576F00049573E /* ImageHelper.m in Sources */,
 				84B988EB1DC0B4A500BE7FCE /* SupportViewController.m in Sources */,
+				7A3A9B7C1F13337C001EDAAF /* TTPlatformCustomViewController.m in Sources */,
 				8488BCA91DB776ED006357AD /* LivingViewController.m in Sources */,
 				7A9830F91F04E603000FE44D /* UIViewController+Navigation.m in Sources */,
 				84B988FD1DC0B53200BE7FCE /* EditionViewController.m in Sources */,

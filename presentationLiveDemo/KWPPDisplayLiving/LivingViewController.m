@@ -59,7 +59,7 @@ int count11 =1;
          *  双声道， 128Kbps的比特率，44100HZ的采样率
          */
         LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration new];
-        audioConfiguration .numberOfChannels =2;
+        audioConfiguration .numberOfChannels = 2;
         audioConfiguration .audioBitrate = LFLiveAudioBitRate_128Kbps;
         audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_44100Hz;
         

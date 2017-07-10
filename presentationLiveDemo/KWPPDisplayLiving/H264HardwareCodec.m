@@ -66,7 +66,7 @@
         
         pixelBufferRef = NULL;
         [self infalteStartCodeWithNalunitData:&nalUnit];
-        //NSLog(@"NALUint Type: %d.", nalUnit.type);
+        NSLog(@"NALUint Type: %d.", nalUnit.type);
         
         switch (nalUnit.type) {
             case NALUTypeIFrame://IFrame
@@ -123,7 +123,7 @@
         }
     }
     
-    //NSLog(@"The AVFrame data size:%d", offset);
+    NSLog(@"The AVFrame data size:%d", offset);
     return NULL;
 }
 
@@ -294,13 +294,13 @@ static void decompressionOutputCallbackRecord(void * CM_NULLABLE decompressionOu
                     CGImageRelease(videoImage);
                 }
             }
-//            if (sampleBufferRef) {
+//            if (sampleBufferRef != NULL) {
 //                CFRelease(sampleBufferRef);
 //            }
             
         }
     }
-//    if (blockBufferRef) {
+//    if (blockBufferRef != NULL) {
 //        CFRelease(blockBufferRef);
 //
 //    }
