@@ -194,6 +194,8 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     [_linkLabel addGestureRecognizer:tap];
     _linkLabel.userInteractionEnabled = YES;
     
+    _codeButton.layer.cornerRadius = 15;
+    
     
 }
 

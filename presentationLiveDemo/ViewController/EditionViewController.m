@@ -76,7 +76,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     
     _appVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*17.5/totalHeight)];
     _appVersionLabel.center=CGPointMake(_appVersionLabel.center.x, _topName.center.y);
-    _appVersionLabel.text = [NSString stringWithFormat:@"Freecast %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    _appVersionLabel.text = [NSString stringWithFormat:@"FREESTREAM %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     _appVersionLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _appVersionLabel.backgroundColor = [UIColor clearColor];
     _appVersionLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];

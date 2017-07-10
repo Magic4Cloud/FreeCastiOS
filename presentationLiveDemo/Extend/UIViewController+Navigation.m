@@ -20,8 +20,8 @@
     [self.view addSubview:_topBg];
     
     UIButton * _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 20, 44, 44);
-    [_backBtn setImage:[UIImage imageNamed:@"icon_back_blue"] forState:UIControlStateNormal];
+    _backBtn.frame = CGRectMake(16, 32, 24, 24);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -30,7 +30,7 @@
     
     UILabel * _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, ScreenWidth - 80*2, 44)];
     
-    _titleLabel.text = @"Stream";
+    _titleLabel.text = @"Authentication";
     _titleLabel.font = [UIFont systemFontOfSize: 20];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textColor = [UIColor TTLightBlueColor];
