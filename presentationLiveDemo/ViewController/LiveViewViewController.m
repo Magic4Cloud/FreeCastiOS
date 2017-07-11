@@ -181,41 +181,10 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     [self prefersStatusBarHidden:YES];
     NSLog(@"viewH2=%f,viewW2=%f",viewH,viewW);
     
-    _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*_height/_width)];
-    _videoView.userInteractionEnabled = YES;
-    _livingPreView = [[UIView alloc] initWithFrame:self.view.bounds];
-    //视频预览
-    if (viewH<viewW*_height/_width) {
-        _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
-        _livingPreView.frame = CGRectMake(0, 0, viewH*_width/_height, viewH);
-        [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
-        NSLog(@"w1=%f,h1=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-    }
-    else{
-        _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
-        _livingPreView.frame = CGRectMake(0, 0, viewW, viewW*_height/_width);
-        
-        [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
-        NSLog(@"w2=%f,h2=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-    }
-    
-    _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
-    _livingPreView.center = CGPointMake(viewW*0.5, viewH*0.5);
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
-    [_videoView addGestureRecognizer:singleTap];
-    _videoView.backgroundColor = [UIColor blackColor];
-    //    [_videoView startGetYUVData:YES];
-    
-    
-    [_videoView set_log_level:4];
-    [_videoView sound:YES];
-    [_videoView delegate:self];
-    [self.view addSubview:_videoView];
     
     
     //添加系统相机展示view
-    
+    _livingPreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     _livingPreView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_livingPreView];
     _livingPreView.hidden = YES;
@@ -907,28 +876,14 @@ bool _isTakePhoto=NO;
 /**
  *  跳转到配置推流信息的界面
  */
--(void)_configureBtnClick{
-    NSLog(@"配置推流信息");
-    //_isExit=YES;
-    //StreamingViewController *v = [[StreamingViewController alloc] init];
-    //[self.navigationController pushViewController: v animated:true];
-    //[self presentViewController:v animated:YES completion:nil];
+-(void)_configureBtnClick
+{
     _isConfig=YES;
     _isBroswer=YES;
-    //[self _scaleBtnClick:0];
-    //    _streamView.hidden=NO;
-    //    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    //    [self prefersStatusBarHidden:YES];
-    //
-    //    self.view.transform=CGAffineTransformIdentity;
-    //    self.view.frame=CGRectMake(0, 0, viewW, viewH);
-    
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    
     PasswordViewController *v = [[PasswordViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
-    
 }
 
 /**
@@ -937,33 +892,31 @@ bool _isTakePhoto=NO;
 #pragma mark - 点击直播按钮
 -(void)_liveStreamBtnClick{
     
-    //测试  开直播
-    //    [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
-    //    return;
+
     
-    if (_liveCameraSource == IphoneBackCamera) {
-        [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
-        return;
-    }
-    
-    
-    if (!play_success) {
-        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-        return;
-    }
-    NSLog(@"直播");
-    if(_isLiving==0){
-        //        if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
-        //             ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
-        //            [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
-        //            return;
-        //        }
-        
-        _isExit=NO;
+    //如果是系统摄像头
+    if (_liveCameraSource == IphoneBackCamera)
+    {
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
     }
-    else{
-        [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];
+    else
+    {
+        if (!play_success)
+        {
+            [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+            return;
+        }
+
+        //RAK设备
+        if(_isLiving==0)
+        {
+            _isExit=NO;
+            [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+        }
+        else
+        {
+            [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];
+        }
     }
 }
 
@@ -1001,11 +954,11 @@ int valOrientation;
     }
     else if(type==1){
         if (self.interfaceOrientation==UIDeviceOrientationLandscapeRight) {
-            NSLog(@"Right");
+//            NSLog(@"Right");
             valOrientation = UIInterfaceOrientationLandscapeLeft;
         }
         else{
-            NSLog(@"other");
+//            NSLog(@"other");
             valOrientation = UIInterfaceOrientationLandscapeRight;
         }
     }
@@ -1042,13 +995,39 @@ int valOrientation;
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
+- (LX520View *)videoView
+{
+    if (!_videoView) {
+        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*_height/_width)];
+        _videoView.userInteractionEnabled = YES;
+        
+        //视频预览
+        if (viewH<viewW*_height/_width) {
+            _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
+            [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
+        }
+        else{
+            _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
+            [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
+        }
+        
+        _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+        [_videoView addGestureRecognizer:singleTap];
+        _videoView.backgroundColor = [UIColor blackColor];
+        
+        [_videoView set_log_level:4];
+        [_videoView sound:YES];
+        [_videoView delegate:self];
+        [self.view insertSubview:_videoView atIndex:0];
+    }
+    
+    return _videoView;
+}
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
-        
-        //[_videoView take_imageRef:YES];
-        //        _isLiving=1;
-        
         
         //使用扫描到的第一个设备
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
@@ -1072,17 +1051,12 @@ int valOrientation;
         
         [self getDeviceConfig];
         
-        //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        //
-        //        });
-        
-        
         NSLog(@"start play==%@",urlString);
-        [_videoView play:urlString useTcp:NO];
-        [_videoView sound:audioisEnable];
-        [_videoView startGetYUVData:YES];
-        [_videoView startGetAudioData:YES];
-        [_videoView startGetH264Data:YES];
+        [self.videoView play:urlString useTcp:NO];
+        [self.videoView sound:audioisEnable];
+        [self.videoView startGetYUVData:YES];
+        [self.videoView startGetAudioData:YES];
+        [self.videoView startGetH264Data:YES];
         
         self.videoisplaying = YES;
         if (_isLiveView) {
@@ -1100,8 +1074,7 @@ int valOrientation;
         dispatch_async(dispatch_get_main_queue(),^ {
             _tipLabel.hidden=YES;
             [self stopActivityIndicatorView];
-            _session = [self getSessionWithRakisrak:NO];
-            self.session.captureDevicePosition = AVCaptureDevicePositionBack;
+            _session = [self getSessionWithSystemCamera];
             _livingPreView.hidden = NO;
             play_success = YES;
             _liveCameraSource = IphoneBackCamera;
@@ -1272,7 +1245,6 @@ int valOrientation;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-    NSLog(@"GetAudioData size==%d  _isLiving:%d  data：%s",size,_isLiving,data);
     if(_isLiving==1){
         
         AudioBufferList audioBufferList;
@@ -1283,16 +1255,12 @@ int valOrientation;
         
         [self.session upload_audio:audioBufferList];
     }
-    else{
-        
-    }
 }
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-    NSLog(@"GetH264Data==size:%d width:%d height:%d _isLiving:%d",size,width,height,_isLiving);
+
     if(_isLiving==1){
-        
         [self.session upload_h264:size :data];
     }
 }
@@ -1777,15 +1745,35 @@ CGFloat iy ;
 
 #pragma mark - *********************** session 推流参数配置***********************************
 /**
- *  重写构造器：构造直播会话，包括配置录制的音视频格式数据
+ *  系统摄像头的直播参数
  */
+
+- (LFLiveSessionWithPicSource *)getSessionWithSystemCamera
+{
+    /**
+     *  构造音频配置器
+     *       */
+    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Medium];
+    
+    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 landscape:YES];
+    
+    //利用两设备配置 来构造一个直播会话
+    _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+    _session.captureDevicePosition = AVCaptureDevicePositionBack;
+    _session.delegate  = self;
+    _session.isRAK=NO;
+    _session.running =YES;
+    _session.preView =_livingPreView;
+    return _session;
+}
+
+//RAK设备的直播参数
 
 - (LFLiveSessionWithPicSource *)getSessionWithRakisrak:(BOOL)rak
 {
     /**
      *  构造音频配置器
-     *  双声道， 128Kbps的比特率，44100HZ的采样率
-     */
+     *       */
     LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration new];
     audioConfiguration .numberOfChannels = 2;
     audioConfiguration .audioBitrate = LFLiveAudioBitRate_96Kbps;
@@ -1795,11 +1783,35 @@ CGFloat iy ;
      * 构造视频配置
      * 窗体大小，比特率，最大比特率，最小比特率，帧率，最大间隔帧数，分辨率（注意视频大小一定要小于分辨率）
      */
-    NSLog(@"_width=%d,_height=%d",_width,_height);
     LFLiveVideoConfiguration  *videoConfiguration = [LFLiveVideoConfiguration new];
     
+    float value         = [quality intValue]*3000/52.0; //设备的比特率
+    int  videoFrameRate = fps;                          //设备的fps
     
-    //原来的
+    CGFloat videosizeWidth  = 0.0;
+    CGFloat videosizeHeight = 0.0;
+    //设备的分辨率
+    if ([resolution integerValue] == 3)
+    {
+        videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
+        videosizeWidth  = 720;
+        videosizeHeight = 1280;
+    }
+    else if ([resolution integerValue] == 2)
+    {
+        videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
+        videosizeWidth  = 720;
+        videosizeHeight = 1280;
+
+    }
+    else
+    {
+        videoConfiguration .sessionPreset = LFCaptureSessionPreset540x960;
+        videosizeWidth  = 540;
+        videosizeHeight = 960;
+    }
+
+    
     videoConfiguration .videoBitRate    = 800*1024;       //比特率
     videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
     videoConfiguration .videoMinBitRate = 200*1024;     //最小比特率
@@ -1809,45 +1821,21 @@ CGFloat iy ;
     
     
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
-    
-    //现在的
-    //    videoConfiguration .videoBitRate = 800*1024;        //比特率
-    //    NSInteger videoBitRate = [quality integerValue];
-    
-    
-    
-    //    float value =[quality intValue]*3000/60.0;
-    //
-    //    videoConfiguration.videoBitRate = value *1000;                   //比特率
-    //    videoConfiguration.videoMaxBitRate = (value+100) *1000;           //最大比特率
-    //    videoConfiguration.videoMinBitRate = (value -100) *1000;          //最小比特率
-    //
-    //    NSInteger pushFps = [fps integerValue];
-    //    videoConfiguration.videoFrameRate = pushFps;               //帧率 fps
-    //    videoConfiguration.videoMaxFrameRate = pushFps;
-    //    videoConfiguration.videoMinFrameRate = pushFps-5;
-    ////    videoConfiguration .videoMaxKeyframeInterval = pushFps +1;  //最大关键帧间隔数
     videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
     
     videoConfiguration .landscape = YES;
-    if (videoConfiguration .landscape) {
-        videoConfiguration .videoSize = CGSizeMake(1280, 720);  //视频大小
+    if (videoConfiguration .landscape)
+    {
+        videoConfiguration .videoSize = CGSizeMake(videosizeHeight, videosizeWidth);  //视频大小
     }
     else
     {
-        videoConfiguration .videoSize = CGSizeMake(720, 1280);  //视频大小
-        
+        videoConfiguration .videoSize = CGSizeMake(videosizeWidth, videosizeHeight);  //视频大小
     }
     
     
     //利用两设备配置 来构造一个直播会话
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-    
-    NSLog(@"videoConfiguration .videoBitRate:%lu",(unsigned long)videoConfiguration .videoBitRate);
-    NSLog(@"videoConfiguration .videoFrameRate:%lu",(unsigned long)videoConfiguration .videoFrameRate);
-    NSLog(@"videoConfiguration .videoSize:%@",NSStringFromCGSize(videoConfiguration.videoSize));
-    
-    
     _session.delegate  = self;
     _session.isRAK=rak;
     _session.running =YES;
@@ -1866,20 +1854,11 @@ CGFloat iy ;
     
     
     NSString * rtmpUrl;
-    //    rtmpUrl = @"rtmp://ps3.live.panda.tv/live_panda/197abc8138d7e56821da74d3a7d10779?sign=533c7891d289e51ff38f0e464feaead2&time=1499076000&wm=2&wml=1&vr=0";
+
     if (_selectedPlatformModel) {
         rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
     }
-    //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/xawu-hm4j-30g0-5udz";
-    //    stream.url = @"rtmp://send1a.douyu.com/live/2205675rQWONEYgN?wsSecret=c50cb20b505243cf097fa648aebe9de0&wsTime=596099d2&wsSeek=off";
-    ;
-    
-    
-    //    stream.url = @"rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju";
-    
-    //rtmp://a.rtmp.youtube.com/live2/mfvd-6qk5-20wt-afju
-    //    stream.url = @"rtmp://pub.mudu.tv/watch/9zee4c";
-    //    stream.url = @"rtmp://wspush.easyvaas.com/live/6k1KgpA6UlNqSBJj?key=6N9D7Qmi6NQEU8D24lJp82G4fi4IiRqRSv6T0nGVVYyRQoMwZYBbnGoampbI82g8I";
+
     if (rtmpUrl) {
         stream.url = rtmpUrl;
     }
@@ -1905,10 +1884,6 @@ CGFloat iy ;
     if (_session) {
         _session.dataSoureType = type;
         [_session startLive:stream];
-    }
-    else
-    {
-        [self showAllTextDialog:NSLocalizedString(@"还没准备好直播", nil)];
     }
     
 }

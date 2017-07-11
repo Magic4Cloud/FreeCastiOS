@@ -222,7 +222,7 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 - (IBAction)copyCodeButtonClick:(id)sender {
     UIButton * button = (UIButton *)sender;
     
-    if ([button.currentTitle isEqualToString:@"Loading..."])
+    if (![button.currentTitle isEqualToString:@"Loading..."])
     {
         UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = button.currentTitle;
