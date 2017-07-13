@@ -102,6 +102,15 @@ static LFLiveSessionWithPicSource * _sharedInstance;
 #pragma mark --
 //LiveStreamInfo类只有默认构造函数， 类中两个属性：音频配置，视频配置均使用默认的值
 //startLive函数： 先将本类initWithAudionConfiguration videoComfiguration 所获取的 音频视频配置 赋值给 本类的属性_streamInfo， 然后启动socket。
+- (void)startRecord
+{
+    [_videoCaptureSource startRecord];
+}
+
+- (void)stopRecord
+{
+    [_videoCaptureSource stopRecord];
+}
 
 /**
  *  开始直播

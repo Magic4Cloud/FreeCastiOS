@@ -30,6 +30,7 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 
 @property (nonatomic, copy) NSString * streamName;
 
+@property (nonatomic, copy) NSString * accesstoken;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity2;
 
@@ -70,7 +71,11 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
         _accessTokenDic = dic;
-        [self getstream];
+        if (dic[@"access_token"]) {
+            _accesstoken = dic[@"access_token"];
+            [self getstream];
+        }
+        
     }];
     
     
@@ -79,17 +84,26 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 }
 - (void)getstream {
     
-//    NSDictionary * paramDic = [NSDictionary dictionaryWithObjectsAndKeys:@"contentDetails",@"part",@"all",@"broadcastStatus",@"persistent",@"broadcastType", nil];
+
     
-//    NSDictionary * paramDic = [NSDictionary dictionaryWithObjectsAndKeys:@"contentDetails",@"part",@"all",@"broadcastStatus", nil];
-    
-     NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accessTokenDic[@"access_token"]];
-    
+    NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
     NSDictionary * headerDic = [NSDictionary dictionaryWithObject:accessToken forKey:@"Authorization"];
     
     NSString * url = @"https://www.googleapis.com/youtube/v3/liveBroadcasts?part=contentDetails&broadcastStatus=all&broadcastType=persistent";
     [TTNetMannger getRequestUrl:url param:nil headerDic:headerDic completionHandler:^(NSDictionary *dic) {
     
+        if (dic[@"error"]) {
+            
+            [self showHudMessage:dic[@"error"][@"message"]];
+            //如果请求失败  再次请求
+            static int requestcount = 0;
+            requestcount ++;
+            if (requestcount<2) {
+                [self getstream];
+
+            }
+        }
+        
         NSArray * item = dic[@"items"];
         NSDictionary * firstDic = [item firstObject];
         NSDictionary * contentDetails = firstDic[@"contentDetails"];
@@ -97,9 +111,7 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
             _boundStreamId = contentDetails[@"boundStreamId"];
             [self getStreamKey];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_activity2 stopAnimating];
-        });
+        
         
     }];
     
@@ -110,13 +122,23 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 - (void)getStreamKey
 {
     NSMutableDictionary * paramDic = [NSMutableDictionary dictionary];
-    [paramDic setValue:@"cdn" forKey:@"part"];
+    [paramDic setValue:@"id,snippet,cdn" forKey:@"part"];
     [paramDic setValue:_boundStreamId forKey:@"id"];
     
-    NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accessTokenDic[@"access_token"]];
+    NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
     
     [TTNetMannger getRequestUrl:@"https://www.googleapis.com/youtube/v3/liveStreams" param:paramDic headerDic:@{@"Authorization":accessToken} completionHandler:^(NSDictionary *dic) {
-        
+        if (dic[@"error"]) {
+            [self showHudMessage:dic[@"error"][@"message"]];
+            static int requestcount2 = 0;
+            requestcount2 ++;
+            if (requestcount2<2) {
+                [self getStreamKey];
+            }
+
+            //如果请求失败  再次请求
+        }
+
         NSArray * item = dic[@"items"];
         NSDictionary * firstDic = [item firstObject];
         NSDictionary * cdn = firstDic[@"cdn"];
@@ -126,6 +148,11 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
         
         NSString * ingestionAddress = ingestionInfo[@"ingestionAddress"];
         [[TTCoreDataClass shareInstance] updatePlatformWithName:youtubu rtmp:ingestionAddress streamKey:_streamName customString:nil enabel:YES selected:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_activity2 stopAnimating];
+        });
+        
     }];
 }
 

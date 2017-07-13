@@ -54,7 +54,6 @@ NSString* _userip = nil;
 NSString* _username = nil;
 NSString* _userpassword = nil;
 NSTimer* CheckVideoPlay = nil;
-NSString *album_name=@"FREECAST";
 bool audioisEnable = YES;
 bool _isExit=NO;
 bool _isUser=NO;
@@ -833,8 +832,14 @@ bool _isTakePhoto=NO;
         [mutaArray addObjectsFromArray:video_timesamp];
         [mutaArray addObject:timesamp];
         [self Save_Urls:mutaArray :@"video_flag"];
+        if (_liveCameraSource == IphoneBackCamera) {
+//            [self.session startRecord];
+        }
+        else if (_liveCameraSource == ExternalDevices)
+        {
+            [_videoView begin_record:0];
+        }
         
-        [_videoView begin_record:0];
         VideoRecordTimerTick_s = 0;
         VideoRecordTimerTick_m = 0;
         _recordTimeLabel.text = @"REC 00:00";
@@ -846,7 +851,16 @@ bool _isTakePhoto=NO;
         RecordVideoEnable = Unable;
         [_recordBtn setImage:[UIImage imageNamed:@"video_start@3x.png"] forState:UIControlStateNormal];
         _recordTimeLabel.hidden=YES;
-        [_videoView end_record];
+        if (_liveCameraSource == IphoneBackCamera)
+        {
+//            [self.session stopRecord];
+        }
+        else if (_liveCameraSource == ExternalDevices)
+        {
+            [_videoView end_record];
+        }
+
+        
     }
 }
 
@@ -1355,14 +1369,14 @@ int valOrientation;
     }
     else{
         playCount++;
-        if (playCount>5) {
-            [_videoView stop];
-            play_success=NO;
-            NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-            [_videoView play:url useTcp:NO];
-            [_videoView sound:audioisEnable];
-            playCount=0;
-        }
+//        if (playCount>5) {
+//            [_videoView stop];
+//            play_success=NO;
+//            NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+//            [_videoView play:url useTcp:NO];
+//            [_videoView sound:audioisEnable];
+//            playCount=0;
+//        }
     }
     _isPlaying=NO;
     

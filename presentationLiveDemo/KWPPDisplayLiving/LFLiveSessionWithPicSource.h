@@ -119,6 +119,9 @@ typedef NS_ENUM(NSInteger,LivingDataSouceType){
 - (void)upload_PauseImg;
 + (id) sharedInstance;
 + (void) setSharedInstance:(LFLiveSessionWithPicSource *) session;
+
+- (void)startRecord;
+- (void)stopRecord;
 @end
 
 #endif /* LFLiveSession_picSource_h */
