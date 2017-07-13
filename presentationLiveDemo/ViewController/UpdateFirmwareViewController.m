@@ -62,6 +62,8 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     filePath=[[NSMutableArray alloc]init];
     fileName=[[NSMutableArray alloc]init];
     url=@"https://pan.baidu.com/s/1o80cPIi";
+    //测试连接
+//    url = @"https://pan.baidu.com/s/1pLjZfqb";
     updatePort=80;
     updateIP=@"192.168.100.100";
     homeDir = NSHomeDirectory();
@@ -600,7 +602,8 @@ bool _isSetVer=NO;
                         [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_connect", nil)];
                     });
                 }
-                if ([result containsString:@"文件上传成功"]){
+                if ([result containsString:@"文件上传成功"])
+                {
                     fileNum++;
                     if (fileNum<[filePath count]) {
                         [NSThread detachNewThreadSelector:@selector(sendPacket) toTarget:self withObject:nil];
@@ -612,7 +615,8 @@ bool _isSetVer=NO;
                         [NSThread detachNewThreadSelector:@selector(setVersion) toTarget:self withObject:nil];
                     }
                 }
-                else{
+                else
+                {
                     NSLog(@"error1111111111");
 //                    [self showAllTextDialog:@"此文件不存在，请检查！"];
 //                    if (fileNum<[filePath count]) {

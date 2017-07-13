@@ -754,26 +754,47 @@ bool VideoRecordIsEnable = NO;
     return [dateFormatter stringFromDate:[NSDate date]];
 }
 
+
+/**
+ 截屏
+ */
+- (UIImage *)getSnapshotImage
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame)), NO,0.0);
+    
+    [self.view drawViewHierarchyInRect:CGRectMake(0,0,CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame)) afterScreenUpdates:NO];
+    
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return snapshot;
+}
+
 /**
  *  拍照
  */
 
 #pragma mark - 拍照
--(void)_takephotoBtnClick{
+-(void)_takephotoBtnClick
+{
+    
+    [self playSound:@"shutter.mp3"];
+    
     if (_liveCameraSource == IphoneBackCamera) {
         
-        
+        UIImage * image = [self getSnapshotImage];
+        if (image) {
+            [_albumObject saveImageToAlbum:image albumName:album_name];
+        }
+        return;
     }
     
-    //    if (!play_success) {
-    //        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-    //        return;
-    //    }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [_albumObject createAlbumInPhoneAlbum:album_name];
         [_albumObject getPathForRecord:album_name];
     });
-    [self playSound:@"shutter.mp3"];
+    
     if (_isLiving!=1) {
         [_videoView take_photo];
     }
