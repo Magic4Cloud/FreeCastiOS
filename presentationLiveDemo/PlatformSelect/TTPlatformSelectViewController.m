@@ -20,6 +20,8 @@
 #import "TTCoreDataClass.h"
 
 #import "TTYoutubuViewController.h"
+#import "TTFacebookViewController.h"
+
 #import "TTPlatformCustomViewController.h"
 
 #import "CommanParameters.h"
@@ -322,7 +324,8 @@
         switch (indexPath.row) {
             case 0://facebook
             {
-                
+                TTFacebookViewController *vc = [[TTFacebookViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
             case 1://youtubu

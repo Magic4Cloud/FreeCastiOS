@@ -305,7 +305,7 @@ NSMutableArray *Medias;
     }
     
     if(!is_photo_choose)
-        [self Save_Paths:mutaArray :@"video_flag"];\
+        [self Save_Paths:mutaArray :@"video_flag"];
     
     [selectedDic removeAllObjects];
     [shareImg removeAllObjects];
