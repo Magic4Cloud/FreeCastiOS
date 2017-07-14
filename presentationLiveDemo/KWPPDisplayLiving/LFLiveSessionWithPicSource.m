@@ -388,7 +388,8 @@ UIImage *pauseImage=nil;
     }
     if(!_isPausing)
     {
-        [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+        [self.audioEncoder encodeAudioData:nil timeStamp:self.currentTimestamp];
+//        [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
  
     }
     else return ;
@@ -638,10 +639,11 @@ UIImage *pauseImage=nil;
     }
     if(!_videoCaptureSource){
         _videoCaptureSource = [[LFVideoCapture alloc] initWithVideoConfiguration:_videoConfiguration];
-        _videoCaptureSource.delegate = self;
+        _videoCaptureSource.delegate = self;        
     }
     return _videoCaptureSource;
 }
+
 
 - (id<LFAudioEncoding>)audioEncoder{
     if(!_audioEncoder){
@@ -661,7 +663,8 @@ UIImage *pauseImage=nil;
 
 - (id<LFStreamSocket>)socket{
     if(!_socket){
-        _socket = [[LFStreamRTMPSocket alloc] initWithStream:self.streamInfo videoSize:self.videoConfiguration.videoSize reconnectInterval:self.reconnectInterval reconnectCount:self.reconnectCount];
+        _socket = [[LFStreamRTMPSocket alloc] initWithStream:self.streamInfo reconnectInterval:self.reconnectInterval reconnectCount:self.reconnectCount];
+//        _socket = [[LFStreamRTMPSocket alloc] initWithStream:self.streamInfo videoSize:self.videoConfiguration.videoSize reconnectInterval:self.reconnectInterval reconnectCount:self.reconnectCount];
         [_socket setDelegate:self];
     }
     return _socket;

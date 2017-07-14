@@ -1077,7 +1077,7 @@ Rak_Lx52x_Device_Control *_LiveScan;
         videoConfiguration .videoFrameRate = 25;            //帧率
         videoConfiguration .videoMaxKeyframeInterval = 30; //最大关键帧间隔数
         videoConfiguration .sessionPreset =2;          //分辨率：0：360*540 1：540*960 2：720*1280
-        videoConfiguration .landscape = NO;
+//        videoConfiguration .landscape = NO;
         
         
         //默认音视频配置

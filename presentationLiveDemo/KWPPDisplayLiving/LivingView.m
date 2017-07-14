@@ -323,8 +323,8 @@ int count =1;  //临时使用，可以删除
         videoConfiguration .videoFrameRate = 24;            //帧率
         videoConfiguration .videoMaxKeyframeInterval = 30; //最大关键帧间隔数
         videoConfiguration .sessionPreset =2;          //分辨率：0：360*540 1：540*960 2：720*1280
-        videoConfiguration .landscape = NO;
-        
+//        videoConfiguration .landscape = NO;
+        videoConfiguration.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
         
         //默认音视频配置
         //LFLiveAudioConfiguration *defaultAudioConfiguration = [LFLiveAudioConfiguration defaultConfiguration];
