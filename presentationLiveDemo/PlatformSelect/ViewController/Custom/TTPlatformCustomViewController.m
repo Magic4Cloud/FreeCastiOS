@@ -46,6 +46,7 @@
     {
         _streamKeyTextFiled.text = @"";
         _streamUrlTextFiled.text = @"";
+        
     }
     else if ([button.currentTitle isEqualToString:@"Save"])
     {

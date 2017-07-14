@@ -315,7 +315,10 @@
     {
         TTPlatFormCell * cell = (TTPlatFormCell *)[collectionView cellForItemAtIndexPath:indexPath];
         PlatformModel * model = cell.model;
-        if (model.isEnable)
+        NSLog(@"name:%@",model.name);
+        NSLog(@"isEnable:%d",model.isEnable);
+        
+        if (model && model.isEnable)
         {
             if (!model.isSelected) {
                 [[TTCoreDataClass shareInstance] setlocalSelectedPlatformName:model.name];

@@ -34,6 +34,7 @@ static NSString * const client_id = @"8kgp38kjc5djcwp6mit4rjap9zgpqm";
     
     NSString * urlString = [NSString stringWithFormat:@"https://api.twitch.tv/kraken/oauth2/authorize?client_id=%@&redirect_uri=http://localhost&response_type=token&scope=channel_feed_read",client_id];
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    [self showHudLoading];
     // Do any additional setup after loading the view.
 }
 
@@ -145,11 +146,14 @@ static NSString * const client_id = @"8kgp38kjc5djcwp6mit4rjap9zgpqm";
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     NSLog(@"webViewDidFinishLoad");
+    [self hideHudLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     NSLog(@"didFailLoadWithError：%@",error);
+    [self hideHudLoading];
+    [self showHudMessage:error.domain];
 }
 
 

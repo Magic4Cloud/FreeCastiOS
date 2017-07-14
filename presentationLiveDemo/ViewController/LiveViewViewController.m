@@ -1033,20 +1033,20 @@ int valOrientation;
 - (LX520View *)videoView
 {
     if (!_videoView) {
-        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*_height/_width)];
+        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
         _videoView.userInteractionEnabled = YES;
         
         //视频预览
-        if (viewH<viewW*_height/_width) {
-            _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
-            [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
-        }
-        else{
-            _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
-            [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
-        }
-        
-        _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
+//        if (viewH<viewW*_height/_width) {
+//            _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
+//            [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
+//        }
+//        else{
+//            _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
+//            [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
+//        }
+//        
+//        _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
         [_videoView addGestureRecognizer:singleTap];
@@ -1313,33 +1313,33 @@ int valOrientation;
         [self.session upload_PauseImg];
     }
     
-    if (_isLiveView){
-        //[self addBannerSubtitle];
-        
-        if ((height!=_height)||(width!=_width)) {
-            _height=height;
-            _width=width;
-            NSLog(@"_width=%d,height=%d",_width,_height);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (viewH>viewW) {
-                    temp=viewW;
-                    tempviewW=viewH;
-                    tempviewH=temp;
-                }
-                if (tempviewH<tempviewW*_height/_width) {
-                    _videoView.frame =CGRectMake(0, 0, tempviewH*_width/_height, tempviewH);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*_width/_height, tempviewH)];
-                    NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-                }
-                else{
-                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*_height/_width);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*_height/_width)];
-                    NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-                }
-                _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
-            });
-        }
-    }
+//    if (_isLiveView){
+//        //[self addBannerSubtitle];
+//        
+//        if ((height!=_height)||(width!=_width)) {
+//            _height=height;
+//            _width=width;
+//            NSLog(@"_width=%d,height=%d",_width,_height);
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if (viewH>viewW) {
+//                    temp=viewW;
+//                    tempviewW=viewH;
+//                    tempviewH=temp;
+//                }
+//                if (tempviewH<tempviewW*_height/_width) {
+//                    _videoView.frame =CGRectMake(0, 0, tempviewH*_width/_height, tempviewH);
+//                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*_width/_height, tempviewH)];
+//                    NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
+//                }
+//                else{
+//                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*_height/_width);
+//                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*_height/_width)];
+//                    NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
+//                }
+//                _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
+//            });
+//        }
+//    }
 }
 
 

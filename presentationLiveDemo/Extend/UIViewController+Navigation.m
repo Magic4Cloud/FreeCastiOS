@@ -73,7 +73,21 @@
             //HUD = nil;
         }];
     });
-    
+}
+
+- (void)showHudLoading
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        HUD.mode = MBProgressHUDModeIndeterminate;
+        [HUD show:YES];
+    });
+}
+
+- (void)hideHudLoading
+{
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 @end

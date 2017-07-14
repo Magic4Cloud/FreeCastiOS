@@ -18,10 +18,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self configNavigationWithTitle:@"" rightButtonTitle:nil];
     
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
     
+    [self showHudLoading];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -38,12 +40,13 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    
+    [self hideHudLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    
+    [self hideHudLoading];
+    [self showHudMessage:error.domain];
 }
 
 

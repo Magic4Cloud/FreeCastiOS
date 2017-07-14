@@ -11,4 +11,6 @@
 @interface UIViewController (Navigation)
 - (void)configNavigationWithTitle:(NSString *)title rightButtonTitle:(NSString *)buttonTitle;
 - (void)showHudMessage:(NSString *)string;
+- (void)showHudLoading;
+- (void)hideHudLoading;
 @end

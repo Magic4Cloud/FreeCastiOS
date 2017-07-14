@@ -64,16 +64,19 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     //2.根据会话对象创建task
     NSString *url = @"https://www.googleapis.com/oauth2/v4/token";
     NSDictionary * paramDic = [NSDictionary dictionaryWithObjectsAndKeys:client_id,@"client_id",client_secret,@"client_secret",device_code,@"code", @"http://oauth.net/grant_type/device/1.0",@"grant_type",nil];
+    [self showLoading];
     
-    
-    
-    [_activity2 startAnimating];
-
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
         _accessTokenDic = dic;
-        if (dic[@"access_token"]) {
+        if (dic[@"access_token"])
+        {
             _accesstoken = dic[@"access_token"];
             [self getstream];
+        }
+        else
+        {
+            [self hideLoading];
+            [self showHudMessage:dic[@"error_description"]];
         }
         
     }];
@@ -82,25 +85,43 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     
    
 }
-- (void)getstream {
-    
 
+- (void)showLoading
+{
+    [_activity2 startAnimating];
+    [self showHudLoading];
+
+}
+
+- (void)hideLoading
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_activity2 stopAnimating];
+        [self hideHudLoading];
+    });
+}
+
+- (void)getstream
+{
     
     NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
     NSDictionary * headerDic = [NSDictionary dictionaryWithObject:accessToken forKey:@"Authorization"];
-    
     NSString * url = @"https://www.googleapis.com/youtube/v3/liveBroadcasts?part=contentDetails&broadcastStatus=all&broadcastType=persistent";
     [TTNetMannger getRequestUrl:url param:nil headerDic:headerDic completionHandler:^(NSDictionary *dic) {
-    
+        
         if (dic[@"error"]) {
             
             [self showHudMessage:dic[@"error"][@"message"]];
             //如果请求失败  再次请求
             static int requestcount = 0;
             requestcount ++;
-            if (requestcount<2) {
+            if (requestcount<2)
+            {
                 [self getstream];
-
+            }
+            else
+            {
+                [self hideLoading];
             }
         }
         
@@ -110,6 +131,10 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
         if (contentDetails) {
             _boundStreamId = contentDetails[@"boundStreamId"];
             [self getStreamKey];
+        }
+        else
+        {
+            [self hideLoading];
         }
         
         
@@ -121,6 +146,7 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
 
 - (void)getStreamKey
 {
+    
     NSMutableDictionary * paramDic = [NSMutableDictionary dictionary];
     [paramDic setValue:@"id,snippet,cdn" forKey:@"part"];
     [paramDic setValue:_boundStreamId forKey:@"id"];
@@ -128,31 +154,38 @@ static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
     NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
     
     [TTNetMannger getRequestUrl:@"https://www.googleapis.com/youtube/v3/liveStreams" param:paramDic headerDic:@{@"Authorization":accessToken} completionHandler:^(NSDictionary *dic) {
-        if (dic[@"error"]) {
+        
+        
+        if (dic[@"error"])
+        {
             [self showHudMessage:dic[@"error"][@"message"]];
             static int requestcount2 = 0;
             requestcount2 ++;
-            if (requestcount2<2) {
+            if (requestcount2<2)
+            {
                 [self getStreamKey];
             }
-
+            else
+            {
+                [self hideLoading];
+            }
             //如果请求失败  再次请求
         }
+        else
+        {
+            NSArray * item = dic[@"items"];
+            NSDictionary * firstDic = [item firstObject];
+            NSDictionary * cdn = firstDic[@"cdn"];
+            NSDictionary * ingestionInfo = cdn[@"ingestionInfo"];
+            NSString * streamKey = ingestionInfo[@"streamName"];
+            _streamName = streamKey;
+            
+            NSString * ingestionAddress = ingestionInfo[@"ingestionAddress"];
+            [[TTCoreDataClass shareInstance] updatePlatformWithName:youtubu rtmp:ingestionAddress streamKey:_streamName customString:nil enabel:YES selected:YES];
+            [self hideLoading];
+            [self showHudMessage:@"get streamkey success!"];
+        }
 
-        NSArray * item = dic[@"items"];
-        NSDictionary * firstDic = [item firstObject];
-        NSDictionary * cdn = firstDic[@"cdn"];
-        NSDictionary * ingestionInfo = cdn[@"ingestionInfo"];
-        NSString * streamKey = ingestionInfo[@"streamName"];
-        _streamName = streamKey;
-        
-        NSString * ingestionAddress = ingestionInfo[@"ingestionAddress"];
-        [[TTCoreDataClass shareInstance] updatePlatformWithName:youtubu rtmp:ingestionAddress streamKey:_streamName customString:nil enabel:YES selected:YES];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_activity2 stopAnimating];
-        });
-        
     }];
 }
 

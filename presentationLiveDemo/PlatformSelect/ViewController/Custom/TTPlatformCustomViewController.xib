@@ -38,7 +38,7 @@
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="aZF-Qj-DM2"/>
                     </connections>
@@ -88,7 +88,7 @@
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="hcU-BJ-w6S"/>
                     </connections>
