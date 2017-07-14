@@ -36,7 +36,6 @@ NSMutableArray *Medias;
     AlbumObject *_albumObject;
     bool is_grouped;
     bool is_photo_choose;
-    NSString *albumName;
     NSMutableArray *photoImages;
     NSMutableArray *selectedDic;
     NSMutableArray *shareImg;
@@ -65,9 +64,7 @@ NSMutableArray *Medias;
     shareImg = [[NSMutableArray alloc] init];
     selectedDic = [[NSMutableArray alloc] init];
     self.groupArrays = [NSMutableArray array];
-    albumName=@"FREECAST";
     is_photo_choose=YES;
-    
     //加载等待视图
     self.panelView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.panelView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -160,7 +157,7 @@ NSMutableArray *Medias;
     _albumObject = [[AlbumObject alloc]init];
     [_albumObject delegate:self];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [_albumObject readFileFromAlbum:albumName];
+        [_albumObject readFileFromAlbum:album_name];
     });
     
     //底部
@@ -501,7 +498,7 @@ NSMutableArray *Medias;
             if (is_photo_choose==NO) {
                 [_editBtn setTitle:NSLocalizedString(@"edit", nil) forState:UIControlStateNormal];
                 dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                    [_albumObject readFileFromAlbum:albumName];
+                    [_albumObject readFileFromAlbum:album_name];
                 });
             }
             is_photo_choose=YES;

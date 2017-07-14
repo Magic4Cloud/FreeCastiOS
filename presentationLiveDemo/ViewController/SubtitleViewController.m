@@ -34,7 +34,6 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     NSString *_bmpPath;
     int _bmpSize;
     RAKAsyncSocket* GCDSocket;//用于建立TCP socket
-    NSString *album_name;
     AlbumObject *_albumObject;
 }
 @end

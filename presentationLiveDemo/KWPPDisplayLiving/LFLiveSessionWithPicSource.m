@@ -102,6 +102,15 @@ static LFLiveSessionWithPicSource * _sharedInstance;
 #pragma mark --
 //LiveStreamInfo类只有默认构造函数， 类中两个属性：音频配置，视频配置均使用默认的值
 //startLive函数： 先将本类initWithAudionConfiguration videoComfiguration 所获取的 音频视频配置 赋值给 本类的属性_streamInfo， 然后启动socket。
+- (void)startRecord
+{
+    [_videoCaptureSource startRecord];
+}
+
+- (void)stopRecord
+{
+    [_videoCaptureSource stopRecord];
+}
 
 /**
  *  开始直播
@@ -197,8 +206,7 @@ BOOL isShowSubtitle=NO;
     audioFrame.audioInfo = [NSData dataWithBytes:exeData length:2];
 
     [self audioEncoder:self.audioEncoder audioFrame:audioFrame];
-    
-//    [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
+
 }
 
 
@@ -207,10 +215,9 @@ BOOL isShowSubtitle=NO;
  *  将实时画面推流到指定直播地址
  */
 - (void)upload_h264:(int)size :(Byte*)data{
-    NSLog(@"将实时画面推流到指定直播地址 upload_h264");
+
     
     CVPixelBufferRef tbuffer =[_h264HardwareCodec deCompressedCMSampleBufferWithData:data andLength:size andOffset:0];
-
     [self.videoEncoder encodeVideoData:tbuffer timeStamp:self.currentTimestamp];
     CVPixelBufferRelease(tbuffer);
 }
@@ -374,19 +381,13 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现委托方法
 /** 处理音频数据 */
 - (void)captureOutput:(nullable LFAudioCapture*)capture audioBuffer:(AudioBufferList)inBufferList{
-    NSLog(@"处理音频数据00");
+
     
-    AudioBuffer bufer = inBufferList.mBuffers[0];
-//    NSLog(@"系统摄像头的音频data：%s   mDataByteSize:%d",bufer.mData,bufer.mDataByteSize);
-    
-    
-//    if (_isRAK) {
-//        return;
-//    }
-//    NSLog(@"处理音频数据11");
+    if (_isRAK) {
+        return;
+    }
     if(!_isPausing)
     {
-        NSLog(@"处理音频数据11");
         [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
  
     }
@@ -395,11 +396,9 @@ UIImage *pauseImage=nil;
 
 /** 处理视频数据 */
 - (void)captureOutput:(nullable LFVideoCapture*)capture pixelBuffer:(nullable CVImageBufferRef)pixelBuffer{
-//    NSLog(@"处理视频数据00");
     if (_isRAK) {
         return;
     }
-//    NSLog(@"处理视频数据11");
     if(_isPausing)
     { //暂停时，显示暂停图片
         int num = (pauseTimeLen++/10)%8+1;
@@ -415,7 +414,7 @@ UIImage *pauseImage=nil;
         UIImage *returnImage ;
     
         if(self.dataSoureType ==PictureOnly){
-            NSLog(@"图片直播...%ld,====%ld",(long)_picTag,(long)lastPicTag);
+//            NSLog(@"图片直播...%ld,====%ld",(long)_picTag,(long)lastPicTag);
             CVPixelBufferRef tempBuffer =NULL;
             if(_picTag !=lastPicTag){
                 
@@ -437,7 +436,7 @@ UIImage *pauseImage=nil;
         
         }
         else if(self.dataSoureType ==CameraAndPicture){
-            NSLog(@"混合直播...");
+//            NSLog(@"混合直播...");
             returnImage  = [PicBufferUtil convertToImageFromCVImageBufferRef:pixelBuffer];
             //returnImage = [PicBufferUtil scaleImage:returnImage toScale:_scaleLevel];
             returnImage = [PicBufferUtil scaleImage:returnImage toSize:CGSizeMake(200, 200)];
@@ -447,7 +446,7 @@ UIImage *pauseImage=nil;
             [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
         }
         else{
-            NSLog(@"摄像头直播...");
+//            NSLog(@"摄像头直播...");
             //returnImage = [PicBufferUtil convertToImageFromCVImageBufferRef:pixelBuffer];
             [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
         }
@@ -462,30 +461,23 @@ UIImage *pauseImage=nil;
 #pragma mark -- 实现编码委托
 - (void)audioEncoder:(nullable id<LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame*)frame{
     
-    NSLog(@"audioEncoder 音频转码后的数据：audioInfo.length:%lu  header:%@ timestamp:%llu ",frame.audioInfo.length,frame.header,frame.timestamp);
-
     if(self.uploading)
     {
-        NSLog(@"audioEncoder [self.socket sendFrame:frame] LFAudioFrame data:%@;//<音频上传成功",frame.data);
         [self.socket sendFrame:frame];//<上传
     }
 }
 
-- (void)videoEncoder:(nullable id<LFVideoEncoding>)encoder videoFrame:(nullable LFVideoFrame*)frame{
-    
-    NSLog(@"videoEncoder 视频转码后的数据：sps:%@  pps:%@  timestamp:%llu",frame.sps,frame.pps,frame.timestamp);
+- (void)videoEncoder:(nullable id<LFVideoEncoding>)encoder videoFrame:(nullable LFVideoFrame*)frame
+{
 
     if(self.uploading)
     {
-        NSLog(@"videoEncoder [self.socket sendFrame:frame]   LFVideoFrame.isKeyFrame:%d//<视频上传成功",frame.isKeyFrame);
-
         [self.socket sendFrame:frame];//<上传
     }
 }
 
 #pragma mark -- LFStreamTcpSocketDelegate
 - (void)socketStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveState)status{
-    NSLog(@"%s   %d",__func__,status);
     if(status == LFLiveStart){
         if(!self.uploading){
             self.timestamp = 0;
@@ -503,7 +495,6 @@ UIImage *pauseImage=nil;
 
 - (void)socketDidError:(nullable id<LFStreamSocket>)socket errorCode:(LFLiveSocketErrorCode)errorCode{
 
-    NSLog(@"%s  %d",__func__,errorCode);
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.delegate && [self.delegate respondsToSelector:@selector(liveSession:errorCode:)]){
             [self.delegate liveSession:self errorCode:errorCode];
@@ -512,12 +503,10 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketDebug:(nullable id<LFStreamSocket>)socket debugInfo:(nullable LFLiveDebug*)debugInfo{
-    NSLog(@"%s   ",__func__);
     self.debugInfo = debugInfo;
     if(self.showDebugInfo){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(self.delegate && [self.delegate respondsToSelector:@selector(liveSession:debugInfo:)]){
-                NSLog(@"socketDebug");
                 [self.delegate liveSession:self debugInfo:debugInfo];
             }
         });
@@ -525,7 +514,7 @@ UIImage *pauseImage=nil;
 }
 
 - (void)socketBufferStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveBuffferState)status{
-    NSLog(@"%s   ",__func__);
+
 
     NSUInteger videoBitRate = [_videoEncoder videoBitRate];
     if(status == LFLiveBuffferIncrease){

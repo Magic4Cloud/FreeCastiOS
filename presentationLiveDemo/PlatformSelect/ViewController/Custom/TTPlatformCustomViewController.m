@@ -46,6 +46,7 @@
     {
         _streamKeyTextFiled.text = @"";
         _streamUrlTextFiled.text = @"";
+        
     }
     else if ([button.currentTitle isEqualToString:@"Save"])
     {
@@ -57,11 +58,7 @@
             [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
             return;
         }
-        
-        NSString * lastChar = [streamUrl substringFromIndex:streamUrl.length-1];
-        if (![lastChar isEqualToString:@"/"]) {
-            streamUrl = [NSString stringWithFormat:@"%@/",streamUrl];
-        }
+
         BOOL save = [[TTCoreDataClass shareInstance] updatePlatformWithName:custom rtmp:streamUrl streamKey:streamKey customString:nil enabel:YES selected:YES];
         if (save)
         {

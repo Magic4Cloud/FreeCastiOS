@@ -157,6 +157,9 @@ static  TTCoreDataClass * _instance;
     if (error) {
         NSLog(@"插入数据失败： %@",error);
     }
+    if (isSelected) {
+        [self setlocalSelectedPlatformName:name];
+    }
     return result;
 }
 

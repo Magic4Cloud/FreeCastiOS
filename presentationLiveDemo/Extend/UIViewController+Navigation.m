@@ -31,7 +31,7 @@
     
     UILabel * _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, ScreenWidth - 80*2, 44)];
     
-    _titleLabel.text = @"Authentication";
+    _titleLabel.text = title;
     _titleLabel.font = [UIFont systemFontOfSize: 20];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textColor = [UIColor TTLightBlueColor];
@@ -73,7 +73,21 @@
             //HUD = nil;
         }];
     });
-    
+}
+
+- (void)showHudLoading
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        HUD.mode = MBProgressHUDModeIndeterminate;
+        [HUD show:YES];
+    });
+}
+
+- (void)hideHudLoading
+{
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 @end

@@ -32,10 +32,10 @@
 - (void)setModel:(PlatformModel *)model andPlatformName:(NSString *)name
 {
     NSString * suffixString;
+    _model = model;
     
     if (model)
     {
-        _model = model;
         if (model.isEnable)
         {
             if (model.isSelected)

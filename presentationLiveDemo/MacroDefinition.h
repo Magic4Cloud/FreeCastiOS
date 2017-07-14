@@ -18,6 +18,6 @@
 #define custom      @"custom"
 
 //appkey or cilentid
-
+#define album_name  @"FREESTREAM"
 
 #endif /* MacroDefinition_h */

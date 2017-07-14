@@ -23,6 +23,8 @@
 #import "TTFacebookViewController.h"
 
 #import "TTPlatformCustomViewController.h"
+#import "TTTwicthViewController.h"
+
 
 #import "CommanParameters.h"
 
@@ -144,7 +146,9 @@
             break;
         case 3://Twitch
         {
-            
+            TTTwicthViewController * vc = [[TTTwicthViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+
         }
             break;
         case 4://LiveStream
@@ -313,9 +317,16 @@
     {
         TTPlatFormCell * cell = (TTPlatFormCell *)[collectionView cellForItemAtIndexPath:indexPath];
         PlatformModel * model = cell.model;
-        if (model.isEnable)
+        NSLog(@"name:%@",model.name);
+        NSLog(@"isEnable:%d",model.isEnable);
+        
+        if (model && model.isEnable)
         {
             if (!model.isSelected) {
+                [[TTCoreDataClass shareInstance] setlocalSelectedPlatformName:model.name];
+                [_platformsArray enumerateObjectsUsingBlock:^(PlatformModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    obj.isSelected = NO;
+                }];
                 model.isSelected = YES;
                 [collectionView reloadData];
             }
@@ -341,7 +352,8 @@
                 break;
             case 3://Twitch
             {
-                
+                TTTwicthViewController * vc = [[TTTwicthViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
             case 4://LiveStream

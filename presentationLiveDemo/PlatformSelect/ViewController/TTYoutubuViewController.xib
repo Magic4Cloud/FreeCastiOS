@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -105,15 +105,16 @@ and paste the code displayed above</string>
                     <rect key="frame" x="193" y="213" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qwd-aD-NSy">
-                    <rect key="frame" x="162" y="540" width="37" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qwd-aD-NSy">
+                    <rect key="frame" x="169" y="540" width="37" height="37"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.16078431372549018" green="0.16078431372549018" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="qwd-aD-NSy" firstAttribute="top" secondItem="t2m-nK-QDr" secondAttribute="bottom" constant="34.5" id="2HW-EX-hEU"/>
                 <constraint firstItem="lis-NZ-dgt" firstAttribute="top" secondItem="gvc-cg-Afd" secondAttribute="top" id="3N4-mP-45T"/>
                 <constraint firstItem="URb-ud-sl4" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="6hP-Dw-obH"/>
+                <constraint firstItem="qwd-aD-NSy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="AEC-wU-Pf7"/>
                 <constraint firstItem="wL9-Wu-c8P" firstAttribute="top" secondItem="gvc-cg-Afd" secondAttribute="bottom" constant="59" id="F1t-gR-RSX"/>
                 <constraint firstItem="t2m-nK-QDr" firstAttribute="trailing" secondItem="lis-NZ-dgt" secondAttribute="trailing" id="IhT-AS-NGV"/>
                 <constraint firstItem="8j7-KL-Wkb" firstAttribute="centerY" secondItem="XHr-fe-0Ii" secondAttribute="centerY" id="KpK-lC-hj1"/>

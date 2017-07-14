@@ -311,12 +311,13 @@ BOOL haveHDRGroup = NO;
                 NSString *name =[gp valueForProperty:ALAssetsGroupPropertyName];
                 if ([name hasPrefix:albumName])
                 {
+                    if (_delegateProxy.delegate) {
+                        [_delegateProxy.delegate readFileFromAlbum:gp];
+                    }
                     break;
                 } 
             }
-            if (_delegateProxy.delegate) {
-                [_delegateProxy.delegate readFileFromAlbum:gp];
-            }
+            
         }
     };
     ALAssetsLibraryAccessFailureBlock failureBlock = [self failureBlock];
