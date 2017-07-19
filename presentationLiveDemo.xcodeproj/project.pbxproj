@@ -11,6 +11,7 @@
 		7A3A9B741F132EE1001EDAAF /* TTTwicthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */; };
 		7A3A9B7C1F13337C001EDAAF /* TTPlatformCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */; };
 		7A3A9B7D1F13337C001EDAAF /* TTPlatformCustomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */; };
+		7A4031131F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4031121F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.m */; };
 		7A4E13621F05F60C00E53E38 /* TTNetMannger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E13611F05F60C00E53E38 /* TTNetMannger.m */; };
 		7A6851EA1F1898B200EEDE2D /* LFAudioCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6850461F1898B100EEDE2D /* LFAudioCapture.m */; };
 		7A6851EB1F1898B200EEDE2D /* LFVideoCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6850481F1898B100EEDE2D /* LFVideoCapture.m */; };
@@ -936,6 +937,8 @@
 		7A3A9B791F13337C001EDAAF /* TTPlatformCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlatformCustomViewController.h; sourceTree = "<group>"; };
 		7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlatformCustomViewController.m; sourceTree = "<group>"; };
 		7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTPlatformCustomViewController.xib; sourceTree = "<group>"; };
+		7A4031111F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
+		7A4031121F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+CustomPhotoAlbum.m"; sourceTree = "<group>"; };
 		7A4E13601F05F60C00E53E38 /* TTNetMannger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTNetMannger.h; sourceTree = "<group>"; };
 		7A4E13611F05F60C00E53E38 /* TTNetMannger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTNetMannger.m; sourceTree = "<group>"; };
 		7A6850451F1898B100EEDE2D /* LFAudioCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFAudioCapture.h; sourceTree = "<group>"; };
@@ -2911,6 +2914,8 @@
 		7A9830D51F049AB1000FE44D /* Extend */ = {
 			isa = PBXGroup;
 			children = (
+				7A4031111F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.h */,
+				7A4031121F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.m */,
 				7A9830D61F049C7D000FE44D /* UIColor+systemColor.h */,
 				7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */,
 				7A9830F71F04E603000FE44D /* UIViewController+Navigation.h */,
@@ -4445,8 +4450,8 @@
 				TargetAttributes = {
 					D8BA26B41D6AD13500D28C0F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = PWD8THY2VS;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 8YE8AXL3F3;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -5155,6 +5160,7 @@
 				8488BCA71DB776ED006357AD /* LFLiveSessionWithPicSource.m in Sources */,
 				7A68528F1F1898B300EEDE2D /* GPUImageSwirlFilter.m in Sources */,
 				7A3A9B741F132EE1001EDAAF /* TTTwicthViewController.m in Sources */,
+				7A4031131F1E0329009A978C /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				7A6851F11F1898B200EEDE2D /* LFHardwareAudioEncoder.m in Sources */,
 				7A6852151F1898B200EEDE2D /* GPUImageColorConversion.m in Sources */,
 				7A6852061F1898B200EEDE2D /* GPUImageAmatorkaFilter.m in Sources */,
@@ -5527,7 +5533,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = PWD8THY2VS;
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5566,8 +5572,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "717fd02d-ccec-4a57-a932-3aade0b0c2bb";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_dev_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;
@@ -5579,8 +5585,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = PWD8THY2VS;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5619,8 +5625,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "4e6faebf-c495-468d-a830-dfe6aa84245b";
+				PROVISIONING_PROFILE_SPECIFIER = "freestream adhoc";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;

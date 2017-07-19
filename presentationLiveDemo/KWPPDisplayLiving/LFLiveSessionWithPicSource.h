@@ -90,7 +90,10 @@ typedef NS_ENUM(NSInteger,LivingDataSouceType){
 
 //重连次数
 @property (nonatomic,assign) NSUInteger reconnectCount;
-
+/*** The warterMarkView control whether the watermark is displayed or not ,if set ni,will remove watermark,otherwise add.
+ set alpha represent mix.Position relative to outVideoSize.
+ *.*/
+@property (nonatomic, strong, nullable) UIView *warterMarkView;
 
 //直播的PPT图片: picTag 用于标记是否与上一次图片一样，如一样，直接使用上一次缓存；
 @property (nonatomic, strong, nullable)UIImage *currentSlideImage;

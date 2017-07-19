@@ -842,22 +842,25 @@ bool _isTakePhoto=NO;
         [self playSound:@"begin_record.mp3"];
         RecordVideoEnable = Enable;
         [_recordBtn setImage:[UIImage imageNamed:@"video_stop@3x.png"] forState:UIControlStateNormal];
-        long recordTime = [[NSDate date] timeIntervalSince1970];
-        NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
-        NSLog(@"video_timesamp:%@",timesamp);
-        video_timesamp=[self Get_Urls:@"video_flag"];
-        if (video_timesamp==nil) {
-            video_timesamp=[[NSMutableArray alloc]init];
-        }
-        NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-        [mutaArray addObjectsFromArray:video_timesamp];
-        [mutaArray addObject:timesamp];
-        [self Save_Urls:mutaArray :@"video_flag"];
+        
+        
         if (_liveCameraSource == IphoneBackCamera) {
             [self.session startRecord];
         }
         else if (_liveCameraSource == ExternalDevices)
         {
+            long recordTime = [[NSDate date] timeIntervalSince1970];
+            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
+            NSLog(@"video_timesamp:%@",timesamp);
+            video_timesamp=[self Get_Urls:@"video_flag"];
+            if (video_timesamp==nil) {
+                video_timesamp=[[NSMutableArray alloc]init];
+            }
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            [mutaArray addObjectsFromArray:video_timesamp];
+            [mutaArray addObject:timesamp];
+            [self Save_Urls:mutaArray :@"video_flag"];
+            
             [_videoView begin_record:0];
         }
         
@@ -1036,18 +1039,6 @@ int valOrientation;
         _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
         _videoView.userInteractionEnabled = YES;
         
-        //视频预览
-//        if (viewH<viewW*_height/_width) {
-//            _videoView.frame =CGRectMake(0, 0, viewH*_width/_height, viewH);
-//            [_videoView setView1Frame:CGRectMake(0, 0, viewH*_width/_height, viewH)];
-//        }
-//        else{
-//            _videoView.frame =CGRectMake(0, 0, viewW, viewW*_height/_width);
-//            [_videoView setView1Frame:CGRectMake(0, 0, viewW, viewW*_height/_width)];
-//        }
-//        
-//        _videoView.center=CGPointMake(viewW*0.5, viewH*0.5);
-        
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
         [_videoView addGestureRecognizer:singleTap];
         _videoView.backgroundColor = [UIColor blackColor];
@@ -1060,6 +1051,7 @@ int valOrientation;
     
     return _videoView;
 }
+
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
     if (result.Device_ID_Arr.count > 0) {

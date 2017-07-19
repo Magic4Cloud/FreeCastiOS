@@ -289,11 +289,11 @@ static const NSString * client_secret = @"AIzaSyDtQ2Od63egSMLye0pGc_pJF6Bxn9OTKT
         UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = button.currentTitle;
         
-        [self showHudMessage:@"Has been copied!"];
+        [self showHudMessage:@"Copy successful !"];
     }
     else
     {
-        [self showHudMessage:@"wating for get code!"];
+        [self showHudMessage:@"Wating for a code!"];
     }
     
 }

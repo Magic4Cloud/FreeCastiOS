@@ -82,5 +82,6 @@
 - (nullable instancetype)initWithVideoConfiguration:(nullable LFLiveVideoConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 - (void)startRecord;
 - (void)stopRecord;
-
+-(void)startRecording;
+-(void)stopRecording;
 @end

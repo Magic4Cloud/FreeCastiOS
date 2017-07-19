@@ -29,6 +29,8 @@
 #import <MOBFoundation/MOBFoundation.h>
 #import "CommanParameters.h"
 
+#import "ALAssetsLibrary+CustomPhotoAlbum.h"
+
 NSMutableArray *Medias;
 
 @interface BrowseViewController ()
@@ -583,7 +585,61 @@ NSMutableArray *Medias;
 BOOL _isExist;
 - (void)Get_Video
 {
+    
     [Medias removeAllObjects];
+    //系统相册的视频
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]  init];
+    [assetsLibrary loadAssetsForProperty:nil fromAlbum:@"FREESTREAM" completion:^(NSMutableArray *array, NSError *error) {
+        
+        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ALAsset * result = (ALAsset *)obj;
+            
+            if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo] )
+            {
+                NSString *date= [self DateToString:[result valueForProperty:ALAssetPropertyDate]];
+                UIImage *image = [UIImage imageWithCGImage:[result thumbnail]];
+                //UIImage *image = [UIImage imageWithCGImage:[result thumbnail]];
+                NSString *fileName = [[result defaultRepresentation] filename];
+                NSString *url = [[[result defaultRepresentation] url] absoluteString];
+                UIImage *fullImage=[UIImage imageWithCGImage:result.defaultRepresentation.fullResolutionImage];
+                int64_t fileSize = [[result defaultRepresentation] size];
+                NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
+                
+                NSLog(@"date = %@",date);
+                NSLog(@"fileName = %@",fileName);
+                NSLog(@"url = %@",url);
+                NSLog(@"fileSize = %lld",fileSize);
+                NSLog(@"timeSp = %@",timeSp);
+                //                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
+                [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    MediaGroup *get_group=Medias[idx];
+                    //已分组则将数据添加到对应组
+                    if ([date compare:[get_group getName]]==NSOrderedSame ) {
+                        is_grouped=true;
+                        MediaData *get_media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
+                        [get_group.medias addObject:get_media];
+                    }
+                }];
+                //未分组则添加一组，并将数据添加进去
+                if (is_grouped==false) {
+                    MediaData *media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
+                    MediaGroup *group=[MediaGroup initWithName:date andMedias:[NSMutableArray arrayWithObjects:media, nil]];
+                    [Medias addObject:group];
+                }
+
+            }
+            
+            
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [_collectionView reloadData];
+        });
+
+    }];
+    
+    //设备的视频
     __weak BrowseViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         ALAssetsLibraryGroupsEnumerationResultsBlock listGroupBlock = ^(ALAssetsGroup *group, BOOL *stop) {
@@ -608,10 +664,11 @@ BOOL _isExist;
                                 int64_t fileSize = [[result defaultRepresentation] size];
                                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                                 
-                                NSLog(@"date = %@",date);
-                                NSLog(@"fileName = %@",fileName);
-                                NSLog(@"url = %@",url);
-                                NSLog(@"fileSize = %lld",fileSize);
+//                                NSLog(@"date = %@",date);
+//                                NSLog(@"fileName = %@",fileName);
+//                                NSLog(@"url = %@",url);
+//                                NSLog(@"fileSize = %lld",fileSize);
+//                                NSLog(@"timeSp = %@",timeSp);
                                 NSMutableArray *videos=[self Get_Paths:@"video_flag"];
                                 _isExist=false;
                                 for(int i=0;i<[videos count];i++)
@@ -645,6 +702,7 @@ BOOL _isExist;
                         }
                         else{
                             dispatch_async(dispatch_get_main_queue(), ^{
+                              
                                 [_collectionView reloadData];
                             });
                         }
@@ -682,6 +740,7 @@ BOOL _isExist;
         
         
         ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]  init];
+        
         [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
                                      usingBlock:listGroupBlock failureBlock:failureBlock];
     });
@@ -692,7 +751,7 @@ BOOL _isExist;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *strDate = [dateFormatter stringFromDate:date];
-    NSLog(@"%@", strDate);
+//    NSLog(@"%@", strDate);
     //[dateFormatter release];
     return strDate;
 }

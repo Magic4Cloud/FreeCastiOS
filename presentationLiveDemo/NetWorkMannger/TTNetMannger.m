@@ -36,6 +36,10 @@
     
     NSURLSessionDataTask * task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSError * jsonError;
+        if (!data) {
+            completionHandler(nil);
+            return ;
+        }
         NSDictionary * responseData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
         
         NSLog(@"get;data:%@\nresponseData:%@\nerror:%@",data,responseData,jsonError);
