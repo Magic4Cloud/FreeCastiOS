@@ -90,9 +90,9 @@ Rak_Lx52x_Device_Control *_Scan;
     } completion:nil];
     
     _menuBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _menuBtn.frame = CGRectMake(viewW*30/totalWeight, viewH*45/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_menuBtn setImage:[UIImage imageNamed:@"function menu_nor@3x.png"] forState:UIControlStateNormal];
-    [_menuBtn setImage:[UIImage imageNamed:@"function menu_pre@3x.png"] forState:UIControlStateHighlighted];
+    _menuBtn.frame = CGRectMake(viewW*40/totalWeight, viewH*45/totalHeight, viewH*15/totalHeight, viewH*25/totalHeight);
+    [_menuBtn setImage:[UIImage imageNamed:@"icon_side menu"] forState:UIControlStateNormal];
+//    [_menuBtn setImage:[UIImage imageNamed:@"function menu_pre@3x.png"] forState:UIControlStateHighlighted];
     _menuBtn.contentMode=UIViewContentModeScaleAspectFill;
     _menuBtn.center=CGPointMake(_menuBtn.center.x, _topFlag.center.y);
     _menuBtn.transform = CGAffineTransformMakeScale(1.5, 1.5);

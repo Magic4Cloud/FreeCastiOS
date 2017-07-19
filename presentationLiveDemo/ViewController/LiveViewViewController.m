@@ -854,7 +854,7 @@ bool _isTakePhoto=NO;
         [mutaArray addObject:timesamp];
         [self Save_Urls:mutaArray :@"video_flag"];
         if (_liveCameraSource == IphoneBackCamera) {
-//            [self.session startRecord];
+            [self.session startRecord];
         }
         else if (_liveCameraSource == ExternalDevices)
         {
@@ -874,7 +874,7 @@ bool _isTakePhoto=NO;
         _recordTimeLabel.hidden=YES;
         if (_liveCameraSource == IphoneBackCamera)
         {
-//            [self.session stopRecord];
+            [self.session stopRecord];
         }
         else if (_liveCameraSource == ExternalDevices)
         {
@@ -1790,8 +1790,8 @@ CGFloat iy ;
      *       */
     LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Medium];
     
-    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 landscape:YES];
     
+    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium3 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
     //利用两设备配置 来构造一个直播会话
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
     _session.captureDevicePosition = AVCaptureDevicePositionBack;
@@ -1858,7 +1858,7 @@ CGFloat iy ;
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
     videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
     
-    videoConfiguration .landscape = YES;
+//    videoConfiguration .landscape = YES;
     if (videoConfiguration .landscape)
     {
         videoConfiguration .videoSize = CGSizeMake(videosizeHeight, videosizeWidth);  //视频大小
