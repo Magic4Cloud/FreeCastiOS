@@ -323,8 +323,8 @@
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         // Checking if group isn't empty
         if (! result) return;
-        
-        [array addObject:(property ? ([result valueForProperty:property] ?: [NSNull null]) : result)];
+        [array addObject:result];
+//        [array addObject:(property ? ([result valueForProperty:property] ?: [NSNull null]) : result)];
       }];
       
       // Execute the |completion| block

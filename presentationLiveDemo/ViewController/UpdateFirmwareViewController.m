@@ -13,6 +13,8 @@
 #import "Rak_Lx52x_Device_Control.h"
 #import "MBProgressHUD.h"
 #import "Brett.h"
+#import <AFNetworking.h>
+#import "TTNetMannger.h"
 
 NSTimer* RunProgress = nil;
 ProgressView *progress = nil;
@@ -49,21 +51,33 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     CGFloat totalHeight;
     CGFloat totalWeight;
 }
+
+@property (nonatomic, strong) NSURLSessionDownloadTask * downloadTask;
+
+@property (nonatomic, strong) MBProgressHUD * progressHud;
 @end
 
 @implementation UpdateFirmwareViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    homeDir = NSHomeDirectory();
+    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    docDir = [paths objectAtIndex:0];
+    
+    
+    [self checkversion];
+    
     // Do any additional setup after loading the view.
     _isFound=NO;
     _isUpdte=NO;
     _Exit=NO;
     filePath=[[NSMutableArray alloc]init];
     fileName=[[NSMutableArray alloc]init];
-    url=@"https://pan.baidu.com/s/1o80cPIi";
+//    url=@"https://pan.baidu.com/s/1o80cPIi";
     //测试连接
-//    url = @"https://pan.baidu.com/s/1pLjZfqb";
+    url = @"https://pan.baidu.com/s/1pLjZfqb";
     updatePort=80;
     updateIP=@"192.168.100.100";
     homeDir = NSHomeDirectory();
@@ -305,12 +319,14 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     _firmwareFailedNote1.numberOfLines = 0;
     [_firmwareSuccessView addSubview:_firmwareFailedNote1];
     
-    NSArray *files = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:docDir error:Nil];
+    
+    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:docDir error:Nil];
     for (int i=0; i<[files count]; i++) {
-        if(([files[i] hasPrefix:@"upgrade"])&&([files[i] hasSuffix:@".tgz"])){
+        if(([files[i] hasPrefix:@"upgrade"])&&([files[i] hasSuffix:@".tar"])){
             [fileName addObject:files[i]];
         }
     }
+    
     [self choosefirmwareViewInit];
     
     _firmwareNoteLabel1.hidden=YES;
@@ -320,6 +336,144 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     
     updateIP=[self Get_Paths:@"DEVICEIP"];
     _currentVersionLabel.text = [self Get_Paths:@"DEVICEVERSION"];
+}
+
+#pragma mark - 下载升级包
+- (MBProgressHUD *)progressHud
+{
+    if (!_progressHud) {
+        _progressHud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:_progressHud];
+        _progressHud.mode = MBProgressHUDModeDeterminate;
+        _progressHud.labelText = @"Downloading..";
+        _progressHud.progress = 0.0;
+    }
+    return _progressHud;
+}
+
+- (void)downloadupdatepackageWithUrl:(NSString *)downloadUrlString
+{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+       [self.progressHud show:YES];
+    });
+    
+    
+    //远程地址
+    NSURL *URL = [NSURL URLWithString:downloadUrlString];
+    //默认配置
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    //AFN3.0+基于封住URLSession的句柄
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    
+    //请求
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    
+    //下载Task操作
+    _downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        // @property int64_t totalUnitCount;     需要下载文件的总大小
+        // @property int64_t completedUnitCount; 当前已经下载的大小
+        
+        // 给Progress添加监听 KVO
+        NSLog(@"%f",1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
+        // 回到主队列刷新UI
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 设置进度条的百分比
+            
+            self.progressHud.progress = 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount;
+        });
+        
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        
+        //- block的返回值, 要求返回一个URL, 返回的这个URL就是文件的位置的路径
+        
+        NSString *cachesPath = docDir;
+        NSString *path = [cachesPath stringByAppendingPathComponent:response.suggestedFilename];
+        return [NSURL fileURLWithPath:path];
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        
+        //设置下载完成操作
+        // filePath就是你下载文件的位置，你可以解压，也可以直接拿来使用
+        
+        NSString *imgFilePath = [filePath path];// 将NSURL转成NSString
+        UIImage *img = [UIImage imageWithContentsOfFile:imgFilePath];
+        NSLog(@"下载成功imgFilePath：%@ ",imgFilePath);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressHud hide:YES];
+            
+            NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:docDir error:Nil];
+            for (int i=0; i<[files count]; i++) {
+                if(([files[i] hasPrefix:@"upgrade"])&&([files[i] hasSuffix:@".tgz"])){
+                    [fileName addObject:files[i]];
+                }
+            }
+            
+            [self choosefirmwareViewInit];
+            
+        });
+        
+        
+//        self.imageView.image = img;
+        
+    }];
+    
+    [_downloadTask resume];
+
+}
+
+- (void)checkversion
+{
+
+ 
+    NSString * urlstring = @"http://www.cv-hd.com/upgrade.txt";
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlstring]];
+
+    NSURLSession * session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask * task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        NSArray * separateArray = [string componentsSeparatedByString:@"\n"];
+        
+        NSString * versionString = [separateArray firstObject];
+        NSString * downloadAddress;
+        if (separateArray.count>0) {
+            downloadAddress = [separateArray objectAtIndex:1];
+        }
+        NSLog(@"%@ - %@  -%@ ",string,versionString,downloadAddress);
+        
+//        [self Save_Paths:_firmwareUpgradeValue.text :@"DEVICEVERSION"];
+        NSString * version = [self Get_Paths:@"DEVICEVERSION"];
+        NSRange range=[version rangeOfString:@"_V"];
+        if (range.location != NSNotFound) {
+            int i=(int)range.location;
+            version=[version substringFromIndex:i+2];
+        }
+        else{
+            range=[version rangeOfString:@"_v"];
+            if (range.location != NSNotFound) {
+                int i=(int)range.location;
+                version=[version substringFromIndex:i+2];
+            }
+        }
+        NSLog(@"version:%@",version);
+        if (version && versionString) {
+            if ([versionString floatValue]>[version floatValue]) {
+                //需要更新   下载更新包
+                if (downloadAddress) {
+                    [self downloadupdatepackageWithUrl:downloadAddress];
+                }
+                
+            }
+        }
+        
+    }];
+
+    [task resume];
+
 }
 
 -(void)RunProgressTimer{
@@ -422,7 +576,7 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
 //VER='HD_WifiV_566_V1.57.2';"
 - (void)getFilePath{
     [filePath removeAllObjects];
-    NSString *srcPath=[NSString stringWithFormat:@"%@/%@/files/",docDir,[_chooseFirmwareNameLabel.text stringByReplacingOccurrencesOfString:@".tgz" withString:@""]];
+    NSString *srcPath=[NSString stringWithFormat:@"%@/%@/files/",docDir,[_chooseFirmwareNameLabel.text stringByReplacingOccurrencesOfString:@".tar" withString:@""]];
     NSFileManager *myFileManager=[NSFileManager defaultManager];
     NSDirectoryEnumerator *myDirectoryEnumerator;
     myDirectoryEnumerator=[myFileManager enumeratorAtPath:srcPath];
@@ -435,7 +589,7 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
             
         }
         else{
-            NSArray *Names = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%@%@/",srcPath,path] error:Nil];
+            NSArray *Names = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%@%@/",srcPath,path] error:Nil];
             if ([Names count]==0) {
                 NSLog(@"%@",path);
                 [filePath addObject:[NSString stringWithFormat:@"/%@",path]];
@@ -446,24 +600,27 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
 
 - (void)_chooseFirmwareViewClick{
     NSLog(@"_chooseFirmwareViewClick");
-    //fileName = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:docDir error:Nil];
-    //[self ShowFirmwareList];
+//    fileName = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:docDir error:Nil];
+//    [self ShowFirmwareList];
     
     [self setInfoViewFrame:firmwareView :NO];
 }
 
 - (void)_updateFirmwareBtnClick{
     NSLog(@"_updateFirmwareBtnClick");
+    return;
+    
     _isSetVer=NO;
-    [self getFilePath];
-    if ([filePath count]==0) {
-        [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_no_firmware", nil)];
-    }
-    else{
-        if ([_newVersionLabel.text compare:@""] ==NSOrderedSame) {
-            [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_get_version", nil)];
-            return;
-        }
+//    [self getFilePath];
+//    
+//    if ([filePath count]==0) {
+//        [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_no_firmware", nil)];
+//    }
+//    else{
+//        if ([_newVersionLabel.text compare:@""] ==NSOrderedSame) {
+//            [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_get_version", nil)];
+//            return;
+//        }
         _firmwareSuccessValue.text=_currentVersionLabel.text;
         _firmwareNoteLabel1.hidden=YES;
         _firmwareNoteLabel2.hidden=YES;
@@ -492,7 +649,7 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
             [NSThread detachNewThreadSelector:@selector(sendPacket) toTarget:self withObject:nil];//升级
             [GCDSocket readDataWithTimeout:-1 tag:0];
         }
-    }
+//    }
 }
 
 //保活
@@ -508,10 +665,13 @@ CGFloat progressPos;
         NSString *bottomStream=[NSString stringWithFormat:@"%@%@%@",postPath,filePath[fileNum],postAllEnd];
         //NSLog(@"bottomStream==%@",bottomStream);
         NSString *destPath=[NSString stringWithFormat:@"%@/%@/files%@",docDir,[_chooseFirmwareNameLabel.text stringByReplacingOccurrencesOfString:@".tgz" withString:@""],filePath[fileNum]];
-        NSData *data = [NSData dataWithContentsOfFile:destPath];
+        
+        NSString * destPath2 = [NSString stringWithFormat:@"%@/%@",docDir,fileName[0]];
+        NSData *data = [NSData dataWithContentsOfFile:destPath2];
         int send_len=(int)data.length+(int)topStream.length+(int)bottomStream.length;
         int bin_len=(int)data.length;
         int init_len=bin_len;
+        
         dispatch_async(dispatch_get_main_queue(),^ {
             _firmwareNoteLabel1.text=[NSString stringWithFormat:@"%@(%d/%d)",NSLocalizedString(@"upgrade_firmware_note1", nil),(fileNum+1),(int)[filePath count]];
         });
@@ -720,29 +880,29 @@ bool _isSetVer=NO;
     _chooseFirmwareNameLabel.text=fileName[button.tag];
 
     //解压
-    NSString *verTgzPath=[NSString stringWithFormat:@"%@/%@",docDir,_chooseFirmwareNameLabel.text];
-    NSURL *URL = [NSURL URLWithString:verTgzPath];
-    NSString *__autoreleasing verStr = [[NSString alloc] initWithFormat:@"%@", verTgzPath];
-    [Brett untarFileAtURL:URL withError:nil destinationPath:&verStr];
-    
-    NSString *verPath=[NSString stringWithFormat:@"%@/%@/upgrade.sh",docDir,[_chooseFirmwareNameLabel.text stringByReplacingOccurrencesOfString:@".tgz" withString:@""]];
-    NSData *verData = [NSData dataWithContentsOfFile:verPath];
-    NSString *verString = [[NSString alloc] initWithData:verData encoding:NSUTF8StringEncoding];
-    NSString *Str=@"";
-    NSString *keyStr=@"VER='";
-    NSString *endStr=@"';";
-    NSRange range=[verString rangeOfString:keyStr];
-    if (range.location != NSNotFound) {
-        int i=(int)range.location;
-        verString=[verString substringFromIndex:i+keyStr.length];
-        NSRange range1=[verString rangeOfString:endStr];
-        if (range1.location != NSNotFound) {
-            int j=(int)range1.location;
-            NSRange diffRange=NSMakeRange(0, j);
-            Str=[verString substringWithRange:diffRange];
-            _newVersionLabel.text=Str;
-        }
-    }
+//    NSString *verTgzPath=[NSString stringWithFormat:@"%@/%@",docDir,_chooseFirmwareNameLabel.text];
+//    NSURL *URL = [NSURL URLWithString:verTgzPath];
+//    NSString *__autoreleasing verStr = [[NSString alloc] initWithFormat:@"%@", verTgzPath];
+//    [Brett untarFileAtURL:URL withError:nil destinationPath:&verStr];
+//    
+//    NSString *verPath=[NSString stringWithFormat:@"%@/%@/upgrade.sh",docDir,[_chooseFirmwareNameLabel.text stringByReplacingOccurrencesOfString:@".tgz" withString:@""]];
+//    NSData *verData = [NSData dataWithContentsOfFile:verPath];
+//    NSString *verString = [[NSString alloc] initWithData:verData encoding:NSUTF8StringEncoding];
+//    NSString *Str=@"";
+//    NSString *keyStr=@"VER='";
+//    NSString *endStr=@"';";
+//    NSRange range=[verString rangeOfString:keyStr];
+//    if (range.location != NSNotFound) {
+//        int i=(int)range.location;
+//        verString=[verString substringFromIndex:i+keyStr.length];
+//        NSRange range1=[verString rangeOfString:endStr];
+//        if (range1.location != NSNotFound) {
+//            int j=(int)range1.location;
+//            NSRange diffRange=NSMakeRange(0, j);
+//            Str=[verString substringWithRange:diffRange];
+//            _newVersionLabel.text=Str;
+//        }
+//    }
 };
 
 -(void)_firmwareViewCancelClick{

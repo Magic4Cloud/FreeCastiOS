@@ -19,6 +19,9 @@
 #endif
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "AlbumObject.h"
+
+#import "ALAssetsLibrary+CustomPhotoAlbum.h"
 
 @interface LFVideoCapture ()
 
@@ -75,49 +78,81 @@
     }
 }
 
-
-- (void)startRecord
+- (void)Save_Urls:(NSMutableArray *)Timesamp :(NSString *)key
 {
-    _videoCamera.audioEncodingTarget = nil;
+    NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+    [defaults setObject:Timesamp forKey:key];
+    [defaults synchronize];
+}
+
+- (NSMutableArray *)Get_Urls:(NSString *)key
+{
+    NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
+    NSMutableArray *value=[defaults objectForKey:key];
+    return value;
+}
+
+-(void)startRecording{
     
 
-    
-    NSDate *senddate = [NSDate date];
-    
-    NSString *filePath = [NSString stringWithFormat:@"FREESTREAM%ld.mov", (long)[senddate timeIntervalSince1970]];
+    long recordTime = [[NSDate date] timeIntervalSince1970];
+    NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
+
+    NSString *filePath = [NSString stringWithFormat:@"FREESTREAM%@.mov", timesamp];
     
     _videoPath = [self getPathForRecord:filePath];
     NSURL * pathUrl = [NSURL fileURLWithPath:_videoPath];
     _saveLocalVideoPath = pathUrl;
-
     
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:self.saveLocalVideoPath size:self.configuration.videoSize];
-    _movieWriter.encodingLiveVideo = YES;
-    _movieWriter.shouldPassthroughAudio = YES;
-    self.videoCamera.audioEncodingTarget = self.movieWriter;
+    if(self.warterMarkView){
+        [self.blendFilter addTarget:self.movieWriter];
+    }else{
+        [self.output addTarget:self.movieWriter];
+    }
     
     [self.movieWriter startRecording];
-    
-
 }
 
-- (NSString *)getPathForRecord:(NSString*)albumName{
-    //    NSFileManager * fileManger=[NSFileManager defaultManager];
+-(void)stopRecording{
+    
+    
+    [self.movieWriter finishRecordingWithCompletionHandler:^{
+        
+        ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+        [lib saveVideo:_saveLocalVideoPath toAlbum:@"FREESTREAM" completion:^(NSURL *assetURL, NSError *error) {
+            if (error) {
+                NSLog(@"保存到相册失败error:%@",error);
+            }
+            else
+            {
+                NSLog(@"保存到相册成功");
+            }
+            
+        } failure:^(NSError *error) {
+            NSLog(@"保存到相册失败error:%@",error);
+        }];
+        
+    }];
+    
+    if(self.warterMarkView){
+        
+        [self.blendFilter removeTarget:self.movieWriter];
+    }else{
+        [self.output removeTarget:self.movieWriter];
+    }
+    self.movieWriter = nil;
+}
+
+
+
+- (NSString *)getPathForRecord:(NSString*)albumName
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSAllDomainsMask, YES);
     NSString * baseDirctory=[NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
     NSString *filePath = [baseDirctory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",albumName]];
     return filePath;
 }
 
-- (void)stopRecord
-{
-    [self.movieWriter finishRecordingWithCompletionHandler:^{
-        ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
-        [lib writeVideoAtPathToSavedPhotosAlbum:_saveLocalVideoPath completionBlock:^(NSURL *assetURL, NSError *error) {
-            
-        }];
-    }];
-}
 
 
 #pragma mark -- Setter Getter

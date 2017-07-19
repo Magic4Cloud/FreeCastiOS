@@ -56,6 +56,9 @@
 @property (nonatomic, assign) BOOL isFirstFrame;
 @property (nonatomic, assign) uint64_t currentTimeStamp;
 
+@property (nonatomic, strong) GPUImageAlphaBlendFilter *blendFilter;
+
+
 @end
 
 #define NOW (CACurrentMediaTime()*1000)
@@ -99,17 +102,21 @@ static LFLiveSessionWithPicSource * _sharedInstance;
     self.videoCaptureSource.running = NO;
 }
 
+
+
+
 #pragma mark --
 //LiveStreamInfo类只有默认构造函数， 类中两个属性：音频配置，视频配置均使用默认的值
 //startLive函数： 先将本类initWithAudionConfiguration videoComfiguration 所获取的 音频视频配置 赋值给 本类的属性_streamInfo， 然后启动socket。
 - (void)startRecord
 {
-    [_videoCaptureSource startRecord];
+
+    [_videoCaptureSource startRecording];
 }
 
 - (void)stopRecord
 {
-    [_videoCaptureSource stopRecord];
+    [_videoCaptureSource stopRecording];
 }
 
 /**
@@ -178,6 +185,15 @@ static LFLiveSessionWithPicSource * _sharedInstance;
     }
     
 }
+
+- (void)setWarterMarkView:(UIView *)warterMarkView{
+    [self.videoCaptureSource setWarterMarkView:warterMarkView];
+}
+
+- (nullable UIView*)warterMarkView{
+    return self.videoCaptureSource.warterMarkView;
+}
+
 
 NSTimer *uploadTimer=nil;
 int count_duration=0;

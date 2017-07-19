@@ -10,7 +10,7 @@
 
 @interface CollectionViewCell : UICollectionViewCell
 {
-    int selectFlag;
+    BOOL selectFlag;
 }
 @property(nonatomic ,strong)UILabel *text;
 @property(nonatomic ,strong)UIImageView *imgView;
@@ -19,7 +19,7 @@
 @property(nonatomic ,strong)UIImageView *videoImageView;
 @property(nonatomic ,strong)UILabel *videoTimeLabel;
 - (void)sendValue:(id)dic;
-- (void)setSelectFlag:(int)flag;
+- (void)setSelectFlag:(BOOL)flag;
 - (void)removeText;
 - (void)sendVideoValue:(NSString*)time;
 

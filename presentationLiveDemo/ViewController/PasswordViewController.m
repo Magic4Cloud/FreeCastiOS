@@ -793,7 +793,7 @@ Rak_Lx52x_Device_Control *_configScan;
 
 - (void)scanDeviceTask
 {
-    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:1.0f];
+    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:3.0f];
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
@@ -1307,15 +1307,53 @@ bool _modifyOK=YES;
         });
     }
 }
+- (void)updatePassWord
+{
+    NSString *URL;
+    //设置AP模块的密码
+    if ([_newPasswordText.text compare:@""]==NSOrderedSame) {
+        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
+    }
+    else{
+        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+    }
+   HttpRequest * http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        resolution=[self parseJsonString:http_request.ResponseString];
+        if ([resolution compare:@"0"]!=NSOrderedSame) {
+            dispatch_async(dispatch_get_main_queue(),^ {
+                dispatch_async(dispatch_get_main_queue(),^ {
+                    [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
+                });
+            });
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(),^ {
+                [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+            });
+        }
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+        });
+    }
 
+}
 - (void)_passwordModifyBtnClick{
     NSLog(@"_passwordModifyBtnClick");
+    
     
     if([_newPasswordText.text compare:_confirmText.text]!=NSOrderedSame){
         [self showAllTextDialog:NSLocalizedString(@"password_not_same", nil)];
         return;
     }
     
+    [self updatePassWord];
+    return;
     //设置STA模块的密码
     NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",configIP,configPort,_ssidText.text,_newPasswordText.text];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
@@ -1330,6 +1368,7 @@ bool _modifyOK=YES;
             }
             else{
                 URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.101/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
             }
             http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
             if(http_request.StatusCode==200)

@@ -4,7 +4,7 @@
  Copyright (c) 2015年 rak. All rights reserved.
  */
 //新添加的
-getyoutubeStreamKeyError = "not get streamkey!";
+getyoutubeStreamKeyError = "Get streamkey faild!";
 CustomUrlFillError       = "Please fill in the correct Url or key";
 SaveSuccess              = "Save Success!";
 SaveFail                 = "Save Fail!";

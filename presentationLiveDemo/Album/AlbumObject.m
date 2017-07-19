@@ -178,11 +178,12 @@ BOOL haveHDRGroup = NO;
             }
         }];
     };
+    __weak typeof(ALAssetsLibrary) * weakAssetsLibrary = assetsLibrary;
     [assetsLibrary writeImageDataToSavedPhotosAlbum:imageData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
         if (customAlbumName) {
             [assetsLibrary addAssetsGroupAlbumWithName:customAlbumName resultBlock:^(ALAssetsGroup *group) {
                 if (group) {
-                    [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+                    [weakAssetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
                         [group addAsset:asset];
                         if (completionBlock) {
                             completionBlock();
@@ -193,10 +194,10 @@ BOOL haveHDRGroup = NO;
                         }
                     }];
                 } else {
-                    AddAsset(assetsLibrary, assetURL);
+                    AddAsset(weakAssetsLibrary, assetURL);
                 }
             } failureBlock:^(NSError *error) {
-                AddAsset(assetsLibrary, assetURL);
+                AddAsset(weakAssetsLibrary, assetURL);
             }];
         } else {
             if (completionBlock) {
@@ -220,10 +221,12 @@ BOOL haveHDRGroup = NO;
     }
     
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    
+    __weak typeof(ALAssetsLibrary) * weakAssetsLibrary = assetsLibrary;
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         
         if ([[group valueForProperty:ALAssetsGroupPropertyName] hasPrefix:newAlbumName]) {
-            [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:[NSURL fileURLWithPath:path]
+            [weakAssetsLibrary writeVideoAtPathToSavedPhotosAlbum:[NSURL fileURLWithPath:path]
                                         completionBlock:^(NSURL *assetURL, NSError *error) {
                                             if (error) {
                                                 NSLog(@"Save video fail:%@",error);
@@ -234,7 +237,7 @@ BOOL haveHDRGroup = NO;
                                         }];
         }
     } failureBlock:^(NSError *error) {
-        
+        NSLog(@"Save video fail:%@",error);
     }];
 }
 
