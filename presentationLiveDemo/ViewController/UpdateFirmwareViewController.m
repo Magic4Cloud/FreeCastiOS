@@ -128,37 +128,37 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     
     _versionView=[[UIView alloc]init];
     _versionView.backgroundColor=[UIColor clearColor];
-    _versionView.frame=CGRectMake(0,_topBg.frame.origin.y+_topBg.frame.size.height+viewH*24/totalHeight,viewW,viewH*89/totalHeight);
+    _versionView.frame=CGRectMake(0,_topBg.frame.origin.y+_topBg.frame.size.height,viewW,viewH*89/totalHeight);
     [self.view addSubview:_versionView];
     
-    _currentVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*69/totalHeight, viewW, viewH*20/totalHeight)];
+    _currentVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*82/totalHeight, viewW, viewH*20/totalHeight)];
     _currentVersionLabel.text = NSLocalizedString(@"upgrade_firmware_current_version", nil);
-    _currentVersionLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _currentVersionLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _currentVersionLabel.backgroundColor = [UIColor clearColor];
-    _currentVersionLabel.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+    _currentVersionLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _currentVersionLabel.lineBreakMode = UILineBreakModeWordWrap;
     _currentVersionLabel.textAlignment=UITextAlignmentCenter;
     _currentVersionLabel.numberOfLines = 0;
     [_versionView addSubview:_currentVersionLabel];
     
-    _versionImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Firmware update_update_icon@3x.png"]];
-    _versionImg.frame = CGRectMake(0, viewH*30/totalHeight, viewH*29/totalHeight, viewH*29/totalHeight);
+    _versionImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_update"]];
+    _versionImg.frame = CGRectMake(0, viewH*22.5/totalHeight, viewH*47/totalHeight, viewH*47/totalHeight);
     _versionImg.center=CGPointMake(viewW*0.5, _versionImg.center.y);
     _versionImg.contentMode=UIViewContentModeScaleToFill;
     [_versionView addSubview:_versionImg];
     
     _newVersionLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*20/totalHeight)];
     _newVersionLabel.text = @"";
-    _newVersionLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _newVersionLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _newVersionLabel.backgroundColor = [UIColor clearColor];
-    _newVersionLabel.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
+    _newVersionLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     _newVersionLabel.lineBreakMode = UILineBreakModeWordWrap;
     _newVersionLabel.textAlignment=UITextAlignmentCenter;
     _newVersionLabel.numberOfLines = 0;
     [_versionView addSubview:_newVersionLabel];
     
     //Upgrade
-    _chooseFirmwareView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(0,_versionView.frame.origin.y+_versionView.frame.size.height+viewH*15/totalHeight,viewW,viewH*44/totalHeight)];
+    _chooseFirmwareView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(0,viewH*205/totalHeight,viewW,viewH*45/totalHeight)];
     _chooseFirmwareView.backgroundColor=[UIColor whiteColor];
     _chooseFirmwareView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_chooseFirmwareViewClick)];
@@ -167,9 +167,9 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     
     _chooseFirmwareLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH*44/totalHeight)];
     _chooseFirmwareLabel.text = NSLocalizedString(@"choose_firmware_title", nil);
-    _chooseFirmwareLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _chooseFirmwareLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _chooseFirmwareLabel.backgroundColor = [UIColor clearColor];
-    _chooseFirmwareLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _chooseFirmwareLabel.textColor = [UIColor colorWithRed:0/255.0 green:178/255.0 blue:225/255.0 alpha:1.0];
     _chooseFirmwareLabel.lineBreakMode = UILineBreakModeWordWrap;
     _chooseFirmwareLabel.textAlignment=UITextAlignmentCenter;
     _chooseFirmwareLabel.numberOfLines = 0;
@@ -184,22 +184,29 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     
     _chooseFirmwareNameLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _chooseFirmwareView.frame.origin.y+_chooseFirmwareView.frame.size.height, viewW, viewH*44/totalHeight)];
     _chooseFirmwareNameLabel.text = NSLocalizedString(@"upgrade_firmware_name", nil);
-    _chooseFirmwareNameLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _chooseFirmwareNameLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _chooseFirmwareNameLabel.backgroundColor = [UIColor whiteColor];
-    _chooseFirmwareNameLabel.textColor = [UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
+    _chooseFirmwareNameLabel.textColor = [UIColor colorWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1.0];
     _chooseFirmwareNameLabel.lineBreakMode = UILineBreakModeWordWrap;
     _chooseFirmwareNameLabel.textAlignment=UITextAlignmentCenter;
     _chooseFirmwareNameLabel.numberOfLines = 0;
     [self.view addSubview:_chooseFirmwareNameLabel];
     
+    UILabel *lineLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, viewH*247/totalHeight, viewW, viewH*0.5/totalHeight)];
+    lineLabel.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:0.5];
+    [self.view addSubview:lineLabel];
+    
     //Update
     _updateFirmwareBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _updateFirmwareBtn.frame = CGRectMake(viewW*30/totalWeight, viewH-viewH*85/totalHeight, viewW*316/totalWeight, viewH*44/totalHeight);
-    [_updateFirmwareBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
-    [_updateFirmwareBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
-    [_updateFirmwareBtn setTitle: NSLocalizedString(@"upgrade_firmware_btn", nil) forState: UIControlStateNormal];
-    [_updateFirmwareBtn setTitleColor:[UIColor colorWithRed:236/255.0 green:79/255.0 blue:38/255.0 alpha:1.0] forState:UIControlStateNormal];
-    _updateFirmwareBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
+    _updateFirmwareBtn.frame = CGRectMake(viewW*77.5/totalWeight, viewH*332.5/totalHeight, viewW*220/totalWeight, viewH*44/totalHeight);
+    _updateFirmwareBtn.backgroundColor = [UIColor colorWithRed:192/255.0 green:236/255.0 blue:248/255.0 alpha:0.5];
+    _updateFirmwareBtn.layer.cornerRadius = 25;
+//    [_updateFirmwareBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
+//    [_updateFirmwareBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
+//    [_updateFirmwareBtn setTitle: NSLocalizedString(@"upgrade_firmware_btn", nil) forState: UIControlStateNormal];
+    [_updateFirmwareBtn setTitle:@"Update" forState: UIControlStateNormal];
+    [_updateFirmwareBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:178/255.0 blue:225/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _updateFirmwareBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _updateFirmwareBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_updateFirmwareBtn addTarget:nil action:@selector(_updateFirmwareBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_updateFirmwareBtn];
