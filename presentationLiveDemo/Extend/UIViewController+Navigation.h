@@ -13,4 +13,6 @@
 - (void)showHudMessage:(NSString *)string;
 - (void)showHudLoading;
 - (void)hideHudLoading;
+
+- (void)showAlertWithTitile:(NSString *)title message:(NSString *)message leftButtonTitle:(NSString *)leftTitle rightButtonTitle:(NSString *)rightTitle leftButtonClickHandler:(void (^ )(UIAlertAction * action))leftButtonClick rightButtonClickHandler:(void (^ )(UIAlertAction * action))rightButtonClick;
 @end

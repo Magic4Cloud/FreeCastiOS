@@ -58,7 +58,11 @@
             [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
             return;
         }
-
+        
+        if ([streamUrl IsChinese] || [streamKey IsChinese]) {
+            [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
+            return;
+        }
         BOOL save = [[TTCoreDataClass shareInstance] updatePlatformWithName:custom rtmp:streamUrl streamKey:streamKey customString:nil enabel:YES selected:YES];
         if (save)
         {

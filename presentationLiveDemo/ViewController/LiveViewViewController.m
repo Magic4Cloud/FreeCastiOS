@@ -646,7 +646,7 @@ bool VideoRecordIsEnable = NO;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
+    
     [self getSelectedPlatform];
 }
 
@@ -657,11 +657,15 @@ bool VideoRecordIsEnable = NO;
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
         _isBroswer=NO;
     }
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];//屏幕取消常亮
+    
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     _isExit=YES;
     if (_isLiveView){
@@ -1076,7 +1080,7 @@ int valOrientation;
             }
         }
         
-        [self getDeviceConfig];
+//        [self getDeviceConfig];
         
         NSLog(@"start play==%@",urlString);
         [self.videoView play:urlString useTcp:NO];
@@ -1099,14 +1103,20 @@ int valOrientation;
     {
         
         dispatch_async(dispatch_get_main_queue(),^ {
-            _tipLabel.hidden=YES;
-            [self stopActivityIndicatorView];
-            _session = [self getSessionWithSystemCamera];
-            _livingPreView.hidden = NO;
-            play_success = YES;
-            _liveCameraSource = IphoneBackCamera;
-            
+                    
+        [self showAlertWithTitile:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" leftButtonTitle:@"continue search" rightButtonTitle:@"use phone camera" leftButtonClickHandler:^(UIAlertAction *action) {
+            [self scanDevice];
+        } rightButtonClickHandler:^(UIAlertAction *action) {
+
+                _tipLabel.hidden=YES;
+                [self stopActivityIndicatorView];
+                _session = [self getSessionWithSystemCamera];
+                _livingPreView.hidden = NO;
+                play_success = YES;
+                _liveCameraSource = IphoneBackCamera;
+        }];
         });
+
     }
 }
 
@@ -1845,12 +1855,11 @@ CGFloat iy ;
     videoConfiguration .videoFrameRate  = 30;            //帧率
     
     videoConfiguration .videoMaxKeyframeInterval = 60; //最大关键帧间隔数
-    
+    videoConfiguration.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
     
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
     videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
     
-//    videoConfiguration .landscape = YES;
     if (videoConfiguration .landscape)
     {
         videoConfiguration .videoSize = CGSizeMake(videosizeHeight, videosizeWidth);  //视频大小
