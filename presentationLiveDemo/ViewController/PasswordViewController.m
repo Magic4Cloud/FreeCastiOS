@@ -686,8 +686,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateMaxLabel.numberOfLines = 0;
     [_videoRateView addSubview:_videoRateMaxLabel];
     
-    _videoRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*44/totalWeight, viewH*18/totalHeight)];
-    _videoRateValueLabel.center=CGPointMake(6/8.0*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y);
+    _videoRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*50/totalWeight, viewH*18/totalHeight)];
+    _videoRateValueLabel.center=CGPointMake(6/8.0*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y+ viewH*8/totalHeight);
     _videoRateValueLabel.text = @"6M";
     _videoRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoRateValueLabel.backgroundColor = [UIColor clearColor];
@@ -748,7 +748,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoFrameRateView addSubview:_videoFrameRateMaxLabel];
     
     _videoFrameRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*48/totalWeight, viewH*18/totalHeight)];
-    _videoFrameRateValueLabel.center=CGPointMake(25/30.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y);
+    _videoFrameRateValueLabel.center=CGPointMake(25/30.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y + viewH*8/totalHeight);
     _videoFrameRateValueLabel.text = @"25FPS";
     _videoFrameRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateValueLabel.backgroundColor = [UIColor clearColor];
@@ -1067,13 +1067,13 @@ NSString *quality;
     else{
         _videoRateValueLabel.text = [NSString stringWithFormat:@"%dK",(int)(value)];
     }
-    _videoRateValueLabel.center=CGPointMake((_videoRateSlider.value-220)/(8000-220)*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y + viewH*10/totalHeight);
+    _videoRateValueLabel.center=CGPointMake((_videoRateSlider.value-220)/(8000-220)*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y);
 }
 
 - (void)setVideoFrameRate:(float)value{
     _videoFrameRateSlider.value=value;
     _videoFrameRateValueLabel.text = [NSString stringWithFormat:@"%dFPS",(int)value];
-    _videoFrameRateValueLabel.center=CGPointMake((_videoFrameRateSlider.value-10)/20.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y+viewH*10/totalHeight);
+    _videoFrameRateValueLabel.center=CGPointMake((_videoFrameRateSlider.value-10)/20.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y);
 }
 
 //-(void)_videoBtnClick:(UIButton *)Seg
