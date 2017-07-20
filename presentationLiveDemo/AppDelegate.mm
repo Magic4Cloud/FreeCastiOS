@@ -75,15 +75,15 @@
      */
     [ShareSDK registerApp:@"iosv1101"
           activePlatforms:@[
-                            @(SSDKPlatformTypeSinaWeibo),
+                            //                            @(SSDKPlatformTypeSinaWeibo),
                             //                            @(SSDKPlatformTypeTencentWeibo),
                             //                            @(SSDKPlatformTypeMail),
                             //                            @(SSDKPlatformTypeSMS),
                             //                            @(SSDKPlatformTypeCopy),
                             @(SSDKPlatformTypeFacebook),
-                            @(SSDKPlatformTypeTwitter),
-                            @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ),
+                            //                            @(SSDKPlatformTypeTwitter),
+                            //                            @(SSDKPlatformTypeWechat),
+                            //                            @(SSDKPlatformTypeQQ),
                             //                            @(SSDKPlatformTypeDouBan),
                             //                            @(SSDKPlatformTypeRenren),
                             //                            @(SSDKPlatformTypeKaixin),

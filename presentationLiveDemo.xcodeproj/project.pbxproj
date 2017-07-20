@@ -925,6 +925,10 @@
 		84E634A11E554CD50049573E /* 333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E6349F1E554CD50049573E /* 333.bmp */; };
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
+		9EB463D21F18AFDE00DD0F81 /* TTFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */; };
+		9EB463D31F18AFDE00DD0F81 /* TTFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */; };
+		9EB463D71F18B90900DD0F81 /* FacebookWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D51F18B90900DD0F81 /* FacebookWebViewController.m */; };
+		9EB463D81F18B90900DD0F81 /* FacebookWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463D61F18B90900DD0F81 /* FacebookWebViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -2286,6 +2290,12 @@
 		84E634A51E5576F00049573E /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		84E634A61E5576F00049573E /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9EB463CF1F18AFDE00DD0F81 /* TTFacebookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFacebookViewController.h; sourceTree = "<group>"; };
+		9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFacebookViewController.m; sourceTree = "<group>"; };
+		9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTFacebookViewController.xib; sourceTree = "<group>"; };
+		9EB463D41F18B90900DD0F81 /* FacebookWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookWebViewController.h; sourceTree = "<group>"; };
+		9EB463D51F18B90900DD0F81 /* FacebookWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookWebViewController.m; sourceTree = "<group>"; };
+		9EB463D61F18B90900DD0F81 /* FacebookWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookWebViewController.xib; sourceTree = "<group>"; };
 		D8BA26B51D6AD13500D28C0F /* presentationLiveDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = presentationLiveDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -2949,6 +2959,12 @@
 				7A92FAD91F04FD5000DC9178 /* WebViewController.h */,
 				7A92FADA1F04FD5000DC9178 /* WebViewController.m */,
 				7A92FADB1F04FD5000DC9178 /* WebViewController.xib */,
+				9EB463CF1F18AFDE00DD0F81 /* TTFacebookViewController.h */,
+				9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */,
+				9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */,
+				9EB463D41F18B90900DD0F81 /* FacebookWebViewController.h */,
+				9EB463D51F18B90900DD0F81 /* FacebookWebViewController.m */,
+				9EB463D61F18B90900DD0F81 /* FacebookWebViewController.xib */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -4515,6 +4531,7 @@
 				844E026C1DE42F0600A31374 /* Browse_edit_Sel_icon Copy@3x.png in Resources */,
 				841BEC6E1DBF00B100D03A97 /* wechat@3x.png in Resources */,
 				84123F861DBDE66000CC7B4C /* configure_setting_button_sel@3x.png in Resources */,
+				9EB463D31F18AFDE00DD0F81 /* TTFacebookViewController.xib in Resources */,
 				845A04A11DC3381E0055DADB /* live view_Pause button_nor@3x.png in Resources */,
 				841BEC531DBF00B100D03A97 /* Example image16@3x.png in Resources */,
 				8488BD5E1DB7792B006357AD /* button_rectangle_pre@3x.png in Resources */,
@@ -4889,6 +4906,7 @@
 				84725C391E5C016E00E80045 /* 22.png in Resources */,
 				84DA85531E88E7AC0027B06A /* 06_00044.png in Resources */,
 				84DA85741E88F29E0027B06A /* stop_live_nor.png in Resources */,
+				9EB463D81F18B90900DD0F81 /* FacebookWebViewController.xib in Resources */,
 				84DA853E1E88E7AC0027B06A /* _0001_01.png in Resources */,
 				8488BD7E1DB7792B006357AD /* 01_00042.png in Resources */,
 				84DA84B01E88E7AC0027B06A /* configure_pre@3x.png in Resources */,
@@ -5227,6 +5245,8 @@
 				7A68521B1F1898B200EEDE2D /* GPUImageColourFASTFeatureDetector.m in Sources */,
 				7A68525E1F1898B300EEDE2D /* GPUImageMotionBlurFilter.m in Sources */,
 				840705B31DD053FC00D7522C /* ProgressView.m in Sources */,
+
+				9EB463D21F18AFDE00DD0F81 /* TTFacebookViewController.m in Sources */,
 				7A6852A11F1898B300EEDE2D /* GPUImageVignetteFilter.m in Sources */,
 				7A6852001F1898B200EEDE2D /* GLProgram.m in Sources */,
 				847E4D631E84EE9E005EA0AD /* CommanParameters.m in Sources */,
@@ -5238,6 +5258,7 @@
 				7A6852A91F1898B300EEDE2D /* GPUImagePicture+TextureSubimage.m in Sources */,
 				7A68522B1F1898B200EEDE2D /* GPUImageExposureFilter.m in Sources */,
 				842B2FA01E56976E00996E3E /* decode.c in Sources */,
+				9EB463D71F18B90900DD0F81 /* FacebookWebViewController.m in Sources */,
 				7A68526B1F1898B300EEDE2D /* GPUImagePerlinNoiseFilter.m in Sources */,
 				7A6851FE1F1898B200EEDE2D /* LFStreamRtmpSocket.m in Sources */,
 				8441F3791DE681B700B950B5 /* MarqueeLabel.m in Sources */,

@@ -367,18 +367,21 @@
         switch (i) {
             case 0:
                 _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
-                [_menuBtn setTitle: NSLocalizedString(@"edition", nil) forState: UIControlStateNormal];
+//                [_menuBtn setTitle: NSLocalizedString(@"edition", nil) forState: UIControlStateNormal];
+                [_menuBtn setTitle: @"Version" forState: UIControlStateNormal];
                 _menuBtn.backgroundColor = [UIColor clearColor];
                 break;
             case 1:
 //                [_menuBtn setTitle: NSLocalizedString(@"theme", nil) forState: UIControlStateNormal];
 //                _menuBtn.backgroundColor=[UIColor clearColor];
                 _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
-                [_menuBtn setTitle: NSLocalizedString(@"disclaimer", nil) forState: UIControlStateNormal];
+//                [_menuBtn setTitle: NSLocalizedString(@"disclaimer", nil) forState: UIControlStateNormal];
+                [_menuBtn setTitle: @"Disclaimer" forState: UIControlStateNormal];
                 _menuBtn.backgroundColor = [UIColor clearColor];                break;
             case 2:
                 _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
-                [_menuBtn setTitle: NSLocalizedString(@"privacy_policy", nil) forState: UIControlStateNormal];
+//                [_menuBtn setTitle: NSLocalizedString(@"privacy_policy", nil) forState: UIControlStateNormal];
+                [_menuBtn setTitle:@"Privacy Policy" forState: UIControlStateNormal];
                 _menuBtn.backgroundColor = [UIColor clearColor];
 //                [_menuBtn setTitle: @"" forState: UIControlStateNormal];
 //                _menuBtn.backgroundColor=[UIColor colorWithRed:49/255.0 green:49/255.0 blue:56/255.0 alpha:1.0];
@@ -386,7 +389,8 @@
                 break;
             case 3:
                 _menuBtn.frame= CGRectMake(init_X, init_Y+viewH*52.5*i/totalHeight, viewW, viewH*17.5/totalHeight);
-                [_menuBtn setTitle: NSLocalizedString(@"copyright_info", nil) forState: UIControlStateNormal];
+//                [_menuBtn setTitle: NSLocalizedString(@"copyright_info", nil) forState: UIControlStateNormal];
+                [_menuBtn setTitle:@"Copyright" forState: UIControlStateNormal];
                 _menuBtn.backgroundColor=[UIColor clearColor];
                 break;
             default:

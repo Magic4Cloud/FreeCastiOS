@@ -116,7 +116,7 @@ NSMutableArray *Medias;
     [_editBtn addTarget:nil action:@selector(_editBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_editBtn];
     //设置分段控件点击相应事件
-    NSArray *segmentedData = [[NSArray alloc]initWithObjects:NSLocalizedString(@"photo", nil),NSLocalizedString(@"videos", nil),nil];
+    NSArray *segmentedData = [[NSArray alloc]initWithObjects:NSLocalizedString(@"photo", nil),NSLocalizedString(@"video", nil),nil];
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedData];
     segmentedControl.frame = CGRectMake(0,0,viewW*152/totalWeight,viewH*29/totalHeight);
     segmentedControl.center=CGPointMake(viewW*0.5, _backBtn.center.y);
@@ -265,6 +265,14 @@ NSMutableArray *Medias;
 
 - (void)_deleteBtnClick{
     NSLog(@"_deleteBtnClick");
+    if ([selectedDic count]==0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please select a picture or video to Delete!"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
     
     int count = (int)[selectedDic count];
     NSMutableArray *videos=[self Get_Paths:@"video_flag"];
@@ -304,7 +312,7 @@ NSMutableArray *Medias;
     }
     
     if(!is_photo_choose)
-        [self Save_Paths:mutaArray :@"video_flag"];\
+        [self Save_Paths:mutaArray :@"video_flag"];
     
     [selectedDic removeAllObjects];
     [shareImg removeAllObjects];
@@ -315,9 +323,22 @@ NSMutableArray *Medias;
 - (void)_shareBtnClick{
     NSLog(@"_shareBtnClick");
     if ([selectedDic count]==0) {
-        return;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please select a picture or video to share!"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    } else if([selectedDic count] > 1) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Only one picture can be shared at a time!"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        [self showShareActionSheet:self.view];
     }
-    [self showShareActionSheet:self.view];
 }
 
 #pragma mark 显示分享菜单

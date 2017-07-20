@@ -92,35 +92,37 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     totalWeight=375;//各部分比例
     
     //顶部
-    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];
+    _topBg.frame = CGRectMake(0, 0, viewW, viewH*67/totalHeight);
+    _topBg.backgroundColor = [UIColor whiteColor];
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
-    [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
+    _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+//    [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
+//    [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_backBtn];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
     _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-    _titleLabel.text = NSLocalizedString(@"upgrade_firmware", nil);
-    _titleLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+//    _titleLabel.text = NSLocalizedString(@"upgrade_firmware", nil);
+    _titleLabel.text = @"Firmware Update";
+    _titleLabel.font = [UIFont systemFontOfSize: viewH*22.5/totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _titleLabel.textColor = [UIColor colorWithRed:232/255.0 green:59/255.0 blue:14/255.0 alpha:1.0];
+    _titleLabel.textColor = [UIColor colorWithRed:0/255.0 green:178/255.0 blue:225/255.0 alpha:1.0];
     _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
     _titleLabel.textAlignment=UITextAlignmentCenter;
     _titleLabel.numberOfLines = 0;
     [self.view addSubview:_titleLabel];
     
     _refreshBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _refreshBtn.frame = CGRectMake(viewW-viewH*44/totalHeight, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
-    [_refreshBtn setImage:[UIImage imageNamed:@"refresh.png"] forState:UIControlStateNormal];
+    _refreshBtn.frame = CGRectMake(viewW-viewH*44/totalHeight, diff_top, viewH*47/totalHeight, viewH*47/totalHeight);
+    [_refreshBtn setImage:[UIImage imageNamed:@"icon_update"] forState:UIControlStateNormal];
     [_refreshBtn addTarget:nil action:@selector(_refreshBtnClick) forControlEvents:UIControlEventTouchUpInside];
     //[self.view  addSubview:_refreshBtn];
     

@@ -117,7 +117,7 @@ Rak_Lx52x_Device_Control *_configScan;
 //    [_ssidView.layer setMasksToBounds:YES];
 //    [_passwordView addSubview:_ssidView];
     
-    _ssidLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, viewW*53.5/totalWeight, viewW*110/totalWeight, viewH*17.5/totalHeight)];
+    _ssidLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, viewW*83.5/totalWeight, viewW*110/totalWeight, viewH*17.5/totalHeight)];
     _ssidLabel.text = NSLocalizedString(@"password_ssid_label", nil);
     _ssidLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _ssidLabel.backgroundColor = [UIColor clearColor];
@@ -132,7 +132,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [_ssidView addSubview:_ssidLine];
     
     _ssidText=[[UITextField alloc]init];
-    _ssidText.frame=CGRectMake(viewW*37/totalWeight,_ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*10/totalHeight, viewW*180/totalWeight, viewH*15/totalHeight);
+    _ssidText.frame=CGRectMake(viewW*37/totalWeight,_ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*30/totalHeight, viewW*180/totalWeight, viewH*15/totalHeight);
     _ssidText.backgroundColor = [UIColor clearColor];
     _ssidText.enabled=NO;
     _ssidText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
@@ -140,11 +140,11 @@ Rak_Lx52x_Device_Control *_configScan;
     _ssidText.delegate=self;
     [_passwordView addSubview:_ssidText];
     
-    _ssidImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_password_setting@3x.png"]];
+    _ssidImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wifi"]];
     _ssidImg.userInteractionEnabled=YES;
     UITapGestureRecognizer *singleTap0 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_ssidImgClick)];
     [_ssidImg addGestureRecognizer:singleTap0];
-    _ssidImg.frame = CGRectMake(viewW*313/totalWeight, _ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*5/totalHeight, viewH*25/totalHeight, viewH*25/totalHeight);
+    _ssidImg.frame = CGRectMake(viewW*318/totalWeight, _ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*30/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
     _ssidImg.contentMode=UIViewContentModeScaleToFill;
     [_passwordView addSubview:_ssidImg];
     
@@ -164,7 +164,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _initPasswordLabel.textColor = MAIN_COLOR;
     _initPasswordLabel.lineBreakMode = UILineBreakModeWordWrap;
     _initPasswordLabel.numberOfLines = 0;
-    [_passwordView addSubview:_initPasswordLabel];
+//    [_passwordView addSubview:_initPasswordLabel];
     
 //    UIView *_initPasswordLine=[[UIView alloc]init];
 //    _initPasswordLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
@@ -177,7 +177,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [_initPasswordImg addGestureRecognizer:singleTap2];
     _initPasswordImg.frame = CGRectMake(viewW*318/totalWeight, _initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*10/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
     _initPasswordImg.contentMode=UIViewContentModeScaleToFill;
-    [_passwordView addSubview:_initPasswordImg];
+//    [_passwordView addSubview:_initPasswordImg];
     
     _initPasswordText=[[UITextField alloc]init];
     _initPasswordText.frame=CGRectMake(viewW*37/totalWeight,_initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*10/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
@@ -186,7 +186,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _initPasswordText.secureTextEntry = YES;
     _initPasswordText.delegate=self;
     _initPasswordText.placeholder=NSLocalizedString(@"password_initial_label", nil);
-    [_passwordView addSubview:_initPasswordText];
+//    [_passwordView addSubview:_initPasswordText];
     
     
     //Device
@@ -284,7 +284,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _passwordModifyBtn.frame = CGRectMake(viewW*77.5/totalWeight, viewH*534.5/totalHeight - viewH*67/totalHeight, viewW*220/totalWeight, viewH*35/totalHeight);
 //    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
 //    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
-    [_passwordModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+//    [_passwordModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+    [_passwordModifyBtn setTitle: @"Modify" forState: UIControlStateNormal];
     [_passwordModifyBtn setBackgroundColor:[UIColor colorWithRed:(192 / 255.0f) green:(236 / 255.0f) blue:(248 / 255.0f) alpha:1.0]];
     _passwordModifyBtn.layer.cornerRadius = viewW*18/totalWeight;
     [_passwordModifyBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
@@ -361,7 +362,7 @@ Rak_Lx52x_Device_Control *_configScan;
     //lineView
     for (int i = 0; i < 2; i ++) {
         UIView *SSIDLineView=[[UIView alloc]init];
-        SSIDLineView.frame=CGRectMake(viewW*37/totalWeight, _ssidText.frame.origin.y+_ssidText.frame.size.height+viewH*2.5/totalHeight + i * viewH*65/totalHeight, viewW*298/totalWeight, 1);
+        SSIDLineView.frame=CGRectMake(viewW*37/totalWeight, _ssidText.frame.origin.y+_ssidText.frame.size.height+viewH*2.5/totalHeight, viewW*298/totalWeight, 1);
         SSIDLineView.backgroundColor =[UIColor colorWithRed:190/255.0 green:190/255.0 blue:190/255.0 alpha:1.0];
         [_passwordView addSubview:SSIDLineView];
         
@@ -538,7 +539,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoModifyBtn.frame = CGRectMake(viewW*77.5/totalWeight, viewH-viewH*96/totalHeight-viewH*35/totalHeight, viewW*220/totalWeight, viewH*35/totalHeight);
 //    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
 //    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
-    [_videoModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+//    [_videoModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+    [_videoModifyBtn setTitle: @"Modify" forState: UIControlStateNormal];
     [_videoModifyBtn setBackgroundColor:[UIColor colorWithRed:(192 / 255.0f) green:(236 / 255.0f) blue:(248 / 255.0f) alpha:1.0]];
     _videoModifyBtn.layer.cornerRadius = viewW*18/totalWeight;
     [_videoModifyBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
@@ -702,7 +704,8 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoParametersView addSubview:_videoFrameRateView];
     
     _videoFrameRateLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight,viewH*13/totalHeight, viewW*80/totalWeight, viewH*44/totalHeight)];
-    _videoFrameRateLabel.text = NSLocalizedString(@"video_framerate", nil);
+//    _videoFrameRateLabel.text = NSLocalizedString(@"video_framerate", nil);
+    _videoFrameRateLabel.text = @"Frame Rate";
     _videoFrameRateLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
     _videoFrameRateLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
@@ -723,7 +726,8 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoFrameRateView addSubview:_videoFrameRateSlider];
     
     _videoFrameRateMinLabel=[[UILabel alloc] initWithFrame:CGRectMake(_videoFrameRateLabel.frame.size.width+_videoFrameRateLabel.frame.origin.x+viewH*22/totalHeight, viewH*48/totalHeight, viewH*44/totalHeight, viewH*18/totalHeight)];
-    _videoFrameRateMinLabel.text = NSLocalizedString(@"video_framerate_min", nil);
+//    _videoFrameRateMinLabel.text = NSLocalizedString(@"video_framerate_min", nil);
+    _videoFrameRateMinLabel.text = @"10FPS";
     _videoFrameRateMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMinLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
@@ -733,7 +737,8 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoFrameRateView addSubview:_videoFrameRateMinLabel];
     
     _videoFrameRateMaxLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW-viewH*66/totalHeight, viewH*48/totalHeight, viewH*44/totalHeight, viewH*18/totalHeight)];
-    _videoFrameRateMaxLabel.text = NSLocalizedString(@"video_framerate_max", nil);
+//    _videoFrameRateMaxLabel.text = NSLocalizedString(@"video_framerate_max", nil);
+    _videoFrameRateMaxLabel.text = @"30FPS";
     _videoFrameRateMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMaxLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
@@ -744,7 +749,7 @@ Rak_Lx52x_Device_Control *_configScan;
     
     _videoFrameRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*48/totalWeight, viewH*18/totalHeight)];
     _videoFrameRateValueLabel.center=CGPointMake(25/30.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y);
-    _videoFrameRateValueLabel.text = @"25Fps";
+    _videoFrameRateValueLabel.text = @"25FPS";
     _videoFrameRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateValueLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateValueLabel.textColor = MAIN_COLOR;
@@ -755,8 +760,8 @@ Rak_Lx52x_Device_Control *_configScan;
     
     _videoLabelView.center=_videoParametersView.center;
     [self set720P];
-    [self setVideoRate:1500];
-    [self setVideoFrameRate:25];
+    [self setVideoRate:2000];
+    [self setVideoFrameRate:24];
     _videoResolutionSlider.enabled=NO;
     _videoRateSlider.enabled=NO;
     _videoFrameRateSlider.enabled=NO;
@@ -1062,13 +1067,13 @@ NSString *quality;
     else{
         _videoRateValueLabel.text = [NSString stringWithFormat:@"%dK",(int)(value)];
     }
-    _videoRateValueLabel.center=CGPointMake((_videoRateSlider.value-220)/(8000-220)*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y);
+    _videoRateValueLabel.center=CGPointMake((_videoRateSlider.value-220)/(8000-220)*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y + viewH*10/totalHeight);
 }
 
 - (void)setVideoFrameRate:(float)value{
     _videoFrameRateSlider.value=value;
-    _videoFrameRateValueLabel.text = [NSString stringWithFormat:@"%dFps",(int)value];
-    _videoFrameRateValueLabel.center=CGPointMake((_videoFrameRateSlider.value-10)/20.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y);
+    _videoFrameRateValueLabel.text = [NSString stringWithFormat:@"%dFPS",(int)value];
+    _videoFrameRateValueLabel.center=CGPointMake((_videoFrameRateSlider.value-10)/20.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y+viewH*10/totalHeight);
 }
 
 //-(void)_videoBtnClick:(UIButton *)Seg
@@ -1089,8 +1094,8 @@ NSString *quality;
         case 0:
         {
             [self set480P];
-            [self setVideoRate:800];
-            [self setVideoFrameRate:20];
+            [self setVideoRate:220];
+            [self setVideoFrameRate:12];
             _videoResolutionSlider.enabled=NO;
             _videoRateSlider.enabled=NO;
             _videoFrameRateSlider.enabled=NO;
@@ -1102,8 +1107,8 @@ NSString *quality;
         case 1:
         {
             [self set720P];
-            [self setVideoRate:1500];
-            [self setVideoFrameRate:25];
+            [self setVideoRate:2000];
+            [self setVideoFrameRate:24];
             _videoResolutionSlider.enabled=NO;
             _videoRateSlider.enabled=NO;
             _videoFrameRateSlider.enabled=NO;
@@ -1115,8 +1120,8 @@ NSString *quality;
         case 2:
         {
             [self set1080P];
-            [self setVideoRate:5000];
-            [self setVideoFrameRate:30];
+            [self setVideoRate:8000];
+            [self setVideoFrameRate:24];
             _videoResolutionSlider.enabled=NO;
             _videoRateSlider.enabled=NO;
             _videoFrameRateSlider.enabled=NO;

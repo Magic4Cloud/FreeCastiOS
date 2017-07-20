@@ -36,12 +36,14 @@
       "scale" : "1x"
     },
     {
-      "orientation" : "portrait",
-      "idiom" : "ipad",
-      "filename" : "lanch-1536-2048.png",
       "extent" : "full-screen",
+      "idiom" : "iphone",
+      "subtype" : "736h",
+      "filename" : "lanch-1536-2048.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "landscape",
       "unassigned" : true,
-      "scale" : "2x"
+      "scale" : "3x"
     },
     {
       "extent" : "full-screen",
