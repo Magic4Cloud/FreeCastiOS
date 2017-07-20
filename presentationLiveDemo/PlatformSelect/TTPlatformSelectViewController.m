@@ -54,7 +54,7 @@
     [super viewDidLoad];
     
     _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
-    
+    [self scanDevice];
     [self initUI];
     // Do any additional setup after loading the view.
 }
@@ -391,6 +391,10 @@
     }
     else
     {
+        if (!_userip) {
+            [self showHudMessage:@"Device not found!"];
+            return;
+        }
         switch (indexPath.row) {
             case 0:
             {

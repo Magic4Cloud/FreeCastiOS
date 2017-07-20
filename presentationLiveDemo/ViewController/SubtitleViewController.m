@@ -936,7 +936,7 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     if (err != nil){
         NSLog(@"error = %@",err);
         dispatch_async(dispatch_get_main_queue(),^ {
-            [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_connect", nil)];
+//            [self showAllTextDialog:NSLocalizedString(@"upgrade_firmware_failed_connect", nil)];
         });
     }
     else{
