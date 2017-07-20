@@ -285,9 +285,23 @@ NSMutableArray *Medias;
             [get_medias.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop) {
                 MediaData *media=get_medias.medias[idx2];
                 if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
-                    if(is_photo_choose){
+                    
                         [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
                             if (isSuccess) {
+                                
+                                if (!is_photo_choose) {
+                                    NSString *timeSp=[media getTimesamp];
+                                    
+                                    for(int i=0;i<[videos count];i++)
+                                    {
+                                        if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+                                            
+                                            [mutaArray removeObject:timeSp];
+                                            break;
+                                        }
+                                    }
+                                }
+                                
                                 NSMutableArray * getMedias = [Medias[idx] getMedias];
                                 [getMedias removeObject:media];
                                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -296,19 +310,23 @@ NSMutableArray *Medias;
                                 
                             }
                         }];
-                    }
-                    else{
-                        NSString *timeSp=[media getTimesamp];
-                        
-                        for(int i=0;i<[videos count];i++)
-                        {
-                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
-                                [mutaArray removeObject:timeSp];
-                                break;
-                            }
-                        }
-                        [[Medias[idx] getMedias] removeObject:media];
-                    }
+                    
+//                    else
+//                    {
+//                        
+//                        NSString *timeSp=[media getTimesamp];
+//                        
+//                        for(int i=0;i<[videos count];i++)
+//                        {
+//                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+//
+//                                
+//                                [mutaArray removeObject:timeSp];
+//                                break;
+//                            }
+//                        }
+//                        [[Medias[idx] getMedias] removeObject:media];
+//                    }
                     NSLog(@"Medias=%@",[media getUrl]);
                 }
             }];
@@ -320,7 +338,9 @@ NSMutableArray *Medias;
     }
     
     if(!is_photo_choose)
+    {
         [self Save_Paths:mutaArray :@"video_flag"];
+    }
     
     [selectedDic removeAllObjects];
     [shareImg removeAllObjects];
