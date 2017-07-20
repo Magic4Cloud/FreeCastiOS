@@ -117,9 +117,25 @@
 
 - (void)goliVeNowButtonClick
 {
-    LiveViewViewController *v = [[LiveViewViewController alloc] init];
-    v.isLiveView=YES;
-    [self.navigationController pushViewController: v animated:true];
+    NSArray * viewcontrollers = self.navigationController.viewControllers;
+    
+    __block LiveViewViewController * popVc;
+    [viewcontrollers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[LiveViewViewController class]]) {
+            popVc = (LiveViewViewController *)obj;
+        }
+    }];
+    
+    if (popVc) {
+        [self.navigationController popToViewController:popVc animated:YES];
+    }
+    else
+    {
+        LiveViewViewController *v = [[LiveViewViewController alloc] init];
+        v.isLiveView=YES;
+        [self.navigationController pushViewController: v animated:true];
+    }
+
 }
 
 - (void)cellEditButtonClick:(UIButton *)button

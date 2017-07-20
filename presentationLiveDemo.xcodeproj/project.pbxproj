@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3D194C35844AFC4D19695778 /* libPods-presentationLiveDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */; };
+		7A31EE411F2044C6005A6479 /* TTAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A31EE401F2044C6005A6479 /* TTAlertViewController.m */; };
+		7A31EE441F20595A005A6479 /* NSString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A31EE431F20595A005A6479 /* NSString+Extention.m */; };
 		7A3A9B741F132EE1001EDAAF /* TTTwicthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */; };
 		7A3A9B7C1F13337C001EDAAF /* TTPlatformCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7A1F13337C001EDAAF /* TTPlatformCustomViewController.m */; };
 		7A3A9B7D1F13337C001EDAAF /* TTPlatformCustomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3A9B7B1F13337C001EDAAF /* TTPlatformCustomViewController.xib */; };
@@ -928,6 +930,10 @@
 /* Begin PBXFileReference section */
 		341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
 		71F5DD8A260984042C70E734 /* libPods-presentationLiveDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-presentationLiveDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A31EE3F1F2044C6005A6479 /* TTAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAlertViewController.h; sourceTree = "<group>"; };
+		7A31EE401F2044C6005A6479 /* TTAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAlertViewController.m; sourceTree = "<group>"; };
+		7A31EE421F20595A005A6479 /* NSString+Extention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extention.h"; sourceTree = "<group>"; };
+		7A31EE431F20595A005A6479 /* NSString+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extention.m"; sourceTree = "<group>"; };
 		7A3A9B721F132EE1001EDAAF /* TTTwicthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTwicthViewController.h; sourceTree = "<group>"; };
 		7A3A9B731F132EE1001EDAAF /* TTTwicthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTwicthViewController.m; sourceTree = "<group>"; };
 		7A3A9B791F13337C001EDAAF /* TTPlatformCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlatformCustomViewController.h; sourceTree = "<group>"; };
@@ -2910,6 +2916,10 @@
 				7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */,
 				7A9830F71F04E603000FE44D /* UIViewController+Navigation.h */,
 				7A9830F81F04E603000FE44D /* UIViewController+Navigation.m */,
+				7A31EE3F1F2044C6005A6479 /* TTAlertViewController.h */,
+				7A31EE401F2044C6005A6479 /* TTAlertViewController.m */,
+				7A31EE421F20595A005A6479 /* NSString+Extention.h */,
+				7A31EE431F20595A005A6479 /* NSString+Extention.m */,
 			);
 			path = Extend;
 			sourceTree = "<group>";
@@ -5182,6 +5192,7 @@
 				7A6851FF1F1898B200EEDE2D /* NSMutableArray+LFAdd.m in Sources */,
 				7A6852281F1898B200EEDE2D /* GPUImageEmbossFilter.m in Sources */,
 				7A6852641F1898B300EEDE2D /* GPUImageNonMaximumSuppressionFilter.m in Sources */,
+				7A31EE441F20595A005A6479 /* NSString+Extention.m in Sources */,
 				7A6852601F1898B300EEDE2D /* GPUImageMovie.m in Sources */,
 				7A6852891F1898B300EEDE2D /* GPUImageSolidColorGenerator.m in Sources */,
 				7A6851EA1F1898B200EEDE2D /* LFAudioCapture.m in Sources */,
@@ -5341,6 +5352,7 @@
 				7A68527C1F1898B300EEDE2D /* GPUImageSaturationFilter.m in Sources */,
 				7A6852331F1898B200EEDE2D /* GPUImageFramebufferCache.m in Sources */,
 				7A6852731F1898B300EEDE2D /* GPUImagePrewittEdgeDetectionFilter.m in Sources */,
+				7A31EE411F2044C6005A6479 /* TTAlertViewController.m in Sources */,
 				7A6852541F1898B300EEDE2D /* GPUImageLowPassFilter.m in Sources */,
 				7A6851ED1F1898B200EEDE2D /* LFMP4Atom.m in Sources */,
 				84B988F71DC0B50300BE7FCE /* PrivacyPolicyViewController.m in Sources */,

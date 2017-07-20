@@ -38,7 +38,7 @@
     [playVideoBack setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     playVideoBack.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [playVideoBack addTarget:nil action:@selector(playVideoBackClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view  addSubview:playVideoBack];
+//    [self.view  addSubview:playVideoBack];
 }
 
 
@@ -94,6 +94,8 @@
         _moviePlayer=[[MPMoviePlayerController alloc]initWithContentURL:url];
         _moviePlayer.view.frame=self.view.bounds;
         _moviePlayer.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        _moviePlayer.controlStyle = MPMovieControlStyleFullscreen;
+        _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
         [self.view addSubview:_moviePlayer.view];
     }
     return _moviePlayer;
@@ -136,6 +138,7 @@
  *  @param notification 通知对象
  */
 -(void)mediaPlayerPlaybackFinished:(NSNotification *)notification{
+    
     NSLog(@"播放完成.%li",(long)self.moviePlayer.playbackState);
     [self.navigationController popViewControllerAnimated:YES];
 }

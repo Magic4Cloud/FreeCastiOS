@@ -8,6 +8,8 @@
 
 #import "UIViewController+Navigation.h"
 #import "MBProgressHUD.h"
+#import "TTAlertViewController.h"
+
 @implementation UIViewController (Navigation)
 - (void)configNavigationWithTitle:(NSString *)title rightButtonTitle:(NSString *)buttonTitle
 {
@@ -88,6 +90,22 @@
 - (void)hideHudLoading
 {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+
+- (void)showAlertWithTitile:(NSString *)title message:(NSString *)message leftButtonTitle:(NSString *)leftTitle rightButtonTitle:(NSString *)rightTitle leftButtonClickHandler:(void (^ )(UIAlertAction * action))leftButtonClick rightButtonClickHandler:(void (^ )(UIAlertAction * action))rightButtonClick
+{
+    TTAlertViewController * alertVc = [TTAlertViewController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction * leftAction = [UIAlertAction actionWithTitle:leftTitle style:UIAlertActionStyleCancel handler:leftButtonClick];
+    
+    UIAlertAction * rightAction = [UIAlertAction actionWithTitle:rightTitle style:UIAlertActionStyleDefault handler:rightButtonClick];
+    
+    [alertVc addAction:leftAction];
+    [alertVc addAction:rightAction];
+    [self presentViewController:alertVc animated:YES completion:^{
+        
+    }];
 }
 
 @end
