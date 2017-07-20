@@ -328,7 +328,7 @@ BOOL haveHDRGroup = NO;
 }
 
 
-- (void)removeFileFromAlbum:(NSString*)fileUrl
+- (void)removeFileFromAlbum:(NSString*)fileUrl isSuccessBlock:(void (^)(BOOL isSuccess))completionHandler
 {
     NSURL *assetURL = [NSURL URLWithString:fileUrl];
     
@@ -355,6 +355,7 @@ BOOL haveHDRGroup = NO;
                      {
                          NSLog(@"Error deleting asset: %@", [error description]);
                      }
+                     completionHandler(success);
                  }];
             }
         }
@@ -367,7 +368,7 @@ BOOL haveHDRGroup = NO;
                     if([url isEqualToString:fileUrl])
                     {
                         [result setImageData:nil metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-                            
+                            completionHandler(error?NO:YES);
                         }];
                     }
                 }

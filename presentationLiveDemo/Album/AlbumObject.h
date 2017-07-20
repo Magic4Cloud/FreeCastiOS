@@ -29,6 +29,6 @@
 - (void)saveVideoToAlbum:(NSString*)path  albumName:(NSString*)albumName;
 - (void)_addAssetURL:(NSURL *)assetURL toAlbum:(NSString *)albumName;
 - (void)readFileFromAlbum:(NSString*)albumName;
-- (void)removeFileFromAlbum:(NSString*)fileUrl;
+- (void)removeFileFromAlbum:(NSString*)fileUrl isSuccessBlock:(void (^)(BOOL isSuccess))completionHandle;
 - (NSString *)getPathForRecord:(NSString*)albumName;
 @end

@@ -286,8 +286,16 @@ NSMutableArray *Medias;
                 MediaData *media=get_medias.medias[idx2];
                 if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
                     if(is_photo_choose){
-                        [[Medias[idx] getMedias] removeObject:media];
-                        [_albumObject removeFileFromAlbum:[media getUrl]];
+                        [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
+                            if (isSuccess) {
+                                NSMutableArray * getMedias = [Medias[idx] getMedias];
+                                [getMedias removeObject:media];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [_collectionView reloadData];
+                                });
+                                
+                            }
+                        }];
                     }
                     else{
                         NSString *timeSp=[media getTimesamp];
@@ -789,8 +797,12 @@ BOOL _isExist;
     NSString *CellIdentifier = @"cell";
     CollectionViewCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     MediaGroup *group=Medias[indexPath.section];
-    MediaData *contact=group.medias[indexPath.row];
-    cell.text.text=[contact getDate];
+    if (group.medias && group.medias.count>0) {
+        MediaData *contact=group.medias[indexPath.row];
+        cell.text.text=[contact getDate];
+    }
+    
+
     return cell;
 }
 
