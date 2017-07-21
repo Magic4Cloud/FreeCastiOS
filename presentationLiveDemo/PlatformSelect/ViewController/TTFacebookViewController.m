@@ -239,19 +239,6 @@ static const NSString * client_secret = @"38053202e1a5fe26c80c753071f0b573";
     
     
     
-    NSMutableDictionary * paramDic = [NSMutableDictionary dictionary];
-    [paramDic setValue:client_id forKey:@"client_id"];
-    [paramDic setValue:@"code" forKey:@"response_type"];
-    [paramDic setValue:@"user_friends" forKey:@"scope"];
-    
-    [TTNetMannger postWithUrl:@"https://www.facebook.com/dialog/oauth" param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
-        NSLog(@"dic = %@",dic);
-    }];
-    
-    
-    
-    
-    
 }
 
 - (void)initUI
