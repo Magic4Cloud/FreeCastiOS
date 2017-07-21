@@ -29,7 +29,7 @@
     UIImageView *subtitleTypeRollImg;
     
     UIView *_subtitleTextView;
-    UITextField *_subtitleTextField;
+    UITextView *_subtitleTextField;
     
     UILabel *subtitleTypeTipsLabel;
     

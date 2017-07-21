@@ -16,6 +16,7 @@
 #import "AlbumObject.h"
 #import "CommanParameters.h"
 
+
 NSString *subtitleHost=@"POST /acttit.php HTTP/1.1\r\nHost: ";
 NSString *subtitleReferer=@"\r\nReferer: http://";
 NSString *subtitleLength=@"/test.php\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary9jF0QWJdi6csfpFy\r\nConnection: keep-alive\r\nContent-Length: ";
@@ -23,7 +24,7 @@ NSString *subtitleName=@"------WebKitFormBoundary9jF0QWJdi6csfpFy\r\nContent-Dis
 NSString *subtitleHeadEnd=@"\"\r\nContent-Type: image/jpeg\r\n\r\n";
 NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
 
-@interface SubtitleViewController () <UITextFieldDelegate>
+@interface SubtitleViewController () <UITextFieldDelegate,UITextViewDelegate>
 {
     int _enableSubtitle;
     int _x;
@@ -243,19 +244,22 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     _subtitleTextView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_subtitleTextView];
     
-    _subtitleTextField=[[UITextField alloc]init];
+
+    _subtitleTextField = [[UITextView alloc]init];
     _subtitleTextField.frame=CGRectMake(0,viewH*69.5/totalHeight, viewW, 100);
     _subtitleTextField.center=CGPointMake(_subtitleTextView.frame.size.width*0.5, _subtitleTextView.frame.size.height*0.5);
-    //[_subtitleTextField addTarget:self  action:@selector(_subtitleTextFieldChanged)  forControlEvents:UIControlEventAllEditingEvents];
+
     _subtitleTextField.font=[UIFont systemFontOfSize: viewH*curSize/totalHeight];
     _subtitleTextField.textColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    //_subtitleTextField.delegate=self;
-    [_subtitleTextField addTarget:self action:@selector(_subtitleTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    _subtitleTextField.delegate = self;
     _subtitleTextField.backgroundColor = [UIColor whiteColor];
-    _subtitleTextField.textAlignment=UITextAlignmentCenter;
+    _subtitleTextField.textAlignment=NSTextAlignmentCenter;
     _subtitleTextField.text=NSLocalizedString(@"subtitle_text", nil);
     [_subtitleTextView addSubview:_subtitleTextField];
 
+    
+    
+    
     subtitleTypeTipsLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,_subtitleTextView.frame.origin.y+_subtitleTextView.frame.size.height + viewH*17.5/totalHeight, viewW, viewH*15/totalHeight)];
 //    subtitleTypeTipsLabel.text = NSLocalizedString(@"subtitle_tips", nil);
     subtitleTypeTipsLabel.text = @"Limit message to 20 characters";
@@ -274,65 +278,6 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     _subtitleSettingsView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_subtitleSettingsView];
     
-//    _subtitleDurationLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*14/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-//    _subtitleDurationLabel.text = NSLocalizedString(@"subtitle_duration", nil);
-//    _subtitleDurationLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleDurationLabel.backgroundColor = [UIColor clearColor];
-//    _subtitleDurationLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-//    _subtitleDurationLabel.lineBreakMode = UILineBreakModeWordWrap;
-//    _subtitleDurationLabel.textAlignment=UITextAlignmentLeft;
-//    _subtitleDurationLabel.numberOfLines = 0;
-    //[_subtitleSettingsView addSubview:_subtitleDurationLabel];
-    
-//    _subtitleDurationField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*14/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-//    _subtitleDurationField.text = @"5";
-//    [_subtitleDurationField addTarget:self action:@selector(_subtitleDurationFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    _subtitleDurationField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleDurationField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-//    _subtitleDurationField.textColor = MAIN_COLOR;
-//    _subtitleDurationField.delegate=self;
-//    _subtitleDurationField.textAlignment=UITextAlignmentCenter;
-    //[_subtitleSettingsView addSubview:_subtitleDurationField];
-    
-//    _subtitleDurationKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*14/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-//    _subtitleDurationKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-//    _subtitleDurationKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleDurationKit.backgroundColor = [UIColor clearColor];
-//    _subtitleDurationKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-//    _subtitleDurationKit.lineBreakMode = UILineBreakModeWordWrap;
-//    _subtitleDurationKit.textAlignment=UITextAlignmentCenter;
-//    _subtitleDurationKit.numberOfLines = 0;
-    //[_subtitleSettingsView addSubview:_subtitleDurationKit];
-
-//    _subtitleIntervalLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*22/totalWeight,viewH*66/totalHeight, viewW*112/totalWeight, viewH*32/totalHeight)];
-//    _subtitleIntervalLabel.text = NSLocalizedString(@"subtitle_interval", nil);
-//    _subtitleIntervalLabel.font = [UIFont boldSystemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleIntervalLabel.backgroundColor = [UIColor clearColor];
-//    _subtitleIntervalLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-//    _subtitleIntervalLabel.lineBreakMode = UILineBreakModeWordWrap;
-//    _subtitleIntervalLabel.textAlignment=UITextAlignmentLeft;
-//    _subtitleIntervalLabel.numberOfLines = 0;
-    //[_subtitleSettingsView addSubview:_subtitleIntervalLabel];
-    
-//    _subtitleIntervalField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*180/totalWeight, viewH*66/totalHeight, viewW*119/totalWeight, viewH*32/totalHeight)];
-//    _subtitleIntervalField.text = @"10";
-//    [_subtitleIntervalField addTarget:self action:@selector(_subtitleIntervalFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    _subtitleIntervalField.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleIntervalField.backgroundColor = [UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-//    _subtitleIntervalField.textColor = MAIN_COLOR;
-//    _subtitleIntervalField.delegate=self;
-//    _subtitleIntervalField.textAlignment=UITextAlignmentCenter;
-    //[_subtitleSettingsView addSubview:_subtitleIntervalField];
-    
-//    _subtitleIntervalKit=[[UILabel alloc] initWithFrame:CGRectMake(viewW*307/totalWeight,viewH*66/totalHeight, viewW*58/totalWeight, viewH*32/totalHeight)];
-//    _subtitleIntervalKit.text = NSLocalizedString(@"subtitle_seconds", nil);
-//    _subtitleIntervalKit.font = [UIFont systemFontOfSize: viewH*17/totalHeight*0.8];
-//    _subtitleIntervalKit.backgroundColor = [UIColor clearColor];
-//    _subtitleIntervalKit.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-//    _subtitleIntervalKit.lineBreakMode = UILineBreakModeWordWrap;
-//    _subtitleIntervalKit.textAlignment=UITextAlignmentCenter;
-//    _subtitleIntervalKit.numberOfLines = 0;
-    //[_subtitleSettingsView addSubview:_subtitleIntervalKit];
     
     
     _subtitleOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*30/totalWeight,viewH*37/totalHeight, viewW*53/totalWeight, viewH*15/totalHeight)];
@@ -497,6 +442,13 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     }
 }
 
+
+#pragma mark - textView delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    
+    return YES;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

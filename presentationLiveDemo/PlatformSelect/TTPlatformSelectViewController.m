@@ -392,8 +392,8 @@
     else
     {
         if (!_userip) {
-            [self showHudMessage:@"Device not found!"];
-            return;
+//            [self showHudMessage:@"Device not found!"];
+//            return;
         }
         switch (indexPath.row) {
             case 0:
