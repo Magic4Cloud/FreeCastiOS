@@ -847,6 +847,7 @@ bool _isTakePhoto=NO;
         RecordVideoEnable = Enable;
         [_recordBtn setImage:[UIImage imageNamed:@"video_stop@3x.png"] forState:UIControlStateNormal];
         
+        _takephotoBtn.enabled = NO;
         
         if (_liveCameraSource == IphoneBackCamera) {
             [self.session startRecord];
@@ -874,6 +875,7 @@ bool _isTakePhoto=NO;
         _recordTimeLabel.hidden=NO;
     }
     else{
+        _takephotoBtn.enabled = YES;
         [self playSound:@"end_record.mp3"];
         [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
         RecordVideoEnable = Unable;
@@ -1080,7 +1082,7 @@ int valOrientation;
             }
         }
         
-//        [self getDeviceConfig];
+        [self getDeviceConfig];
         
         NSLog(@"start play==%@",urlString);
         [self.videoView play:urlString useTcp:NO];
@@ -1178,12 +1180,13 @@ int valOrientation;
         fps=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
             //            [self setVideoFrameRate:[fps intValue]];
+            _session = [self getSessionWithRakisrak:YES];
         });
         
         NSLog(@"fps**************************=%@",fps);
     }
     
-    _session = [self getSessionWithRakisrak:YES];
+
     
 }
 
@@ -1822,9 +1825,11 @@ CGFloat iy ;
      */
     LFLiveVideoConfiguration  *videoConfiguration = [LFLiveVideoConfiguration new];
     
-    float value         = [quality intValue]*3000/52.0; //设备的比特率
-    int  videoFrameRate = fps;                          //设备的fps
-    
+    NSInteger bitRatevalue         = [quality intValue]*3000/52.0; //设备的比特率
+    NSUInteger  videoFrameRate = 30;                          //设备的fps
+    NSInteger maxbitRate = 1000*1024;
+    bitRatevalue =         800 *1024;
+    NSInteger minbitrate = 200*1024;
     CGFloat videosizeWidth  = 0.0;
     CGFloat videosizeHeight = 0.0;
     //设备的分辨率
@@ -1833,12 +1838,22 @@ CGFloat iy ;
         videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
         videosizeHeight = 1280;
+        bitRatevalue = 800*1024;
+        minbitrate   = 200*1024;
+        maxbitRate = 1000*1024;
+        videoFrameRate = 30;
     }
     else if ([resolution integerValue] == 2)
     {
         videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
         videosizeHeight = 1280;
+        
+        bitRatevalue = 800*1024;
+        minbitrate   = 200*1024;
+        maxbitRate = 1000*1024;
+        videoFrameRate = 30;
+
 
     }
     else
@@ -1846,19 +1861,25 @@ CGFloat iy ;
         videoConfiguration .sessionPreset = LFCaptureSessionPreset540x960;
         videosizeWidth  = 540;
         videosizeHeight = 960;
+        
+        bitRatevalue = 500*1024;
+        minbitrate   = 200*1024;
+        maxbitRate = 700*1024;
+        videoFrameRate = 20;
+
     }
 
     
-    videoConfiguration .videoBitRate    = 800*1024;       //比特率
-    videoConfiguration .videoMaxBitRate = 1000*1024;    //最大比特率
-    videoConfiguration .videoMinBitRate = 200*1024;     //最小比特率
-    videoConfiguration .videoFrameRate  = 30;            //帧率
+    videoConfiguration .videoBitRate    = bitRatevalue;       //比特率
+    videoConfiguration .videoMaxBitRate = maxbitRate;    //最大比特率
+    videoConfiguration .videoMinBitRate = minbitrate;     //最小比特率
+    videoConfiguration .videoFrameRate  = videoFrameRate;            //帧率
     
-    videoConfiguration .videoMaxKeyframeInterval = 60; //最大关键帧间隔数
+    videoConfiguration .videoMaxKeyframeInterval = videoFrameRate*2; //最大关键帧间隔数
     videoConfiguration.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
     
     //分辨率：0：360*540 1：540*960 2：720*1280 3:1920*1080
-    videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
+//    videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
     
     if (videoConfiguration .landscape)
     {
@@ -1920,6 +1941,7 @@ CGFloat iy ;
     if (_session) {
         _session.dataSoureType = type;
         [_session startLive:stream];
+        
     }
     
 }
@@ -2016,6 +2038,8 @@ CGFloat iy ;
     _addressView.userInteractionEnabled=NO;
     _platformView.userInteractionEnabled=NO;
     
+    _takephotoBtn.enabled = NO;
+    _recordBtn.enabled = NO;
     _isLiving=1;
 }
 
@@ -2034,6 +2058,9 @@ CGFloat iy ;
     [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
     
     [_videoView take_imageRef:NO];
+    
+    _takephotoBtn.enabled = YES;
+    _recordBtn.enabled = YES;
     _isLiving=2;
 }
 
@@ -2054,6 +2081,10 @@ CGFloat iy ;
     [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_dis@3x.png"] forState:UIControlStateNormal];
     
     [_videoView take_imageRef:NO];
+    
+    _takephotoBtn.enabled = YES;
+    _recordBtn.enabled = YES;
+
     _isLiving=0;
 }
 
