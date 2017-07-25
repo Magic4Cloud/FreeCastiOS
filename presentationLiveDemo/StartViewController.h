@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface StartViewController : UIViewController
+@property (nonatomic, copy)void(^dismissSelfBlock)();
 
 @end

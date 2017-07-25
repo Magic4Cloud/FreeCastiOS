@@ -1357,6 +1357,11 @@ bool _modifyOK=YES;
         return;
     }
     
+    if([_newPasswordText.text isEqualToString:@""]){
+        [self showAllTextDialog:@"Password can not be empty!"];
+        return;
+    }
+    
     [self updatePassWord];
     return;
     //设置STA模块的密码

@@ -925,6 +925,7 @@
 		84E634A11E554CD50049573E /* 333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E6349F1E554CD50049573E /* 333.bmp */; };
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
+		9E043E281F25E1A200DDE35E /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E043E271F25E1A200DDE35E /* StartViewController.m */; };
 		9EB463D21F18AFDE00DD0F81 /* TTFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */; };
 		9EB463D31F18AFDE00DD0F81 /* TTFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */; };
 		9EB463D71F18B90900DD0F81 /* FacebookWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D51F18B90900DD0F81 /* FacebookWebViewController.m */; };
@@ -2290,6 +2291,8 @@
 		84E634A51E5576F00049573E /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		84E634A61E5576F00049573E /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9E043E261F25E1A200DDE35E /* StartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
+		9E043E271F25E1A200DDE35E /* StartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		9EB463CF1F18AFDE00DD0F81 /* TTFacebookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFacebookViewController.h; sourceTree = "<group>"; };
 		9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFacebookViewController.m; sourceTree = "<group>"; };
 		9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTFacebookViewController.xib; sourceTree = "<group>"; };
@@ -3226,6 +3229,8 @@
 				8464BA361D95110100B67944 /* RakLib */,
 				8464B9A81D95104700B67944 /* AppDelegate.h */,
 				8488BE2C1DB779D2006357AD /* AppDelegate.mm */,
+				9E043E261F25E1A200DDE35E /* StartViewController.h */,
+				9E043E271F25E1A200DDE35E /* StartViewController.m */,
 				8464B9AA1D95104700B67944 /* Assets.xcassets */,
 				8464B9AB1D95104700B67944 /* LaunchScreen.storyboard */,
 				8464B9AD1D95104700B67944 /* Main.storyboard */,
@@ -5137,6 +5142,7 @@
 				8464BA2C1D95104700B67944 /* main.m in Sources */,
 				7A6852101F1898B200EEDE2D /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				7A6852931F1898B300EEDE2D /* GPUImageThresholdEdgeDetectionFilter.m in Sources */,
+				9E043E281F25E1A200DDE35E /* StartViewController.m in Sources */,
 				7A68525F1F1898B300EEDE2D /* GPUImageMotionDetector.m in Sources */,
 				7A6852561F1898B300EEDE2D /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				7A6852751F1898B300EEDE2D /* GPUImageRawDataOutput.m in Sources */,
@@ -5541,7 +5547,6 @@
 			baseConfigurationReference = 8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -5595,7 +5600,6 @@
 			baseConfigurationReference = 341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
