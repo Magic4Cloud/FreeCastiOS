@@ -878,20 +878,20 @@ NSString *quality;
         
         dispatch_async(dispatch_get_main_queue(),^ {
             if (([resolution compare:@"2"]==NSOrderedSame)
-                &&([quality compare:@"26"]==NSOrderedSame)
-                &&([fps compare:@"25"]==NSOrderedSame)) {
+                &&([quality compare:@"35"]==NSOrderedSame)
+                &&([fps compare:@"24"]==NSOrderedSame)) {
                 VediosegmentedControl.selectedSegmentIndex = 1;
                 [self _videoBtnClick:VediosegmentedControl];
             }
             else if (([resolution compare:@"3"]==NSOrderedSame)
-                    &&([quality compare:@"86"]==NSOrderedSame)
-                    &&([fps compare:@"30"]==NSOrderedSame)) {
+                    &&([quality compare:@"139"]==NSOrderedSame)
+                    &&([fps compare:@"24"]==NSOrderedSame)) {
                 VediosegmentedControl.selectedSegmentIndex = 2;
                 [self _videoBtnClick:VediosegmentedControl];
             }
             else if ((([resolution compare:@"0"]==NSOrderedSame)||([resolution compare:@"1"]==NSOrderedSame))
-                     &&([quality compare:@"14"]==NSOrderedSame)
-                     &&([fps compare:@"20"]==NSOrderedSame)) {
+                     &&([quality compare:@"4"]==NSOrderedSame)
+                     &&([fps compare:@"12"]==NSOrderedSame)) {
                 VediosegmentedControl.selectedSegmentIndex = 0;
                 [self _videoBtnClick:VediosegmentedControl];
             }
@@ -1079,15 +1079,16 @@ NSString *quality;
 //-(void)_videoBtnClick:(UIButton *)Seg
 -(void)_videoBtnClick:(UISegmentedControl *)Seg
 {
-    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+//    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+//    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+//    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+//    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
     NSInteger Index = Seg.selectedSegmentIndex;
+    NSLog(@"indexindexindex = %ld",Index);
 //    NSInteger Index = Seg.tag;
     switch (Index)
     {
