@@ -347,7 +347,7 @@ BOOL haveHDRGroup = NO;
             {
                 [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^
                  {
-                     [PHAssetChangeRequest deleteAssets:@[phAsset]];
+                     [PHAssetChangeRequest deleteAssets:result];
                  }
                                                   completionHandler:^(BOOL success, NSError *error)
                  {
