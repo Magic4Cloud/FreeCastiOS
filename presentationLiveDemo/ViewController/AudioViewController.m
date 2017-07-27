@@ -79,12 +79,22 @@
     _audioExternalImg.contentMode=UIViewContentModeScaleToFill;
     [_audioView addSubview:_audioExternalImg];
     
-    _NOaudioImg =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_external aduio_nor"]];
+    
+    _aduioInternalImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_internal aduio_nor"]];
+    _aduioInternalImg.userInteractionEnabled=YES;
+    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_aduioInternalBunClick)];
+    [_aduioInternalImg addGestureRecognizer:singleTap3];
+    _aduioInternalImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
+    _aduioInternalImg.center=CGPointMake(_audioView.frame.size.width*0.25, _audioHDMIImg.center.y+ viewH*177.5/totalHeight);
+    _aduioInternalImg.contentMode=UIViewContentModeScaleToFill;
+    [_audioView addSubview:_aduioInternalImg];
+    
+    _NOaudioImg =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"button_no aduio_nor"]];
     _NOaudioImg.userInteractionEnabled=YES;
-    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_NOaudioBtnClick)];
-    [_NOaudioImg addGestureRecognizer:singleTap3];
+    UITapGestureRecognizer *singleTap4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_NOaudioBtnClick)];
+    [_NOaudioImg addGestureRecognizer:singleTap4];
     _NOaudioImg.frame = CGRectMake(viewW*38.5/totalWeight, viewH*39.5/totalHeight, viewH*110/totalHeight, viewH*110/totalHeight);
-    _NOaudioImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y);
+    _NOaudioImg.center=CGPointMake(_audioView.frame.size.width*0.75, _audioHDMIImg.center.y + viewH*177.5/totalHeight);
     _NOaudioImg.contentMode=UIViewContentModeScaleToFill;
     [_audioView addSubview:_NOaudioImg];
     
@@ -183,24 +193,42 @@
 - (void)_audioHDMIBtnClick{
     NSLog(@"_audioHDMIBtnClick");
     _audioStatus=1;
-    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
-    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+//    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
+//    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
-    [_audioHDMIBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [_audioExternalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+//    [_audioHDMIBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    [_audioExternalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
 }
 
 - (void)_audioExternalBtnClick{
     NSLog(@"_audioExternalBtnClick");
     _audioStatus=2;
-    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
-    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
+//    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
+//    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
+    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+//    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
+}
+
+- (void)_aduioInternalBunClick{
+    NSLog(@"_aduioInternalBunClick");
+    _audioStatus=2;
+    //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
+    //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
+    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_pre"];
+    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+//    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
 }
 
@@ -210,10 +238,12 @@
     _audioStatus=0;
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_pre"];
+//    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+//    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
 }
 
