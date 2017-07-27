@@ -4465,7 +4465,7 @@
 				TargetAttributes = {
 					D8BA26B41D6AD13500D28C0F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 8YE8AXL3F3;
+						DevelopmentTeam = PWD8THY2VS;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -5550,7 +5550,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PWD8THY2VS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5603,7 +5603,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PWD8THY2VS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

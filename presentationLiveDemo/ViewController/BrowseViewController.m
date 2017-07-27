@@ -116,7 +116,7 @@ NSMutableArray *Medias;
     [_editBtn addTarget:nil action:@selector(_editBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_editBtn];
     //设置分段控件点击相应事件
-    NSArray *segmentedData = [[NSArray alloc]initWithObjects:NSLocalizedString(@"photo", nil),NSLocalizedString(@"video", nil),nil];
+    NSArray *segmentedData = [[NSArray alloc]initWithObjects:NSLocalizedString(@"Photo", nil),NSLocalizedString(@"Video", nil),nil];
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedData];
     segmentedControl.frame = CGRectMake(0,0,viewW*152/totalWeight,viewH*29/totalHeight);
     segmentedControl.center=CGPointMake(viewW*0.5, _backBtn.center.y);

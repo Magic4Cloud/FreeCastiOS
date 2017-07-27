@@ -127,7 +127,7 @@
     [_audioView addSubview:line2];
     
     UIView *line3=[[UIView alloc]init];
-    line3.frame=CGRectMake(viewW*186.5/totalWeight, 0, viewW*1.5/totalWeight, viewH*365/totalHeight);
+    line3.frame=CGRectMake(viewW*186.5/totalWeight, 0, viewW*1.5/totalWeight, viewH*372/totalHeight);
     line3.backgroundColor=[UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
     [_audioView addSubview:line3];
     
