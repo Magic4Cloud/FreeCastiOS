@@ -798,7 +798,7 @@ Rak_Lx52x_Device_Control *_configScan;
 
 - (void)scanDeviceTask
 {
-    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:3.0f];
+    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:4.0f];
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
@@ -905,7 +905,14 @@ NSString *quality;
     {
         //[self scanDevice];
         dispatch_async(dispatch_get_main_queue(),^ {
-            [self showAllTextDialog:NSLocalizedString(@"main_scan_failed", nil)];
+            
+            [self showAlertWithTitile:NSLocalizedString(@"main_scan_failed", nil) message:nil leftButtonTitle:@"Cancel" rightButtonTitle:@"Continue search" leftButtonClickHandler:^(UIAlertAction *action) {
+                [self _backBtnClick];
+            } rightButtonClickHandler:^(UIAlertAction *action) {
+                [self scanDevice];
+            }];
+            
+//            [self showAllTextDialog:NSLocalizedString(@"main_scan_failed", nil)];
         });
     }
     dispatch_async(dispatch_get_main_queue(),^ {

@@ -246,9 +246,9 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
 
     _subtitleTextField = [[UITextView alloc]init];
+    _subtitleTextField.scrollEnabled = NO;
     _subtitleTextField.frame=CGRectMake(0,viewH*69.5/totalHeight, viewW, 100);
     _subtitleTextField.center=CGPointMake(_subtitleTextView.frame.size.width*0.5, _subtitleTextView.frame.size.height*0.5);
-
     _subtitleTextField.font=[UIFont systemFontOfSize: viewH*curSize/totalHeight];
     _subtitleTextField.textColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _subtitleTextField.delegate = self;
@@ -261,7 +261,6 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
     
     subtitleTypeTipsLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,_subtitleTextView.frame.origin.y+_subtitleTextView.frame.size.height + viewH*17.5/totalHeight, viewW, viewH*15/totalHeight)];
-//    subtitleTypeTipsLabel.text = NSLocalizedString(@"subtitle_tips", nil);
     subtitleTypeTipsLabel.text = @"Limit message to 20 characters";
     subtitleTypeTipsLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     subtitleTypeTipsLabel.backgroundColor = [UIColor clearColor];
@@ -444,8 +443,29 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
 
 
 #pragma mark - textView delegate
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([_subtitleTextField.text isEqualToString:NSLocalizedString(@"subtitle_text", nil)]) {
+        _subtitleTextField.text = @"";
+    }
+}
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    if ([text isEqualToString:@"\n"]) {
+        return YES;
+    }
+    
+    NSString *toBeString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    if (textView == _subtitleTextField) {
+        if (toBeString.length > 20) {
+            textView.text = [toBeString substringToIndex:20];
+            [self Save_Paths:textView.text :SUBTITLE_TEXT_KEY];
+            return NO;
+        }
+        [self Save_Paths:textView.text :SUBTITLE_TEXT_KEY];
+    }
+
     
     return YES;
 }
