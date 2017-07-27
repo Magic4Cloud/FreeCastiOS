@@ -1104,19 +1104,21 @@ int valOrientation;
     else
     {
         
+        
         dispatch_async(dispatch_get_main_queue(),^ {
-                    
-        [self showAlertWithTitile:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" leftButtonTitle:@"continue search" rightButtonTitle:@"use phone camera" leftButtonClickHandler:^(UIAlertAction *action) {
-            [self scanDevice];
-        } rightButtonClickHandler:^(UIAlertAction *action) {
-
+            [self showActionSheetWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" action1title:@"Continue Search" action2title:@"Use iPhone Camera" action3title:@"Cancel" action1Handler:^(UIAlertAction *action) {
+                [self scanDevice];
+            } action2Handler:^(UIAlertAction *action) {
                 _tipLabel.hidden=YES;
                 [self stopActivityIndicatorView];
                 _session = [self getSessionWithSystemCamera];
                 _livingPreView.hidden = NO;
                 play_success = YES;
                 _liveCameraSource = IphoneBackCamera;
-        }];
+
+            } action3Handler:^(UIAlertAction *action) {
+                [self _backBtnClick];
+            }];
         });
 
     }
@@ -1793,10 +1795,10 @@ CGFloat iy ;
     /**
      *  构造音频配置器
      *       */
-    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Medium];
+    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
     
     
-    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium3 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
+    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
     //利用两设备配置 来构造一个直播会话
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
     _session.captureDevicePosition = AVCaptureDevicePositionBack;
@@ -1939,7 +1941,7 @@ CGFloat iy ;
     _isLiving = 1;
     
     if (_session) {
-        _session.dataSoureType = type;
+//        _session.dataSoureType = type;
         [_session startLive:stream];
         
     }

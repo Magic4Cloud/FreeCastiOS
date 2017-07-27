@@ -14,10 +14,9 @@
 #import "TTNetMannger.h"
 
 #import "TTCoreDataClass.h"
-//static const NSString * client_id = @"945244505483-5ehvap33vg7mksb8b5981fmrknq82eiq.apps.googleusercontent.com";
+
 static const NSString * client_id = @"166089579442-am89vaomj12h6gnlu4b5gd5k7t8k4201.apps.googleusercontent.com";
-//static const NSString * client_secret = @"eGP1p47CilC4AAy3G8Gk6Mk4";
-static const NSString * client_secret = @"AIzaSyDtQ2Od63egSMLye0pGc_pJF6Bxn9OTKT8";
+static const NSString * client_secret = @"nHJcJtSMcwV7oKLMPtJEgg3s";
 
 @interface TTYoutubuViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *linkLabel;

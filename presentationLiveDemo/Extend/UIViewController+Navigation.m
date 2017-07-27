@@ -108,6 +108,25 @@
     }];
 }
 
+- (void)showActionSheetWithTitle:(NSString *)title message:(NSString *)message action1title:(NSString *)action1title action2title:(NSString *)action2title action3title:(NSString *)action3title action1Handler:(void(^ )(UIAlertAction * action))action1Click action2Handler:(void(^ )(UIAlertAction * action))action2Click  action3Handler:(void(^ )(UIAlertAction * action))action3Click
+{
+    TTAlertViewController * alertVc = [TTAlertViewController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction * action1 = [UIAlertAction actionWithTitle:action1title style:UIAlertActionStyleDefault handler:action1Click];
+    
+    UIAlertAction * action2 = [UIAlertAction actionWithTitle:action2title style:UIAlertActionStyleDefault handler:action2Click];
+    
+    UIAlertAction * action3 = [UIAlertAction actionWithTitle:action3title style:UIAlertActionStyleDefault handler:action3Click];
+    
+    [alertVc addAction:action1];
+    [alertVc addAction:action2];
+    [alertVc addAction:action3];
+    [self presentViewController:alertVc animated:YES completion:^{
+        
+    }];
+}
+
+
 
 
 @end

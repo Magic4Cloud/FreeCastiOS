@@ -245,7 +245,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
 
 - (void)scanDeviceTask
 {
-    Lx52x_Device_Info *result = [_firmwareScan ScanDeviceWithTime:1.0f];
+    Lx52x_Device_Info *result = [_firmwareScan ScanDeviceWithTime:3.0f];
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
@@ -288,10 +288,11 @@ NSString *version;
     }
     else
     {
-        //[self scanDevice];
+        
         dispatch_async(dispatch_get_main_queue(),^ {
             [self showAllTextDialog:NSLocalizedString(@"main_scan_failed", nil)];
         });
+        
     }
     dispatch_async(dispatch_get_main_queue(),^ {
         [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
