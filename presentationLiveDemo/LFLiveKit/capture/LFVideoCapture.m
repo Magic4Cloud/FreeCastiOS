@@ -69,7 +69,7 @@
 }
 
 - (void)dealloc {
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
+//    [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_videoCamera stopCameraCapture];
     if(_gpuImageView){
@@ -173,11 +173,11 @@
     _running = running;
     
     if (!_running) {
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
+//        [UIApplication sharedApplication].idleTimerDisabled = NO;
         [self.videoCamera stopCameraCapture];
         if(self.saveLocalVideo) [self.movieWriter finishRecording];
     } else {
-        [UIApplication sharedApplication].idleTimerDisabled = YES;
+//        [UIApplication sharedApplication].idleTimerDisabled = YES;
         [self reloadFilter];
         [self.videoCamera startCameraCapture];
         if(self.saveLocalVideo) [self.movieWriter startRecording];
@@ -434,7 +434,7 @@
 #pragma mark Notification
 
 - (void)willEnterBackground:(NSNotification *)notification {
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
+//    [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self.videoCamera pauseCameraCapture];
     runSynchronouslyOnVideoProcessingQueue(^{
         glFinish();
@@ -443,7 +443,7 @@
 
 - (void)willEnterForeground:(NSNotification *)notification {
     [self.videoCamera resumeCameraCapture];
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
+//    [UIApplication sharedApplication].idleTimerDisabled = YES;
 }
 
 - (void)statusBarChanged:(NSNotification *)notification {

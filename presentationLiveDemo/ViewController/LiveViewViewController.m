@@ -148,6 +148,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 }
 
 
+#pragma mark - ------------------lifeCycle----
 - (void)viewDidLoad {
     //[self _scaleBtnClick:1];
     [super viewDidLoad];
@@ -209,6 +210,58 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     }
     _liveCameraSource = ExternalDevices;
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    //判断设备的音频输入是不是手机麦克风
+    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
+        _isIphoneAudio = (BOOL)[standDefaults objectForKey:AudioSourceIsIphone];
+        if (_session) {
+            _session.isIphoneAudio = _isIphoneAudio;
+        }
+    }
+    
+    [self getSelectedPlatform];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (_isBroswer) {
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+        _isBroswer=NO;
+    }
+    
+    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];//屏幕取消常亮
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    _isExit=YES;
+    if (_isLiveView){
+        [_tipLabel removeFromSuperview];
+        [self stopActivityIndicatorView];
+        [ActivityIndicatorView removeFromSuperview];
+    }
+    else{
+        if (([_streamingAddress.text compare:@""]!=NSOrderedSame)&&
+            ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]!=NSOrderedSame)) {
+            [self Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
+            [self addUrls];
+        }
+    }
+}
+
 
 - (void)getSelectedPlatform
 {
@@ -419,7 +472,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     _livePauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _livePauseBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-    _livePauseBtn.center=CGPointMake(viewW*0.5-viewW*64/totalWeight, viewH-viewH*82/totalHeight);
+    _livePauseBtn.center= self.view.center;
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_pre@3x.png"] forState:UIControlStateHighlighted];
     _livePauseBtn.contentMode=UIViewContentModeScaleToFill;
@@ -429,7 +482,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     _liveStopBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _liveStopBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-    _liveStopBtn.center=CGPointMake(viewW*0.5+viewW*64/totalWeight, viewH-viewH*82/totalHeight);
+    _liveStopBtn.center= self.view.center;
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_pre@3x.png"] forState:UIControlStateHighlighted];
     _liveStopBtn.contentMode=UIViewContentModeScaleToFill;
@@ -644,53 +697,6 @@ bool VideoRecordIsEnable = NO;
     _recordTimeLabel.text = [NSString stringWithFormat:@"REC %.2d:%.2d",VideoRecordTimerTick_m,VideoRecordTimerTick_s];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    //判断设备的音频输入是不是手机麦克风
-    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
-    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
-        _isIphoneAudio = [standDefaults objectForKey:AudioSourceIsIphone];
-        if (_session) {
-            _session.isIphoneAudio = _isIphoneAudio;
-        }
-    }
-    
-    [self getSelectedPlatform];
-}
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (_isBroswer) {
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-        _isBroswer=NO;
-    }
-    
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
-}
-
-- (void) viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];//屏幕取消常亮
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    _isExit=YES;
-    if (_isLiveView){
-        [_tipLabel removeFromSuperview];
-        [self stopActivityIndicatorView];
-        [ActivityIndicatorView removeFromSuperview];
-    }
-    else{
-        if (([_streamingAddress.text compare:@""]!=NSOrderedSame)&&
-            ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]!=NSOrderedSame)) {
-            [self Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
-            [self addUrls];
-        }
-    }
-}
 
 /**
  *  返回上个界面
@@ -855,7 +861,7 @@ bool _isTakePhoto=NO;
     if (RecordVideoEnable == Unable) {
         [self playSound:@"begin_record.mp3"];
         RecordVideoEnable = Enable;
-        [_recordBtn setImage:[UIImage imageNamed:@"video_stop@3x.png"] forState:UIControlStateNormal];
+        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
         
         _takephotoBtn.enabled = NO;
         
@@ -889,7 +895,7 @@ bool _isTakePhoto=NO;
         [self playSound:@"end_record.mp3"];
         [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
         RecordVideoEnable = Unable;
-        [_recordBtn setImage:[UIImage imageNamed:@"video_start@3x.png"] forState:UIControlStateNormal];
+        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
         _recordTimeLabel.hidden=YES;
         if (_liveCameraSource == IphoneBackCamera)
         {
@@ -947,7 +953,6 @@ bool _isTakePhoto=NO;
 -(void)_liveStreamBtnClick{
     
 
-    
     //如果是系统摄像头
     if (_liveCameraSource == IphoneBackCamera)
     {
@@ -969,7 +974,7 @@ bool _isTakePhoto=NO;
         }
         else
         {
-            [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];
+//            [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];
         }
     }
 }
@@ -1946,15 +1951,11 @@ CGFloat iy ;
         return;
     }
     
-    
-    //    [self Save_Paths:stream.url :STREAM_URL_KEY];
-    //    [self addUrls];
     _isLiving = 1;
     
     if (_session) {
 //        _session.dataSoureType = type;
         [_session startLive:stream];
-        
     }
     
 }
@@ -2003,25 +2004,43 @@ CGFloat iy ;
     
     switch (state) {
         case LFLiveReady:
-            networkStatusInfo = @"准备....";
+            networkStatusInfo = @"LiveReady....";
             break;
         case LFLivePending:
-            networkStatusInfo = @"连接中...";
+            networkStatusInfo = @"LivePending...";
             break;
         case LFLiveStart:
-            networkStatusInfo = @"已连接";
+            networkStatusInfo = @"LiveStart";
             [self setStartStreamStatus];
             break;
         case LFLiveStop:
-            networkStatusInfo  =@"已断开";
+            networkStatusInfo  =@"LiveStop";
             [self setStopStreamStatus];
             break;
         case LFLiveError:
+        {
             networkStatusInfo =@"连接出错";
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
+                    if (_session) {
+                        [_session stopLive];
+                    }
+                }];
+                [self setStopStreamStatus];
+            });
+          
+        }
             break;
         default:
             break;
     }
+    
+    if (networkStatusInfo)
+    {
+        [self showHudMessage:networkStatusInfo];
+    }
+
     
     NSLog(@"liveStateDidChange : networkStatusInfo :%@",networkStatusInfo);
     

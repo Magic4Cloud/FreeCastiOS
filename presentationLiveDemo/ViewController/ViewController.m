@@ -321,7 +321,7 @@ Rak_Lx52x_Device_Control *_Scan;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
+
     _Exit=NO;
     //[self _switchPortrait];
     //[self scanDevice];

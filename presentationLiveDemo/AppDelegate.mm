@@ -66,6 +66,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+        [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
+    
     // Override point for customization after application launch.
     /**
      *  设置ShareSDK的appKey，如果尚未在ShareSDK官网注册过App，请移步到http://mob.com/login 登录后台进行应用注册，
@@ -287,9 +290,8 @@
                       break;
               }
           }];
-
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
-    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     //左侧菜单栏
     MenuViewController *menuViewController = [[MenuViewController alloc] init];

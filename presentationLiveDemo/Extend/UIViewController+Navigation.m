@@ -93,6 +93,18 @@
 }
 
 
+- (void)showPromptAlertWithTitile:(NSString *)title message:(NSString *)message buttonTitle:(NSString *)buttonTitle buttonClickHandler:(void (^ )(UIAlertAction * action))buttonClick
+{
+    TTAlertViewController * alertVc = [TTAlertViewController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction * action = [UIAlertAction actionWithTitle:buttonTitle style:UIAlertActionStyleDefault handler:buttonClick];
+    [alertVc addAction:action];
+    
+    [self presentViewController:alertVc animated:YES completion:^{
+        
+    }];
+}
+
 - (void)showAlertWithTitile:(NSString *)title message:(NSString *)message leftButtonTitle:(NSString *)leftTitle rightButtonTitle:(NSString *)rightTitle leftButtonClickHandler:(void (^ )(UIAlertAction * action))leftButtonClick rightButtonClickHandler:(void (^ )(UIAlertAction * action))rightButtonClick
 {
     TTAlertViewController * alertVc = [TTAlertViewController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
