@@ -193,6 +193,8 @@
 - (void)_audioHDMIBtnClick{
     NSLog(@"_audioHDMIBtnClick");
     _audioStatus=1;
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
@@ -207,6 +209,8 @@
 - (void)_audioExternalBtnClick{
     NSLog(@"_audioExternalBtnClick");
     _audioStatus=2;
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
@@ -221,6 +225,8 @@
 - (void)_aduioInternalBunClick{
     NSLog(@"_aduioInternalBunClick");
     _audioStatus=2;
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AudioSourceIsIphone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
     //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
@@ -236,6 +242,8 @@
 - (void)_NOaudioBtnClick{
     NSLog(@"_NOaudioBtnClick");
     _audioStatus=0;
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
