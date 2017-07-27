@@ -396,29 +396,13 @@ UIImage *pauseImage=nil;
 
 #pragma mark -- 实现委托方法
 - (void)captureOutput:(nullable LFAudioCapture *)capture audioData:(nullable NSData*)audioData {
-    if (_isRAK) {
+    if (_isRAK && !_isIphoneAudio) {
         return;
     }
 
     if (self.uploading) [self.audioEncoder encodeAudioData:audioData timeStamp:NOW];
 }
 
-/** 处理音频数据 */
-//- (void)captureOutput:(nullable LFAudioCapture*)capture audioBuffer:(AudioBufferList)inBufferList{
-//
-//    
-//    if (_isRAK) {
-//        return;
-//    }
-//    if(!_isPausing)
-//    {
-////        [self.audioEncoder encodeAudioData:nil timeStamp:self.currentTimestamp];
-////        [self.audioEncoder encodeAudioData:inBufferList timeStamp:self.currentTimestamp];
-//        
-// 
-//    }
-//    else return ;
-//}
 
 - (void)captureOutput:(nullable LFVideoCapture *)capture pixelBuffer:(nullable CVPixelBufferRef)pixelBuffer {
     if (_isRAK) {

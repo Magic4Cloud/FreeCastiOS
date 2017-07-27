@@ -79,6 +79,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 
 @interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
 
+@property (nonatomic, assign) BOOL isIphoneAudio;
 
 @property (nonatomic, strong)LX520View * videoView;
 
@@ -646,6 +647,15 @@ bool VideoRecordIsEnable = NO;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //判断设备的音频输入是不是手机麦克风
+    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
+        _isIphoneAudio = [standDefaults objectForKey:AudioSourceIsIphone];
+        if (_session) {
+            _session.isIphoneAudio = _isIphoneAudio;
+        }
+    }
     
     [self getSelectedPlatform];
 }
@@ -1287,7 +1297,7 @@ int valOrientation;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-    if(_isLiving==1){
+    if(_isLiving==1 && !_isIphoneAudio){
         
         AudioBufferList audioBufferList;
         audioBufferList.mNumberBuffers = 1;
@@ -1897,6 +1907,7 @@ CGFloat iy ;
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
     _session.delegate  = self;
     _session.isRAK=rak;
+    _session.isIphoneAudio = _isIphoneAudio;
     _session.running =YES;
     _session.preView =_livingPreView;
     return _session;

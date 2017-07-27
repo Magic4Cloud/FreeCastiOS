@@ -20,4 +20,6 @@
 //appkey or cilentid
 #define album_name  @"FREESTREAM"
 
+#define AudioSourceIsIphone @"isIphoneAudio" 
+
 #endif /* MacroDefinition_h */

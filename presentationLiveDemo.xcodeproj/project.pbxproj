@@ -4465,8 +4465,8 @@
 				TargetAttributes = {
 					D8BA26B41D6AD13500D28C0F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = PWD8THY2VS;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 8YE8AXL3F3;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -5550,7 +5550,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PWD8THY2VS;
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5589,8 +5589,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "ded2daa7-eda3-44dd-975d-6244c8b60990";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_development;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;
@@ -5601,9 +5601,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PWD8THY2VS;
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5642,8 +5642,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "4e6faebf-c495-468d-a830-dfe6aa84245b";
+				PROVISIONING_PROFILE_SPECIFIER = "freestream adhoc";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;

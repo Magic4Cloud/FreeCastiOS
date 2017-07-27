@@ -9,6 +9,7 @@
 #ifndef LFLiveSession_picSource_h
 #define LFLiveSession_picSource_h
 
+
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "LFLiveStreamInfo.h"
@@ -52,6 +53,8 @@ typedef NS_ENUM(NSInteger,LivingDataSouceType){
 @property (nonatomic, assign) BOOL running;
 
 @property (nonatomic, assign) BOOL isRAK;
+
+@property (nonatomic, assign) BOOL isIphoneAudio;
 
 //预览窗体
 @property (nonatomic, strong,null_resettable) UIView *preView;

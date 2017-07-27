@@ -10,9 +10,15 @@
 #import "TTCoreDataClass.h"
 
 @interface TTPlatformCustomViewController ()<UITextFieldDelegate>
+{
+    CGFloat keyboardHeight;
+}
 @property (weak, nonatomic) IBOutlet UITextField *streamUrlTextFiled;
 @property (weak, nonatomic) IBOutlet UITextField *streamKeyTextFiled;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
+
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
 
 @end
 
@@ -32,12 +38,35 @@
 {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    
     PlatformModel * model =  [[TTCoreDataClass shareInstance] getPlatformWithName:custom];
     if (model) {
         _streamUrlTextFiled.text = model.rtmp;
         _streamKeyTextFiled.text = model.streamKey;
     }
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
 #pragma mark - 👣 Target actions
 
 - (IBAction)resetButtonClick:(id)sender {
@@ -79,6 +108,45 @@
 }
 
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    if (!_streamKeyTextFiled.isFirstResponder) {
+        return;
+    }
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect keyboardRect = [aValue CGRectValue];
+    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+    
+    keyboardHeight = keyboardRect.size.height;
+    
+    CGFloat offsetY = 0;
+    CGFloat maxY = CGRectGetMaxY(_streamKeyTextFiled.frame);
+    offsetY = keyboardHeight - (ScreenHeight - maxY);
+    if (offsetY>0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.contentView.frame = CGRectMake(0, -offsetY, ScreenWidth, ScreenHeight+offsetY);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+    
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    keyboardHeight = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.contentView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+
+
 #pragma mark - 🤝 Delegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -95,8 +163,8 @@
     [super touchesBegan:touches withEvent:event];
     
     [self.view endEditing:YES];
-    
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
