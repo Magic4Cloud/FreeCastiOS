@@ -11,7 +11,7 @@
 #import "CommonFunc.h"
 #import "RotateNavigationControllerViewController.h"
 #import "MenuViewController.h"
-
+#import "StartViewController.h"
 //＝＝＝＝＝＝＝＝＝＝ShareSDK头文件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
@@ -57,6 +57,7 @@
 #import <FBSDKMessengerShareKit/FBSDKMessengerSharer.h>
 
 @interface AppDelegate ()<WXApiDelegate>
+@property (nonatomic, strong)StartViewController * startVc;
 
 
 @end
@@ -304,10 +305,27 @@
     //mainRevealController.bounceBackOnOverdraw = NO;
     [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
     
-    self.window.rootViewController = [[RotateNavigationControllerViewController alloc] initWithRootViewController:self.revealViewController];
+//    self.window.rootViewController = [[RotateNavigationControllerViewController alloc] initWithRootViewController:self.revealViewController];
+    [self loadStartPage];
+    
     return YES;
 }
 
+
+/**
+ 加载启动页
+ */
+- (void)loadStartPage
+{
+    _startVc = [[StartViewController alloc] init];
+    _startVc.view.frame = [UIScreen mainScreen].bounds;
+    self.window.rootViewController = _startVc;
+    __weak typeof(self) weakSelf = self;
+    _startVc.dismissSelfBlock = ^()
+    {
+        weakSelf.window.rootViewController = [[RotateNavigationControllerViewController alloc] initWithRootViewController:weakSelf.revealViewController];
+    };
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

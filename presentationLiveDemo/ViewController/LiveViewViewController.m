@@ -1443,7 +1443,7 @@ CGFloat iy ;
     ix = self.view.frame.origin.x+(viewW/2-25);
     iy = self.view.frame.origin.y+(viewH/2-25);
     //    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(viewW*304/totalWeight,129*viewH/totalHeight, viewW*58.5/totalWeight, viewH*58.5/totalHeight)];
+    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(viewW*304/totalWeight,129*viewH/totalHeight, viewW*58.5/totalWeight, viewW*58.5/totalWeight)];
     
     ActivityIndicatorView.image=[UIImage imageNamed:@"logo_148"];
     //    CABasicAnimation* rotationAnimation;
