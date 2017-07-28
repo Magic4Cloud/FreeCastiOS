@@ -8,7 +8,7 @@ getyoutubeStreamKeyError = "Get streamkey faild!";
 CustomUrlFillError       = "Please fill in the correct Url or key";
 SaveSuccess              = "Save Success!";
 SaveFail                 = "Save Fail!";
-
+password_modify_failed   = "Password modify failed";
 
 "main_scan_indicator_title"="Search Device";
 "main_scan_indicator"="Searching Device...";

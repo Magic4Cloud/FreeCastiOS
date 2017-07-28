@@ -8,6 +8,8 @@ getyoutubeStreamKeyError = "获取推流地址失败";
 CustomUrlFillError       = "请填写正确的推流地址";
 SaveSuccess              = "保存成功";
 SaveFail                 = "保存失败";
+password_modify_failed   = "密码修改失败";
+
 
 "main_scan_indicator_title"="Search Device";
 "main_scan_indicator"="Searching Device...";
