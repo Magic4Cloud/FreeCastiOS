@@ -564,7 +564,7 @@ Rak_Lx52x_Device_Control *_configScan;
     
     _videoRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*50/totalWeight, viewH*18/totalHeight)];
     _videoRateValueLabel.center=CGPointMake(6/8.0*_videoRateSlider.frame.size.width+_videoRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoRateValueLabel.center.y+ viewH*8/totalHeight);
-    _videoRateValueLabel.text = @"6M";
+    _videoRateValueLabel.text = @"2M";
     _videoRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoRateValueLabel.backgroundColor = [UIColor clearColor];
     _videoRateValueLabel.textColor = MAIN_COLOR;
@@ -625,7 +625,7 @@ Rak_Lx52x_Device_Control *_configScan;
     
     _videoFrameRateValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, 0, viewW*48/totalWeight, viewH*18/totalHeight)];
     _videoFrameRateValueLabel.center=CGPointMake(25/30.0*_videoFrameRateSlider.frame.size.width+_videoFrameRateSlider.frame.origin.x+viewW*5/totalWeight*0.5, _videoFrameRateValueLabel.center.y + viewH*8/totalHeight);
-    _videoFrameRateValueLabel.text = @"25FPS";
+    _videoFrameRateValueLabel.text = @"24FPS";
     _videoFrameRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateValueLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateValueLabel.textColor = MAIN_COLOR;
