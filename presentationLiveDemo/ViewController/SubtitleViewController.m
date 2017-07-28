@@ -196,7 +196,6 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     line2.backgroundColor= [UIColor colorWithRed:199/255.0 green:200/255.0 blue:202/255.0 alpha:1.0];
     [_subtitleTypeView  addSubview:line2];
     
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeFixedClick)];
     
     subtitleTypeFixedLabel=[UIButton buttonWithType:UIButtonTypeCustom];
     subtitleTypeFixedLabel.frame = CGRectMake(viewW*273/totalWeight,viewH*23.5/totalHeight, viewW*22.5/totalWeight, viewH*15/totalHeight);
@@ -255,6 +254,7 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     _subtitleTextField.backgroundColor = [UIColor whiteColor];
     _subtitleTextField.textAlignment=NSTextAlignmentCenter;
     _subtitleTextField.text=NSLocalizedString(@"subtitle_text", nil);
+//    _subtitleTextField.backgroundColor = [UIColor redColor];
     [_subtitleTextView addSubview:_subtitleTextField];
 
     
@@ -420,10 +420,19 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     }
     
     if ([self Get_Paths:SUBTITLE_TEXT_KEY]!=nil) {
-        _subtitleTextField.text=[self Get_Paths:SUBTITLE_TEXT_KEY];
+        NSString * text = [self Get_Paths:SUBTITLE_TEXT_KEY];
+        if (text.length>0) {
+            _subtitleTextField.text = text;
+        }
+        else
+        {
+            _subtitleTextField.text = NSLocalizedString(@"subtitle_text", nil);
+        }
     }
     else{
         [self Save_Paths:_subtitleTextField.text :SUBTITLE_TEXT_KEY];
+        _subtitleTextField.text = NSLocalizedString(@"subtitle_text", nil);
+
     }
     
     if([self Get_Paths:SUBTITLE_DURATION_KEY]!=nil){

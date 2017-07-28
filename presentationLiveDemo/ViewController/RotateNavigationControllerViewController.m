@@ -28,7 +28,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
+
 }
 
 - (BOOL)shouldAutorotate

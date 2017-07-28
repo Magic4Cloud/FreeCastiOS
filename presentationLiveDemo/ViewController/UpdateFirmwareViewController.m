@@ -544,7 +544,6 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
