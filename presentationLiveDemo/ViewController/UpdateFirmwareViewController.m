@@ -73,8 +73,8 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     _isFound=NO;
     _isUpdte=NO;
     _Exit=NO;
-    filePath=[[NSMutableArray alloc]init];
-    fileName=[[NSMutableArray alloc]init];
+    filePath = [[NSMutableArray alloc] init];
+    fileName = [[NSMutableArray alloc] init];
 //    url=@"https://pan.baidu.com/s/1o80cPIi";
     //测试连接
     url = @"https://pan.baidu.com/s/1pLjZfqb";
@@ -450,7 +450,7 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
         NSString * versionString = [separateArray firstObject];
         NSString * downloadAddress;
         if (separateArray.count>0) {
-            downloadAddress = [separateArray objectAtIndex:1];
+            downloadAddress = [separateArray objectAtIndex:0];
         }
         NSLog(@"%@ - %@  -%@ ",string,versionString,downloadAddress);
         

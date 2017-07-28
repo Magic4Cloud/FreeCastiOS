@@ -208,6 +208,9 @@ Rak_Lx52x_Device_Control *_firmwareScan;
     [_newVersionImg setImage:[UIImage imageNamed:@"icon_right"]];
 //    [_newVersionImg setTransform:rotate];
     [_newVersionView  addSubview:_newVersionImg];
+    
+    _firmwareScan = [[Rak_Lx52x_Device_Control alloc] init];
+    [self scanDevice];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -224,8 +227,6 @@ Rak_Lx52x_Device_Control *_firmwareScan;
 - (void) viewDidAppear:(BOOL)animated
 {
     _Exit=NO;
-    _firmwareScan = [[Rak_Lx52x_Device_Control alloc] init];
-    [self scanDevice];
     [super viewDidAppear:animated];
 }
 

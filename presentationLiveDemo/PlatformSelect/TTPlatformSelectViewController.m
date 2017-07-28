@@ -351,8 +351,9 @@
         switch (indexPath.row) {
             case 0://facebook
             {
-                TTFacebookViewController *vc = [[TTFacebookViewController alloc] init];
-                [self.navigationController pushViewController:vc animated:YES];
+                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
+//                TTFacebookViewController *vc = [[TTFacebookViewController alloc] init];
+//                [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
             case 1://youtubu
@@ -363,7 +364,7 @@
                 break;
             case 2://uStream
             {
-                
+                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
             }
                 break;
             case 3://Twitch
@@ -374,7 +375,7 @@
                 break;
             case 4://LiveStream
             {
-                
+                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
             }
                 break;
             case 5://Custom

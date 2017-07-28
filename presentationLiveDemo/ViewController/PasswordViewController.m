@@ -53,17 +53,6 @@ Rak_Lx52x_Device_Control *_configScan;
     [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_backBtn];
     
-//    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width, diff_top, viewW-_backBtn.frame.origin.x-_backBtn.frame.size.width-2*diff_x, viewH*44/totalHeight)];
-//    _titleLabel.center=CGPointMake(self.view.center.x, _backBtn.center.y);
-//    _titleLabel.text = NSLocalizedString(@"password_title", nil);
-//    _titleLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
-//    _titleLabel.backgroundColor = [UIColor clearColor];
-//    //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-//    _titleLabel.textColor = MAIN_COLOR;
-//    _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-//    _titleLabel.textAlignment=UITextAlignmentCenter;
-//    _titleLabel.numberOfLines = 0;
-//    [self.view addSubview:_titleLabel];
 //
     
     //设置分段控件点击相应事件
@@ -197,15 +186,6 @@ Rak_Lx52x_Device_Control *_configScan;
     [_passwordView addSubview:deviceLabel];
     
     
-    //New Password
-//    _newPasswordView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _initPasswordView.frame.origin.y+_initPasswordView.frame.size.height+viewH*15/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
-//    [[_newPasswordView layer] setBorderWidth:1.0];//画线的宽度
-//    [[_newPasswordView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
-//    [[_newPasswordView layer]setCornerRadius:viewW*14/totalWeight];//圆角
-//    _newPasswordView.backgroundColor=[UIColor whiteColor];
-//    [_newPasswordView.layer setMasksToBounds:YES];
-//    [_passwordView addSubview:_newPasswordView];
-    
     _newPasswordLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, deviceLabel.frame.origin.y+deviceLabel.frame.size.height+viewH*20/totalHeight, viewW*110/totalWeight, viewH*17.5/totalHeight)];
     _newPasswordLabel.text = NSLocalizedString(@"password_new_label", nil);
     _newPasswordLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
@@ -214,10 +194,6 @@ Rak_Lx52x_Device_Control *_configScan;
     _newPasswordLabel.numberOfLines = 0;
     [_passwordView addSubview:_newPasswordLabel];
     
-//    UIView *_newPasswordLine=[[UIView alloc]init];
-//    _newPasswordLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
-//    _newPasswordLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-//    [_newPasswordView addSubview:_newPasswordLine];
     
     _newPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _newPasswordImg.userInteractionEnabled=YES;
@@ -403,10 +379,8 @@ Rak_Lx52x_Device_Control *_configScan;
     
     //设置分段控件点击相应事件
     NSArray *VediosegmentedData = [[NSArray alloc]initWithObjects:@"Smooth",@"Good",@"Best",@"Custom",nil];
-    VediosegmentedControl = [[UISegmentedControl alloc]initWithItems:VediosegmentedData];
+    VediosegmentedControl = [[UISegmentedControl alloc] initWithItems:VediosegmentedData];
     VediosegmentedControl.frame = CGRectMake(viewW*37.5/totalWeight,_videoParametersLabel.frame.origin.y+_videoParametersLabel.frame.size.height+viewH*15.5/totalHeight,viewW*300/totalWeight,viewH*32.5/totalHeight);
-//    VediosegmentedControl.center=CGPointMake(viewW*0.5, _backBtn.center.y);
-    
     VediosegmentedControl.backgroundColor=[UIColor whiteColor];
     VediosegmentedControl.tintColor = [UIColor whiteColor];
     VediosegmentedControl.layer.borderWidth = 2.0;
@@ -715,6 +689,7 @@ NSString *quality;
     
 }
 
+#pragma mark - 获取设备信息
 - (void)getDeviceinformation
 {
     if (!_configIP || !_configPort) {
@@ -755,9 +730,9 @@ NSString *quality;
             quality=[self parseJsonString:http_request.ResponseString];
             dispatch_async(dispatch_get_main_queue(),^ {
                 float value=[quality intValue]*3000/52.0;
-                if (((int)value%100)!=0) {
-                    value=value+100;
-                }
+//                if (((int)value%100)!=0) {
+//                    value=value+100;
+//                }
                 [self setVideoRate:value];
             });
             NSLog(@"quality=%@",quality);
