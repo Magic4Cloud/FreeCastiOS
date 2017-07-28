@@ -9,6 +9,7 @@ CustomUrlFillError       = "Please fill in the correct Url or key";
 SaveSuccess              = "Save Success!";
 SaveFail                 = "Save Fail!";
 password_modify_failed   = "Password modify failed";
+Notyetopened           = "Not yet opened";
 
 "main_scan_indicator_title"="Search Device";
 "main_scan_indicator"="Searching Device...";
