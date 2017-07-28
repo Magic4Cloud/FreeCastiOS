@@ -180,13 +180,14 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     [self prefersStatusBarHidden:YES];
-    NSLog(@"viewH2=%f,viewW2=%f",viewH,viewW);
-    
     
     
     //添加系统相机展示view
     _livingPreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     _livingPreView.backgroundColor = [UIColor clearColor];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+    [_livingPreView addGestureRecognizer:singleTap];
+    
     [self.view addSubview:_livingPreView];
     _livingPreView.hidden = YES;
     
@@ -244,7 +245,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 {
     [super viewDidDisappear:animated];
     
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];//屏幕取消常亮
+    [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     _isExit=YES;
@@ -380,10 +381,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(0, 20, viewH*60/totalHeight, viewH*44/totalHeight);
-    //    [_backBtn setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    //    [_backBtn setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_backBtn addTarget:self action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
     
     _connectImg=[[UIImageView alloc]init];
@@ -418,7 +417,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _bottomBg=[[UIImageView alloc] init];
     _bottomBg.userInteractionEnabled=YES;
     _bottomBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _bottomBg.frame = CGRectMake(0, viewH-55, viewW, 55);
+    _bottomBg.frame = CGRectMake(0, viewH-55, ScreenWidth, 55);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
     
@@ -459,7 +458,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _configureBtn.frame = [buttonFrameArray[4] CGRectValue];
     [_configureBtn setImage:[UIImage imageNamed:@"icon_configure_nor"] forState:UIControlStateNormal];
     [_configureBtn setImage:[UIImage imageNamed:@"icon_configure_pre"] forState:UIControlStateHighlighted];
-    [_configureBtn addTarget:nil action:@selector(_configureBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_configureBtn addTarget:self action:@selector(_configureBtnClick) forControlEvents:UIControlEventTouchUpInside];
     _configureBtn.contentMode=UIViewContentModeScaleToFill;
     [_bottomBg  addSubview:_configureBtn];
     
@@ -471,8 +470,8 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     
     _livePauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _livePauseBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-    _livePauseBtn.center= self.view.center;
+    CGFloat width = viewH*44/totalHeight;
+    _livePauseBtn.frame = CGRectMake((ScreenWidth - width)/2, (ScreenHeight - width)/2, width, width);
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_pre@3x.png"] forState:UIControlStateHighlighted];
     _livePauseBtn.contentMode=UIViewContentModeScaleToFill;
@@ -481,8 +480,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _livePauseBtn.hidden=YES;
     
     _liveStopBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _liveStopBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-    _liveStopBtn.center= self.view.center;
+    _liveStopBtn.frame = CGRectMake((ScreenWidth - width)/2, (ScreenHeight - width)/2, width, width);
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_pre@3x.png"] forState:UIControlStateHighlighted];
     _liveStopBtn.contentMode=UIViewContentModeScaleToFill;
@@ -522,7 +520,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _onliveLabel.backgroundColor = [UIColor clearColor];
     _onliveLabel.textColor = [UIColor whiteColor];
     _onliveLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _onliveLabel.textAlignment=UITextAlignmentLeft;
+    _onliveLabel.textAlignment = UITextAlignmentLeft;
     _onliveLabel.numberOfLines = 0;
     [_statusBg addSubview:_onliveLabel];
     
@@ -943,6 +941,9 @@ bool _isTakePhoto=NO;
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     PasswordViewController *v = [[PasswordViewController alloc] init];
+    if (_userip) {
+        v.configIP = _userip;
+    }
     [self.navigationController pushViewController: v animated:true];
 }
 

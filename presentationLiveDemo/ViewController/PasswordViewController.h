@@ -92,4 +92,8 @@
     
     UIButton *_videoModifyBtn;
 }
+
+@property (nonatomic, copy) NSString* configIP;
+@property (nonatomic, assign) int configPort;
+
 @end

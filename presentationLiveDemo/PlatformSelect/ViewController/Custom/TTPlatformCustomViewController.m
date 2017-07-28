@@ -92,6 +92,12 @@
             [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
             return;
         }
+        
+        if (![streamUrl hasPrefix:@"rtmp:"] && ![streamUrl hasPrefix:@"RTMP:"]) {
+            [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
+            return;
+        }
+        
         BOOL save = [[TTCoreDataClass shareInstance] updatePlatformWithName:custom rtmp:streamUrl streamKey:streamKey customString:nil enabel:YES selected:YES];
         if (save)
         {

@@ -19,8 +19,6 @@ Rak_Lx52x_Device_Control *_configScan;
 {
     bool _Exit;
     UIAlertView *waitAlertView;
-    int configPort;
-    NSString* configIP;
 }
 @end
 
@@ -30,7 +28,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:244/255.0 green:245/255.0 blue:247/255.0 alpha:1.0];
-    configPort=80;
+    _configPort=80;
     
     //顶部
     _topBg=[[UIImageView alloc]init];
@@ -430,109 +428,6 @@ Rak_Lx52x_Device_Control *_configScan;
         [_videoView addSubview:videolineLabel];
     }
     
-//    CGFloat init_X=viewW*16/totalWeight;
-//    CGFloat init_Y=viewH*35/totalHeight;
-////
-//    _smoothBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    _smoothBtn.frame = CGRectMake(init_X+viewW*90*0/totalWeight, init_Y, viewW*72/totalWeight, viewH*77/totalHeight);
-//    _smoothBtn.tag=0;
-//    [_smoothBtn setTitle: NSLocalizedString(@"smooth", nil) forState: UIControlStateNormal];
-//    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_sel@3x.png"] forState:UIControlStateHighlighted];
-//    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    _smoothBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-//    _smoothBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-//    [_smoothBtn addTarget:nil action:@selector(_videoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [_viewBtn  addSubview:_smoothBtn];
-//
-//    _goodBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    _goodBtn.frame = CGRectMake(init_X+viewW*90*1/totalWeight, init_Y, viewW*72/totalWeight, viewH*77/totalHeight);
-//    _goodBtn.tag=1;
-//    [_goodBtn setTitle: NSLocalizedString(@"good", nil) forState: UIControlStateNormal];
-//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_sel@3x.png"] forState:UIControlStateHighlighted];
-//    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    _goodBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-//    _goodBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-//    [_goodBtn addTarget:nil action:@selector(_videoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [_viewBtn  addSubview:_goodBtn];
-//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_sel@3x.png"] forState:UIControlStateNormal];
-//    [_goodBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    
-//    _bestBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    _bestBtn.frame = CGRectMake(init_X+viewW*90*2/totalWeight, init_Y, viewW*72/totalWeight, viewH*77/totalHeight);
-//    _bestBtn.tag=2;
-//    [_bestBtn setTitle: NSLocalizedString(@"best", nil) forState: UIControlStateNormal];
-//    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_sel@3x.png"] forState:UIControlStateHighlighted];
-//    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    _bestBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-//    _bestBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-//    [_bestBtn addTarget:nil action:@selector(_videoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [_viewBtn  addSubview:_bestBtn];
-//    
-//    _customBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    _customBtn.frame = CGRectMake(init_X+viewW*90*3/totalWeight, init_Y, viewW*72/totalWeight, viewH*77/totalHeight);
-//    _customBtn.tag=3;
-//    [_customBtn setTitle: NSLocalizedString(@"custom", nil) forState: UIControlStateNormal];
-//    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_sel@3x.png"] forState:UIControlStateHighlighted];
-//    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    _customBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
-//    _customBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-//    [_customBtn addTarget:nil action:@selector(_videoBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [_viewBtn  addSubview:_customBtn];
-    
-    
-//    _videoLabelView=[[UIView alloc]init];
-//    _videoLabelView.frame=CGRectMake(viewW*63/totalWeight, viewH*272/totalHeight, viewW*256/totalWeight, viewH*91/totalHeight);
-//    [[_videoLabelView layer] setBorderWidth:1.0];//画线的宽度
-//    [[_videoLabelView layer] setBorderColor:[UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0].CGColor];//颜色
-//    [[_videoLabelView layer]setCornerRadius:viewW*14/totalWeight];//圆角
-//    [_videoLabelView.layer setMasksToBounds:YES];
-//    [_videoView  addSubview:_videoLabelView];
-    
-//    _videoLabel1= [[UILabel alloc] initWithFrame:CGRectMake(0, 2*viewH/totalHeight, _videoLabelView.frame.size.width, 20*viewH/totalHeight)];
-//    _videoLabel1.text = NSLocalizedString(@"smooth_text", nil);
-//    _videoLabel1.font = [UIFont systemFontOfSize: viewH*14/totalHeight];
-//    _videoLabel1.backgroundColor = [UIColor clearColor];
-//    _videoLabel1.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-//    _videoLabel1.lineBreakMode = UILineBreakModeWordWrap;
-//    _videoLabel1.textAlignment=UITextAlignmentCenter;
-//    _videoLabel1.numberOfLines = 0;
-//    [_videoLabelView addSubview:_videoLabel1];
-//    
-//    _videoLabel2= [[UILabel alloc] initWithFrame:CGRectMake(0, 24*viewH/totalHeight, _videoLabelView.frame.size.width, 20*viewH/totalHeight)];
-//    _videoLabel2.text = NSLocalizedString(@"good_text", nil);
-//    _videoLabel2.font = [UIFont systemFontOfSize: viewH*14/totalHeight];
-//    _videoLabel2.backgroundColor = [UIColor clearColor];
-//    _videoLabel2.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-//    _videoLabel2.lineBreakMode = UILineBreakModeWordWrap;
-//    _videoLabel2.textAlignment=UITextAlignmentCenter;
-//    _videoLabel2.numberOfLines = 0;
-//    [_videoLabelView addSubview:_videoLabel2];
-//    _videoLabel2.textColor = [UIColor colorWithRed:233/255.0 green:82/255.0 blue:25/255.0 alpha:1.0];
-//    
-//    _videoLabel3= [[UILabel alloc] initWithFrame:CGRectMake(0, 46*viewH/totalHeight, _videoLabelView.frame.size.width, 20*viewH/totalHeight)];
-//    _videoLabel3.text = NSLocalizedString(@"best_text", nil);
-//    _videoLabel3.font = [UIFont systemFontOfSize: viewH*14/totalHeight];
-//    _videoLabel3.backgroundColor = [UIColor clearColor];
-//    _videoLabel3.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-//    _videoLabel3.lineBreakMode = UILineBreakModeWordWrap;
-//    _videoLabel3.textAlignment=UITextAlignmentCenter;
-//    _videoLabel3.numberOfLines = 0;
-//    [_videoLabelView addSubview:_videoLabel3];
-//    
-//    _videoLabel4= [[UILabel alloc] initWithFrame:CGRectMake(0, 68*viewH/totalHeight, _videoLabelView.frame.size.width, 20*viewH/totalHeight)];
-//    _videoLabel4.text = NSLocalizedString(@"custom_text", nil);
-//    _videoLabel4.font = [UIFont systemFontOfSize: viewH*14/totalHeight];
-//    _videoLabel4.backgroundColor = [UIColor clearColor];
-//    _videoLabel4.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-//    _videoLabel4.lineBreakMode = UILineBreakModeWordWrap;
-//    _videoLabel4.textAlignment=UITextAlignmentCenter;
-//    _videoLabel4.numberOfLines = 0;
-//    [_videoLabelView addSubview:_videoLabel4];
-    
     
     //Modify
     _videoModifyBtn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -588,12 +483,6 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoResolutionSlider addTarget:self action:@selector(_videoResolutionSliderValue:) forControlEvents:UIControlEventValueChanged];
     [_videoResolutionView addSubview:_videoResolutionSlider];
     
-//    _videoResolutionMinImg=[[UIImageView alloc]init];
-//    _videoResolutionMinImg.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-//    _videoResolutionMinImg.center=CGPointMake(_videoResolutionSlider.frame.origin.x, _videoResolutionSlider.center.y);
-//    [_videoResolutionMinImg setImage:[UIImage imageNamed:@"configure_Slide_button_nor@3x.png"]];
-//    [_videoResolutionView  addSubview:_videoResolutionMinImg];
-    
     _videoResolutionMinLabel=[[UILabel alloc] initWithFrame:CGRectMake(_videoResolutionLabel.frame.size.width+_videoResolutionLabel.frame.origin.x+viewH*22/totalHeight, viewH*35/totalHeight, viewH*44/totalHeight, viewH*10/totalHeight)];
     _videoResolutionMinLabel.text = NSLocalizedString(@"video_480p", nil);
     _videoResolutionMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
@@ -604,12 +493,6 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionMinLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionMinLabel];
     
-//    _videoResolutionMaxImg=[[UIImageView alloc]init];
-//    _videoResolutionMaxImg.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-//    _videoResolutionMaxImg.center=CGPointMake(_videoResolutionSlider.frame.origin.x+_videoResolutionSlider.frame.size.width, _videoResolutionSlider.center.y);
-//    [_videoResolutionMaxImg setImage:[UIImage imageNamed:@"configure_Slide_button_nor@3x.png"]];
-//    [_videoResolutionView  addSubview:_videoResolutionMaxImg];
-    
     _videoResolutionMaxLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW-viewH*66/totalHeight, viewH*35/totalHeight, viewH*50/totalHeight, viewH*10/totalHeight)];
     _videoResolutionMaxLabel.text = NSLocalizedString(@"video_1080p", nil);
     _videoResolutionMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
@@ -619,13 +502,6 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionMaxLabel.textAlignment=UITextAlignmentCenter;
     _videoResolutionMaxLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionMaxLabel];
-    
-//    _videoResolutionValueImg=[[UIImageView alloc]init];
-//    _videoResolutionValueImg.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
-//    _videoResolutionValueImg.center=CGPointMake(_videoResolutionSlider.center.x, _videoResolutionSlider.center.y);
-//    [_videoResolutionValueImg setImage:[UIImage imageNamed:@"configure_Slide_button_nor@3x.png"]];
-//    [_videoResolutionView  addSubview:_videoResolutionValueImg];
-//    _videoResolutionValueImg.hidden=YES;
     
     _videoResolutionValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, -viewH*35/totalHeight, viewW*44/totalWeight, viewH*10/totalHeight)];
     _videoResolutionValueLabel.center=CGPointMake(_videoResolutionSlider.center.x, _videoResolutionMaxLabel.center.y);
@@ -767,8 +643,16 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateSlider.enabled=NO;
     _videoParametersView.hidden=NO;
     _ssidText.text=[self getWifiName];
-    _configScan = [[Rak_Lx52x_Device_Control alloc] init];
-    [self scanDevice];
+    
+    //如果已经搜索到设备  就不用再次搜索
+    if (_configIP && _configPort) {
+         [self getDeviceinformation];
+    }
+    else
+    {
+        _configScan = [[Rak_Lx52x_Device_Control alloc] init];
+        [self scanDevice];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -805,12 +689,39 @@ Rak_Lx52x_Device_Control *_configScan;
 NSString *resolution;
 NSString *fps;
 NSString *quality;
+
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
-        configIP=[result.Device_IP_Arr objectAtIndex:0];
+        _configIP=[result.Device_IP_Arr objectAtIndex:0];
+        [self getDeviceinformation];
+    }
+    else
+    {
+        //[self scanDevice];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            
+            [self showAlertWithTitile:NSLocalizedString(@"main_scan_failed", nil) message:nil leftButtonTitle:@"Cancel" rightButtonTitle:@"Continue search" leftButtonClickHandler:^(UIAlertAction *action) {
+                [self _backBtnClick];
+            } rightButtonClickHandler:^(UIAlertAction *action) {
+                [self scanDevice];
+            }];
+        });
+    }
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    });
+    
+}
+
+- (void)getDeviceinformation
+{
+    if (!_configIP || !_configPort) {
+        return;
+    }
         //get resolution
-        NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",configIP,configPort];
+        NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",_configIP,_configPort];
         HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
         if(http_request.StatusCode==200)
         {
@@ -836,7 +747,7 @@ NSString *quality;
         }
         
         //get quality
-        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,configPort];
+        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",_configIP,_configPort];
         http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
         if(http_request.StatusCode==200)
         {
@@ -858,7 +769,7 @@ NSString *quality;
         }
         
         //get fps
-        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",configIP,configPort];
+        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",_configIP,_configPort];
         http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
         if(http_request.StatusCode==200)
         {
@@ -870,7 +781,8 @@ NSString *quality;
             
             NSLog(@"fps=%@",fps);
         }
-        else{
+        else
+        {
             dispatch_async(dispatch_get_main_queue(),^ {
                 [self showAllTextDialog:NSLocalizedString(@"get_fps_failed", nil)];
             });
@@ -884,8 +796,8 @@ NSString *quality;
                 [self _videoBtnClick:VediosegmentedControl];
             }
             else if (([resolution compare:@"3"]==NSOrderedSame)
-                    &&([quality compare:@"139"]==NSOrderedSame)
-                    &&([fps compare:@"24"]==NSOrderedSame)) {
+                     &&([quality compare:@"139"]==NSOrderedSame)
+                     &&([fps compare:@"24"]==NSOrderedSame)) {
                 VediosegmentedControl.selectedSegmentIndex = 2;
                 [self _videoBtnClick:VediosegmentedControl];
             }
@@ -900,24 +812,7 @@ NSString *quality;
                 [self _videoBtnClick:VediosegmentedControl];
             }
         });
-    }
-    else
-    {
-        //[self scanDevice];
-        dispatch_async(dispatch_get_main_queue(),^ {
-            
-            [self showAlertWithTitile:NSLocalizedString(@"main_scan_failed", nil) message:nil leftButtonTitle:@"Cancel" rightButtonTitle:@"Continue search" leftButtonClickHandler:^(UIAlertAction *action) {
-                [self _backBtnClick];
-            } rightButtonClickHandler:^(UIAlertAction *action) {
-                [self scanDevice];
-            }];
-            
-//            [self showAllTextDialog:NSLocalizedString(@"main_scan_failed", nil)];
-        });
-    }
-    dispatch_async(dispatch_get_main_queue(),^ {
-        [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
-    });
+    
 }
 
 //返回
@@ -1187,7 +1082,7 @@ bool _modifyOK=YES;
     NSLog(@"_videoModifyBtnClick");
     _modifyOK=YES;
     //set resolution
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",configIP,configPort,(int)_videoResolutionSlider.value+1];
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
@@ -1213,7 +1108,7 @@ bool _modifyOK=YES;
     if ((int)(qualityValue*100)%100!=0) {
         qualityValue=qualityValue+1;
     }
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_enc_quality&type=h264&pipe=0&value=%d",configIP,configPort,(int)qualityValue];
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_enc_quality&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)qualityValue];
     http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
@@ -1235,7 +1130,7 @@ bool _modifyOK=YES;
     }
     
     //set fps
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_max_fps&type=h264&pipe=0&value=%d",configIP,configPort,(int)_videoFrameRateSlider.value];
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_max_fps&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoFrameRateSlider.value];
     http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
@@ -1373,7 +1268,7 @@ bool _modifyOK=YES;
     [self updatePassWord];
     return;
     //设置STA模块的密码
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",configIP,configPort,_ssidText.text,_newPasswordText.text];
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
