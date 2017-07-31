@@ -68,13 +68,15 @@ Rak_Lx52x_Device_Control *_configScan;
     segmentedControl.layer.borderWidth = 2.0;
     segmentedControl.layer.borderColor = MAIN_COLOR.CGColor;
     segmentedControl.layer.cornerRadius = viewW*5/totalWeight;
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBezeled;
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引
     
-    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,GRAY_COLOR,UITextAttributeTextShadowColor ,nil];
+    NSDictionary *highlightedAttributes =
+    @{NSForegroundColorAttributeName : MAIN_COLOR,
+                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     [segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateSelected];
     
-    NSDictionary *highlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:GRAY_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,MAIN_COLOR,UITextAttributeTextShadowColor ,nil];
+    NSDictionary *highlightedAttributes2 = @{NSForegroundColorAttributeName : GRAY_COLOR,
+                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     
     [segmentedControl setTitleTextAttributes:highlightedAttributes2 forState:UIControlStateNormal];
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
@@ -111,7 +113,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _ssidLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _ssidLabel.backgroundColor = [UIColor clearColor];
     _ssidLabel.textColor = MAIN_COLOR;
-    _ssidLabel.lineBreakMode = UILineBreakModeWordWrap;
+    _ssidLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _ssidLabel.numberOfLines = 0;
     [_passwordView addSubview:_ssidLabel];
     
@@ -151,7 +153,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _initPasswordLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _initPasswordLabel.backgroundColor = [UIColor clearColor];
     _initPasswordLabel.textColor = MAIN_COLOR;
-    _initPasswordLabel.lineBreakMode = UILineBreakModeWordWrap;
+    _initPasswordLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _initPasswordLabel.numberOfLines = 0;
 //    [_passwordView addSubview:_initPasswordLabel];
     
@@ -180,7 +182,7 @@ Rak_Lx52x_Device_Control *_configScan;
     
     //Device
     UILabel *deviceLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW*35.5/totalWeight, _initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*103.5/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight)];
-    deviceLabel.text = @"Device";
+    deviceLabel.text = NSLocalizedString(@"Device", nil);
     deviceLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
     deviceLabel.backgroundColor = [UIColor clearColor];
     deviceLabel.textColor = MAIN_COLOR;
@@ -317,8 +319,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _resetTitle.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
     _resetTitle.backgroundColor = [UIColor clearColor];
     _resetTitle.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _resetTitle.lineBreakMode = UILineBreakModeWordWrap;
-    _resetTitle.textAlignment=UITextAlignmentLeft;
+    _resetTitle.lineBreakMode = NSLineBreakByWordWrapping;
+    _resetTitle.textAlignment = NSTextAlignmentLeft;
     _resetTitle.numberOfLines = 0;
     [_resetView addSubview:_resetTitle];
     
@@ -327,8 +329,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _resetLabel1.font = [UIFont systemFontOfSize: viewH*14/totalHeight];
     _resetLabel1.backgroundColor = [UIColor clearColor];
     _resetLabel1.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _resetLabel1.lineBreakMode = UILineBreakModeWordWrap;
-    _resetLabel1.textAlignment=UITextAlignmentCenter;
+    _resetLabel1.lineBreakMode = NSLineBreakByWordWrapping;
+    _resetLabel1.textAlignment = NSTextAlignmentCenter;
     _resetLabel1.numberOfLines = 0;
     [_resetView addSubview:_resetLabel1];
     _resetView.hidden=YES;
@@ -390,10 +392,15 @@ Rak_Lx52x_Device_Control *_configScan;
     VediosegmentedControl.layer.cornerRadius = viewW*5/totalWeight;
     VediosegmentedControl.selectedSegmentIndex = 1;//默认选中的按钮索引
     
-    NSDictionary *VediohighlightedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:MAIN_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,GRAY_COLOR,UITextAttributeTextShadowColor ,nil];
+    NSDictionary *VediohighlightedAttributes =
+    @{NSForegroundColorAttributeName : MAIN_COLOR,
+                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
+    
     [VediosegmentedControl setTitleTextAttributes:VediohighlightedAttributes forState:UIControlStateSelected];
     
-    NSDictionary *VediohighlightedAttributes2 = [NSDictionary dictionaryWithObjectsAndKeys:GRAY_COLOR,UITextAttributeTextColor,  [UIFont fontWithName:normal size:viewH*16*0.8/totalHeight],UITextAttributeFont ,MAIN_COLOR,UITextAttributeTextShadowColor ,nil];
+    NSDictionary *VediohighlightedAttributes2 =
+    @{NSForegroundColorAttributeName : GRAY_COLOR,
+                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     [VediosegmentedControl setTitleTextAttributes:VediohighlightedAttributes2 forState:UIControlStateNormal];
     [VediosegmentedControl addTarget:self action:@selector(_videoBtnClick:)forControlEvents:UIControlEventValueChanged];
     [_videoView addSubview:VediosegmentedControl];
@@ -440,8 +447,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
     _videoResolutionLabel.backgroundColor = [UIColor clearColor];
     _videoResolutionLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    _videoResolutionLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoResolutionLabel.textAlignment=NSTextAlignmentRight;
+    _videoResolutionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoResolutionLabel.textAlignment = NSTextAlignmentRight;
     _videoResolutionLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionLabel];
     
@@ -464,8 +471,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionMinLabel.backgroundColor = [UIColor clearColor];
     _videoResolutionMinLabel.textColor = MAIN_COLOR;
-    _videoResolutionMinLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoResolutionMinLabel.textAlignment=UITextAlignmentCenter;
+    _videoResolutionMinLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoResolutionMinLabel.textAlignment = NSTextAlignmentCenter;
     _videoResolutionMinLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionMinLabel];
     
@@ -474,8 +481,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionMaxLabel.backgroundColor = [UIColor clearColor];
     _videoResolutionMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoResolutionMaxLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoResolutionMaxLabel.textAlignment=UITextAlignmentCenter;
+    _videoResolutionMaxLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoResolutionMaxLabel.textAlignment = NSTextAlignmentCenter;
     _videoResolutionMaxLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionMaxLabel];
     
@@ -485,8 +492,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoResolutionValueLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
     _videoResolutionValueLabel.backgroundColor = [UIColor clearColor];
     _videoResolutionValueLabel.textColor = MAIN_COLOR;
-    _videoResolutionValueLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoResolutionValueLabel.textAlignment=UITextAlignmentCenter;
+    _videoResolutionValueLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoResolutionValueLabel.textAlignment = NSTextAlignmentCenter;
     _videoResolutionValueLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionValueLabel];
 
@@ -502,8 +509,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
     _videoRateLabel.backgroundColor = [UIColor clearColor];
     _videoRateLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    _videoRateLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoRateLabel.textAlignment=NSTextAlignmentRight;
+    _videoRateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoRateLabel.textAlignment = NSTextAlignmentRight;
     _videoRateLabel.numberOfLines = 0;
     [_videoRateView addSubview:_videoRateLabel];
     
@@ -523,8 +530,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoRateMinLabel.backgroundColor = [UIColor clearColor];
     _videoRateMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoRateMinLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoRateMinLabel.textAlignment=UITextAlignmentCenter;
+    _videoRateMinLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoRateMinLabel.textAlignment = NSTextAlignmentCenter;
     _videoRateMinLabel.numberOfLines = 0;
     [_videoRateView addSubview:_videoRateMinLabel];
     
@@ -533,8 +540,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoRateMaxLabel.backgroundColor = [UIColor clearColor];
     _videoRateMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoRateMaxLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoRateMaxLabel.textAlignment=UITextAlignmentCenter;
+    _videoRateMaxLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoRateMaxLabel.textAlignment = NSTextAlignmentCenter;
     _videoRateMaxLabel.numberOfLines = 0;
     [_videoRateView addSubview:_videoRateMaxLabel];
     
@@ -544,8 +551,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoRateValueLabel.backgroundColor = [UIColor clearColor];
     _videoRateValueLabel.textColor = MAIN_COLOR;
-    _videoRateValueLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoRateValueLabel.textAlignment=UITextAlignmentCenter;
+    _videoRateValueLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoRateValueLabel.textAlignment = NSTextAlignmentCenter;
     _videoRateValueLabel.numberOfLines = 0;
     [_videoRateView addSubview:_videoRateValueLabel];
     
@@ -561,7 +568,7 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
     _videoFrameRateLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    _videoFrameRateLabel.lineBreakMode = UILineBreakModeWordWrap;
+    _videoFrameRateLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _videoFrameRateLabel.textAlignment=NSTextAlignmentRight;
     _videoFrameRateLabel.numberOfLines = 0;
     [_videoFrameRateView addSubview:_videoFrameRateLabel];
@@ -583,8 +590,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMinLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoFrameRateMinLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoFrameRateMinLabel.textAlignment=UITextAlignmentCenter;
+    _videoFrameRateMinLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoFrameRateMinLabel.textAlignment = NSTextAlignmentCenter;
     _videoFrameRateMinLabel.numberOfLines = 0;
     [_videoFrameRateView addSubview:_videoFrameRateMinLabel];
     
@@ -594,8 +601,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMaxLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoFrameRateMaxLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoFrameRateMaxLabel.textAlignment=UITextAlignmentLeft;
+    _videoFrameRateMaxLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoFrameRateMaxLabel.textAlignment = NSTextAlignmentLeft;
     _videoFrameRateMaxLabel.numberOfLines = 0;
     [_videoFrameRateView addSubview:_videoFrameRateMaxLabel];
     
@@ -605,8 +612,8 @@ Rak_Lx52x_Device_Control *_configScan;
     _videoFrameRateValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateValueLabel.backgroundColor = [UIColor clearColor];
     _videoFrameRateValueLabel.textColor = MAIN_COLOR;
-    _videoFrameRateValueLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _videoFrameRateValueLabel.textAlignment=UITextAlignmentCenter;
+    _videoFrameRateValueLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _videoFrameRateValueLabel.textAlignment = NSTextAlignmentCenter;
     _videoFrameRateValueLabel.numberOfLines = 0;
     [_videoFrameRateView addSubview:_videoFrameRateValueLabel];
     
@@ -1162,7 +1169,7 @@ bool _modifyOK=YES;
 
 - (void)_passwordReseting{
     _resetTitle.frame= CGRectMake(83*viewW/totalWeight, 12*viewH/totalHeight, 150*viewW/totalWeight, 38*viewH/totalHeight);
-    _resetTitle.textAlignment=UITextAlignmentLeft;
+    _resetTitle.textAlignment = NSTextAlignmentLeft;
     _resetTitle.text = NSLocalizedString(@"password_reset_title", nil);
     _resetLabel1.text = NSLocalizedString(@"password_reset_text", nil);
     _resetLabel1.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
@@ -1174,7 +1181,7 @@ bool _modifyOK=YES;
 - (void)_passwordResetComplete{
     _resetImg.hidden=YES;
     _resetTitle.frame= CGRectMake(38*viewW/totalWeight, 12*viewH/totalHeight, 150*viewW/totalWeight, 38*viewH/totalHeight);
-    _resetTitle.textAlignment=UITextAlignmentCenter;
+    _resetTitle.textAlignment =NSTextAlignmentCenter;
     _resetTitle.text = NSLocalizedString(@"password_complete_title", nil);
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"password_complete_text", nil)];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0] range:NSMakeRange(0,16)];
@@ -1220,7 +1227,7 @@ bool _modifyOK=YES;
         URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
     }
     else{
-        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+//        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
         URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
     }
    HttpRequest * http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
@@ -1264,57 +1271,60 @@ bool _modifyOK=YES;
     
     [self updatePassWord];
     return;
-    //设置STA模块的密码
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
-    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-    if(http_request.StatusCode==200)
-    {
-        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        resolution=[self parseJsonString:http_request.ResponseString];
-        if ([resolution compare:@"0"]!=NSOrderedSame) {
-            //设置AP模块的密码
-            if ([_newPasswordText.text compare:@""]==NSOrderedSame) {
-                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
-            }
-            else{
-                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
-                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.101/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
-            }
-            http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-            if(http_request.StatusCode==200)
-            {
-                http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-                resolution=[self parseJsonString:http_request.ResponseString];
-                if ([resolution compare:@"0"]!=NSOrderedSame) {
-                    dispatch_async(dispatch_get_main_queue(),^ {
-                        dispatch_async(dispatch_get_main_queue(),^ {
-                            [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
-                        });
-                    });
-                }
-                else{
-                    dispatch_async(dispatch_get_main_queue(),^ {
-                        [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-                    });
-                }
-            }
-            else{
-                dispatch_async(dispatch_get_main_queue(),^ {
-                    [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-                });
-            }
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-            });
-        }
-    }
-    else{
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-        });
-    }
+//    //设置STA模块的密码
+//    [NSString stringWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
+//    
+//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
+//    
+//    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+//    if(http_request.StatusCode==200)
+//    {
+//        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+//        resolution=[self parseJsonString:http_request.ResponseString];
+//        if ([resolution compare:@"0"]!=NSOrderedSame) {
+//            //设置AP模块的密码
+//            if ([_newPasswordText.text compare:@""]==NSOrderedSame) {
+//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
+//            }
+//            else{
+//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.101/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+//            }
+//            http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+//            if(http_request.StatusCode==200)
+//            {
+//                http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+//                resolution=[self parseJsonString:http_request.ResponseString];
+//                if ([resolution compare:@"0"]!=NSOrderedSame) {
+//                    dispatch_async(dispatch_get_main_queue(),^ {
+//                        dispatch_async(dispatch_get_main_queue(),^ {
+//                            [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
+//                        });
+//                    });
+//                }
+//                else{
+//                    dispatch_async(dispatch_get_main_queue(),^ {
+//                        [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+//                    });
+//                }
+//            }
+//            else{
+//                dispatch_async(dispatch_get_main_queue(),^ {
+//                    [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+//                });
+//            }
+//        }
+//        else{
+//            dispatch_async(dispatch_get_main_queue(),^ {
+//                [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+//            });
+//        }
+//    }
+//    else{
+//        dispatch_async(dispatch_get_main_queue(),^ {
+//            [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+//        });
+//    }
 }
 
 
