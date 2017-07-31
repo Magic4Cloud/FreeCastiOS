@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     [_topBg addSubview:backImage];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 20, viewH*60/totalHeight, viewH*44/totalHeight);
+    _backBtn.frame = CGRectMake(0, 0, viewW*80/totalWeight, viewH*64/totalHeight);
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_backBtn addTarget:self action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
