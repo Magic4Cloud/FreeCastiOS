@@ -28,7 +28,6 @@
 #import "AlbumObject.h"
 #import <sys/sockio.h>
 #import <sys/ioctl.h>
-#import "StreamingViewController.h"
 #import "BrowseViewController.h"
 #import "SubtitleViewController.h"
 #import "BannerViewController.h"
@@ -43,6 +42,9 @@
 #import "TTPlatformSelectViewController.h"
 
 #import "PasswordViewController.h"
+
+
+#import "TTSearchDeviceClass.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 int _width=1280;
@@ -99,6 +101,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 @property (nonatomic, assign) CameraSource liveCameraSource;
 
 @property (nonatomic, strong) UIButton * platformButton;
+
 @end
 
 @implementation LiveViewViewController
@@ -729,13 +732,12 @@ bool VideoRecordIsEnable = NO;
         }
     }
     
-    if (play_success) {
-        if (_videoView) {
-            [_videoView stop];
-        }
-        
-        NSLog(@"stop play");
+    if (_videoView)
+    {
+        [_videoView stop];
+        _videoView = nil;
     }
+    
     self.videoisplaying = NO;
     play_success=NO;
     
@@ -908,6 +910,7 @@ bool _isTakePhoto=NO;
     }
 }
 
+#pragma mark - 底部按钮跳转相关界面
 /**
  *  跳转到浏览相片和视频的界面
  */
@@ -939,12 +942,31 @@ bool _isTakePhoto=NO;
     _isConfig=YES;
     _isBroswer=YES;
     
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    PasswordViewController *v = [[PasswordViewController alloc] init];
+    PasswordViewController * v = [[PasswordViewController alloc] init];
     if (_userip) {
         v.configIP = _userip;
     }
-    [self.navigationController pushViewController: v animated:true];
+    
+    v.changeVideoNeedReplayBlock = ^()
+    {
+//        NSLog(@"改变了参数  等5秒重新播放");
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+//            NSLog(@"重新播放 urlString：%@",urlString);
+//            [self.videoView removeFromSuperview];
+//            [self.videoView delegate:nil];
+//            self.videoView = nil;
+//            [self.videoView play:urlString useTcp:NO];
+//            [self.videoView sound:audioisEnable];
+//            [self.videoView startGetYUVData:YES];
+//            [self.videoView startGetAudioData:YES];
+//            [self.videoView startGetH264Data:YES];
+//        });
+    };
+    
+    [self.navigationController pushViewController:v animated:YES];
+    
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
 }
 
 /**
@@ -1035,25 +1057,15 @@ int valOrientation;
     if (_isExit) {
         return;
     }
-    if(!_isLiveView){
-        //waitAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"main_scan_indicator_title", nil)
-        //                                           message:NSLocalizedString(@"main_scan_indicator", nil)
-        //                                          delegate:nil
-        //                                 cancelButtonTitle:nil
-        //                                 otherButtonTitles:nil, nil];
-        //[waitAlertView show];
-    }
     
     _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     
-    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+        [self scanDeviceOver:resultinfo];
+    }];
+    
 }
 
-- (void)scanDeviceTask
-{
-    Lx52x_Device_Info *result = [_device_Scan ScanDeviceWithTime:3.0f];
-    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
-}
 
 - (LX520View *)videoView
 {
@@ -1076,6 +1088,10 @@ int valOrientation;
 
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
+    if (_isExit) {
+        return;
+    }
+    
     if (result.Device_ID_Arr.count > 0) {
         
         //使用扫描到的第一个设备
@@ -1249,13 +1265,7 @@ int valOrientation;
             }
             else
             {
-                //[self openLivingSession:1];
-                //                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                //                    [self openLivingSession:5];
-                //
-                //                });
-                
-                //                [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
+           
             }
             
             break;
@@ -1303,6 +1313,7 @@ int valOrientation;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
+    NSLog(@"GetAudioData");
     if(_isLiving==1 && !_isIphoneAudio){
         
         AudioBufferList audioBufferList;
@@ -1317,7 +1328,7 @@ int valOrientation;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-
+    NSLog(@"GetH264Data");
     if(_isLiving==1){
         [self.session upload_h264:size :data];
     }
@@ -1330,39 +1341,39 @@ int valOrientation;
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
-    //    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
+    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
     _isPlaying=YES;
     if(_isLiving==2){
         [self.session upload_PauseImg];
     }
     
-//    if (_isLiveView){
-//        //[self addBannerSubtitle];
-//        
-//        if ((height!=_height)||(width!=_width)) {
-//            _height=height;
-//            _width=width;
-//            NSLog(@"_width=%d,height=%d",_width,_height);
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                if (viewH>viewW) {
-//                    temp=viewW;
-//                    tempviewW=viewH;
-//                    tempviewH=temp;
-//                }
-//                if (tempviewH<tempviewW*_height/_width) {
-//                    _videoView.frame =CGRectMake(0, 0, tempviewH*_width/_height, tempviewH);
-//                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*_width/_height, tempviewH)];
-//                    NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-//                }
-//                else{
-//                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*_height/_width);
-//                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*_height/_width)];
-//                    NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-//                }
-//                _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
-//            });
-//        }
-//    }
+    if (_isLiveView){
+        //[self addBannerSubtitle];
+        
+        if ((height!=_height)||(width!=_width)) {
+            _height=height;
+            _width=width;
+            NSLog(@"_width=%d,height=%d",_width,_height);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (viewH>viewW) {
+                    temp=viewW;
+                    tempviewW=viewH;
+                    tempviewH=temp;
+                }
+                if (tempviewH<tempviewW*_height/_width) {
+                    _videoView.frame =CGRectMake(0, 0, tempviewH*_width/_height, tempviewH);
+                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*_width/_height, tempviewH)];
+                    NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
+                }
+                else{
+                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*_height/_width);
+                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*_height/_width)];
+                    NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
+                }
+                _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
+            });
+        }
+    }
 }
 
 

@@ -14,6 +14,8 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "CommanParameters.h"
 
+#import "TTSearchDeviceClass.h"
+
 Rak_Lx52x_Device_Control *_configScan;
 @interface PasswordViewController ()
 {
@@ -620,12 +622,15 @@ Rak_Lx52x_Device_Control *_configScan;
     
     //如果已经搜索到设备  就不用再次搜索
     if (_configIP && _configPort) {
-         [self getDeviceinformation];
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+            [self getDeviceinformation];
+        });
+
     }
     else
     {
-        _configScan = [[Rak_Lx52x_Device_Control alloc] init];
-        [self scanDevice];
+            _configScan = [[Rak_Lx52x_Device_Control alloc] init];
+            [self scanDevice];
     }
 }
 
@@ -651,14 +656,19 @@ Rak_Lx52x_Device_Control *_configScan;
                                      cancelButtonTitle:nil
                                      otherButtonTitles:nil, nil];
     [waitAlertView show];
-    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
+    
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+        [self scanDeviceOver:resultinfo];
+    }];
+    
+//    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
 }
 
-- (void)scanDeviceTask
-{
-    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:4.0f];
-    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
-}
+//- (void)scanDeviceTask
+//{
+//    Lx52x_Device_Info *result = [_configScan ScanDeviceWithTime:4.0f];
+//    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
+//}
 
 NSString *resolution;
 NSString *fps;
@@ -1053,7 +1063,9 @@ NSString *quality;
 }
 
 bool _modifyOK=YES;
--(void)_videoModifyBtnClick{
+-(void)_videoModifyBtnClick
+{
+    
     NSLog(@"_videoModifyBtnClick");
     _modifyOK=YES;
     //set resolution
@@ -1129,6 +1141,10 @@ bool _modifyOK=YES;
     if (_modifyOK) {
         dispatch_async(dispatch_get_main_queue(),^ {
             [self showAllTextDialog:NSLocalizedString(@"set_video_success", nil)];
+            
+            if (self.changeVideoNeedReplayBlock) {
+                self.changeVideoNeedReplayBlock();
+            }
         });
     }
 }

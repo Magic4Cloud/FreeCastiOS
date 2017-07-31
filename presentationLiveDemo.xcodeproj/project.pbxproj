@@ -222,6 +222,7 @@
 		7A6852B81F189D5800EEDE2D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A6852B71F189D5800EEDE2D /* MobileCoreServices.framework */; };
 		7A6852B91F189D8600EEDE2D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8464BAF31D9511D700B67944 /* UIKit.framework */; };
 		7A80BA3B1F18A184000223ED /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A80BA3A1F18A184000223ED /* libz.tbd */; };
+		7A85D1BD1F2C1DF700190221 /* TTSearchDeviceClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A85D1BC1F2C1DF700190221 /* TTSearchDeviceClass.m */; };
 		7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A92FADA1F04FD5000DC9178 /* WebViewController.m */; };
 		7A92FADD1F04FD5000DC9178 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A92FADB1F04FD5000DC9178 /* WebViewController.xib */; };
 		7A9830D81F049C7D000FE44D /* UIColor+systemColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9830D71F049C7D000FE44D /* UIColor+systemColor.m */; };
@@ -617,7 +618,6 @@
 		8488BE251DB77992006357AD /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE0A1DB77992006357AD /* MenuViewController.m */; };
 		8488BE261DB77992006357AD /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE0C1DB77992006357AD /* PasswordViewController.m */; };
 		8488BE271DB77992006357AD /* RotateNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE0E1DB77992006357AD /* RotateNavigationControllerViewController.m */; };
-		8488BE281DB77992006357AD /* StreamingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE101DB77992006357AD /* StreamingViewController.m */; };
 		8488BE2A1DB77992006357AD /* UIViewLinkmanTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE141DB77992006357AD /* UIViewLinkmanTouch.m */; };
 		8488BE2B1DB77992006357AD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE161DB77992006357AD /* ViewController.m */; };
 		8488BE2D1DB779D2006357AD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8488BE2C1DB779D2006357AD /* AppDelegate.mm */; };
@@ -1358,6 +1358,8 @@
 		7A6852B21F189CEC00EEDE2D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		7A6852B71F189D5800EEDE2D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7A80BA3A1F18A184000223ED /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		7A85D1BB1F2C1DF700190221 /* TTSearchDeviceClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSearchDeviceClass.h; sourceTree = "<group>"; };
+		7A85D1BC1F2C1DF700190221 /* TTSearchDeviceClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSearchDeviceClass.m; sourceTree = "<group>"; };
 		7A92FAD91F04FD5000DC9178 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		7A92FADA1F04FD5000DC9178 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		7A92FADB1F04FD5000DC9178 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
@@ -1956,8 +1958,6 @@
 		8488BE0C1DB77992006357AD /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		8488BE0D1DB77992006357AD /* RotateNavigationControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateNavigationControllerViewController.h; sourceTree = "<group>"; };
 		8488BE0E1DB77992006357AD /* RotateNavigationControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotateNavigationControllerViewController.m; sourceTree = "<group>"; };
-		8488BE0F1DB77992006357AD /* StreamingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamingViewController.h; sourceTree = "<group>"; };
-		8488BE101DB77992006357AD /* StreamingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamingViewController.m; sourceTree = "<group>"; };
 		8488BE131DB77992006357AD /* UIViewLinkmanTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewLinkmanTouch.h; sourceTree = "<group>"; };
 		8488BE141DB77992006357AD /* UIViewLinkmanTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewLinkmanTouch.m; sourceTree = "<group>"; };
 		8488BE151DB77992006357AD /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -2914,6 +2914,15 @@
 			path = "pili-librtmp";
 			sourceTree = "<group>";
 		};
+		7A85D1BA1F2C1D4300190221 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				7A85D1BB1F2C1DF700190221 /* TTSearchDeviceClass.h */,
+				7A85D1BC1F2C1DF700190221 /* TTSearchDeviceClass.m */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
 		7A9830D51F049AB1000FE44D /* Extend */ = {
 			isa = PBXGroup;
 			children = (
@@ -3201,6 +3210,7 @@
 		8464B9A71D95104700B67944 /* presentationLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7A85D1BA1F2C1D4300190221 /* Tools */,
 				7A6850431F1898B100EEDE2D /* LFLiveKit */,
 				7A4E135F1F05F60C00E53E38 /* NetWorkMannger */,
 				7A9830E31F04CFE5000FE44D /* CoreData */,
@@ -3825,8 +3835,6 @@
 				8488BDFC1DB77992006357AD /* CommanParameter.h */,
 				8488BE031DB77992006357AD /* LiveViewViewController.h */,
 				8488BE041DB77992006357AD /* LiveViewViewController.m */,
-				8488BE0F1DB77992006357AD /* StreamingViewController.h */,
-				8488BE101DB77992006357AD /* StreamingViewController.m */,
 				8488BE051DB77992006357AD /* MediaData.h */,
 				8488BE061DB77992006357AD /* MediaData.m */,
 				8488BE071DB77992006357AD /* MediaGroup.h */,
@@ -5261,6 +5269,7 @@
 				7A68529B1F1898B300EEDE2D /* GPUImageTwoInputFilter.m in Sources */,
 				8488BE2B1DB77992006357AD /* ViewController.m in Sources */,
 				7A6852611F1898B300EEDE2D /* GPUImageMovieComposition.m in Sources */,
+				7A85D1BD1F2C1DF700190221 /* TTSearchDeviceClass.m in Sources */,
 				7A6852041F1898B200EEDE2D /* GPUImageAddBlendFilter.m in Sources */,
 				7A6852261F1898B200EEDE2D /* GPUImageDissolveBlendFilter.m in Sources */,
 				8488BE171DB77992006357AD /* AlbumDelegateProxy.m in Sources */,
@@ -5297,7 +5306,6 @@
 				8466C5541DE55A1500E366F3 /* CAAutoCompleteObject.m in Sources */,
 				7A68525A1F1898B300EEDE2D /* GPUImageMedianFilter.m in Sources */,
 				7A68525D1F1898B300EEDE2D /* GPUImageMosaicFilter.m in Sources */,
-				8488BE281DB77992006357AD /* StreamingViewController.m in Sources */,
 				84E375EE1DBB62B600217030 /* PlayPhotoViewController.m in Sources */,
 				7A6852391F1898B200EEDE2D /* GPUImageGrayscaleFilter.m in Sources */,
 				8488BE251DB77992006357AD /* MenuViewController.m in Sources */,
@@ -5577,8 +5585,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ded2daa7-eda3-44dd-975d-6244c8b60990";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_development;
+				PROVISIONING_PROFILE = "01d9d1d3-e61a-4f74-80e8-ed26b79f5d00";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;

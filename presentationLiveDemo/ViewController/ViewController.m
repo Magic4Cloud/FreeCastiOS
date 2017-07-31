@@ -12,7 +12,6 @@
 #import "Rak_Lx52x_Device_Control.h"
 #import "BrowseViewController.h"
 #import "StreamViewController.h"
-#import "StreamingViewController.h"
 #import "ConfigureViewController.h"
 #import "MenuViewController.h"
 #import "SWRevealViewController.h"

@@ -28,6 +28,7 @@
 
 #import "CommanParameters.h"
 
+#import "TTSearchDeviceClass.h"
 
 @interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong)Rak_Lx52x_Device_Control * device_Scan;
@@ -37,6 +38,8 @@
 @property (nonatomic, strong) UICollectionView * collectionView;
 
 @property (nonatomic, strong) NSMutableArray<PlatformModel *> * platformsArray;
+
+@property (nonatomic, strong) NSThread * searchThread;
 @end
 
 @implementation TTPlatformSelectViewController
@@ -53,7 +56,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
+//    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
     [self scanDevice];
     [self initUI];
     // Do any additional setup after loading the view.
@@ -88,24 +91,33 @@
 #pragma mark - 扫描设备--------------------------
 - (void)scanDevice
 {
-    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
+    
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+        [self scanDeviceOver:resultinfo];
+    }];
+    
+//    if (!_searchThread) {
+//        _searchThread = [[NSThread alloc] initWithTarget:self selector:@selector(scanDeviceTask) object:nil];
+//    }
+//    [_searchThread start];
+//    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
 }
 
-- (void)scanDeviceTask
-{
-    Lx52x_Device_Info *result = [_device_Scan ScanDeviceWithTime:3.0f];
-    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
-}
+//- (void)scanDeviceTask
+//{
+//    Lx52x_Device_Info *result = [_device_Scan ScanDeviceWithTime:3.0f];
+//    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
+//}
 
 - (void)scanDeviceOver:(Lx52x_Device_Info *)result;
 {
+    
     if (result.Device_ID_Arr.count > 0) {
         
 //        NSString *video_type=@"h264";
 //        //使用扫描到的第一个设备
 //        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
-        
         
     }
    
@@ -114,6 +126,8 @@
 #pragma mark - actions
 - (void)_backBtnClick
 {
+    [_searchThread cancel];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
