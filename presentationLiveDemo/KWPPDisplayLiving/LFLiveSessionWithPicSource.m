@@ -454,75 +454,14 @@ UIImage *pauseImage=nil;
             pixelBuffer= [PicBufferUtil convertToCVPixelBufferFromImage:returnImage];
             [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
         }
-        else{
-                        NSLog(@"摄像头直播...");
-            //returnImage = [PicBufferUtil convertToImageFromCVImageBufferRef:pixelBuffer];
-//            [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
+        else
+        {
             [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:NOW];
         }
     }
     
-//    if (self.uploading) [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:NOW];
 }
 
-/** 处理视频数据 */
-//- (void)captureOutput:(nullable LFVideoCapture*)capture pixelBuffer:(nullable CVImageBufferRef)pixelBuffer{
-//    if (_isRAK) {
-//        return;
-//    }
-//    if(_isPausing)
-//    { //暂停时，显示暂停图片
-//        int num = (pauseTimeLen++/10)%8+1;
-//        NSString *picName = [NSString stringWithFormat:@"pauseLiving%d.png",num ];
-//        NSLog(@"暂停： %@",picName);
-//        UIImage *tempImage = [UIImage imageNamed:picName];
-//        CVPixelBufferRef tbuffer =[PicBufferUtil firstWayConvertToCVPixelBufferRefFromImage:tempImage];
-//        [self.videoEncoder encodeVideoData:tbuffer timeStamp:self.currentTimestamp];
-//        CVPixelBufferRelease(tbuffer);
-//    }
-//    else{
-//        pauseTimeLen =1;
-//        UIImage *returnImage ;
-//    
-//        if(self.dataSoureType ==PictureOnly){
-////            NSLog(@"图片直播...%ld,====%ld",(long)_picTag,(long)lastPicTag);
-//            CVPixelBufferRef tempBuffer =NULL;
-//            if(_picTag !=lastPicTag){
-//                
-//                if(_buffer !=NULL)
-//                    CVPixelBufferRelease(_buffer);
-//                CGSize size = CGSizeMake(self.currentSlideImage.size.width, self.currentSlideImage.size.height);
-//                UIGraphicsBeginImageContext(size);
-//                [self.currentSlideImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
-//            
-//                returnImage = UIGraphicsGetImageFromCurrentImageContext();
-//                UIGraphicsEndImageContext();
-//            
-//                tempBuffer= [PicBufferUtil firstWayConvertToCVPixelBufferRefFromImage:returnImage];
-//                _buffer = tempBuffer;
-//                lastPicTag =_picTag;
-//            }
-//            pixelBuffer = _buffer;
-//            [self.videoEncoder encodeVideoData:_buffer timeStamp:self.currentTimestamp];
-//        
-//        }
-//        else if(self.dataSoureType ==CameraAndPicture){
-////            NSLog(@"混合直播...");
-//            returnImage  = [PicBufferUtil convertToImageFromCVImageBufferRef:pixelBuffer];
-//            //returnImage = [PicBufferUtil scaleImage:returnImage toScale:_scaleLevel];
-//            returnImage = [PicBufferUtil scaleImage:returnImage toSize:CGSizeMake(200, 200)];
-//            //returnImage = [PicBufferUtil putImage:returnImage onTheTopOfImage:self.currentSlideImage];
-//        
-//            pixelBuffer= [PicBufferUtil convertToCVPixelBufferFromImage:returnImage];
-//            [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
-//        }
-//        else{
-////            NSLog(@"摄像头直播...");
-//            //returnImage = [PicBufferUtil convertToImageFromCVImageBufferRef:pixelBuffer];
-//            [self.videoEncoder encodeVideoData:pixelBuffer timeStamp:self.currentTimestamp];
-//        }
-//    }
-//}
 
 -(void) pauseOrResumeLiving:(BOOL)isPausing{
     _isPausing = isPausing;

@@ -94,6 +94,11 @@
 }
 
 @property (nonatomic, copy) NSString* configIP;
+
 @property (nonatomic, assign) int configPort;
 
+/**
+ 改变了播放参数  需要重新播放
+ */
+@property (nonatomic, copy)void(^changeVideoNeedReplayBlock)();
 @end
