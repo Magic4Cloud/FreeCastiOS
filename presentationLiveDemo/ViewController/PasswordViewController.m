@@ -480,7 +480,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [_videoResolutionView addSubview:_videoResolutionMaxLabel];
     
     _videoResolutionValueLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*275/totalWeight, -viewH*35/totalHeight, viewW*44/totalWeight, viewH*10/totalHeight)];
-    _videoResolutionValueLabel.center=CGPointMake(_videoResolutionSlider.center.x, _videoResolutionMaxLabel.center.y);
+    _videoResolutionValueLabel.center=CGPointMake(_videoResolutionSlider.center.x, _videoResolutionValueLabel.center.y + viewH*35/totalHeight);
     _videoResolutionValueLabel.text = NSLocalizedString(@"video_720p", nil);
     _videoResolutionValueLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
     _videoResolutionValueLabel.backgroundColor = [UIColor clearColor];
@@ -893,8 +893,8 @@ NSString *quality;
 
 - (void)set480P{
     _videoResolutionSlider.value=0;
-    _videoResolutionMinLabel.textColor = MAIN_COLOR;
-    _videoResolutionValueLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
+    _videoResolutionValueLabel.textColor = MAIN_COLOR;
+    _videoResolutionMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
     _videoResolutionMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
     _videoResolutionMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
@@ -902,6 +902,8 @@ NSString *quality;
     _videoResolutionMinImg.hidden=YES;
     _videoResolutionMaxImg.hidden=NO;
     _videoResolutionValueImg.hidden=NO;
+    _videoResolutionValueLabel.text = @"480P";
+    _videoResolutionValueLabel.center = CGPointMake(CGRectGetMinX(_videoResolutionSlider.frame), _videoResolutionValueLabel.center.y);
 }
 - (void)set720P{
     _videoResolutionSlider.value=1;
@@ -915,18 +917,22 @@ NSString *quality;
     _videoResolutionMinImg.hidden=NO;
     _videoResolutionMaxImg.hidden=NO;
     _videoResolutionValueImg.hidden=YES;
+    _videoResolutionValueLabel.text = @"720P";
+    _videoResolutionValueLabel.center = CGPointMake(_videoResolutionSlider.center.x, _videoResolutionValueLabel.center.y);
 }
 - (void)set1080P{
     _videoResolutionSlider.value=2;
-    _videoResolutionMaxLabel.textColor = MAIN_COLOR;
+    _videoResolutionValueLabel.textColor = MAIN_COLOR;
     _videoResolutionMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
-    _videoResolutionValueLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
+    _videoResolutionMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
     _videoResolutionMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionMinImg.hidden=NO;
     _videoResolutionMaxImg.hidden=YES;
     _videoResolutionValueImg.hidden=NO;
+    _videoResolutionValueLabel.text = @"1080P";
+    _videoResolutionValueLabel.center = CGPointMake(CGRectGetMaxX(_videoResolutionSlider.frame), _videoResolutionValueLabel.center.y);
 }
 
 - (BOOL)isPureInt:(NSString*)string{
