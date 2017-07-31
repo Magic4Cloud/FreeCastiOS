@@ -112,6 +112,8 @@ static const NSString * client_secret = @"nHJcJtSMcwV7oKLMPtJEgg3s";
         
         if (dic[@"error"]) {
             
+            [self hideLoading];
+            
             [self showHudMessage:dic[@"error"][@"message"]];
             //如果请求失败  再次请求
             static int requestcount = 0;
