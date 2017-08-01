@@ -5469,6 +5469,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -5517,7 +5518,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -5543,7 +5545,7 @@
 			baseConfigurationReference = 8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YE8AXL3F3;
@@ -5585,7 +5587,7 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "01d9d1d3-e61a-4f74-80e8-ed26b79f5d00";
+				PROVISIONING_PROFILE = "ae7624d1-b5dc-45e5-8a12-ce67789f789f";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
@@ -5596,8 +5598,8 @@
 			baseConfigurationReference = 341656A45D473527D7626A53 /* Pods-presentationLiveDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Brilliant Technology Co., Ltd. (ZR2DNNAW23)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Sichuan Hoo View Technology Co., Ltd. (8YE8AXL3F3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sichuan Hoo View Technology Co., Ltd. (8YE8AXL3F3)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YE8AXL3F3;
 				ENABLE_BITCODE = NO;
@@ -5638,7 +5640,7 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "96926e49-689c-45eb-8843-99258543cd1a";
+				PROVISIONING_PROFILE = "ed72ebbc-5b93-47e2-bb5d-8a121e3fb422";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};

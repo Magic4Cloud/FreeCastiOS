@@ -44,33 +44,6 @@
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
-static NSInteger kWidth = 1280;
-static NSInteger kHeight = 720;
-static const NSString *video_type = @"h264";
-
-Rak_Lx52x_Device_Control *_device_Scan;
-
-NSMutableArray *video_timesamp;
-NSString* _userid = nil;
-NSString* _userip = nil;
-NSString* _username = nil;
-NSString* _userpassword = nil;
-NSTimer* CheckVideoPlay = nil;
-NSTimer* timer;
-bool audioisEnable = YES;
-bool _isExit=NO;
-bool _isUser=NO;
-bool play_success=NO;
-enum ButtonEnable{
-    Enable,
-    Unable
-};
-int scanCount=0;
-int playCount=0;
-
-static enum ButtonEnable SavePictureEnable;
-static enum ButtonEnable RecordVideoEnable;
-
 /**
  摄像头获取源
  */
@@ -79,77 +52,154 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     IphoneBackCamera = 1 ,  // 手机后置摄像头
 };
 
+typedef NS_ENUM(NSInteger, ButtonEnable){
+    Enable,
+    Unable
+};
+
+typedef NS_ENUM(NSUInteger, LivingState) {
+     LivingStateStop = 0,//停止
+     LivingStateLiving,  //直播中
+     LivingStatePause,   //暂停
+};
+
+static NSInteger kWidth = 1280;
+static NSInteger kHeight = 720;
+static NSInteger scanCount = 0;
+static NSInteger playCount = 0;
+
+static const NSString *video_type = @"h264";
+static enum ButtonEnable SavePictureEnable;
+static enum ButtonEnable RecordVideoEnable;
+
+
+NSString* _userid = nil;
+NSString* _userip = nil;
+NSString* _username = nil;
+NSString* _userpassword = nil;
+NSTimer* CheckVideoPlay = nil;
+NSTimer* timer;
+
+
+bool audioisEnable = YES;
+bool _isExit=NO;
+bool _isUser=NO;
+bool play_success=NO;
+
+
+
 @interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
 
-@property (nonatomic, assign) BOOL isIphoneAudio;
-
-@property (nonatomic, strong)LX520View * videoView;
-
-@property  bool videoisplaying;
-
+@property (nonatomic, strong) LX520View * videoView;
+@property (nonatomic, strong) Rak_Lx52x_Device_Control * device_Scan;//搜索manager
+@property (nonatomic, strong) PlatformModel *selectedPlatformModel;
 @property (nonatomic, strong) LFLiveSessionWithPicSource *session;
 
-@property (nonatomic, strong) PlatformModel *selectedPlatformModel;
-/**
- 系统摄像头 展示view
- */
-@property (nonatomic, strong) UIView *livingPreView;
-
-/**
- 视频数据来源
- */
-@property (nonatomic, assign) CameraSource liveCameraSource;
-
 @property (nonatomic, strong) UIButton *platformButton;
+/** 系统摄像头 展示view */
+@property (nonatomic, strong) UIView *livingPreView;
+/** 视频数据来源 */
+@property (nonatomic, assign) CameraSource liveCameraSource;
+@property (nonatomic, assign) LivingState livingState;
+
+@property (nonatomic, strong) NSMutableArray *video_timesamp;//时间戳数组
+@property (nonatomic, strong) AlbumObject *albumObject;
+
+@property (nonatomic, strong) NSTimer *uploadTimer;
+@property (nonatomic, strong) UIAlertView *waitAlertView;
+
+@property (nonatomic, assign) BOOL isIphoneAudio;
+@property (nonatomic, assign) BOOL videoisplaying;
+@property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign) BOOL isConfig;
+@property (nonatomic, assign) BOOL isBroswer;
+@property (nonatomic, assign) BOOL isShowBanner;
+@property (nonatomic, assign) BOOL isShowSubtitle;
+
+@property (nonatomic, assign) CGFloat viewH;
+@property (nonatomic, assign) CGFloat viewW;
+@property (nonatomic, assign) CGFloat temp;
+@property (nonatomic, assign) CGFloat tempviewW;
+@property (nonatomic, assign) CGFloat tempviewH;
+@property (nonatomic, assign) CGFloat totalWeight;//各部分比例
+@property (nonatomic, assign) CGFloat totalHeight;
+@property (nonatomic, assign) CGFloat imgAlpha;
+
+@property (nonatomic, assign) NSInteger count_duration;
+@property (nonatomic, assign) NSInteger count_interval;
+@property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, assign) NSInteger interval;
+@property (nonatomic, assign) NSInteger subtitle_count_duration;
+@property (nonatomic, assign) NSInteger subtitle_count_interval;
+@property (nonatomic, assign) NSInteger subtitle_duration;
+@property (nonatomic, assign) NSInteger subtitle_interval;
+
+//** 推流相关参数 */
+@property (nonatomic, strong) NSMutableArray *recordUrl;
+@property (nonatomic, assign) CGFloat l_control_pos;
+@property (nonatomic, assign) CGFloat c_control_pos;
+@property (nonatomic, assign) CGFloat r_control_pos;
+
+@property (nonatomic, copy) NSString *resolution;
+@property (nonatomic, copy) NSString *fps;
+@property (nonatomic, copy) NSString *quality;
 
 @end
 
 @implementation LiveViewViewController
 {
     SubtitleViewController *_subtitleViewController;
-    BannerViewController *_bannerViewController;
-    AudioViewController *_audioViewController;
-    NetworkViewController *_networkViewController;
-    UIAlertView *waitAlertView;
-    AlbumObject *_albumObject;
-    BOOL _isPlaying;
-    BOOL _isConfig;
-    BOOL _isBroswer;
-    CGFloat viewH;
-    CGFloat viewW;
-    CGFloat temp;
-    CGFloat tempviewW;
-    CGFloat tempviewH;
-    CGFloat totalWeight;//各部分比例
-    CGFloat totalHeight;
-    int _isLiving;//0:停止 1:直播中 2:暂停
+    BannerViewController   *_bannerViewController;
+    AudioViewController    *_audioViewController;
+    NetworkViewController  *_networkViewController;
     
-    NSTimer *uploadTimer;
-    int count_duration;
-    int count_interval;
-    int duration;
-    int interval;
-    float imgAlpha;
-    int subtitle_count_duration;
-    int subtitle_count_interval;
-    int subtitle_duration;
-    int subtitle_interval;
+//    UIAlertView *_waitAlertView;
+//    AlbumObject *_albumObject;
+//    BOOL _isPlaying;
+//    BOOL _isConfig;
+//    BOOL _isBroswer;
+//    CGFloat _viewH;
+//    CGFloat _viewW;
+//    CGFloat _temp;
+//    CGFloat _tempviewW;
+//    CGFloat _tempviewH;
+//    CGFloat _totalWeight;//各部分比例
+//    CGFloat _totalHeight;
+//    int _livingState;//0:停止 1:直播中 2:暂停
+
+//    NSTimer *_uploadTimer;
+//    int _count_duration;
+//    int _count_interval;
+//    int _duration;
+//    int _interval;
+////    float _imgAlpha;
+//    int _subtitle_count_duration;
+//    int _subtitle_count_interval;
+//    int _subtitle_duration;
+//    int _subtitle_interval;
     
-    BOOL isShowBanner;
-    BOOL isShowSubtitle;
+//    BOOL _isShowBanner;
+//    BOOL _isShowSubtitle;
     
     //推流相关参数
-    NSString* url;
-    CGFloat l_control_pos;
-    CGFloat c_control_pos;
-    CGFloat r_control_pos;
-    NSMutableArray *_recordUrl;
+//    NSString* url;
+//    CGFloat _l_control_pos;
+//    CGFloat _c_control_pos;
+//    CGFloat _r_control_pos;
+//    NSMutableArray *_recordUrl;
     
-    NSString *resolution;
-    NSString *fps;
-    NSString *quality;
+//    NSString *_resolution;
+//    NSString *_fps;
+//    NSString *_quality;
 }
 
+
+- (NSMutableArray *)video_timesamp{
+    if (!_video_timesamp) {
+        _video_timesamp = @[].mutableCopy;
+    }
+    return _video_timesamp;
+}
 
 #pragma mark - ------------------lifeCycle----
 - (void)viewDidLoad {
@@ -160,10 +210,10 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor blackColor];
-    viewH = self.view.frame.size.width;
-    viewW = self.view.frame.size.height;
-    totalWeight = 64+71+149+149+149+80+5;//各部分比例
-    totalHeight = 375;//各部分比例
+    _viewH = self.view.frame.size.width;
+    _viewW = self.view.frame.size.height;
+    _totalWeight = 64+71+149+149+149+80+5;//各部分比例
+    _totalHeight = 375;//各部分比例
     
     _userip = @"192.168.100.1";
     _username = @"admin";
@@ -309,32 +359,33 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    NSLog(@"---------receiceMemoryWarning.....");
 }
 /**
  *  直播界面初始化
  */
 - (void)liveViewInit{
-    viewH = self.view.frame.size.width;
-    viewW = self.view.frame.size.height;
-    if (viewH > viewW) {
-        viewW = self.view.frame.size.width;
-        viewH = self.view.frame.size.height;
+    _viewH = self.view.frame.size.width;
+    _viewW = self.view.frame.size.height;
+    if (_viewH > _viewW) {
+        _viewW = self.view.frame.size.width;
+        _viewH = self.view.frame.size.height;
     }
     
-    totalWeight=64+71+149+149+149+80+5;//各部分比例
-    totalHeight=375;//各部分比例
-    uploadTimer=nil;
-    count_duration=0;
-    count_interval=0;
-    duration=0;
-    interval=0;
-    imgAlpha=1.0;
-    subtitle_count_duration=0;
-    subtitle_count_interval=0;
-    subtitle_duration=0;
-    subtitle_interval=0;
-    isShowBanner=NO;
-    isShowSubtitle=NO;
+    _totalWeight=64+71+149+149+149+80+5;//各部分比例
+    _totalHeight=375;//各部分比例
+    _uploadTimer=nil;
+    _count_duration=0;
+    _count_interval=0;
+    _duration=0;
+    _interval=0;
+    _imgAlpha=1.0;
+    _subtitle_count_duration=0;
+    _subtitle_count_interval=0;
+    _subtitle_duration=0;
+    _subtitle_interval=0;
+    _isShowBanner=NO;
+    _isShowSubtitle=NO;
     _albumObject=[[AlbumObject alloc]init];
     [_albumObject delegate:self];
     SavePictureEnable = Unable;
@@ -342,31 +393,31 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     //文字和角标
     _upperLeftImg=[[UIImageView alloc]init];
-    _upperLeftImg.frame = CGRectMake(0, 0, viewW, viewH/6);
+    _upperLeftImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
     _upperLeftImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_upperLeftImg];
     _upperLeftImg.hidden=YES;
     
     _upperRightImg=[[UIImageView alloc]init];
-    _upperRightImg.frame = CGRectMake(0, 0, viewW, viewH/6);
+    _upperRightImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
     _upperRightImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_upperRightImg];
     _upperRightImg.hidden=YES;
     
     _lowerLeftImg=[[UIImageView alloc]init];
-    _lowerLeftImg.frame = CGRectMake(0, 0, viewW, viewH/6);
+    _lowerLeftImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
     _lowerLeftImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_lowerLeftImg];
     _lowerLeftImg.hidden=YES;
     
     _lowerRightImg=[[UIImageView alloc]init];
-    _lowerRightImg.frame = CGRectMake(0, 0, viewW, viewH/6);
+    _lowerRightImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
     _lowerRightImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_lowerRightImg];
     _lowerRightImg.hidden=YES;
     
     _wordImg=[[UIImageView alloc]init];
-    _wordImg.frame = CGRectMake(0, 0, viewW, viewH/6);
+    _wordImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
     _wordImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_wordImg];
     _wordImg.hidden=YES;
@@ -375,34 +426,34 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _topBg=[[UIImageView alloc]init];
     _topBg.userInteractionEnabled=YES;
     _topBg.backgroundColor=[UIColor colorWithRed:97/255.0 green:98/255.0 blue:100/255.0 alpha:0.4];
-    _topBg.frame = CGRectMake(0, 0, viewW, viewH*55/totalHeight);
+    _topBg.frame = CGRectMake(0, 0, _viewW, _viewH*55/_totalHeight);
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     UIImageView *backImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_back"]];
-    backImage.frame = CGRectMake(viewW*13/totalHeight, viewH*20/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
+    backImage.frame = CGRectMake(_viewW*13/_totalHeight, _viewH*20/_totalHeight, _viewH*24.5/_totalHeight, _viewH*24.5/_totalHeight);
     [_topBg addSubview:backImage];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 0, viewW*80/totalWeight, viewH*64/totalHeight);
+    _backBtn.frame = CGRectMake(0, 0, _viewW*80/_totalWeight, _viewH*64/_totalHeight);
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_backBtn addTarget:self action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
     
     _connectImg=[[UIImageView alloc]init];
     _connectImg.image=[UIImage imageNamed:@"wifi"];
-    _connectImg.frame = CGRectMake(viewH*66/totalHeight, viewH*23/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
+    _connectImg.frame = CGRectMake(_viewH*66/_totalHeight, _viewH*23/_totalHeight, _viewH*15/_totalHeight, _viewH*15/_totalHeight);
     //    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
     _connectImg.contentMode=UIViewContentModeScaleToFill;
     [_topBg addSubview:_connectImg];
     
-    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewH*88/totalHeight, viewH*23/totalHeight, viewH*150/totalHeight, viewH*15/totalHeight)];
+    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(_viewH*88/_totalHeight, _viewH*23/_totalHeight, _viewH*150/_totalHeight, _viewH*15/_totalHeight)];
     _topLabel.text = [self getWifiName];
-    _topLabel.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
+    _topLabel.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
     _topLabel.backgroundColor = [UIColor clearColor];
     _topLabel.textColor = MAIN_COLOR;
-    _topLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _topLabel.textAlignment=UITextAlignmentLeft;
+    _topLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _topLabel.textAlignment = NSTextAlignmentLeft;
     _topLabel.numberOfLines = 0;
     [_topBg addSubview:_topLabel];
     
@@ -421,7 +472,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _bottomBg=[[UIImageView alloc] init];
     _bottomBg.userInteractionEnabled=YES;
     _bottomBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _bottomBg.frame = CGRectMake(0, viewH-55, ScreenWidth, 55);
+    _bottomBg.frame = CGRectMake(0, _viewH-55, ScreenWidth, 55);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
     
@@ -474,7 +525,7 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     
     _livePauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = viewH*44/totalHeight;
+    CGFloat width = _viewH*44/_totalHeight;
     _livePauseBtn.frame = CGRectMake((ScreenWidth - width)/2, (ScreenHeight - width)/2, width, width);
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_pre@3x.png"] forState:UIControlStateHighlighted];
@@ -494,33 +545,33 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     
     //视频状态栏
     _statusBg=[[UIImageView alloc]init];
-    _statusBg.frame = CGRectMake(0, 0, viewW, viewH*44/totalHeight);
+    _statusBg.frame = CGRectMake(0, 0, _viewW, _viewH*44/_totalHeight);
     _statusBg.backgroundColor= [UIColor clearColor];
     _statusBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_statusBg];
     
     _powerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"power_01@3x.png"]];
-    _powerView.frame = CGRectMake(0, _statusBg.frame.origin.y, viewH*14/totalHeight*90/42, viewH*14/totalHeight);
-    _powerView.center=CGPointMake(viewW-_powerView.frame.size.width/2-diff_x, _statusBg.center.y);
+    _powerView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*14/_totalHeight*90/42, _viewH*14/_totalHeight);
+    _powerView.center=CGPointMake(_viewW-_powerView.frame.size.width/2-diff_x, _statusBg.center.y);
     _powerView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_powerView];
     
     _audioView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"audio mode 1@3x.png"]];
-    _audioView.frame = CGRectMake(0, _statusBg.frame.origin.y, viewH*14/totalHeight*90/42, viewH*14/totalHeight);
-    _audioView.center=CGPointMake(_powerView.frame.origin.x-_audioView.frame.size.width/2-viewW*20/totalWeight, _statusBg.center.y);
+    _audioView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*14/_totalHeight*90/42, _viewH*14/_totalHeight);
+    _audioView.center=CGPointMake(_powerView.frame.origin.x-_audioView.frame.size.width/2-_viewW*20/_totalWeight, _statusBg.center.y);
     _audioView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_audioView];
     
     _onliveView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"]];
-    _onliveView.frame = CGRectMake(0, _statusBg.frame.origin.y, viewH*18/totalHeight, viewH*18/totalHeight);
-    _onliveView.center=CGPointMake(viewW/2, _statusBg.center.y+viewH*2/totalHeight);
+    _onliveView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*18/_totalHeight, _viewH*18/_totalHeight);
+    _onliveView.center=CGPointMake(_viewW/2, _statusBg.center.y+_viewH*2/_totalHeight);
     _onliveView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_onliveView];
     
-    _onliveLabel = [[UILabel alloc] initWithFrame:CGRectMake(_onliveView.frame.origin.x+_onliveView.frame.size.width, _statusBg.frame.origin.y, viewW*120/totalWeight, _statusBg.frame.size.height)];
+    _onliveLabel = [[UILabel alloc] initWithFrame:CGRectMake(_onliveView.frame.origin.x+_onliveView.frame.size.width, _statusBg.frame.origin.y, _viewW*120/_totalWeight, _statusBg.frame.size.height)];
     _onliveLabel.center=CGPointMake(_onliveLabel.center.x, _statusBg.center.y);
     _onliveLabel.text = NSLocalizedString(@"not_live", nil);
-    _onliveLabel.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
+    _onliveLabel.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
     _onliveLabel.backgroundColor = [UIColor clearColor];
     _onliveLabel.textColor = [UIColor whiteColor];
     _onliveLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -528,9 +579,9 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _onliveLabel.numberOfLines = 0;
     [_statusBg addSubview:_onliveLabel];
     
-    _recordTimeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _statusBg.frame.origin.y+_statusBg.frame.size.height+viewH*2/totalWeight, viewW-diff_x, viewH*20/totalWeight)];
+    _recordTimeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _statusBg.frame.origin.y+_statusBg.frame.size.height+_viewH*2/_totalWeight, _viewW-diff_x, _viewH*20/_totalWeight)];
     _recordTimeLabel.text = @"REC 00:00";
-    _recordTimeLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
+    _recordTimeLabel.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
     _recordTimeLabel.backgroundColor = [UIColor clearColor];
     _recordTimeLabel.textColor = [UIColor redColor];
     _recordTimeLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -602,11 +653,11 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _topBg.hidden=NO;
     _bottomBg.hidden=NO;
     _statusBg.hidden=NO;
-    if (_isLiving==1) {
+    if (_livingState==1) {
         _livePauseBtn.hidden=NO;
         _liveStopBtn.hidden=NO;
     }
-    else if (_isLiving==2) {
+    else if (_livingState==2) {
         _livePauseBtn.hidden=NO;
         _liveStopBtn.hidden=NO;
     }
@@ -710,10 +761,10 @@ bool VideoRecordIsEnable = NO;
         [timer invalidate];
         timer = nil;
     }
-    if (uploadTimer!=nil){
-        [uploadTimer invalidate];
-        uploadTimer=nil;
-        isShowBanner=NO;
+    if (_uploadTimer!=nil){
+        [_uploadTimer invalidate];
+        _uploadTimer=nil;
+        _isShowBanner=NO;
     }
     
     if (_isLiveView) {
@@ -752,7 +803,7 @@ bool VideoRecordIsEnable = NO;
 - (void)_backBtnClick{
     if (_isConfig) {
         self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
-        self.view.frame=CGRectMake(0, 0, viewW, viewH);
+        self.view.frame=CGRectMake(0, 0, _viewW, _viewH);
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
         [self prefersStatusBarHidden:YES];
         _streamView.hidden=YES;
@@ -816,7 +867,7 @@ bool VideoRecordIsEnable = NO;
         [_albumObject getPathForRecord:album_name];
     });
     
-    if (_isLiving!=1) {
+    if (_livingState!=1) {
         [_videoView take_photo];
     }
     else{
@@ -850,6 +901,7 @@ bool _isTakePhoto=NO;
     });
 }
 
+
 /**
  *  录像
  */
@@ -874,16 +926,14 @@ bool _isTakePhoto=NO;
             long recordTime = [[NSDate date] timeIntervalSince1970];
             NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
             NSLog(@"video_timesamp:%@",timesamp);
-            video_timesamp=[self Get_Urls:@"video_flag"];
-            if (video_timesamp==nil) {
-                video_timesamp=[[NSMutableArray alloc]init];
-            }
+            self.video_timesamp = [self Get_Urls:@"video_flag"];
             NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            [mutaArray addObjectsFromArray:video_timesamp];
+            [mutaArray addObjectsFromArray:self.video_timesamp];
             [mutaArray addObject:timesamp];
             [self Save_Urls:mutaArray :@"video_flag"];
             
             [_videoView begin_record:0];
+            [_videoView set_record_frame_rate:24];
         }
         
         VideoRecordTimerTick_s = 0;
@@ -1006,7 +1056,7 @@ bool _isTakePhoto=NO;
         }
 
         //RAK设备
-        if(_isLiving==0)
+        if(_livingState==0)
         {
             _isExit=NO;
             [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
@@ -1023,10 +1073,10 @@ bool _isTakePhoto=NO;
  */
 -(void)_livePauseBtnClick{
     NSLog(@"暂停推流");
-    if (_isLiving==1) {//暂停推流
+    if (_livingState==1) {//暂停推流
         [self setPauseStreamStatus];
     }
-    else if (_isLiving==2) {//重新开始推流
+    else if (_livingState==2) {//重新开始推流
         [self setStartStreamStatus];
     }
 }
@@ -1122,7 +1172,7 @@ int valOrientation;
         NSLog(@"user ifo:id=%@ username=%@ userpassword=%@",_userid,_username,_userpassword);
         if (!_isLiveView){
             dispatch_async(dispatch_get_main_queue(),^ {
-                [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
             });
             if (!_isUser) {
                 _isUser=NO;
@@ -1184,19 +1234,19 @@ int valOrientation;
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        resolution=[self parseJsonString:http_request.ResponseString];
+        _resolution=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
-            if ([resolution compare:@"3"]==NSOrderedSame) {
+            if ([_resolution compare:@"3"]==NSOrderedSame) {
                 //                [self set1080P];
             }
-            else if ([resolution compare:@"2"]==NSOrderedSame) {
+            else if ([_resolution compare:@"2"]==NSOrderedSame) {
                 //                [self set720P];
             }
             else{
                 //                [self set480P];
             }
         });
-        NSLog(@"resolution=%@",resolution);
+        NSLog(@"resolution=%@",_resolution);
     }
     
     //get quality
@@ -1205,15 +1255,15 @@ int valOrientation;
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        quality=[self parseJsonString:http_request.ResponseString];
+        _quality=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
-            float value=[quality intValue]*3000/52.0;
+            float value=[_quality intValue]*3000/52.0;
             if (((int)value%100)!=0) {
                 value=value+100;
             }
             //            [self setVideoRate:value];
         });
-        NSLog(@"quality******************=%@",quality);
+        NSLog(@"quality******************=%@",_quality);
     }
     else{
         dispatch_async(dispatch_get_main_queue(),^ {
@@ -1227,13 +1277,13 @@ int valOrientation;
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        fps=[self parseJsonString:http_request.ResponseString];
+        _fps=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
             //            [self setVideoFrameRate:[fps intValue]];
             _session = [self getSessionWithRakisrak:YES];
         });
         
-        NSLog(@"fps**************************=%@",fps);
+        NSLog(@"fps**************************=%@",_fps);
     }
     
 
@@ -1313,7 +1363,7 @@ int valOrientation;
  */
 - (void)take_imageRef:(CGImageRef)imageRef{
     debugMethod();
-    if(_isLiving==1){
+    if(_livingState==1){
         if (_isTakePhoto) {
             _isTakePhoto=NO;
             [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
@@ -1330,7 +1380,7 @@ int valOrientation;
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
     NSLog(@"GetAudioData");
-    if(_isLiving==1 && !_isIphoneAudio){
+    if(_livingState==1 && !_isIphoneAudio){
         
         AudioBufferList audioBufferList;
         audioBufferList.mNumberBuffers = 1;
@@ -1345,7 +1395,7 @@ int valOrientation;
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
     NSLog(@"GetH264Data");
-    if(_isLiving==1){
+    if(_livingState==1){
         [self.session upload_h264:size :data];
     }
 }
@@ -1359,7 +1409,7 @@ int valOrientation;
 {
     NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
     _isPlaying=YES;
-    if(_isLiving==2){
+    if(_livingState==2){
         [self.session upload_PauseImg];
     }
     
@@ -1371,22 +1421,22 @@ int valOrientation;
             kWidth=width;
             NSLog(@"_width=%d,height=%d",kWidth,kHeight);
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (viewH>viewW) {
-                    temp=viewW;
-                    tempviewW=viewH;
-                    tempviewH=temp;
+                if (_viewH>_viewW) {
+                    _temp=_viewW;
+                    _tempviewW=_viewH;
+                    _tempviewH=_temp;
                 }
-                if (tempviewH<tempviewW*kHeight/kWidth) {
-                    _videoView.frame =CGRectMake(0, 0, tempviewH*kWidth/kHeight, tempviewH);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*kWidth/kHeight, tempviewH)];
+                if (_tempviewH<_tempviewW*kHeight/kWidth) {
+                    _videoView.frame =CGRectMake(0, 0, _tempviewH*kWidth/kHeight, _tempviewH);
+                    [_videoView setView1Frame:CGRectMake(0, 0, _tempviewH*kWidth/kHeight, _tempviewH)];
                     NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
                 }
                 else{
-                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*kHeight/kWidth);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*kHeight/kWidth)];
+                    _videoView.frame =CGRectMake(0, 0, _tempviewW, _tempviewW*kHeight/kWidth);
+                    [_videoView setView1Frame:CGRectMake(0, 0, _tempviewW, _tempviewW*kHeight/kWidth)];
                     NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
                 }
-                _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
+                _videoView.center=CGPointMake(_tempviewW*0.5, _tempviewH*0.5);
             });
         }
     }
@@ -1416,11 +1466,11 @@ int valOrientation;
     else{
         if (play_success ==NO){
             ActivityIndicatorView.hidden=YES;
-            if (viewW<viewH) {
-                _tipLabel.center=CGPointMake(viewH*0.5, _tipLabel.center.y);
+            if (_viewW<_viewH) {
+                _tipLabel.center=CGPointMake(_viewH*0.5, _tipLabel.center.y);
             }
             else{
-                _tipLabel.center=CGPointMake(viewW*0.5, _tipLabel.center.y);
+                _tipLabel.center=CGPointMake(_viewW*0.5, _tipLabel.center.y);
             }
             _tipLabel.textAlignment=NSTextAlignmentCenter;
             _tipLabel.text = NSLocalizedString(@"no_video", nil);
@@ -1430,11 +1480,11 @@ int valOrientation;
     if (_isPlaying) {
         playCount=0;
         ActivityIndicatorView.hidden=YES;
-        if (viewW<viewH) {
-            _tipLabel.center=CGPointMake(viewH*0.5, _tipLabel.center.y);
+        if (_viewW<_viewH) {
+            _tipLabel.center=CGPointMake(_viewH*0.5, _tipLabel.center.y);
         }
         else{
-            _tipLabel.center=CGPointMake(viewW*0.5, _tipLabel.center.y);
+            _tipLabel.center=CGPointMake(_viewW*0.5, _tipLabel.center.y);
         }
         _tipLabel.textAlignment=NSTextAlignmentCenter;
     }
@@ -1483,10 +1533,10 @@ CGFloat iy ;
         return;
     }
     NSLog(@"startActivityIndicatorView");
-    ix = self.view.frame.origin.x+(viewW/2-25);
-    iy = self.view.frame.origin.y+(viewH/2-25);
+    ix = self.view.frame.origin.x+(_viewW/2-25);
+    iy = self.view.frame.origin.y+(_viewH/2-25);
     //    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(viewW*304/totalWeight,129*viewH/totalHeight, viewW*58.5/totalWeight, viewW*58.5/totalWeight)];
+    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(_viewW*304/_totalWeight,129*_viewH/_totalHeight, _viewW*58.5/_totalWeight, _viewW*58.5/_totalWeight)];
     
     ActivityIndicatorView.image=[UIImage imageNamed:@"logo_148"];
     //    CABasicAnimation* rotationAnimation;
@@ -1501,7 +1551,7 @@ CGFloat iy ;
     ActivityIndicatorViewisenable = YES;
     
     //    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
-    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(viewW*295/totalWeight,202.5*viewH/totalHeight, viewW*79.5/totalWeight, viewH*12.5/totalHeight)];
+    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(_viewW*295/_totalWeight,202.5*_viewH/_totalHeight, _viewW*79.5/_totalWeight, _viewH*12.5/_totalHeight)];
     //    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     _tipLabel.text = @"Connecting…";
     _tipLabel.textColor = MAIN_COLOR;
@@ -1870,7 +1920,7 @@ CGFloat iy ;
      */
     LFLiveVideoConfiguration  *videoConfiguration = [LFLiveVideoConfiguration new];
     
-    NSInteger bitRatevalue         = [quality intValue]*3000/52.0; //设备的比特率
+    NSInteger bitRatevalue         = [_quality intValue]*3000/52.0; //设备的比特率
     NSUInteger  videoFrameRate = 30;                          //设备的fps
     NSInteger maxbitRate = 1000*1024;
     bitRatevalue =         800 *1024;
@@ -1878,7 +1928,7 @@ CGFloat iy ;
     CGFloat videosizeWidth  = 0.0;
     CGFloat videosizeHeight = 0.0;
     //设备的分辨率
-    if ([resolution integerValue] == 3)
+    if ([_resolution integerValue] == 3)
     {
         videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
@@ -1888,7 +1938,7 @@ CGFloat iy ;
         maxbitRate = 1000*1024;
         videoFrameRate = 30;
     }
-    else if ([resolution integerValue] == 2)
+    else if ([_resolution integerValue] == 2)
     {
         videoConfiguration .sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
@@ -1979,7 +2029,7 @@ CGFloat iy ;
         return;
     }
     
-    _isLiving = 1;
+    _livingState = 1;
     
     if (_session) {
 //        _session.dataSoureType = type;
@@ -1994,7 +2044,7 @@ CGFloat iy ;
 - (void)stopVideo
 {
     if (_isPlaying) {
-        _isLiving=0;
+        _livingState=0;
         _isPlaying=NO;
         [_videoView stop];
         NSLog(@"stop play");
@@ -2101,7 +2151,7 @@ CGFloat iy ;
     
     _takephotoBtn.enabled = NO;
     _recordBtn.enabled = NO;
-    _isLiving=1;
+    _livingState=1;
 }
 
 -(void)setPauseStreamStatus{
@@ -2122,7 +2172,7 @@ CGFloat iy ;
     
     _takephotoBtn.enabled = YES;
     _recordBtn.enabled = YES;
-    _isLiving=2;
+    _livingState=2;
 }
 
 -(void)setStopStreamStatus{
@@ -2146,7 +2196,7 @@ CGFloat iy ;
     _takephotoBtn.enabled = YES;
     _recordBtn.enabled = YES;
 
-    _isLiving=0;
+    _livingState=0;
 }
 
 
@@ -2169,38 +2219,38 @@ CGFloat iy ;
  */
 -(void)timerFunction{
     if([[self Get_Keys:BANNER_PHOTO_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-        if (isShowBanner) {
-            count_duration++;
-            count_interval=0;
+        if (_isShowBanner) {
+            _count_duration++;
+            _count_interval=0;
         }
         else{
-            count_duration=0;
-            count_interval++;
+            _count_duration=0;
+            _count_interval++;
         }
         
-        if (count_duration>duration) {
-            isShowBanner=NO;
+        if (_count_duration>_duration) {
+            _isShowBanner=NO;
         }
-        if (count_interval>=interval) {
-            isShowBanner=YES;
+        if (_count_interval>=_interval) {
+            _isShowBanner=YES;
         }
     }
     
     if([[self Get_Keys:SUBTITLE_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-        if (isShowSubtitle) {
-            subtitle_count_duration++;
-            subtitle_count_interval=0;
+        if (_isShowSubtitle) {
+            _subtitle_count_duration++;
+            _subtitle_count_interval=0;
         }
         else{
-            subtitle_count_duration=0;
-            subtitle_count_interval++;
+            _subtitle_count_duration=0;
+            _subtitle_count_interval++;
         }
         
-        if (subtitle_count_duration>subtitle_duration) {
-            isShowSubtitle=NO;
+        if (_subtitle_count_duration>_subtitle_duration) {
+            _isShowSubtitle=NO;
         }
-        if (subtitle_count_interval>=subtitle_interval) {
-            isShowSubtitle=YES;
+        if (_subtitle_count_interval>=_subtitle_interval) {
+            _isShowSubtitle=YES;
         }
     }
     
@@ -2216,49 +2266,49 @@ int posStep=1;
        ([[self Get_Keys:SUBTITLE_ENABLE_KEY] compare:@"on"]==NSOrderedSame)){
         
         if([[self Get_Keys:BANNER_PHOTO_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-            duration=[[self Get_Keys:BANNER_DURATION_KEY] intValue];
-            interval=[[self Get_Keys:BANNER_INTERVAL_KEY] intValue];
+            _duration=[[self Get_Keys:BANNER_DURATION_KEY] intValue];
+            _interval=[[self Get_Keys:BANNER_INTERVAL_KEY] intValue];
         }
         else
         {
-            isShowBanner=NO;
+            _isShowBanner=NO;
         }
         
         if([[self Get_Keys:SUBTITLE_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-            subtitle_duration=[[self Get_Keys:SUBTITLE_DURATION_KEY] intValue];
-            subtitle_interval=[[self Get_Keys:SUBTITLE_INTERVAL_KEY] intValue];
+            _subtitle_duration=[[self Get_Keys:SUBTITLE_DURATION_KEY] intValue];
+            _subtitle_interval=[[self Get_Keys:SUBTITLE_INTERVAL_KEY] intValue];
         }
         else
         {
-            isShowSubtitle=NO;
+            _isShowSubtitle=NO;
         }
         
-        if (uploadTimer==nil) {
+        if (_uploadTimer==nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                uploadTimer =  [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFunction) userInfo:nil repeats:YES];
+                _uploadTimer =  [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFunction) userInfo:nil repeats:YES];
             });
             if([[self Get_Keys:BANNER_PHOTO_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-                isShowBanner=YES;
-                count_duration=0;
-                count_interval=0;
+                _isShowBanner=YES;
+                _count_duration=0;
+                _count_interval=0;
             }
             
             if([[self Get_Keys:SUBTITLE_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
-                isShowSubtitle=YES;
-                subtitle_count_duration=0;
-                subtitle_count_interval=0;
+                _isShowSubtitle=YES;
+                _subtitle_count_duration=0;
+                _subtitle_count_interval=0;
             }
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            CGFloat newViewW=viewW;
-            CGFloat newViewH=viewH;
-            if (viewH>viewW) {
-                newViewW=viewH;
-                newViewH=viewW;
+            CGFloat newViewW=_viewW;
+            CGFloat newViewH=_viewH;
+            if (_viewH>_viewW) {
+                newViewW=_viewH;
+                newViewH=_viewW;
             }
             
-            if (isShowBanner&&isShowSubtitle) {
+            if (_isShowBanner&&_isShowSubtitle) {
                 _upperLeftImg.image=[self Get_Images:BANNER_UPPER_LEFT_PUSH_KEY];
                 if (CGImageGetHeight(_upperLeftImg.image.CGImage)!=0) {
                     _upperLeftImg.frame=CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGImageGetWidth(_upperLeftImg.image.CGImage)*newViewH/6/CGImageGetHeight(_upperLeftImg.image.CGImage), newViewH/6);
@@ -2302,7 +2352,7 @@ int posStep=1;
                 }
                 _wordImg.hidden=NO;
             }
-            else if (!isShowBanner&&isShowSubtitle){
+            else if (!_isShowBanner&&_isShowSubtitle){
                 _upperLeftImg.hidden=YES;
                 _upperRightImg.hidden=YES;
                 _lowerLeftImg.hidden=YES;
@@ -2326,7 +2376,7 @@ int posStep=1;
                 }
                 _wordImg.hidden=NO;
             }
-            else if (isShowBanner&&!isShowSubtitle) {
+            else if (_isShowBanner&&!_isShowSubtitle) {
                 _upperLeftImg.image=[self Get_Images:BANNER_UPPER_LEFT_PUSH_KEY];
                 if (CGImageGetHeight(_upperLeftImg.image.CGImage)!=0) {
                     _upperLeftImg.frame=CGRectMake(0, 0, CGImageGetWidth(_upperLeftImg.image.CGImage)*newViewH/6/CGImageGetHeight(_upperLeftImg.image.CGImage), newViewH/6);
@@ -2389,33 +2439,33 @@ int posStep=1;
  */
 - (void)streamViewInit
 {
-    viewH=self.view.frame.size.height;
-    viewW=self.view.frame.size.width;
-    if (viewH>viewW) {
+    _viewH=self.view.frame.size.height;
+    _viewW=self.view.frame.size.width;
+    if (_viewH>_viewW) {
         
     }
     else{
-        viewW=self.view.frame.size.height;
-        viewH=self.view.frame.size.width;
+        _viewW=self.view.frame.size.height;
+        _viewH=self.view.frame.size.width;
     }
-    NSLog(@"viewW1=%f,viewH1=%f",viewW,viewH);
-    totalHeight=64+71+149+149+149+80+5;//各部分比例
-    totalWeight=375;//各部分比例
+    NSLog(@"viewW1=%f,viewH1=%f",_viewW,_viewH);
+    _totalHeight=64+71+149+149+149+80+5;//各部分比例
+    _totalWeight=375;//各部分比例
     
     _streamView=[[UIView alloc]init];
-    _streamView.frame=CGRectMake(0, 0, viewW, viewH);
+    _streamView.frame=CGRectMake(0, 0, _viewW, _viewH);
     _streamView.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     _streamView.userInteractionEnabled=YES;
     [self.view addSubview:_streamView];
     
     //顶部
     _topBgStream=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBgStream.frame = CGRectMake(0, 0, viewW, viewH*64/totalHeight);
+    _topBgStream.frame = CGRectMake(0, 0, _viewW, _viewH*64/_totalHeight);
     _topBgStream.contentMode=UIViewContentModeScaleToFill;
     [_streamView addSubview:_topBgStream];
     
     _backBtnStream=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtnStream.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);
+    _backBtnStream.frame = CGRectMake(0, diff_top, _viewH*44/_totalHeight, _viewH*44/_totalHeight);
     [_backBtnStream setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
     [_backBtnStream setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
     [_backBtnStream setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
@@ -2424,10 +2474,10 @@ int posStep=1;
     [_backBtnStream addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamView  addSubview:_backBtnStream];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtnStream.frame.origin.x+_backBtnStream.frame.size.width, diff_top, viewW-_backBtnStream.frame.origin.x-_backBtnStream.frame.size.width-2*diff_x, viewH*44/totalHeight)];
-    _titleLabel.center=CGPointMake(viewW*0.5, _backBtnStream.center.y);
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtnStream.frame.origin.x+_backBtnStream.frame.size.width, diff_top, _viewW-_backBtnStream.frame.origin.x-_backBtnStream.frame.size.width-2*diff_x, _viewH*44/_totalHeight)];
+    _titleLabel.center=CGPointMake(_viewW*0.5, _backBtnStream.center.y);
     _titleLabel.text = NSLocalizedString(@"streaminig_title", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+    _titleLabel.font = [UIFont boldSystemFontOfSize: _viewH*20/_totalHeight*0.8];
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
@@ -2439,14 +2489,14 @@ int posStep=1;
     
     _streamingImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"IMG_2401.JPG"]];
     _streamingImg.userInteractionEnabled=YES;
-    _streamingImg.frame = CGRectMake(0, _backBtnStream.frame.origin.y+_backBtnStream.frame.size.height, viewW, viewH*145/totalHeight);
+    _streamingImg.frame = CGRectMake(0, _backBtnStream.frame.origin.y+_backBtnStream.frame.size.height, _viewW, _viewH*145/_totalHeight);
     _streamingImg.contentMode=UIViewContentModeScaleToFill;
     [_streamView addSubview:_streamingImg];
     
-    _streamingTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,viewH*83/totalHeight, viewW, viewH*20/totalHeight)];
-    _streamingTitleLabel.center=CGPointMake(viewW*0.5, _streamingTitleLabel.center.y);
+    _streamingTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,_viewH*83/_totalHeight, _viewW, _viewH*20/_totalHeight)];
+    _streamingTitleLabel.center=CGPointMake(_viewW*0.5, _streamingTitleLabel.center.y);
     _streamingTitleLabel.text = NSLocalizedString(@"streaminig_title_label", nil);
-    _streamingTitleLabel.font = [UIFont boldSystemFontOfSize: viewH*20/totalHeight*0.8];
+    _streamingTitleLabel.font = [UIFont boldSystemFontOfSize: _viewH*20/_totalHeight*0.8];
     _streamingTitleLabel.backgroundColor = [UIColor clearColor];
     _streamingTitleLabel.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
     _streamingTitleLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2455,21 +2505,21 @@ int posStep=1;
     [_streamView addSubview:_streamingTitleLabel];
     
     _streamStatusImg=[[UIImageView alloc]init];
-    _streamStatusImg.frame = CGRectMake(viewW-viewH*32/totalHeight, viewH*13/totalHeight, viewH*19/totalHeight, viewH*19/totalHeight);
+    _streamStatusImg.frame = CGRectMake(_viewW-_viewH*32/_totalHeight, _viewH*13/_totalHeight, _viewH*19/_totalHeight, _viewH*19/_totalHeight);
     _streamStatusImg.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
     //[_streamingImg  addSubview:_streamStatusImg];
     
     _streamingTitleImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"live streaming_banner_text image@3x.png"]];
     _streamingTitleImg.userInteractionEnabled=YES;
-    _streamingTitleImg.frame = CGRectMake(viewW*55/totalWeight, viewH*29/totalHeight, viewW*264/totalWeight, viewW*264*48/totalWeight/804);
+    _streamingTitleImg.frame = CGRectMake(_viewW*55/_totalWeight, _viewH*29/_totalHeight, _viewW*264/_totalWeight, _viewW*264*48/_totalWeight/804);
     _streamingTitleImg.contentMode=UIViewContentModeScaleToFill;
     //[_streamingImg addSubview:_streamingTitleImg];
     
     //Control
     _streamingControlBgImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_Slide bar_bg@3x.png"]];
     _streamingControlBgImg.userInteractionEnabled=YES;
-    _streamingControlBgImg.frame = CGRectMake(0, viewH*78/totalHeight, viewH*40*87/totalHeight/12, viewH*40/totalHeight);
-    _streamingControlBgImg.center=CGPointMake(viewW*0.5, _streamingControlBgImg.center.y);
+    _streamingControlBgImg.frame = CGRectMake(0, _viewH*78/_totalHeight, _viewH*40*87/_totalHeight/12, _viewH*40/_totalHeight);
+    _streamingControlBgImg.center=CGPointMake(_viewW*0.5, _streamingControlBgImg.center.y);
     _streamingControlBgImg.contentMode=UIViewContentModeScaleToFill;
     //[_streamingImg addSubview:_streamingControlBgImg];
     
@@ -2477,44 +2527,44 @@ int posStep=1;
     _streamingControlImg.userInteractionEnabled=YES;
     UIPanGestureRecognizer *panGestureRecognizer= [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
     [_streamingControlImg addGestureRecognizer:panGestureRecognizer];
-    _streamingControlImg.frame = CGRectMake(0, 0, viewH*32/totalHeight, viewH*32/totalHeight);
-    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width-viewH*20/totalHeight, viewH*20/totalHeight);
-    r_control_pos=_streamingControlImg.center.x;
-    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width*0.5, viewH*20/totalHeight);
-    c_control_pos=_streamingControlImg.center.x;
-    _streamingControlImg.center=CGPointMake(viewH*20/totalHeight, viewH*20/totalHeight);
-    l_control_pos=_streamingControlImg.center.x;
+    _streamingControlImg.frame = CGRectMake(0, 0, _viewH*32/_totalHeight, _viewH*32/_totalHeight);
+    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width-_viewH*20/_totalHeight, _viewH*20/_totalHeight);
+    _r_control_pos=_streamingControlImg.center.x;
+    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width*0.5, _viewH*20/_totalHeight);
+    _c_control_pos=_streamingControlImg.center.x;
+    _streamingControlImg.center=CGPointMake(_viewH*20/_totalHeight, _viewH*20/_totalHeight);
+    _l_control_pos=_streamingControlImg.center.x;
     _streamingControlImg.contentMode=UIViewContentModeScaleToFill;
     //[_streamingControlBgImg addSubview:_streamingControlImg];
     
     _streamingStartBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingStartBtn.frame = CGRectMake(0, viewH*116/totalHeight, viewH*60/totalHeight, viewH*60/totalHeight);
-    _streamingStartBtn.center=CGPointMake(viewW*0.5, _streamingStartBtn.center.y);
+    _streamingStartBtn.frame = CGRectMake(0, _viewH*116/_totalHeight, _viewH*60/_totalHeight, _viewH*60/_totalHeight);
+    _streamingStartBtn.center=CGPointMake(_viewW*0.5, _streamingStartBtn.center.y);
     [_streamingStartBtn setImage:[UIImage imageNamed:@"go live_pre@3x.png"] forState:UIControlStateNormal];
     _streamingStartBtn.contentMode=UIViewContentModeScaleToFill;
     [_streamingStartBtn addTarget:nil action:@selector(_streamingStartBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamView  addSubview:_streamingStartBtn];
     
     _streamingPauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingPauseBtn.frame = CGRectMake(0, viewH*156/totalHeight, viewH*40/totalHeight, viewH*40/totalHeight);
-    _streamingPauseBtn.center=CGPointMake(viewW*0.5-viewH*80/totalHeight, _streamingPauseBtn.center.y);
+    _streamingPauseBtn.frame = CGRectMake(0, _viewH*156/_totalHeight, _viewH*40/_totalHeight, _viewH*40/_totalHeight);
+    _streamingPauseBtn.center=CGPointMake(_viewW*0.5-_viewH*80/_totalHeight, _streamingPauseBtn.center.y);
     [_streamingPauseBtn setImage:[UIImage imageNamed:@"puase live_dis@3x.png"] forState:UIControlStateNormal];
     _streamingPauseBtn.contentMode=UIViewContentModeScaleToFill;
     [_streamingPauseBtn addTarget:nil action:@selector(_streamingPauseBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamView  addSubview:_streamingPauseBtn];
     
     _streamingStopBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingStopBtn.frame = CGRectMake(0, viewH*156/totalHeight, viewH*40/totalHeight, viewH*40/totalHeight);
-    _streamingStopBtn.center=CGPointMake(viewW*0.5+viewH*80/totalHeight, _streamingStopBtn.center.y);
+    _streamingStopBtn.frame = CGRectMake(0, _viewH*156/_totalHeight, _viewH*40/_totalHeight, _viewH*40/_totalHeight);
+    _streamingStopBtn.center=CGPointMake(_viewW*0.5+_viewH*80/_totalHeight, _streamingStopBtn.center.y);
     [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_dis@3x.png"] forState:UIControlStateNormal];
     _streamingStopBtn.contentMode=UIViewContentModeScaleToFill;
     [_streamingStopBtn addTarget:nil action:@selector(_streamingStopBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamView  addSubview:_streamingStopBtn];
     
-    _customStreamingLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height, viewW, viewH*30/totalHeight)];
-    _customStreamingLabel.center=CGPointMake(viewW*0.5, _customStreamingLabel.center.y);
+    _customStreamingLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height, _viewW, _viewH*30/_totalHeight)];
+    _customStreamingLabel.center=CGPointMake(_viewW*0.5, _customStreamingLabel.center.y);
     _customStreamingLabel.text = NSLocalizedString(@"custom_streaminig_label", nil);
-    _customStreamingLabel.font = [UIFont boldSystemFontOfSize: viewH*16/totalHeight*0.8];
+    _customStreamingLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
     _customStreamingLabel.backgroundColor = [UIColor clearColor];
     _customStreamingLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _customStreamingLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2523,7 +2573,7 @@ int posStep=1;
     [_streamView addSubview:_customStreamingLabel];
     
     //Config view2
-    _streamingConfigView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height+viewH*30/totalHeight,viewW,viewH*77/totalHeight)];
+    _streamingConfigView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height+_viewH*30/_totalHeight,_viewW,_viewH*77/_totalHeight)];
     _streamingConfigView.userInteractionEnabled=YES;
     UIPanGestureRecognizer *panGestureRecognizer2= [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView2:)];
     //[_streamingConfigView addGestureRecognizer:panGestureRecognizer2];
@@ -2531,8 +2581,8 @@ int posStep=1;
     [_streamView addSubview:_streamingConfigView];
     
     _linkmanBtn0=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn0.frame = CGRectMake(viewW*72/totalWeight, viewH*12/totalHeight, viewH*40*173/165/totalHeight, viewH*40/totalHeight);
-    _linkmanBtn0.center=CGPointMake(viewW*0.5-viewW*94/totalWeight, _linkmanBtn0.center.y);
+    _linkmanBtn0.frame = CGRectMake(_viewW*72/_totalWeight, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
+    _linkmanBtn0.center=CGPointMake(_viewW*0.5-_viewW*94/_totalWeight, _linkmanBtn0.center.y);
     [_linkmanBtn0 setImage:[UIImage imageNamed:@"subtitle@3x.png"] forState:UIControlStateNormal];
     [_linkmanBtn0 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_linkmanBtn0 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
@@ -2540,10 +2590,10 @@ int posStep=1;
     [_linkmanBtn0 addTarget:nil action:@selector(_linkmanBtn0Click) forControlEvents:UIControlEventTouchUpInside];
     [_streamingConfigView  addSubview:_linkmanBtn0];
     
-    _linkmanLabel0 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn0.frame.origin.y+_linkmanBtn0.frame.size.height+viewH*4/totalHeight, viewW*50/totalWeight, viewH*15/totalHeight)];
+    _linkmanLabel0 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn0.frame.origin.y+_linkmanBtn0.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
     _linkmanLabel0.center=CGPointMake(_linkmanBtn0.center.x, _linkmanLabel0.center.y);
     _linkmanLabel0.text = NSLocalizedString(@"parameter_subtitle", nil);
-    _linkmanLabel0.font = [UIFont systemFontOfSize: viewH*14/totalHeight*0.8];
+    _linkmanLabel0.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
     _linkmanLabel0.backgroundColor = [UIColor clearColor];
     _linkmanLabel0.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
     _linkmanLabel0.lineBreakMode = UILineBreakModeWordWrap;
@@ -2551,14 +2601,14 @@ int posStep=1;
     _linkmanLabel0.numberOfLines = 0;
     [_streamingConfigView addSubview:_linkmanLabel0];
     
-    UIView *_linkmanline0=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn0.frame.origin.x+_linkmanBtn0.frame.size.width+viewW*24/totalWeight,viewH*18/totalHeight,viewW*1/totalWeight,viewH*40/totalHeight)];
-    _linkmanline0.center=CGPointMake(viewW*0.5-viewW*47/totalWeight, _linkmanline0.center.y);
+    UIView *_linkmanline0=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn0.frame.origin.x+_linkmanBtn0.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
+    _linkmanline0.center=CGPointMake(_viewW*0.5-_viewW*47/_totalWeight, _linkmanline0.center.y);
     _linkmanline0.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_streamingConfigView addSubview:_linkmanline0];
     
     _linkmanBtn1=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn1.frame = CGRectMake(0, viewH*12/totalHeight, viewH*40*173/165/totalHeight, viewH*40/totalHeight);
-    _linkmanBtn1.center=CGPointMake(viewW*0.5, _linkmanBtn0.center.y);
+    _linkmanBtn1.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
+    _linkmanBtn1.center=CGPointMake(_viewW*0.5, _linkmanBtn0.center.y);
     [_linkmanBtn1 setImage:[UIImage imageNamed:@"logo_nor@3x.png"] forState:UIControlStateNormal];
     [_linkmanBtn1 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_linkmanBtn1 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
@@ -2566,10 +2616,10 @@ int posStep=1;
     [_linkmanBtn1 addTarget:nil action:@selector(_linkmanBtn1Click) forControlEvents:UIControlEventTouchUpInside];
     [_streamingConfigView  addSubview:_linkmanBtn1];
     
-    _linkmanLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn1.frame.origin.y+_linkmanBtn1.frame.size.height+viewH*4/totalHeight, viewW*50/totalWeight, viewH*15/totalHeight)];
-    _linkmanLabel1.center=CGPointMake(viewW*0.5, _linkmanLabel0.center.y);
+    _linkmanLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn1.frame.origin.y+_linkmanBtn1.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
+    _linkmanLabel1.center=CGPointMake(_viewW*0.5, _linkmanLabel0.center.y);
     _linkmanLabel1.text = NSLocalizedString(@"parameter_banner", nil);
-    _linkmanLabel1.font = [UIFont systemFontOfSize: viewH*14/totalHeight*0.8];
+    _linkmanLabel1.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
     _linkmanLabel1.backgroundColor = [UIColor clearColor];
     _linkmanLabel1.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
     _linkmanLabel1.lineBreakMode = UILineBreakModeWordWrap;
@@ -2577,14 +2627,14 @@ int posStep=1;
     _linkmanLabel1.numberOfLines = 0;
     [_streamingConfigView addSubview:_linkmanLabel1];
     
-    UIView *_linkmanline1=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn1.frame.origin.x+_linkmanBtn1.frame.size.width+viewW*24/totalWeight,viewH*18/totalHeight,viewW*1/totalWeight,viewH*40/totalHeight)];
-    _linkmanline1.center=CGPointMake(viewW*0.5+viewW*47/totalWeight, _linkmanline1.center.y);
+    UIView *_linkmanline1=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn1.frame.origin.x+_linkmanBtn1.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
+    _linkmanline1.center=CGPointMake(_viewW*0.5+_viewW*47/_totalWeight, _linkmanline1.center.y);
     _linkmanline1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_streamingConfigView addSubview:_linkmanline1];
     
     _linkmanBtn2=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn2.frame = CGRectMake(0, viewH*12/totalHeight, viewH*40*173/165/totalHeight, viewH*40/totalHeight);
-    _linkmanBtn2.center=CGPointMake(viewW*0.625, _linkmanBtn2.center.y);
+    _linkmanBtn2.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
+    _linkmanBtn2.center=CGPointMake(_viewW*0.625, _linkmanBtn2.center.y);
     [_linkmanBtn2 setImage:[UIImage imageNamed:@"live stream_screen_icon@3x.png"] forState:UIControlStateNormal];
     [_linkmanBtn2 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_linkmanBtn2 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
@@ -2592,10 +2642,10 @@ int posStep=1;
     [_linkmanBtn2 addTarget:nil action:@selector(_linkmanBtn2Click) forControlEvents:UIControlEventTouchUpInside];
     //[_streamingConfigView  addSubview:_linkmanBtn2];
     
-    _linkmanLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn2.frame.origin.y+_linkmanBtn2.frame.size.height+viewH*4/totalHeight, viewW*50/totalWeight, viewH*15/totalHeight)];
-    _linkmanLabel2.center=CGPointMake(viewW*0.625, _linkmanLabel2.center.y);
+    _linkmanLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn2.frame.origin.y+_linkmanBtn2.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
+    _linkmanLabel2.center=CGPointMake(_viewW*0.625, _linkmanLabel2.center.y);
     _linkmanLabel2.text = NSLocalizedString(@"parameter_screen", nil);
-    _linkmanLabel2.font = [UIFont systemFontOfSize: viewH*14/totalHeight*0.8];
+    _linkmanLabel2.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
     _linkmanLabel2.backgroundColor = [UIColor clearColor];
     _linkmanLabel2.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
     _linkmanLabel2.lineBreakMode = UILineBreakModeWordWrap;
@@ -2603,14 +2653,14 @@ int posStep=1;
     _linkmanLabel2.numberOfLines = 0;
     //[_streamingConfigView addSubview:_linkmanLabel2];
     
-    UIView *_linkmanline2=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn2.frame.origin.x+_linkmanBtn2.frame.size.width+viewW*24/totalWeight,viewH*18/totalHeight,viewW*1/totalWeight,viewH*40/totalHeight)];
-    _linkmanline2.center=CGPointMake(viewW*3/4, _linkmanline2.center.y);
+    UIView *_linkmanline2=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn2.frame.origin.x+_linkmanBtn2.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
+    _linkmanline2.center=CGPointMake(_viewW*3/4, _linkmanline2.center.y);
     _linkmanline2.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     //[_streamingConfigView addSubview:_linkmanline2];
     
     _linkmanBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn3.frame = CGRectMake(viewW-viewW*72/totalWeight, viewH*12/totalHeight, viewH*40*173/165/totalHeight, viewH*40/totalHeight);
-    _linkmanBtn3.center=CGPointMake(viewW*0.5+viewW*94/totalWeight, _linkmanBtn0.center.y);
+    _linkmanBtn3.frame = CGRectMake(_viewW-_viewW*72/_totalWeight, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
+    _linkmanBtn3.center=CGPointMake(_viewW*0.5+_viewW*94/_totalWeight, _linkmanBtn0.center.y);
     [_linkmanBtn3 setImage:[UIImage imageNamed:@"audio@3x.png"] forState:UIControlStateNormal];
     [_linkmanBtn3 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_linkmanBtn3 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
@@ -2618,10 +2668,10 @@ int posStep=1;
     [_linkmanBtn3 addTarget:nil action:@selector(_linkmanBtn3Click) forControlEvents:UIControlEventTouchUpInside];
     [_streamingConfigView  addSubview:_linkmanBtn3];
     
-    _linkmanLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn3.frame.origin.y+_linkmanBtn3.frame.size.height+viewH*4/totalHeight, viewW*50/totalWeight, viewH*15/totalHeight)];
+    _linkmanLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn3.frame.origin.y+_linkmanBtn3.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
     _linkmanLabel3.center=CGPointMake(_linkmanBtn3.center.x, _linkmanLabel3.center.y);
     _linkmanLabel3.text = NSLocalizedString(@"parameter_audio", nil);
-    _linkmanLabel3.font = [UIFont systemFontOfSize: viewH*14/totalHeight*0.8];
+    _linkmanLabel3.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
     _linkmanLabel3.backgroundColor = [UIColor clearColor];
     _linkmanLabel3.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
     _linkmanLabel3.lineBreakMode = UILineBreakModeWordWrap;
@@ -2629,14 +2679,14 @@ int posStep=1;
     _linkmanLabel3.numberOfLines = 0;
     [_streamingConfigView addSubview:_linkmanLabel3];
     
-    UIView *_linkmanline3=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn3.frame.origin.x+_linkmanBtn3.frame.size.width+viewW*24/totalWeight,viewH*18/totalHeight,viewW*1/totalWeight,viewH*40/totalHeight)];
-    _linkmanline3.center=CGPointMake(viewW-10*totalWeight/viewW, _linkmanline3.center.y);
+    UIView *_linkmanline3=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn3.frame.origin.x+_linkmanBtn3.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
+    _linkmanline3.center=CGPointMake(_viewW-10*_totalWeight/_viewW, _linkmanline3.center.y);
     _linkmanline3.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     //[_streamingConfigView addSubview:_linkmanline3];
     
     _linkmanBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn4.frame = CGRectMake(0, viewH*12/totalHeight, viewH*40*132/123/totalHeight, viewH*40/totalHeight);
-    _linkmanBtn4.center=CGPointMake(viewW*1.125, _linkmanBtn0.center.y);
+    _linkmanBtn4.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*132/123/_totalHeight, _viewH*40/_totalHeight);
+    _linkmanBtn4.center=CGPointMake(_viewW*1.125, _linkmanBtn0.center.y);
     [_linkmanBtn4 setImage:[UIImage imageNamed:@"live stream_network_icon@3x.png"] forState:UIControlStateNormal];
     [_linkmanBtn4 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_linkmanBtn4 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
@@ -2644,10 +2694,10 @@ int posStep=1;
     [_linkmanBtn4 addTarget:nil action:@selector(_linkmanBtn4Click) forControlEvents:UIControlEventTouchUpInside];
     //[_streamingConfigView  addSubview:_linkmanBtn4];
     
-    _linkmanLabel4 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn4.frame.origin.y+_linkmanBtn4.frame.size.height+viewH*4/totalHeight, viewW*50/totalWeight, viewH*15/totalHeight)];
-    _linkmanLabel4.center=CGPointMake(viewW*1.125, _linkmanLabel4.center.y);
+    _linkmanLabel4 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn4.frame.origin.y+_linkmanBtn4.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
+    _linkmanLabel4.center=CGPointMake(_viewW*1.125, _linkmanLabel4.center.y);
     _linkmanLabel4.text = NSLocalizedString(@"parameter_network", nil);
-    _linkmanLabel4.font = [UIFont systemFontOfSize: viewH*14/totalHeight*0.8];
+    _linkmanLabel4.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
     _linkmanLabel4.backgroundColor = [UIColor clearColor];
     _linkmanLabel4.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
     _linkmanLabel4.lineBreakMode = UILineBreakModeWordWrap;
@@ -2656,10 +2706,10 @@ int posStep=1;
     //[_streamingConfigView addSubview:_linkmanLabel4];
     
     //platform
-    _streamingAddressLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, viewW, viewH*30/totalHeight)];
-    _streamingAddressLabel.center=CGPointMake(viewW*0.5, _streamingConfigView.frame.origin.y+_streamingConfigView.frame.size.height+viewH*15/totalHeight);
+    _streamingAddressLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, _viewW, _viewH*30/_totalHeight)];
+    _streamingAddressLabel.center=CGPointMake(_viewW*0.5, _streamingConfigView.frame.origin.y+_streamingConfigView.frame.size.height+_viewH*15/_totalHeight);
     _streamingAddressLabel.text = NSLocalizedString(@"streaminig_address", nil);
-    _streamingAddressLabel.font = [UIFont boldSystemFontOfSize: viewH*16/totalHeight*0.8];
+    _streamingAddressLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
     _streamingAddressLabel.backgroundColor = [UIColor clearColor];
     _streamingAddressLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _streamingAddressLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2667,26 +2717,26 @@ int posStep=1;
     _streamingAddressLabel.numberOfLines = 0;
     [_streamView addSubview:_streamingAddressLabel];
     
-    _streamingAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height,viewW,viewH*135/totalHeight)];
+    _streamingAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height,_viewW,_viewH*135/_totalHeight)];
     _streamingAddressView.backgroundColor=[UIColor whiteColor];
     _streamingAddressView.userInteractionEnabled = YES;
     [_streamView addSubview:_streamingAddressView];
     
-    _platformView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(viewW*15/totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+viewH*15/totalHeight,viewW*124/totalWeight,viewH*105/totalHeight)];
+    _platformView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*15/_totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+_viewH*15/_totalHeight,_viewW*124/_totalWeight,_viewH*105/_totalHeight)];
     _platformView.userInteractionEnabled = YES;
-    _platformView.center=CGPointMake(viewW*1/4, _platformView.center.y);
+    _platformView.center=CGPointMake(_viewW*1/4, _platformView.center.y);
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformViewClick)];
     [_platformView addGestureRecognizer:singleTap2];
     [_streamView addSubview:_platformView];
     
     _streamingPlatformImg=[[UIImageView alloc]init];
-    _streamingPlatformImg.frame = CGRectMake((_platformView.frame.size.width-viewH*66/totalHeight*164/132)*0.5, viewH*11/totalHeight, viewH*66/totalHeight*164/132, viewH*66/totalHeight);
+    _streamingPlatformImg.frame = CGRectMake((_platformView.frame.size.width-_viewH*66/_totalHeight*164/132)*0.5, _viewH*11/_totalHeight, _viewH*66/_totalHeight*164/132, _viewH*66/_totalHeight);
     [_streamingPlatformImg setImage:[UIImage imageNamed:@"platform@3x.png"]];
     [_platformView  addSubview:_streamingPlatformImg];
     
-    _streamingPlatform = [[UILabel alloc] initWithFrame:CGRectMake(0, _streamingPlatformImg.frame.origin.y+_streamingPlatformImg.frame.size.height+viewH*8/totalHeight, _platformView.frame.size.width, viewH*16/totalHeight)];
+    _streamingPlatform = [[UILabel alloc] initWithFrame:CGRectMake(0, _streamingPlatformImg.frame.origin.y+_streamingPlatformImg.frame.size.height+_viewH*8/_totalHeight, _platformView.frame.size.width, _viewH*16/_totalHeight)];
     _streamingPlatform.text = NSLocalizedString(@"platform_text", nil);
-    _streamingPlatform.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
+    _streamingPlatform.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
     _streamingPlatform.backgroundColor = [UIColor clearColor];
     _streamingPlatform.textColor = [UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
     _streamingPlatform.lineBreakMode = UILineBreakModeWordWrap;
@@ -2694,30 +2744,30 @@ int posStep=1;
     _streamingPlatform.numberOfLines = 0;
     [_platformView addSubview:_streamingPlatform];
     
-    UIView *line1=[[UIView alloc]initWithFrame:CGRectMake(viewW*187/totalWeight,_streamingAddressView.frame.origin.y+viewH*21/totalHeight,viewW*1/totalWeight,_streamingAddressView.frame.size.height-viewH*42/totalHeight)];
+    UIView *line1=[[UIView alloc]initWithFrame:CGRectMake(_viewW*187/_totalWeight,_streamingAddressView.frame.origin.y+_viewH*21/_totalHeight,_viewW*1/_totalWeight,_streamingAddressView.frame.size.height-_viewH*42/_totalHeight)];
     line1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_streamView addSubview:line1];
     
     //Address View
-    _addressView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(viewW*219/totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+viewH*15/totalHeight,viewW*124/totalWeight,viewH*105/totalHeight)];
+    _addressView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*219/_totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+_viewH*15/_totalHeight,_viewW*124/_totalWeight,_viewH*105/_totalHeight)];
     _addressView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_addressViewClick)];
     [_addressView addGestureRecognizer:singleTap3];
-    _addressView.center=CGPointMake(viewW*3/4, _addressView.center.y);
+    _addressView.center=CGPointMake(_viewW*3/4, _addressView.center.y);
     [_streamView addSubview:_addressView];
     
     _streamingAddressImg=[[UIImageView alloc]init];
-    _streamingAddressImg.frame = CGRectMake(viewW*26/totalWeight, viewH*11/totalHeight, viewH*66/totalHeight*164/132, viewH*66/totalHeight);
+    _streamingAddressImg.frame = CGRectMake(_viewW*26/_totalWeight, _viewH*11/_totalHeight, _viewH*66/_totalHeight*164/132, _viewH*66/_totalHeight);
     _streamingAddressImg.center=CGPointMake(_addressView.frame.size.width*0.5, _streamingAddressImg.center.y);
     [_streamingAddressImg setImage:[UIImage imageNamed:@"fill in@3x.png"]];
     [_addressView  addSubview:_streamingAddressImg];
     
-    _streamingAddress = [[MarqueeLabel alloc] initWithFrame: CGRectMake(0, _streamingAddressImg.frame.origin.y+_streamingAddressImg.frame.size.height+viewH*3/totalHeight, _addressView.frame.size.width, viewH*28/totalHeight) duration:7.0 andFadeLength:10.0f];
+    _streamingAddress = [[MarqueeLabel alloc] initWithFrame: CGRectMake(0, _streamingAddressImg.frame.origin.y+_streamingAddressImg.frame.size.height+_viewH*3/_totalHeight, _addressView.frame.size.width, _viewH*28/_totalHeight) duration:7.0 andFadeLength:10.0f];
     _streamingAddress.text= [self Get_Paths:STREAM_URL_KEY];
     if ([_streamingAddress.text compare:@""]==NSOrderedSame) {
         _streamingAddress.text = NSLocalizedString(@"address_text", nil);
     }
-    _streamingAddress.font = [UIFont systemFontOfSize: viewH*16/totalHeight*0.8];
+    _streamingAddress.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
     _streamingAddress.textColor = [UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
     _streamingAddress.center=CGPointMake(_addressView.frame.size.width*0.5, _streamingAddress.center.y);
     _streamingAddress.textAlignment=UITextAlignmentCenter;
@@ -2729,10 +2779,10 @@ int posStep=1;
     [_addressView addSubview:_streamingAddress];
     
     //streamingAddress
-    _streamingShareLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, viewW, viewH*30/totalHeight)];
-    _streamingShareLabel.center=CGPointMake(viewW*0.5, _streamingAddressView.frame.origin.y+_streamingAddressView.frame.size.height+viewH*15/totalHeight);
+    _streamingShareLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, _viewW, _viewH*30/_totalHeight)];
+    _streamingShareLabel.center=CGPointMake(_viewW*0.5, _streamingAddressView.frame.origin.y+_streamingAddressView.frame.size.height+_viewH*15/_totalHeight);
     _streamingShareLabel.text = NSLocalizedString(@"address_dialog_title", nil);
-    _streamingShareLabel.font = [UIFont boldSystemFontOfSize: viewH*16/totalHeight*0.8];
+    _streamingShareLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
     _streamingShareLabel.backgroundColor = [UIColor clearColor];
     _streamingShareLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _streamingShareLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2740,13 +2790,13 @@ int posStep=1;
     _streamingShareLabel.numberOfLines = 0;
     [_streamView addSubview:_streamingShareLabel];
     
-    _streamingShareView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingShareLabel.frame.origin.y+_streamingShareLabel.frame.size.height,viewW,viewH*155/totalHeight)];
+    _streamingShareView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingShareLabel.frame.origin.y+_streamingShareLabel.frame.size.height,_viewW,_viewH*155/_totalHeight)];
     _streamingShareView.backgroundColor=[UIColor whiteColor];
     [_streamView addSubview:_streamingShareView];
     
-    _streamingObtainLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*20/totalWeight,viewH*16/totalHeight, viewW*67/totalWeight, viewH*32/totalHeight)];
+    _streamingObtainLabel=[[UILabel alloc] initWithFrame:CGRectMake(_viewW*20/_totalWeight,_viewH*16/_totalHeight, _viewW*67/_totalWeight, _viewH*32/_totalHeight)];
     _streamingObtainLabel.text = NSLocalizedString(@"streaminig_obtain", nil);
-    _streamingObtainLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _streamingObtainLabel.font = [UIFont systemFontOfSize: _viewH*20/_totalHeight*0.8];
     _streamingObtainLabel.backgroundColor = [UIColor clearColor];
     _streamingObtainLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _streamingObtainLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2754,18 +2804,18 @@ int posStep=1;
     _streamingObtainLabel.numberOfLines = 0;
     [_streamingShareView addSubview:_streamingObtainLabel];
     
-    _streamingObtainField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*91/totalWeight, viewH*16/totalHeight, viewW-viewW*123/totalWeight, viewH*32/totalHeight)];
+    _streamingObtainField = [[UITextField alloc] initWithFrame:CGRectMake(_viewW*91/_totalWeight, _viewH*16/_totalHeight, _viewW-_viewW*123/_totalWeight, _viewH*32/_totalHeight)];
     _streamingObtainField.placeholder = NSLocalizedString(@"address_live_tips", nil);
-    _streamingObtainField.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
+    _streamingObtainField.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
     _streamingObtainField.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     _streamingObtainField.delegate = self;
     _streamingObtainField.textColor = MAIN_COLOR;
     _streamingObtainField.textAlignment=UITextAlignmentLeft;
     [_streamingShareView addSubview:_streamingObtainField];
     
-    _streamingMannualLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*20/totalWeight,viewH*69/totalHeight, viewW*67/totalWeight, viewH*32/totalHeight)];
+    _streamingMannualLabel=[[UILabel alloc] initWithFrame:CGRectMake(_viewW*20/_totalWeight,_viewH*69/_totalHeight, _viewW*67/_totalWeight, _viewH*32/_totalHeight)];
     _streamingMannualLabel.text = NSLocalizedString(@"streaminig_manual", nil);
-    _streamingMannualLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
+    _streamingMannualLabel.font = [UIFont systemFontOfSize: _viewH*20/_totalHeight*0.8];
     _streamingMannualLabel.backgroundColor = [UIColor clearColor];
     _streamingMannualLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
     _streamingMannualLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2773,9 +2823,9 @@ int posStep=1;
     _streamingMannualLabel.numberOfLines = 0;
     [_streamingShareView addSubview:_streamingMannualLabel];
     
-    _streamingMannualField = [[UITextField alloc] initWithFrame:CGRectMake(viewW*91/totalWeight, viewH*69/totalHeight, viewW-viewW*123/totalWeight, viewH*32/totalHeight)];
+    _streamingMannualField = [[UITextField alloc] initWithFrame:CGRectMake(_viewW*91/_totalWeight, _viewH*69/_totalHeight, _viewW-_viewW*123/_totalWeight, _viewH*32/_totalHeight)];
     _streamingMannualField.placeholder = @"http://";
-    _streamingMannualField.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
+    _streamingMannualField.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
     _streamingMannualField.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     _streamingMannualField.textColor = MAIN_COLOR;
     _streamingMannualField.delegate = self;
@@ -2783,12 +2833,12 @@ int posStep=1;
     [_streamingShareView addSubview:_streamingMannualField];
     
     _streamingShareBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingShareBtn.frame = CGRectMake(viewW*135/totalWeight, viewH*113/totalHeight, viewW*106/totalWeight, viewH*32/totalHeight);
+    _streamingShareBtn.frame = CGRectMake(_viewW*135/_totalWeight, _viewH*113/_totalHeight, _viewW*106/_totalWeight, _viewH*32/_totalHeight);
     [_streamingShareBtn setBackgroundImage:[UIImage imageNamed:@"live stream_address_button_nor@3x.png"] forState:UIControlStateNormal];
     [_streamingShareBtn setBackgroundImage:[UIImage imageNamed:@"live stream_address_button_pre@3x.png"] forState:UIControlStateHighlighted];
     [_streamingShareBtn setTitle: NSLocalizedString(@"streaminig_share", nil) forState: UIControlStateNormal];
     [_streamingShareBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    _streamingShareBtn.titleLabel.font = [UIFont systemFontOfSize: viewH*18/totalHeight*0.8];
+    _streamingShareBtn.titleLabel.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
     _streamingShareBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_streamingShareBtn addTarget:nil action:@selector(_streamingShareBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [_streamingShareView  addSubview:_streamingShareBtn];
@@ -2804,33 +2854,33 @@ int posStep=1;
  * 选择平台弹窗
  */
 -(void)platformViewInit{
-    _choosePlatformView=[[UIView alloc]initWithFrame:CGRectMake(0,viewH,viewW,viewH)];
+    _choosePlatformView=[[UIView alloc]initWithFrame:CGRectMake(0,_viewH,_viewW,_viewH)];
     _choosePlatformView.backgroundColor=[UIColor clearColor];
     _choosePlatformView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutCancelClick)];
     [_choosePlatformView addGestureRecognizer:singleTap];
     [_streamView addSubview:_choosePlatformView];
     
-    _PlatformViewLayout=[[UIView alloc]initWithFrame:CGRectMake(viewW*10/totalWeight,viewH*476/totalHeight,viewW*355/totalWeight,viewH*116/totalHeight)];
-    [[_PlatformViewLayout layer]setCornerRadius:viewW*10/totalWeight];//圆角
+    _PlatformViewLayout=[[UIView alloc]initWithFrame:CGRectMake(_viewW*10/_totalWeight,_viewH*476/_totalHeight,_viewW*355/_totalWeight,_viewH*116/_totalHeight)];
+    [[_PlatformViewLayout layer]setCornerRadius:_viewW*10/_totalWeight];//圆角
     _PlatformViewLayout.backgroundColor=[UIColor whiteColor];
     _PlatformViewLayout.userInteractionEnabled = YES;
     [_choosePlatformView addSubview:_PlatformViewLayout];
     
     for (int i=0; i<4; i++) {
-        UIViewLinkmanTouch *_platformLayoutView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(viewW*13*(i+1)/totalWeight+viewW*70*i/totalWeight,viewH*15/totalHeight,viewW*20/totalWeight+viewH*60/totalHeight,viewH*90/totalHeight)];
+        UIViewLinkmanTouch *_platformLayoutView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*13*(i+1)/_totalWeight+_viewW*70*i/_totalWeight,_viewH*15/_totalHeight,_viewW*20/_totalWeight+_viewH*60/_totalHeight,_viewH*90/_totalHeight)];
         
         _platformLayoutView.tag=i;
         _platformLayoutView.userInteractionEnabled = YES;
         [_PlatformViewLayout addSubview:_platformLayoutView];
         UIImageView *_platformLayoutImg=[[UIImageView alloc]init];
-        _platformLayoutImg.frame = CGRectMake(viewW*10/totalWeight, viewH*5/totalHeight, viewH*60/totalHeight, viewH*60/totalHeight);
+        _platformLayoutImg.frame = CGRectMake(_viewW*10/_totalWeight, _viewH*5/_totalHeight, _viewH*60/_totalHeight, _viewH*60/_totalHeight);
         [_platformLayoutImg setImage:[UIImage imageNamed:@"Youtube@3x.png"]];
         [_platformLayoutView  addSubview:_platformLayoutImg];
         
-        UILabel *_platformLayoutLabel = [[UILabel alloc] initWithFrame:CGRectMake(_platformLayoutImg.frame.origin.x, _platformLayoutImg.frame.origin.y+_platformLayoutImg.frame.size.height+viewH*7/totalHeight, viewH*60/totalHeight, viewH*13/totalHeight)];
+        UILabel *_platformLayoutLabel = [[UILabel alloc] initWithFrame:CGRectMake(_platformLayoutImg.frame.origin.x, _platformLayoutImg.frame.origin.y+_platformLayoutImg.frame.size.height+_viewH*7/_totalHeight, _viewH*60/_totalHeight, _viewH*13/_totalHeight)];
         _platformLayoutLabel.text = NSLocalizedString(@"youtube", nil);
-        _platformLayoutLabel.font = [UIFont systemFontOfSize: viewH*13/totalHeight];
+        _platformLayoutLabel.font = [UIFont systemFontOfSize: _viewH*13/_totalHeight];
         _platformLayoutLabel.backgroundColor = [UIColor clearColor];
         _platformLayoutLabel.textColor = [UIColor colorWithRed:3/255.0 green:3/255.0 blue:3/255.0 alpha:1.0];
         _platformLayoutLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -2877,15 +2927,15 @@ int posStep=1;
     }
     
     UIButton *_platformLayoutCancel=[UIButton buttonWithType:UIButtonTypeCustom];
-    _platformLayoutCancel.frame = CGRectMake(viewW*10/totalWeight, viewH*600/totalHeight, viewW*355/totalWeight, viewH*57/totalHeight);
+    _platformLayoutCancel.frame = CGRectMake(_viewW*10/_totalWeight, _viewH*600/_totalHeight, _viewW*355/_totalWeight, _viewH*57/_totalHeight);
     _platformLayoutCancel.backgroundColor=[UIColor whiteColor];
     [_platformLayoutCancel setTitleColor:[UIColor colorWithRed:67/255.0 green:77/255.0 blue:87/255.0 alpha:1.0]forState:UIControlStateNormal];
     [_platformLayoutCancel setTitleColor:[UIColor lightGrayColor]forState:UIControlStateHighlighted];
-    [[_platformLayoutCancel layer]setCornerRadius:viewW*10/totalWeight];
+    [[_platformLayoutCancel layer]setCornerRadius:_viewW*10/_totalWeight];
     [_platformLayoutCancel setTitle:NSLocalizedString(@"share_cancel", nil) forState:UIControlStateNormal];
     _platformLayoutCancel.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_platformLayoutCancel addTarget:nil action:@selector(_platformLayoutCancelClick) forControlEvents:UIControlEventTouchUpInside];
-    _platformLayoutCancel.titleLabel.font=[UIFont systemFontOfSize:viewH*23/totalHeight*0.8];
+    _platformLayoutCancel.titleLabel.font=[UIFont systemFontOfSize:_viewH*23/_totalHeight*0.8];
     [_choosePlatformView  addSubview:_platformLayoutCancel];
 }
 
@@ -2944,21 +2994,21 @@ int posStep=1;
  * 输入直播地址弹窗
  */
 -(void)inputAddressViewInit{
-    _inputAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,viewH,viewW,viewH)];
+    _inputAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_viewH,_viewW,_viewH)];
     _inputAddressView.backgroundColor=[UIColor clearColor];
     _inputAddressView.userInteractionEnabled = YES;
     //    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_inputAddressViewCancelClick)];
     //    [_inputAddressView addGestureRecognizer:singleTap];
     [_streamView addSubview:_inputAddressView];
     
-    _inputAddressViewLayout=[[UIView alloc]initWithFrame:CGRectMake(0,0,viewW*283/totalWeight,viewH*281/totalHeight)];
-    [[_inputAddressViewLayout layer]setCornerRadius:viewW*10/totalWeight];//圆角
+    _inputAddressViewLayout=[[UIView alloc]initWithFrame:CGRectMake(0,0,_viewW*283/_totalWeight,_viewH*281/_totalHeight)];
+    [[_inputAddressViewLayout layer]setCornerRadius:_viewW*10/_totalWeight];//圆角
     _inputAddressViewLayout.backgroundColor=[UIColor whiteColor];
-    _inputAddressViewLayout.center=CGPointMake(viewW*0.5, viewH*0.5);
+    _inputAddressViewLayout.center=CGPointMake(_viewW*0.5, _viewH*0.5);
     _inputAddressViewLayout.userInteractionEnabled = YES;
     [_inputAddressView addSubview:_inputAddressViewLayout];
     
-    myTextField=[[CAAutoFillTextField alloc]initWithFrame:CGRectMake(viewW*19/totalWeight, viewH*30/totalHeight, viewW*246/totalWeight, viewH*40/totalHeight)];
+    myTextField=[[CAAutoFillTextField alloc]initWithFrame:CGRectMake(_viewW*19/_totalWeight, _viewH*30/_totalHeight, _viewW*246/_totalWeight, _viewH*40/_totalHeight)];
     myTextField.userInteractionEnabled=YES;
     [_inputAddressViewLayout addSubview:myTextField];
     
@@ -2972,13 +3022,13 @@ int posStep=1;
     [myTextField setDelegate:self];
     
     UIView *line=[[UIView alloc]init];
-    line.frame=CGRectMake(viewW*19/totalWeight,viewH*247/totalHeight,viewW*246/totalWeight,1);
+    line.frame=CGRectMake(_viewW*19/_totalWeight,_viewH*247/_totalHeight,_viewW*246/_totalWeight,1);
     line.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_inputAddressViewLayout addSubview:line];
     
     UIButton *_clearBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _clearBtn.backgroundColor=[UIColor whiteColor];
-    _clearBtn.frame = CGRectMake(0, 0, viewH*44/totalHeight, viewH*44/totalHeight);
+    _clearBtn.frame = CGRectMake(0, 0, _viewH*44/_totalHeight, _viewH*44/_totalHeight);
     _clearBtn.center=CGPointMake(_inputAddressViewLayout.frame.size.width*0.5, line.center.y);
     [_clearBtn setImage:[UIImage imageNamed:@"Clear the record@3x.png"] forState:UIControlStateNormal];
     //[_clearBtn setTitle:NSLocalizedString(@"clear_history", nil) forState:UIControlStateNormal];
@@ -3064,14 +3114,14 @@ int posStep=1;
                               delay:0.0
                             options:0
                          animations:^{
-                             [infoView setFrame:CGRectMake(0, viewH+infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
+                             [infoView setFrame:CGRectMake(0, _viewH+infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
                          }
                          completion:^(BOOL finished) {
                              [UIView animateWithDuration:0.1
                                                    delay:0.0
                                                  options:UIViewAnimationCurveEaseIn
                                               animations:^{
-                                                  [infoView setFrame:CGRectMake(0, viewH-infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
+                                                  [infoView setFrame:CGRectMake(0, _viewH-infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
                                               }
                                               completion:^(BOOL finished) {
                                                   infoView.backgroundColor=[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
@@ -3106,7 +3156,7 @@ int posStep=1;
  */
 
 -(void)_streamingStartBtnClick{
-    if(_isLiving==0){
+    if(_livingState==0){
         if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
              ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
             [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
@@ -3136,19 +3186,19 @@ int posStep=1;
 }
 
 -(void)_streamingPauseBtnClick{
-    if (_isLiving==0) {
+    if (_livingState==0) {
         [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
     }
-    else if (_isLiving==1) {//暂停推流
+    else if (_livingState==1) {//暂停推流
         [self setPauseStreamStatus];
     }
-    else if (_isLiving==2) {//重新开始推流
+    else if (_livingState==2) {//重新开始推流
         [self setStartStreamStatus];
     }
 }
 
 -(void)_streamingStopBtnClick{
-    if (_isLiving==0) {
+    if (_livingState==0) {
         [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
     }
     else{
@@ -3163,30 +3213,30 @@ int posStep=1;
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        if (((view.center.x + translation.x)>=l_control_pos)&&((view.center.x + translation.x)<=r_control_pos)){
+        if (((view.center.x + translation.x)>=_l_control_pos)&&((view.center.x + translation.x)<=_r_control_pos)){
             [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
         }
     }
     if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
         NSLog(@"UIGestureRecognizerStateEnded");
-        if (((view.center.x)>l_control_pos)
-            &&(view.center.x)<=(l_control_pos+(c_control_pos-l_control_pos)/2))//停止推流
+        if (((view.center.x)>_l_control_pos)
+            &&(view.center.x)<=(_l_control_pos+(_c_control_pos-_l_control_pos)/2))//停止推流
         {
             [self setStopStreamStatus];
             _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
-            [view setCenter:(CGPoint){l_control_pos, view.center.y}];
+            [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
             
             [self closeLivingSession];
             _isExit=YES;
         }
-        else if (((view.center.x)>(l_control_pos+(c_control_pos-l_control_pos)/2))&&(view.center.x)<=(c_control_pos+(r_control_pos-c_control_pos)/2))//开始推流
+        else if (((view.center.x)>(_l_control_pos+(_c_control_pos-_l_control_pos)/2))&&(view.center.x)<=(_c_control_pos+(_r_control_pos-_c_control_pos)/2))//开始推流
         {
-            if(_isLiving==0){
+            if(_livingState==0){
                 if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
                      ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
-                    [view setCenter:(CGPoint){l_control_pos, view.center.y}];
+                    [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
                     [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
                     [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
                     return;
@@ -3213,14 +3263,14 @@ int posStep=1;
                 [self setStartStreamStatus];
             }
             _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_star button@3x.png"];
-            [view setCenter:(CGPoint){c_control_pos, view.center.y}];
+            [view setCenter:(CGPoint){_c_control_pos, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
         }
-        else if (((view.center.x)>(c_control_pos+(r_control_pos-c_control_pos)/2))&&(view.center.x)<=r_control_pos)//暂停推流
+        else if (((view.center.x)>(_c_control_pos+(_r_control_pos-_c_control_pos)/2))&&(view.center.x)<=_r_control_pos)//暂停推流
         {
-            if (_isLiving==0) {
+            if (_livingState==0) {
                 [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
-                [view setCenter:(CGPoint){l_control_pos, view.center.y}];
+                [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
                 [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
                 _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
                 _streamStatusImg.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
@@ -3228,7 +3278,7 @@ int posStep=1;
             else{
                 [self setPauseStreamStatus];
                 _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_pause button@3x.png"];
-                [view setCenter:(CGPoint){r_control_pos, view.center.y}];
+                [view setCenter:(CGPoint){_r_control_pos, view.center.y}];
                 [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
             }
         }
@@ -3243,7 +3293,7 @@ int posStep=1;
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        if (((view.center.x + translation.x)>=3*viewW/8)&&((view.center.x + translation.x)<=5*viewW/8)){
+        if (((view.center.x + translation.x)>=3*_viewW/8)&&((view.center.x + translation.x)<=5*_viewW/8)){
             [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
         }

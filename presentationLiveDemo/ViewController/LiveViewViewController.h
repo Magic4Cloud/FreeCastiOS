@@ -108,5 +108,5 @@
     CAAutoFillTextField *myTextField;
 }
 
-@property (nonatomic) BOOL isLiveView;//true:Live View  false:Streaming View
+@property (nonatomic,assign) BOOL isLiveView;//true:Live View  false:Streaming View
 @end
