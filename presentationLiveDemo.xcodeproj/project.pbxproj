@@ -5638,8 +5638,8 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4e6faebf-c495-468d-a830-dfe6aa84245b";
-				PROVISIONING_PROFILE_SPECIFIER = "freestream adhoc";
+				PROVISIONING_PROFILE = "96926e49-689c-45eb-8843-99258543cd1a";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;

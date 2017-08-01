@@ -2054,6 +2054,7 @@ CGFloat iy ;
                     if (_session) {
                         [_session stopLive];
                     }
+                    
                 }];
                 [self setStopStreamStatus];
             });
