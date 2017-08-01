@@ -1082,8 +1082,10 @@ bool _modifyOK=YES;
     NSLog(@"_videoModifyBtnClick");
     _modifyOK=YES;
     //set resolution
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
-    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
+    NSString * urlStr = [NSString stringWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
+    
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:urlStr andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1108,8 +1110,10 @@ bool _modifyOK=YES;
     if ((int)(qualityValue*100)%100!=0) {
         qualityValue=qualityValue+1;
     }
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_enc_quality&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)qualityValue];
-    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    
+    urlStr = [NSString stringWithFormat:@"http://%@:%d/server.command?command=set_enc_quality&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)qualityValue];
+    
+    http_request = [HttpRequest HTTPRequestWithUrl:urlStr andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1130,12 +1134,14 @@ bool _modifyOK=YES;
     }
     
     //set fps
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_max_fps&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoFrameRateSlider.value];
-    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    urlStr = [NSString stringWithFormat:@"http://%@:%d/server.command?command=set_max_fps&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoFrameRateSlider.value];
+    
+    http_request = [HttpRequest HTTPRequestWithUrl:urlStr andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
         fps=[self parseJsonString:http_request.ResponseString];
+        NSLog(@".........fps = %@ ",fps);
         if ([fps compare:@"0"]!=NSOrderedSame) {
             _modifyOK=NO;
             dispatch_async(dispatch_get_main_queue(),^ {

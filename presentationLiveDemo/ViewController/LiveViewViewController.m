@@ -7,55 +7,56 @@
 //
 
 #import "LiveViewViewController.h"
-#import "CommanParameter.h"
-#import "MBProgressHUD.h"
-#import "AppDelegate.h"
-#import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
-#import <netdb.h>
-#import <sys/socket.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import <netinet/in.h>
-#import <arpa/inet.h>
-#import "MBProgressHUD.h"
-#import "HttpRequest.h"
-#include "LFLiveStreamInfo.h"
-#import "LFLiveKit.h"
-#import "LFLiveSessionWithPicSource.h"
-#import "PicToBufferToPic.h"
-#import "Rak_Lx52x_Device_Control.h"
-#include <ifaddrs.h>
-#include <net/if.h>
-#import "AlbumObject.h"
+#import <netdb.h>
+#import <net/if.h>
+#import <sys/socket.h>
 #import <sys/sockio.h>
 #import <sys/ioctl.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+
+#import <arpa/inet.h>
+#import <ifaddrs.h>
+//Controllers
+#import "PasswordViewController.h"
+#import "TTPlatformSelectViewController.h"
+#import "NetworkViewController.h"
+#import "AudioViewController.h"
 #import "BrowseViewController.h"
 #import "SubtitleViewController.h"
 #import "BannerViewController.h"
 #import "PauseScreenViewController.h"
-#import "AudioViewController.h"
-#import <SystemConfiguration/CaptiveNetwork.h>
-#import "NetworkViewController.h"
-
-#import "TTPlatformSelectViewController.h"
-
+//others
+#import "AlbumObject.h"
 #import "TTCoreDataClass.h"
-#import "TTPlatformSelectViewController.h"
-
-#import "PasswordViewController.h"
-
-
 #import "TTSearchDeviceClass.h"
+#import "CommanParameter.h"
+#import "MBProgressHUD.h"
+#import "HttpRequest.h"
+#import "LFLiveStreamInfo.h"
+#import "LFLiveKit.h"
+#import "LFLiveSessionWithPicSource.h"
+#import "PicToBufferToPic.h"
+#import "Rak_Lx52x_Device_Control.h"
+//#import "AppDelegate.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
-int _width=1280;
-int _height=720;
+
+static NSInteger kWidth = 1280;
+static NSInteger kHeight = 720;
+static const NSString *video_type = @"h264";
+
 Rak_Lx52x_Device_Control *_device_Scan;
+
 NSMutableArray *video_timesamp;
 NSString* _userid = nil;
 NSString* _userip = nil;
 NSString* _username = nil;
 NSString* _userpassword = nil;
 NSTimer* CheckVideoPlay = nil;
+NSTimer* timer;
 bool audioisEnable = YES;
 bool _isExit=NO;
 bool _isUser=NO;
@@ -66,10 +67,9 @@ enum ButtonEnable{
 };
 int scanCount=0;
 int playCount=0;
-NSString *video_type=@"h264";
+
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
-NSTimer* timer;
 
 /**
  摄像头获取源
@@ -87,20 +87,20 @@ typedef NS_ENUM(NSInteger, CameraSource) {
 
 @property  bool videoisplaying;
 
-@property(strong, nonatomic) LFLiveSessionWithPicSource *session;
+@property (nonatomic, strong) LFLiveSessionWithPicSource *session;
 
-@property (nonatomic, strong) PlatformModel * selectedPlatformModel;
+@property (nonatomic, strong) PlatformModel *selectedPlatformModel;
 /**
  系统摄像头 展示view
  */
-@property (nonatomic, strong) UIView * livingPreView;
+@property (nonatomic, strong) UIView *livingPreView;
 
 /**
  视频数据来源
  */
 @property (nonatomic, assign) CameraSource liveCameraSource;
 
-@property (nonatomic, strong) UIButton * platformButton;
+@property (nonatomic, strong) UIButton *platformButton;
 
 @end
 
@@ -160,11 +160,11 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor blackColor];
-    viewH=self.view.frame.size.width;
-    viewW=self.view.frame.size.height;
-    totalWeight=64+71+149+149+149+80+5;//各部分比例
-    totalHeight=375;//各部分比例
-    NSLog(@"viewH=%f,viewW=%f",viewH,viewW);
+    viewH = self.view.frame.size.width;
+    viewW = self.view.frame.size.height;
+    totalWeight = 64+71+149+149+149+80+5;//各部分比例
+    totalHeight = 375;//各部分比例
+    
     _userip = @"192.168.100.1";
     _username = @"admin";
     _userpassword = @"admin";
@@ -175,22 +175,22 @@ typedef NS_ENUM(NSInteger, CameraSource) {
     _isBroswer=NO;
     self.videoisplaying = NO;
     _recordUrl=[[NSMutableArray alloc]init];
-    _subtitleViewController = [[SubtitleViewController alloc] init];
-    _bannerViewController = [[BannerViewController alloc] init];
-    _audioViewController = [[AudioViewController alloc] init];
-    _networkViewController = [[NetworkViewController alloc] init];
-    _recordUrl=[self Get_Urls:@"STREAMURL"];
+    _recordUrl = [self Get_Urls:@"STREAMURL"];
     _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
+    
+    _subtitleViewController = [[SubtitleViewController alloc] init];
+    _bannerViewController   = [[BannerViewController alloc] init];
+    _audioViewController    = [[AudioViewController alloc] init];
+    _networkViewController  = [[NetworkViewController alloc] init];
+    
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     [self prefersStatusBarHidden:YES];
-    
     
     //添加系统相机展示view
     _livingPreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     _livingPreView.backgroundColor = [UIColor clearColor];
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
     [_livingPreView addGestureRecognizer:singleTap];
-    
     [self.view addSubview:_livingPreView];
     _livingPreView.hidden = YES;
     
@@ -314,12 +314,13 @@ typedef NS_ENUM(NSInteger, CameraSource) {
  *  直播界面初始化
  */
 - (void)liveViewInit{
-    viewH=self.view.frame.size.width;
-    viewW=self.view.frame.size.height;
-    if (viewH>viewW) {
-        viewW=self.view.frame.size.width;
-        viewH=self.view.frame.size.height;
+    viewH = self.view.frame.size.width;
+    viewW = self.view.frame.size.height;
+    if (viewH > viewW) {
+        viewW = self.view.frame.size.width;
+        viewH = self.view.frame.size.height;
     }
+    
     totalWeight=64+71+149+149+149+80+5;//各部分比例
     totalHeight=375;//各部分比例
     uploadTimer=nil;
@@ -939,7 +940,7 @@ bool _isTakePhoto=NO;
  */
 -(void)_configureBtnClick
 {
-    _isConfig=YES;
+//    _isConfig=YES;
     _isBroswer=YES;
     
     PasswordViewController * v = [[PasswordViewController alloc] init];
@@ -950,18 +951,33 @@ bool _isTakePhoto=NO;
     v.changeVideoNeedReplayBlock = ^()
     {
 //        NSLog(@"改变了参数  等5秒重新播放");
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-//            NSLog(@"重新播放 urlString：%@",urlString);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+            NSLog(@"重新播放 urlString：%@",urlString);
 //            [self.videoView removeFromSuperview];
 //            [self.videoView delegate:nil];
 //            self.videoView = nil;
-//            [self.videoView play:urlString useTcp:NO];
-//            [self.videoView sound:audioisEnable];
-//            [self.videoView startGetYUVData:YES];
-//            [self.videoView startGetAudioData:YES];
-//            [self.videoView startGetH264Data:YES];
-//        });
+//            
+//            
+//            _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+//            _videoView.userInteractionEnabled = YES;
+//            
+//            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+//            [_videoView addGestureRecognizer:singleTap];
+//            _videoView.backgroundColor = [UIColor blackColor];
+//            
+//            [_videoView set_log_level:4];
+//            [_videoView sound:YES];
+//            [_videoView delegate:self];
+//            [self.view insertSubview:_videoView atIndex:0];
+
+            
+            [self.videoView play:urlString useTcp:NO];
+            [self.videoView sound:audioisEnable];
+            [self.videoView startGetYUVData:YES];
+            [self.videoView startGetAudioData:YES];
+            [self.videoView startGetH264Data:YES];
+        });
     };
     
     [self.navigationController pushViewController:v animated:YES];
@@ -1350,24 +1366,24 @@ int valOrientation;
     if (_isLiveView){
         //[self addBannerSubtitle];
         
-        if ((height!=_height)||(width!=_width)) {
-            _height=height;
-            _width=width;
-            NSLog(@"_width=%d,height=%d",_width,_height);
+        if ((height!=kHeight)||(width!=kWidth)) {
+            kHeight=height;
+            kWidth=width;
+            NSLog(@"_width=%d,height=%d",kWidth,kHeight);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (viewH>viewW) {
                     temp=viewW;
                     tempviewW=viewH;
                     tempviewH=temp;
                 }
-                if (tempviewH<tempviewW*_height/_width) {
-                    _videoView.frame =CGRectMake(0, 0, tempviewH*_width/_height, tempviewH);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*_width/_height, tempviewH)];
+                if (tempviewH<tempviewW*kHeight/kWidth) {
+                    _videoView.frame =CGRectMake(0, 0, tempviewH*kWidth/kHeight, tempviewH);
+                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewH*kWidth/kHeight, tempviewH)];
                     NSLog(@"w3=%f,h3=%f",_videoView.frame.size.width,_videoView.frame.size.height);
                 }
                 else{
-                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*_height/_width);
-                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*_height/_width)];
+                    _videoView.frame =CGRectMake(0, 0, tempviewW, tempviewW*kHeight/kWidth);
+                    [_videoView setView1Frame:CGRectMake(0, 0, tempviewW, tempviewW*kHeight/kWidth)];
                     NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
                 }
                 _videoView.center=CGPointMake(tempviewW*0.5, tempviewH*0.5);
