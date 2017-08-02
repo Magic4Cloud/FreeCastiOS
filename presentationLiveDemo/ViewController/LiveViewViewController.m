@@ -44,9 +44,7 @@
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
-/**
- 摄像头获取源
- */
+/** 摄像头获取源 */
 typedef NS_ENUM(NSInteger, CameraSource) {
     ExternalDevices  = 0 ,   // 外接硬件设备
     IphoneBackCamera = 1 ,  // 手机后置摄像头
@@ -67,46 +65,38 @@ static NSInteger kWidth = 1280;
 static NSInteger kHeight = 720;
 static NSInteger scanCount = 0;
 static NSInteger playCount = 0;
-
 static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 
-
-NSString* _userid = nil;
-NSString* _userip = nil;
-NSString* _username = nil;
-NSString* _userpassword = nil;
-NSTimer* CheckVideoPlay = nil;
-NSTimer* timer;
-
-
-bool audioisEnable = YES;
-bool _isExit=NO;
-bool _isUser=NO;
-bool play_success=NO;
-
-
-
 @interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
 
 @property (nonatomic, strong) LX520View * videoView;
-@property (nonatomic, strong) Rak_Lx52x_Device_Control * device_Scan;//搜索manager
+
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
 @property (nonatomic, strong) LFLiveSessionWithPicSource *session;
 
+@property (nonatomic, strong) SubtitleViewController *subtitleViewController;
+@property (nonatomic, strong) BannerViewController   *bannerViewController;
+@property (nonatomic, strong) AudioViewController    *audioViewController;
+@property (nonatomic, strong) NetworkViewController  *networkViewController;
+@property (nonatomic, strong) UIAlertView *waitAlertView;
 @property (nonatomic, strong) UIButton *platformButton;
 /** 系统摄像头 展示view */
 @property (nonatomic, strong) UIView *livingPreView;
 /** 视频数据来源 */
 @property (nonatomic, assign) CameraSource liveCameraSource;
 @property (nonatomic, assign) LivingState livingState;
-
-@property (nonatomic, strong) NSMutableArray *video_timesamp;//时间戳数组
 @property (nonatomic, strong) AlbumObject *albumObject;
 
 @property (nonatomic, strong) NSTimer *uploadTimer;
-@property (nonatomic, strong) UIAlertView *waitAlertView;
+@property (nonatomic, strong) NSTimer *checkVideoisPlayTimer;
+@property (nonatomic, strong) NSTimer *updateUITimer;
+
+@property (nonatomic, copy) NSString *userid;
+@property (nonatomic, copy) NSString *userip;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *userpassword;
 
 @property (nonatomic, assign) BOOL isIphoneAudio;
 @property (nonatomic, assign) BOOL videoisplaying;
@@ -115,6 +105,10 @@ bool play_success=NO;
 @property (nonatomic, assign) BOOL isBroswer;
 @property (nonatomic, assign) BOOL isShowBanner;
 @property (nonatomic, assign) BOOL isShowSubtitle;
+@property (nonatomic, assign) BOOL audioisEnable;
+@property (nonatomic, assign) BOOL isExit;
+@property (nonatomic, assign) BOOL isUser;
+@property (nonatomic, assign) BOOL play_success;
 
 @property (nonatomic, assign) CGFloat viewH;
 @property (nonatomic, assign) CGFloat viewW;
@@ -134,6 +128,7 @@ bool play_success=NO;
 @property (nonatomic, assign) NSInteger subtitle_duration;
 @property (nonatomic, assign) NSInteger subtitle_interval;
 
+@property (nonatomic, strong) NSMutableArray *video_timesamp;//时间戳数组
 //** 推流相关参数 */
 @property (nonatomic, strong) NSMutableArray *recordUrl;
 @property (nonatomic, assign) CGFloat l_control_pos;
@@ -147,52 +142,6 @@ bool play_success=NO;
 @end
 
 @implementation LiveViewViewController
-{
-    SubtitleViewController *_subtitleViewController;
-    BannerViewController   *_bannerViewController;
-    AudioViewController    *_audioViewController;
-    NetworkViewController  *_networkViewController;
-    
-//    UIAlertView *_waitAlertView;
-//    AlbumObject *_albumObject;
-//    BOOL _isPlaying;
-//    BOOL _isConfig;
-//    BOOL _isBroswer;
-//    CGFloat _viewH;
-//    CGFloat _viewW;
-//    CGFloat _temp;
-//    CGFloat _tempviewW;
-//    CGFloat _tempviewH;
-//    CGFloat _totalWeight;//各部分比例
-//    CGFloat _totalHeight;
-//    int _livingState;//0:停止 1:直播中 2:暂停
-
-//    NSTimer *_uploadTimer;
-//    int _count_duration;
-//    int _count_interval;
-//    int _duration;
-//    int _interval;
-////    float _imgAlpha;
-//    int _subtitle_count_duration;
-//    int _subtitle_count_interval;
-//    int _subtitle_duration;
-//    int _subtitle_interval;
-    
-//    BOOL _isShowBanner;
-//    BOOL _isShowSubtitle;
-    
-    //推流相关参数
-//    NSString* url;
-//    CGFloat _l_control_pos;
-//    CGFloat _c_control_pos;
-//    CGFloat _r_control_pos;
-//    NSMutableArray *_recordUrl;
-    
-//    NSString *_resolution;
-//    NSString *_fps;
-//    NSString *_quality;
-}
-
 
 - (NSMutableArray *)video_timesamp{
     if (!_video_timesamp) {
@@ -205,11 +154,11 @@ bool play_success=NO;
 - (void)viewDidLoad {
     //[self _scaleBtnClick:1];
     [super viewDidLoad];
-    
+    [self addApplicationActiveNotifications];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor blackColor];
+    
     _viewH = self.view.frame.size.width;
     _viewW = self.view.frame.size.height;
     _totalWeight = 64+71+149+149+149+80+5;//各部分比例
@@ -218,7 +167,7 @@ bool play_success=NO;
     _userip = @"192.168.100.1";
     _username = @"admin";
     _userpassword = @"admin";
-    audioisEnable=YES;
+    _audioisEnable=YES;
     _isExit=NO;
     _isUser=NO;
     _isConfig=NO;
@@ -226,7 +175,6 @@ bool play_success=NO;
     self.videoisplaying = NO;
     _recordUrl=[[NSMutableArray alloc]init];
     _recordUrl = [self Get_Urls:@"STREAMURL"];
-    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
     
     _subtitleViewController = [[SubtitleViewController alloc] init];
     _bannerViewController   = [[BannerViewController alloc] init];
@@ -234,6 +182,7 @@ bool play_success=NO;
     _networkViewController  = [[NetworkViewController alloc] init];
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+    
     [self prefersStatusBarHidden:YES];
     
     //添加系统相机展示view
@@ -246,23 +195,20 @@ bool play_success=NO;
     
     [self liveViewInit];
     
-    [self streamViewInit];
-    
-    if (_isLiveView) {
-        _streamView.hidden=YES;
-        self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
-    }else{
-        _streamView.hidden=NO;
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-        [self prefersStatusBarHidden:YES];
-    }
-    
-    
-    
-    if (play_success==NO){
+    self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+//    }else{
+//        _streamView.hidden=NO;
+//        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+//        [self prefersStatusBarHidden:YES];
+//    }
+//    
+    if (_play_success==NO){
         [self scanDevice];
     }
+    
     _liveCameraSource = ExternalDevices;
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -316,6 +262,28 @@ bool play_success=NO;
     }
 }
 
+- (void)addApplicationActiveNotifications {
+    // app从后台进入前台都会调用这个方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    // 添加检测app进入后台的观察者
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
+
+}
+
+- (void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationBecomeActive {
+    
+    NSLog(@"----------进入前台");
+}
+
+- (void)applicationEnterBackground {
+    [_videoView stop];
+    NSLog(@"----------进入后台");
+}
 
 - (void)getSelectedPlatform
 {
@@ -361,19 +329,21 @@ bool play_success=NO;
     // Dispose of any resources that can be recreated.
     NSLog(@"---------receiceMemoryWarning.....");
 }
-/**
- *  直播界面初始化
- */
-- (void)liveViewInit{
+
+
+- (void)getRightViewHAndViewWSize {
     _viewH = self.view.frame.size.width;
     _viewW = self.view.frame.size.height;
     if (_viewH > _viewW) {
         _viewW = self.view.frame.size.width;
         _viewH = self.view.frame.size.height;
     }
-    
+}
+
+- (void)setUserInterfaceButtonsAndViews {
     _totalWeight=64+71+149+149+149+80+5;//各部分比例
     _totalHeight=375;//各部分比例
+    
     _uploadTimer=nil;
     _count_duration=0;
     _count_interval=0;
@@ -574,8 +544,8 @@ bool play_success=NO;
     _onliveLabel.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
     _onliveLabel.backgroundColor = [UIColor clearColor];
     _onliveLabel.textColor = [UIColor whiteColor];
-    _onliveLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _onliveLabel.textAlignment = UITextAlignmentLeft;
+    _onliveLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _onliveLabel.textAlignment = NSTextAlignmentLeft;
     _onliveLabel.numberOfLines = 0;
     [_statusBg addSubview:_onliveLabel];
     
@@ -584,25 +554,36 @@ bool play_success=NO;
     _recordTimeLabel.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
     _recordTimeLabel.backgroundColor = [UIColor clearColor];
     _recordTimeLabel.textColor = [UIColor redColor];
-    _recordTimeLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _recordTimeLabel.textAlignment=UITextAlignmentRight;
+    _recordTimeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _recordTimeLabel.textAlignment = NSTextAlignmentRight;
     _recordTimeLabel.numberOfLines = 0;
     _recordTimeLabel.hidden=YES;
     [self.view addSubview:_recordTimeLabel];
+}
+
+/**
+ *  直播界面初始化
+ */
+- (void)liveViewInit{
+    [self getRightViewHAndViewWSize];
+
+    [self setUserInterfaceButtonsAndViews];
+    
     [self hiddenStatus];
+    
     if (_isLiveView){
         [self startActivityIndicatorView];
-        CheckVideoPlay = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(CheckVideoPlayTimer) userInfo:nil repeats:YES];
+        _checkVideoisPlayTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(CheckVideoPlayTimer) userInfo:nil repeats:YES];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             scanCount=0;
-            timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
+            _updateUITimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
         });
     }
 }
 
 /**
- *  未播放隐藏状态栏
+ *  未播放隐藏topview状态栏
  */
 - (void)hiddenStatus
 {
@@ -751,15 +732,13 @@ bool VideoRecordIsEnable = NO;
 }
 
 
-/**
- *  返回上个界面
- */
+/** 返回上个界面*/
 -(void)back{
     NSLog(@"back");
     _isExit=YES;
-    if (timer) {
-        [timer invalidate];
-        timer = nil;
+    if (_updateUITimer) {
+        [_updateUITimer invalidate];
+        _updateUITimer = nil;
     }
     if (_uploadTimer!=nil){
         [_uploadTimer invalidate];
@@ -778,9 +757,9 @@ bool VideoRecordIsEnable = NO;
             _recordTimeLabel.hidden=YES;
         }
         
-        if (CheckVideoPlay) {
-            [CheckVideoPlay invalidate];
-            CheckVideoPlay = nil;
+        if (_checkVideoisPlayTimer) {
+            [_checkVideoisPlayTimer invalidate];
+            _checkVideoisPlayTimer = nil;
         }
     }
     
@@ -791,7 +770,7 @@ bool VideoRecordIsEnable = NO;
     }
     
     self.videoisplaying = NO;
-    play_success=NO;
+    _play_success=NO;
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -907,7 +886,7 @@ bool _isTakePhoto=NO;
  */
 #pragma mark - 录像
 -(void)_recordBtnClick{
-    if (!play_success) {
+    if (!_play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
         return;
     }
@@ -1023,7 +1002,7 @@ bool _isTakePhoto=NO;
 
             
             [self.videoView play:urlString useTcp:NO];
-            [self.videoView sound:audioisEnable];
+            [self.videoView sound:_audioisEnable];
             [self.videoView startGetYUVData:YES];
             [self.videoView startGetAudioData:YES];
             [self.videoView startGetH264Data:YES];
@@ -1049,7 +1028,7 @@ bool _isTakePhoto=NO;
     }
     else
     {
-        if (!play_success)
+        if (!_play_success)
         {
             [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
             return;
@@ -1058,7 +1037,7 @@ bool _isTakePhoto=NO;
         //RAK设备
         if(_livingState==0)
         {
-            _isExit=NO;
+            _isExit = NO;
             [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
         }
         else
@@ -1169,6 +1148,8 @@ int valOrientation;
         _audioViewController.ip=_userip;
         _networkViewController.ip=_userip;
         //[self showAllTextDialog:_userip];
+        
+        
         NSLog(@"user ifo:id=%@ username=%@ userpassword=%@",_userid,_username,_userpassword);
         if (!_isLiveView){
             dispatch_async(dispatch_get_main_queue(),^ {
@@ -1184,7 +1165,7 @@ int valOrientation;
         
         NSLog(@"start play==%@",urlString);
         [self.videoView play:urlString useTcp:NO];
-        [self.videoView sound:audioisEnable];
+        [self.videoView sound:_audioisEnable];
         [self.videoView startGetYUVData:YES];
         [self.videoView startGetAudioData:YES];
         [self.videoView startGetH264Data:YES];
@@ -1211,7 +1192,7 @@ int valOrientation;
                 [self stopActivityIndicatorView];
                 _session = [self getSessionWithSystemCamera];
                 _livingPreView.hidden = NO;
-                play_success = YES;
+                _play_success = YES;
                 _liveCameraSource = IphoneBackCamera;
 
             } action3Handler:^(UIAlertAction *action) {
@@ -1309,17 +1290,17 @@ int valOrientation;
     switch (state) {
         case 0: //STATE_IDLE
         {
-            play_success = NO;
+            _play_success = NO;
             break;
         }
         case 1: //STATE_PREPARING
         {
-            play_success = NO;
+            _play_success = NO;
             break;
         }
         case 2: //STATE_PLAYING
         {
-            play_success = YES;
+            _play_success = YES;
             self.videoisplaying=YES;
             if (_isLiveView) {
                 [self enableControl];
@@ -1338,7 +1319,7 @@ int valOrientation;
         }
         case 3: //STATE_STOPPED
         {
-            play_success = NO;
+            _play_success = NO;
             break;
             
         }
@@ -1464,7 +1445,7 @@ int valOrientation;
         
     }
     else{
-        if (play_success ==NO){
+        if (_play_success ==NO){
             ActivityIndicatorView.hidden=YES;
             if (_viewW<_viewH) {
                 _tipLabel.center=CGPointMake(_viewH*0.5, _tipLabel.center.y);
@@ -1501,7 +1482,7 @@ int valOrientation;
     }
     _isPlaying=NO;
     
-    if (play_success) {
+    if (_play_success) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             int netFlow = [self checkNetworkflow];
@@ -1509,12 +1490,12 @@ int valOrientation;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (flow>0) {
                     if(flow<20){
-                        [self stopActivityIndicatorView];
+//                        [self stopActivityIndicatorView];
                         _tipLabel.text=NSLocalizedString(@"no_video", nil);
                         _tipLabel.hidden=NO;
                     }else{
                         _tipLabel.hidden=YES;
-                        [self stopActivityIndicatorView];
+//                        [self stopActivityIndicatorView];
                     }
                 }
             });
@@ -1523,63 +1504,8 @@ int valOrientation;
     scanCount++;
 }
 
-/**
- *  视频连接动画
- */
-CGFloat ix ;
-CGFloat iy ;
--(void)startActivityIndicatorView{
-    if (ActivityIndicatorViewisenable == YES) {
-        return;
-    }
-    NSLog(@"startActivityIndicatorView");
-    ix = self.view.frame.origin.x+(_viewW/2-25);
-    iy = self.view.frame.origin.y+(_viewH/2-25);
-    //    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(ix-90, iy, 50, 50)];
-    ActivityIndicatorView =[[UIImageView alloc] initWithFrame:CGRectMake(_viewW*304/_totalWeight,129*_viewH/_totalHeight, _viewW*58.5/_totalWeight, _viewW*58.5/_totalWeight)];
-    
-    ActivityIndicatorView.image=[UIImage imageNamed:@"logo_148"];
-    //    CABasicAnimation* rotationAnimation;
-    //    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    //    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
-    //    rotationAnimation.duration = 0.5;
-    //    rotationAnimation.cumulative = YES;
-    //    rotationAnimation.repeatCount = 10000000000000;
-    //    [ActivityIndicatorView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"]
-    ;
-    [self.view addSubview:ActivityIndicatorView];
-    ActivityIndicatorViewisenable = YES;
-    
-    //    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(ix-30,iy, viewW, 50)];
-    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(_viewW*295/_totalWeight,202.5*_viewH/_totalHeight, _viewW*79.5/_totalWeight, _viewH*12.5/_totalHeight)];
-    //    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
-    _tipLabel.text = @"Connecting…";
-    _tipLabel.textColor = MAIN_COLOR;
-    _tipLabel.font = [UIFont systemFontOfSize:12.5];
-    _tipLabel.adjustsFontSizeToFitWidth = YES;
-    _tipLabel.textAlignment = NSTextAlignmentLeft;
-    _tipLabel.numberOfLines = 1;
-    _tipLabel.backgroundColor=[UIColor clearColor]; //可以去掉背景色
-    [self.view addSubview:_tipLabel];
-}
 
--(void)stopActivityIndicatorView{
-    if (ActivityIndicatorViewisenable == NO) {
-        return;
-    }
-    NSLog(@"stopActivityIndicatorView");
-    dispatch_async(dispatch_get_main_queue(),^ {
-        if (_tipLabel) {
-            [_tipLabel removeFromSuperview];
-        }
-        
-        if (ActivityIndicatorView) {
-            [ActivityIndicatorView removeFromSuperview];
-            
-        }
-    });
-    ActivityIndicatorViewisenable = NO;
-}
+
 
 /**
  *  监测流量判断是否接入相机并作相应的提示
@@ -2434,561 +2360,6 @@ int posStep=1;
  *                                      推流界面相关
  ******************************************************************************************/
 
-/**
- *  推流界面初始化
- */
-- (void)streamViewInit
-{
-    _viewH=self.view.frame.size.height;
-    _viewW=self.view.frame.size.width;
-    if (_viewH>_viewW) {
-        
-    }
-    else{
-        _viewW=self.view.frame.size.height;
-        _viewH=self.view.frame.size.width;
-    }
-    NSLog(@"viewW1=%f,viewH1=%f",_viewW,_viewH);
-    _totalHeight=64+71+149+149+149+80+5;//各部分比例
-    _totalWeight=375;//各部分比例
-    
-    _streamView=[[UIView alloc]init];
-    _streamView.frame=CGRectMake(0, 0, _viewW, _viewH);
-    _streamView.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    _streamView.userInteractionEnabled=YES;
-    [self.view addSubview:_streamView];
-    
-    //顶部
-    _topBgStream=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
-    _topBgStream.frame = CGRectMake(0, 0, _viewW, _viewH*64/_totalHeight);
-    _topBgStream.contentMode=UIViewContentModeScaleToFill;
-    [_streamView addSubview:_topBgStream];
-    
-    _backBtnStream=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtnStream.frame = CGRectMake(0, diff_top, _viewH*44/_totalHeight, _viewH*44/_totalHeight);
-    [_backBtnStream setImage:[UIImage imageNamed:@"back_nor@3x.png"] forState:UIControlStateNormal];
-    [_backBtnStream setImage:[UIImage imageNamed:@"back_pre@3x.png"] forState:UIControlStateHighlighted];
-    [_backBtnStream setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_backBtnStream setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _backBtnStream.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-    [_backBtnStream addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_streamView  addSubview:_backBtnStream];
-    
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backBtnStream.frame.origin.x+_backBtnStream.frame.size.width, diff_top, _viewW-_backBtnStream.frame.origin.x-_backBtnStream.frame.size.width-2*diff_x, _viewH*44/_totalHeight)];
-    _titleLabel.center=CGPointMake(_viewW*0.5, _backBtnStream.center.y);
-    _titleLabel.text = NSLocalizedString(@"streaminig_title", nil);
-    _titleLabel.font = [UIFont boldSystemFontOfSize: _viewH*20/_totalHeight*0.8];
-    _titleLabel.backgroundColor = [UIColor clearColor];
-    //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _titleLabel.textColor = MAIN_COLOR;
-    _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _titleLabel.textAlignment=UITextAlignmentCenter;
-    _titleLabel.numberOfLines = 0;
-    [_streamView addSubview:_titleLabel];
-    
-    
-    _streamingImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"IMG_2401.JPG"]];
-    _streamingImg.userInteractionEnabled=YES;
-    _streamingImg.frame = CGRectMake(0, _backBtnStream.frame.origin.y+_backBtnStream.frame.size.height, _viewW, _viewH*145/_totalHeight);
-    _streamingImg.contentMode=UIViewContentModeScaleToFill;
-    [_streamView addSubview:_streamingImg];
-    
-    _streamingTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,_viewH*83/_totalHeight, _viewW, _viewH*20/_totalHeight)];
-    _streamingTitleLabel.center=CGPointMake(_viewW*0.5, _streamingTitleLabel.center.y);
-    _streamingTitleLabel.text = NSLocalizedString(@"streaminig_title_label", nil);
-    _streamingTitleLabel.font = [UIFont boldSystemFontOfSize: _viewH*20/_totalHeight*0.8];
-    _streamingTitleLabel.backgroundColor = [UIColor clearColor];
-    _streamingTitleLabel.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
-    _streamingTitleLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingTitleLabel.textAlignment=UITextAlignmentCenter;
-    _streamingTitleLabel.numberOfLines = 0;
-    [_streamView addSubview:_streamingTitleLabel];
-    
-    _streamStatusImg=[[UIImageView alloc]init];
-    _streamStatusImg.frame = CGRectMake(_viewW-_viewH*32/_totalHeight, _viewH*13/_totalHeight, _viewH*19/_totalHeight, _viewH*19/_totalHeight);
-    _streamStatusImg.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
-    //[_streamingImg  addSubview:_streamStatusImg];
-    
-    _streamingTitleImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"live streaming_banner_text image@3x.png"]];
-    _streamingTitleImg.userInteractionEnabled=YES;
-    _streamingTitleImg.frame = CGRectMake(_viewW*55/_totalWeight, _viewH*29/_totalHeight, _viewW*264/_totalWeight, _viewW*264*48/_totalWeight/804);
-    _streamingTitleImg.contentMode=UIViewContentModeScaleToFill;
-    //[_streamingImg addSubview:_streamingTitleImg];
-    
-    //Control
-    _streamingControlBgImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_Slide bar_bg@3x.png"]];
-    _streamingControlBgImg.userInteractionEnabled=YES;
-    _streamingControlBgImg.frame = CGRectMake(0, _viewH*78/_totalHeight, _viewH*40*87/_totalHeight/12, _viewH*40/_totalHeight);
-    _streamingControlBgImg.center=CGPointMake(_viewW*0.5, _streamingControlBgImg.center.y);
-    _streamingControlBgImg.contentMode=UIViewContentModeScaleToFill;
-    //[_streamingImg addSubview:_streamingControlBgImg];
-    
-    _streamingControlImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"]];
-    _streamingControlImg.userInteractionEnabled=YES;
-    UIPanGestureRecognizer *panGestureRecognizer= [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
-    [_streamingControlImg addGestureRecognizer:panGestureRecognizer];
-    _streamingControlImg.frame = CGRectMake(0, 0, _viewH*32/_totalHeight, _viewH*32/_totalHeight);
-    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width-_viewH*20/_totalHeight, _viewH*20/_totalHeight);
-    _r_control_pos=_streamingControlImg.center.x;
-    _streamingControlImg.center=CGPointMake(_streamingControlBgImg.frame.size.width*0.5, _viewH*20/_totalHeight);
-    _c_control_pos=_streamingControlImg.center.x;
-    _streamingControlImg.center=CGPointMake(_viewH*20/_totalHeight, _viewH*20/_totalHeight);
-    _l_control_pos=_streamingControlImg.center.x;
-    _streamingControlImg.contentMode=UIViewContentModeScaleToFill;
-    //[_streamingControlBgImg addSubview:_streamingControlImg];
-    
-    _streamingStartBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingStartBtn.frame = CGRectMake(0, _viewH*116/_totalHeight, _viewH*60/_totalHeight, _viewH*60/_totalHeight);
-    _streamingStartBtn.center=CGPointMake(_viewW*0.5, _streamingStartBtn.center.y);
-    [_streamingStartBtn setImage:[UIImage imageNamed:@"go live_pre@3x.png"] forState:UIControlStateNormal];
-    _streamingStartBtn.contentMode=UIViewContentModeScaleToFill;
-    [_streamingStartBtn addTarget:nil action:@selector(_streamingStartBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_streamView  addSubview:_streamingStartBtn];
-    
-    _streamingPauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingPauseBtn.frame = CGRectMake(0, _viewH*156/_totalHeight, _viewH*40/_totalHeight, _viewH*40/_totalHeight);
-    _streamingPauseBtn.center=CGPointMake(_viewW*0.5-_viewH*80/_totalHeight, _streamingPauseBtn.center.y);
-    [_streamingPauseBtn setImage:[UIImage imageNamed:@"puase live_dis@3x.png"] forState:UIControlStateNormal];
-    _streamingPauseBtn.contentMode=UIViewContentModeScaleToFill;
-    [_streamingPauseBtn addTarget:nil action:@selector(_streamingPauseBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_streamView  addSubview:_streamingPauseBtn];
-    
-    _streamingStopBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingStopBtn.frame = CGRectMake(0, _viewH*156/_totalHeight, _viewH*40/_totalHeight, _viewH*40/_totalHeight);
-    _streamingStopBtn.center=CGPointMake(_viewW*0.5+_viewH*80/_totalHeight, _streamingStopBtn.center.y);
-    [_streamingStopBtn setImage:[UIImage imageNamed:@"stop live_dis@3x.png"] forState:UIControlStateNormal];
-    _streamingStopBtn.contentMode=UIViewContentModeScaleToFill;
-    [_streamingStopBtn addTarget:nil action:@selector(_streamingStopBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_streamView  addSubview:_streamingStopBtn];
-    
-    _customStreamingLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height, _viewW, _viewH*30/_totalHeight)];
-    _customStreamingLabel.center=CGPointMake(_viewW*0.5, _customStreamingLabel.center.y);
-    _customStreamingLabel.text = NSLocalizedString(@"custom_streaminig_label", nil);
-    _customStreamingLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
-    _customStreamingLabel.backgroundColor = [UIColor clearColor];
-    _customStreamingLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _customStreamingLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _customStreamingLabel.textAlignment=UITextAlignmentCenter;
-    _customStreamingLabel.numberOfLines = 0;
-    [_streamView addSubview:_customStreamingLabel];
-    
-    //Config view2
-    _streamingConfigView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingImg.frame.origin.y+_streamingImg.frame.size.height+_viewH*30/_totalHeight,_viewW,_viewH*77/_totalHeight)];
-    _streamingConfigView.userInteractionEnabled=YES;
-    UIPanGestureRecognizer *panGestureRecognizer2= [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView2:)];
-    //[_streamingConfigView addGestureRecognizer:panGestureRecognizer2];
-    _streamingConfigView.backgroundColor=[UIColor whiteColor];
-    [_streamView addSubview:_streamingConfigView];
-    
-    _linkmanBtn0=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn0.frame = CGRectMake(_viewW*72/_totalWeight, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
-    _linkmanBtn0.center=CGPointMake(_viewW*0.5-_viewW*94/_totalWeight, _linkmanBtn0.center.y);
-    [_linkmanBtn0 setImage:[UIImage imageNamed:@"subtitle@3x.png"] forState:UIControlStateNormal];
-    [_linkmanBtn0 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_linkmanBtn0 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _linkmanBtn0.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_linkmanBtn0 addTarget:nil action:@selector(_linkmanBtn0Click) forControlEvents:UIControlEventTouchUpInside];
-    [_streamingConfigView  addSubview:_linkmanBtn0];
-    
-    _linkmanLabel0 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn0.frame.origin.y+_linkmanBtn0.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
-    _linkmanLabel0.center=CGPointMake(_linkmanBtn0.center.x, _linkmanLabel0.center.y);
-    _linkmanLabel0.text = NSLocalizedString(@"parameter_subtitle", nil);
-    _linkmanLabel0.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
-    _linkmanLabel0.backgroundColor = [UIColor clearColor];
-    _linkmanLabel0.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _linkmanLabel0.lineBreakMode = UILineBreakModeWordWrap;
-    _linkmanLabel0.textAlignment=UITextAlignmentCenter;
-    _linkmanLabel0.numberOfLines = 0;
-    [_streamingConfigView addSubview:_linkmanLabel0];
-    
-    UIView *_linkmanline0=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn0.frame.origin.x+_linkmanBtn0.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
-    _linkmanline0.center=CGPointMake(_viewW*0.5-_viewW*47/_totalWeight, _linkmanline0.center.y);
-    _linkmanline0.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    [_streamingConfigView addSubview:_linkmanline0];
-    
-    _linkmanBtn1=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn1.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
-    _linkmanBtn1.center=CGPointMake(_viewW*0.5, _linkmanBtn0.center.y);
-    [_linkmanBtn1 setImage:[UIImage imageNamed:@"logo_nor@3x.png"] forState:UIControlStateNormal];
-    [_linkmanBtn1 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_linkmanBtn1 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _linkmanBtn1.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_linkmanBtn1 addTarget:nil action:@selector(_linkmanBtn1Click) forControlEvents:UIControlEventTouchUpInside];
-    [_streamingConfigView  addSubview:_linkmanBtn1];
-    
-    _linkmanLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn1.frame.origin.y+_linkmanBtn1.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
-    _linkmanLabel1.center=CGPointMake(_viewW*0.5, _linkmanLabel0.center.y);
-    _linkmanLabel1.text = NSLocalizedString(@"parameter_banner", nil);
-    _linkmanLabel1.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
-    _linkmanLabel1.backgroundColor = [UIColor clearColor];
-    _linkmanLabel1.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _linkmanLabel1.lineBreakMode = UILineBreakModeWordWrap;
-    _linkmanLabel1.textAlignment=UITextAlignmentCenter;
-    _linkmanLabel1.numberOfLines = 0;
-    [_streamingConfigView addSubview:_linkmanLabel1];
-    
-    UIView *_linkmanline1=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn1.frame.origin.x+_linkmanBtn1.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
-    _linkmanline1.center=CGPointMake(_viewW*0.5+_viewW*47/_totalWeight, _linkmanline1.center.y);
-    _linkmanline1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    [_streamingConfigView addSubview:_linkmanline1];
-    
-    _linkmanBtn2=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn2.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
-    _linkmanBtn2.center=CGPointMake(_viewW*0.625, _linkmanBtn2.center.y);
-    [_linkmanBtn2 setImage:[UIImage imageNamed:@"live stream_screen_icon@3x.png"] forState:UIControlStateNormal];
-    [_linkmanBtn2 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_linkmanBtn2 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _linkmanBtn2.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_linkmanBtn2 addTarget:nil action:@selector(_linkmanBtn2Click) forControlEvents:UIControlEventTouchUpInside];
-    //[_streamingConfigView  addSubview:_linkmanBtn2];
-    
-    _linkmanLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn2.frame.origin.y+_linkmanBtn2.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
-    _linkmanLabel2.center=CGPointMake(_viewW*0.625, _linkmanLabel2.center.y);
-    _linkmanLabel2.text = NSLocalizedString(@"parameter_screen", nil);
-    _linkmanLabel2.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
-    _linkmanLabel2.backgroundColor = [UIColor clearColor];
-    _linkmanLabel2.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _linkmanLabel2.lineBreakMode = UILineBreakModeWordWrap;
-    _linkmanLabel2.textAlignment=UITextAlignmentCenter;
-    _linkmanLabel2.numberOfLines = 0;
-    //[_streamingConfigView addSubview:_linkmanLabel2];
-    
-    UIView *_linkmanline2=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn2.frame.origin.x+_linkmanBtn2.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
-    _linkmanline2.center=CGPointMake(_viewW*3/4, _linkmanline2.center.y);
-    _linkmanline2.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    //[_streamingConfigView addSubview:_linkmanline2];
-    
-    _linkmanBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn3.frame = CGRectMake(_viewW-_viewW*72/_totalWeight, _viewH*12/_totalHeight, _viewH*40*173/165/_totalHeight, _viewH*40/_totalHeight);
-    _linkmanBtn3.center=CGPointMake(_viewW*0.5+_viewW*94/_totalWeight, _linkmanBtn0.center.y);
-    [_linkmanBtn3 setImage:[UIImage imageNamed:@"audio@3x.png"] forState:UIControlStateNormal];
-    [_linkmanBtn3 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_linkmanBtn3 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _linkmanBtn3.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_linkmanBtn3 addTarget:nil action:@selector(_linkmanBtn3Click) forControlEvents:UIControlEventTouchUpInside];
-    [_streamingConfigView  addSubview:_linkmanBtn3];
-    
-    _linkmanLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn3.frame.origin.y+_linkmanBtn3.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
-    _linkmanLabel3.center=CGPointMake(_linkmanBtn3.center.x, _linkmanLabel3.center.y);
-    _linkmanLabel3.text = NSLocalizedString(@"parameter_audio", nil);
-    _linkmanLabel3.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
-    _linkmanLabel3.backgroundColor = [UIColor clearColor];
-    _linkmanLabel3.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _linkmanLabel3.lineBreakMode = UILineBreakModeWordWrap;
-    _linkmanLabel3.textAlignment=UITextAlignmentCenter;
-    _linkmanLabel3.numberOfLines = 0;
-    [_streamingConfigView addSubview:_linkmanLabel3];
-    
-    UIView *_linkmanline3=[[UIView alloc]initWithFrame:CGRectMake(_linkmanBtn3.frame.origin.x+_linkmanBtn3.frame.size.width+_viewW*24/_totalWeight,_viewH*18/_totalHeight,_viewW*1/_totalWeight,_viewH*40/_totalHeight)];
-    _linkmanline3.center=CGPointMake(_viewW-10*_totalWeight/_viewW, _linkmanline3.center.y);
-    _linkmanline3.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    //[_streamingConfigView addSubview:_linkmanline3];
-    
-    _linkmanBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
-    _linkmanBtn4.frame = CGRectMake(0, _viewH*12/_totalHeight, _viewH*40*132/123/_totalHeight, _viewH*40/_totalHeight);
-    _linkmanBtn4.center=CGPointMake(_viewW*1.125, _linkmanBtn0.center.y);
-    [_linkmanBtn4 setImage:[UIImage imageNamed:@"live stream_network_icon@3x.png"] forState:UIControlStateNormal];
-    [_linkmanBtn4 setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
-    [_linkmanBtn4 setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
-    _linkmanBtn4.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_linkmanBtn4 addTarget:nil action:@selector(_linkmanBtn4Click) forControlEvents:UIControlEventTouchUpInside];
-    //[_streamingConfigView  addSubview:_linkmanBtn4];
-    
-    _linkmanLabel4 = [[UILabel alloc] initWithFrame:CGRectMake(0, _linkmanBtn4.frame.origin.y+_linkmanBtn4.frame.size.height+_viewH*4/_totalHeight, _viewW*50/_totalWeight, _viewH*15/_totalHeight)];
-    _linkmanLabel4.center=CGPointMake(_viewW*1.125, _linkmanLabel4.center.y);
-    _linkmanLabel4.text = NSLocalizedString(@"parameter_network", nil);
-    _linkmanLabel4.font = [UIFont systemFontOfSize: _viewH*14/_totalHeight*0.8];
-    _linkmanLabel4.backgroundColor = [UIColor clearColor];
-    _linkmanLabel4.textColor = [UIColor colorWithRed:105/255.0 green:106/255.0 blue:117/255.0 alpha:1.0];
-    _linkmanLabel4.lineBreakMode = UILineBreakModeWordWrap;
-    _linkmanLabel4.textAlignment=UITextAlignmentCenter;
-    _linkmanLabel4.numberOfLines = 0;
-    //[_streamingConfigView addSubview:_linkmanLabel4];
-    
-    //platform
-    _streamingAddressLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, _viewW, _viewH*30/_totalHeight)];
-    _streamingAddressLabel.center=CGPointMake(_viewW*0.5, _streamingConfigView.frame.origin.y+_streamingConfigView.frame.size.height+_viewH*15/_totalHeight);
-    _streamingAddressLabel.text = NSLocalizedString(@"streaminig_address", nil);
-    _streamingAddressLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
-    _streamingAddressLabel.backgroundColor = [UIColor clearColor];
-    _streamingAddressLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _streamingAddressLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingAddressLabel.textAlignment=UITextAlignmentCenter;
-    _streamingAddressLabel.numberOfLines = 0;
-    [_streamView addSubview:_streamingAddressLabel];
-    
-    _streamingAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height,_viewW,_viewH*135/_totalHeight)];
-    _streamingAddressView.backgroundColor=[UIColor whiteColor];
-    _streamingAddressView.userInteractionEnabled = YES;
-    [_streamView addSubview:_streamingAddressView];
-    
-    _platformView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*15/_totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+_viewH*15/_totalHeight,_viewW*124/_totalWeight,_viewH*105/_totalHeight)];
-    _platformView.userInteractionEnabled = YES;
-    _platformView.center=CGPointMake(_viewW*1/4, _platformView.center.y);
-    UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformViewClick)];
-    [_platformView addGestureRecognizer:singleTap2];
-    [_streamView addSubview:_platformView];
-    
-    _streamingPlatformImg=[[UIImageView alloc]init];
-    _streamingPlatformImg.frame = CGRectMake((_platformView.frame.size.width-_viewH*66/_totalHeight*164/132)*0.5, _viewH*11/_totalHeight, _viewH*66/_totalHeight*164/132, _viewH*66/_totalHeight);
-    [_streamingPlatformImg setImage:[UIImage imageNamed:@"platform@3x.png"]];
-    [_platformView  addSubview:_streamingPlatformImg];
-    
-    _streamingPlatform = [[UILabel alloc] initWithFrame:CGRectMake(0, _streamingPlatformImg.frame.origin.y+_streamingPlatformImg.frame.size.height+_viewH*8/_totalHeight, _platformView.frame.size.width, _viewH*16/_totalHeight)];
-    _streamingPlatform.text = NSLocalizedString(@"platform_text", nil);
-    _streamingPlatform.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
-    _streamingPlatform.backgroundColor = [UIColor clearColor];
-    _streamingPlatform.textColor = [UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
-    _streamingPlatform.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingPlatform.textAlignment=UITextAlignmentCenter;
-    _streamingPlatform.numberOfLines = 0;
-    [_platformView addSubview:_streamingPlatform];
-    
-    UIView *line1=[[UIView alloc]initWithFrame:CGRectMake(_viewW*187/_totalWeight,_streamingAddressView.frame.origin.y+_viewH*21/_totalHeight,_viewW*1/_totalWeight,_streamingAddressView.frame.size.height-_viewH*42/_totalHeight)];
-    line1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-    [_streamView addSubview:line1];
-    
-    //Address View
-    _addressView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*219/_totalWeight,_streamingAddressLabel.frame.origin.y+_streamingAddressLabel.frame.size.height+_viewH*15/_totalHeight,_viewW*124/_totalWeight,_viewH*105/_totalHeight)];
-    _addressView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_addressViewClick)];
-    [_addressView addGestureRecognizer:singleTap3];
-    _addressView.center=CGPointMake(_viewW*3/4, _addressView.center.y);
-    [_streamView addSubview:_addressView];
-    
-    _streamingAddressImg=[[UIImageView alloc]init];
-    _streamingAddressImg.frame = CGRectMake(_viewW*26/_totalWeight, _viewH*11/_totalHeight, _viewH*66/_totalHeight*164/132, _viewH*66/_totalHeight);
-    _streamingAddressImg.center=CGPointMake(_addressView.frame.size.width*0.5, _streamingAddressImg.center.y);
-    [_streamingAddressImg setImage:[UIImage imageNamed:@"fill in@3x.png"]];
-    [_addressView  addSubview:_streamingAddressImg];
-    
-    _streamingAddress = [[MarqueeLabel alloc] initWithFrame: CGRectMake(0, _streamingAddressImg.frame.origin.y+_streamingAddressImg.frame.size.height+_viewH*3/_totalHeight, _addressView.frame.size.width, _viewH*28/_totalHeight) duration:7.0 andFadeLength:10.0f];
-    _streamingAddress.text= [self Get_Paths:STREAM_URL_KEY];
-    if ([_streamingAddress.text compare:@""]==NSOrderedSame) {
-        _streamingAddress.text = NSLocalizedString(@"address_text", nil);
-    }
-    _streamingAddress.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
-    _streamingAddress.textColor = [UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
-    _streamingAddress.center=CGPointMake(_addressView.frame.size.width*0.5, _streamingAddress.center.y);
-    _streamingAddress.textAlignment=UITextAlignmentCenter;
-    _streamingAddress.numberOfLines = 1;
-    _streamingAddress.opaque = NO;
-    _streamingAddress.enabled = YES;
-    _addressView.userInteractionEnabled=YES;
-    _streamingAddress.shadowOffset = CGSizeMake(0.0, -1.0);
-    [_addressView addSubview:_streamingAddress];
-    
-    //streamingAddress
-    _streamingShareLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,0, _viewW, _viewH*30/_totalHeight)];
-    _streamingShareLabel.center=CGPointMake(_viewW*0.5, _streamingAddressView.frame.origin.y+_streamingAddressView.frame.size.height+_viewH*15/_totalHeight);
-    _streamingShareLabel.text = NSLocalizedString(@"address_dialog_title", nil);
-    _streamingShareLabel.font = [UIFont boldSystemFontOfSize: _viewH*16/_totalHeight*0.8];
-    _streamingShareLabel.backgroundColor = [UIColor clearColor];
-    _streamingShareLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    _streamingShareLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingShareLabel.textAlignment=UITextAlignmentCenter;
-    _streamingShareLabel.numberOfLines = 0;
-    [_streamView addSubview:_streamingShareLabel];
-    
-    _streamingShareView=[[UIView alloc]initWithFrame:CGRectMake(0,_streamingShareLabel.frame.origin.y+_streamingShareLabel.frame.size.height,_viewW,_viewH*155/_totalHeight)];
-    _streamingShareView.backgroundColor=[UIColor whiteColor];
-    [_streamView addSubview:_streamingShareView];
-    
-    _streamingObtainLabel=[[UILabel alloc] initWithFrame:CGRectMake(_viewW*20/_totalWeight,_viewH*16/_totalHeight, _viewW*67/_totalWeight, _viewH*32/_totalHeight)];
-    _streamingObtainLabel.text = NSLocalizedString(@"streaminig_obtain", nil);
-    _streamingObtainLabel.font = [UIFont systemFontOfSize: _viewH*20/_totalHeight*0.8];
-    _streamingObtainLabel.backgroundColor = [UIColor clearColor];
-    _streamingObtainLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _streamingObtainLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingObtainLabel.textAlignment=UITextAlignmentRight;
-    _streamingObtainLabel.numberOfLines = 0;
-    [_streamingShareView addSubview:_streamingObtainLabel];
-    
-    _streamingObtainField = [[UITextField alloc] initWithFrame:CGRectMake(_viewW*91/_totalWeight, _viewH*16/_totalHeight, _viewW-_viewW*123/_totalWeight, _viewH*32/_totalHeight)];
-    _streamingObtainField.placeholder = NSLocalizedString(@"address_live_tips", nil);
-    _streamingObtainField.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
-    _streamingObtainField.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    _streamingObtainField.delegate = self;
-    _streamingObtainField.textColor = MAIN_COLOR;
-    _streamingObtainField.textAlignment=UITextAlignmentLeft;
-    [_streamingShareView addSubview:_streamingObtainField];
-    
-    _streamingMannualLabel=[[UILabel alloc] initWithFrame:CGRectMake(_viewW*20/_totalWeight,_viewH*69/_totalHeight, _viewW*67/_totalWeight, _viewH*32/_totalHeight)];
-    _streamingMannualLabel.text = NSLocalizedString(@"streaminig_manual", nil);
-    _streamingMannualLabel.font = [UIFont systemFontOfSize: _viewH*20/_totalHeight*0.8];
-    _streamingMannualLabel.backgroundColor = [UIColor clearColor];
-    _streamingMannualLabel.textColor = [UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
-    _streamingMannualLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _streamingMannualLabel.textAlignment=UITextAlignmentRight;
-    _streamingMannualLabel.numberOfLines = 0;
-    [_streamingShareView addSubview:_streamingMannualLabel];
-    
-    _streamingMannualField = [[UITextField alloc] initWithFrame:CGRectMake(_viewW*91/_totalWeight, _viewH*69/_totalHeight, _viewW-_viewW*123/_totalWeight, _viewH*32/_totalHeight)];
-    _streamingMannualField.placeholder = @"http://";
-    _streamingMannualField.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
-    _streamingMannualField.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    _streamingMannualField.textColor = MAIN_COLOR;
-    _streamingMannualField.delegate = self;
-    _streamingMannualField.textAlignment=UITextAlignmentLeft;
-    [_streamingShareView addSubview:_streamingMannualField];
-    
-    _streamingShareBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _streamingShareBtn.frame = CGRectMake(_viewW*135/_totalWeight, _viewH*113/_totalHeight, _viewW*106/_totalWeight, _viewH*32/_totalHeight);
-    [_streamingShareBtn setBackgroundImage:[UIImage imageNamed:@"live stream_address_button_nor@3x.png"] forState:UIControlStateNormal];
-    [_streamingShareBtn setBackgroundImage:[UIImage imageNamed:@"live stream_address_button_pre@3x.png"] forState:UIControlStateHighlighted];
-    [_streamingShareBtn setTitle: NSLocalizedString(@"streaminig_share", nil) forState: UIControlStateNormal];
-    [_streamingShareBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    _streamingShareBtn.titleLabel.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
-    _streamingShareBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_streamingShareBtn addTarget:nil action:@selector(_streamingShareBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [_streamingShareView  addSubview:_streamingShareBtn];
-    
-    //Choose Platform View
-    [self platformViewInit];
-    
-    //Input Address View
-    [self inputAddressViewInit];
-}
-
-/**
- * 选择平台弹窗
- */
--(void)platformViewInit{
-    _choosePlatformView=[[UIView alloc]initWithFrame:CGRectMake(0,_viewH,_viewW,_viewH)];
-    _choosePlatformView.backgroundColor=[UIColor clearColor];
-    _choosePlatformView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutCancelClick)];
-    [_choosePlatformView addGestureRecognizer:singleTap];
-    [_streamView addSubview:_choosePlatformView];
-    
-    _PlatformViewLayout=[[UIView alloc]initWithFrame:CGRectMake(_viewW*10/_totalWeight,_viewH*476/_totalHeight,_viewW*355/_totalWeight,_viewH*116/_totalHeight)];
-    [[_PlatformViewLayout layer]setCornerRadius:_viewW*10/_totalWeight];//圆角
-    _PlatformViewLayout.backgroundColor=[UIColor whiteColor];
-    _PlatformViewLayout.userInteractionEnabled = YES;
-    [_choosePlatformView addSubview:_PlatformViewLayout];
-    
-    for (int i=0; i<4; i++) {
-        UIViewLinkmanTouch *_platformLayoutView=[[UIViewLinkmanTouch alloc]initWithFrame:CGRectMake(_viewW*13*(i+1)/_totalWeight+_viewW*70*i/_totalWeight,_viewH*15/_totalHeight,_viewW*20/_totalWeight+_viewH*60/_totalHeight,_viewH*90/_totalHeight)];
-        
-        _platformLayoutView.tag=i;
-        _platformLayoutView.userInteractionEnabled = YES;
-        [_PlatformViewLayout addSubview:_platformLayoutView];
-        UIImageView *_platformLayoutImg=[[UIImageView alloc]init];
-        _platformLayoutImg.frame = CGRectMake(_viewW*10/_totalWeight, _viewH*5/_totalHeight, _viewH*60/_totalHeight, _viewH*60/_totalHeight);
-        [_platformLayoutImg setImage:[UIImage imageNamed:@"Youtube@3x.png"]];
-        [_platformLayoutView  addSubview:_platformLayoutImg];
-        
-        UILabel *_platformLayoutLabel = [[UILabel alloc] initWithFrame:CGRectMake(_platformLayoutImg.frame.origin.x, _platformLayoutImg.frame.origin.y+_platformLayoutImg.frame.size.height+_viewH*7/_totalHeight, _viewH*60/_totalHeight, _viewH*13/_totalHeight)];
-        _platformLayoutLabel.text = NSLocalizedString(@"youtube", nil);
-        _platformLayoutLabel.font = [UIFont systemFontOfSize: _viewH*13/_totalHeight];
-        _platformLayoutLabel.backgroundColor = [UIColor clearColor];
-        _platformLayoutLabel.textColor = [UIColor colorWithRed:3/255.0 green:3/255.0 blue:3/255.0 alpha:1.0];
-        _platformLayoutLabel.lineBreakMode = UILineBreakModeWordWrap;
-        _platformLayoutLabel.textAlignment=UITextAlignmentCenter;
-        _platformLayoutLabel.numberOfLines = 0;
-        [_platformLayoutView addSubview:_platformLayoutLabel];
-        switch (i) {
-            case 0:
-            {
-                [_platformLayoutImg setImage:[UIImage imageNamed:@"Youtube@3x.png"]];
-                _platformLayoutLabel.text = NSLocalizedString(@"youtube", nil);
-                UITapGestureRecognizer *singleTap0 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutViewClick0)];
-                [_platformLayoutView addGestureRecognizer:singleTap0];
-            }
-                break;
-            case 1:
-            {
-                [_platformLayoutImg setImage:[UIImage imageNamed:@"facebook@3x.png"]];
-                _platformLayoutLabel.text = NSLocalizedString(@"facebook", nil);
-                UITapGestureRecognizer *singleTap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutViewClick1)];
-                [_platformLayoutView addGestureRecognizer:singleTap1];
-            }
-                break;
-            case 2:
-            {
-                [_platformLayoutImg setImage:[UIImage imageNamed:@"Yi Live@3x.png"]];
-                _platformLayoutLabel.text = NSLocalizedString(@"yi_live", nil);
-                UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutViewClick2)];
-                [_platformLayoutView addGestureRecognizer:singleTap2];
-            }
-                break;
-            case 3:
-            {
-                [_platformLayoutImg setImage:[UIImage imageNamed:@"MuDu Live@3x.png"]];
-                _platformLayoutLabel.text = NSLocalizedString(@"mudu_live", nil);
-                UITapGestureRecognizer *singleTap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_platformLayoutViewClick3)];
-                [_platformLayoutView addGestureRecognizer:singleTap3];
-            }
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    UIButton *_platformLayoutCancel=[UIButton buttonWithType:UIButtonTypeCustom];
-    _platformLayoutCancel.frame = CGRectMake(_viewW*10/_totalWeight, _viewH*600/_totalHeight, _viewW*355/_totalWeight, _viewH*57/_totalHeight);
-    _platformLayoutCancel.backgroundColor=[UIColor whiteColor];
-    [_platformLayoutCancel setTitleColor:[UIColor colorWithRed:67/255.0 green:77/255.0 blue:87/255.0 alpha:1.0]forState:UIControlStateNormal];
-    [_platformLayoutCancel setTitleColor:[UIColor lightGrayColor]forState:UIControlStateHighlighted];
-    [[_platformLayoutCancel layer]setCornerRadius:_viewW*10/_totalWeight];
-    [_platformLayoutCancel setTitle:NSLocalizedString(@"share_cancel", nil) forState:UIControlStateNormal];
-    _platformLayoutCancel.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
-    [_platformLayoutCancel addTarget:nil action:@selector(_platformLayoutCancelClick) forControlEvents:UIControlEventTouchUpInside];
-    _platformLayoutCancel.titleLabel.font=[UIFont systemFontOfSize:_viewH*23/_totalHeight*0.8];
-    [_choosePlatformView  addSubview:_platformLayoutCancel];
-}
-
-/**
- * 选择平台：youtube
- */
--(void)_platformLayoutViewClick0{
-    NSLog(@"Youtube");
-    _streamingPlatform.text=NSLocalizedString(@"youtube", nil);
-    [self setInfoViewFrame:_choosePlatformView :YES];
-    _streamingPlatform.textColor = MAIN_COLOR;
-}
-
-/**
- * 选择平台：facebook
- */
--(void)_platformLayoutViewClick1{
-    NSLog(@"Facebook");
-    _streamingPlatform.text=NSLocalizedString(@"facebook", nil);
-    [self setInfoViewFrame:_choosePlatformView :YES];
-    _streamingPlatform.textColor = MAIN_COLOR;
-}
-
-/**
- * 选择平台：yi live
- */
--(void)_platformLayoutViewClick2{
-    NSLog(@"Yi Live");
-    _streamingPlatform.text=NSLocalizedString(@"yi_live", nil);
-    [self setInfoViewFrame:_choosePlatformView :YES];
-    _streamingPlatform.textColor = MAIN_COLOR;
-}
-
-/**
- * 选择平台：mudu
- */
--(void)_platformLayoutViewClick3{
-    NSLog(@"MuDu Live");
-    _streamingPlatform.text=NSLocalizedString(@"mudu_live", nil);
-    [self setInfoViewFrame:_choosePlatformView :YES];
-    _streamingPlatform.textColor = MAIN_COLOR;
-    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://mudu.tv/login"]];
-}
-
-/**
- * 取消选择平台
- */
--(void)_platformLayoutCancelClick{
-    NSLog(@"_platformLayoutCancelClick");
-    _streamingPlatform.text=NSLocalizedString(@"platform_text", nil);
-    _streamingPlatform.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
-    [self setInfoViewFrame:_choosePlatformView :YES];
-}
 
 /**
  * 输入直播地址弹窗
@@ -3000,18 +2371,18 @@ int posStep=1;
     //    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_inputAddressViewCancelClick)];
     //    [_inputAddressView addGestureRecognizer:singleTap];
     [_streamView addSubview:_inputAddressView];
-    
+
     _inputAddressViewLayout=[[UIView alloc]initWithFrame:CGRectMake(0,0,_viewW*283/_totalWeight,_viewH*281/_totalHeight)];
     [[_inputAddressViewLayout layer]setCornerRadius:_viewW*10/_totalWeight];//圆角
     _inputAddressViewLayout.backgroundColor=[UIColor whiteColor];
     _inputAddressViewLayout.center=CGPointMake(_viewW*0.5, _viewH*0.5);
     _inputAddressViewLayout.userInteractionEnabled = YES;
     [_inputAddressView addSubview:_inputAddressViewLayout];
-    
+
     myTextField=[[CAAutoFillTextField alloc]initWithFrame:CGRectMake(_viewW*19/_totalWeight, _viewH*30/_totalHeight, _viewW*246/_totalWeight, _viewH*40/_totalHeight)];
     myTextField.userInteractionEnabled=YES;
     [_inputAddressViewLayout addSubview:myTextField];
-    
+
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     _recordUrl=[self Get_Urls:@"STREAMURL"];
     for (int i = 0; i<[_recordUrl count]; i++) {
@@ -3020,12 +2391,12 @@ int posStep=1;
     }
     [myTextField setDataSourceArray:tempArray];
     [myTextField setDelegate:self];
-    
+
     UIView *line=[[UIView alloc]init];
     line.frame=CGRectMake(_viewW*19/_totalWeight,_viewH*247/_totalHeight,_viewW*246/_totalWeight,1);
     line.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_inputAddressViewLayout addSubview:line];
-    
+
     UIButton *_clearBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _clearBtn.backgroundColor=[UIColor whiteColor];
     _clearBtn.frame = CGRectMake(0, 0, _viewH*44/_totalHeight, _viewH*44/_totalHeight);
@@ -3037,9 +2408,9 @@ int posStep=1;
     [_inputAddressViewLayout  addSubview:_clearBtn];
 }
 
-/**
- * 文字滚动相关回调
- */
+///**
+// * 文字滚动相关回调
+// */
 - (void) CAAutoTextFillBeginEditing:(CAAutoFillTextField *) textField {
     NSLog(@"CAAutoTextFillBeginEditing");
 }
@@ -3171,7 +2542,7 @@ int posStep=1;
             if (_userip!=nil) {
                 NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
                 [_videoView play:url useTcp:NO];
-                [_videoView sound:audioisEnable];
+                [_videoView sound:_audioisEnable];
                 self.videoisplaying = YES;
             }
             else{
@@ -3250,7 +2621,7 @@ int posStep=1;
                     if (_userip!=nil) {
                         NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
                         [_videoView play:url useTcp:NO];
-                        [_videoView sound:audioisEnable];
+                        [_videoView sound:_audioisEnable];
                         self.videoisplaying = YES;
                     }
                     else{
@@ -3444,7 +2815,7 @@ int posStep=1;
         
         if (dictRef) {
             NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
-            NSLog(@"network info -> %@", networkInfo);
+            NSLog(@"----------------------network info -> %@", networkInfo);
             wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
             
             CFRelease(dictRef);
