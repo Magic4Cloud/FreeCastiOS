@@ -75,10 +75,10 @@ static enum ButtonEnable RecordVideoEnable;
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
 @property (nonatomic, strong) LFLiveSessionWithPicSource *session;
 
-@property (nonatomic, strong) SubtitleViewController *subtitleViewController;
-@property (nonatomic, strong) BannerViewController   *bannerViewController;
-@property (nonatomic, strong) AudioViewController    *audioViewController;
-@property (nonatomic, strong) NetworkViewController  *networkViewController;
+//@property (nonatomic, strong) SubtitleViewController *subtitleViewController;
+//@property (nonatomic, strong) BannerViewController   *bannerViewController;
+//@property (nonatomic, strong) AudioViewController    *audioViewController;
+//@property (nonatomic, strong) NetworkViewController  *networkViewController;
 @property (nonatomic, strong) UIAlertView *waitAlertView;
 @property (nonatomic, strong) UIButton *platformButton;
 /** 系统摄像头 展示view */
@@ -144,7 +144,9 @@ static enum ButtonEnable RecordVideoEnable;
 
 @implementation LiveViewViewController
 
-- (NSMutableArray *)video_timesamp{
+#pragma mark - getter/setter/lazy load property
+
+- (NSMutableArray *)video_timesamp {
     if (!_video_timesamp) {
         _video_timesamp = @[].mutableCopy;
     }
@@ -159,39 +161,119 @@ static enum ButtonEnable RecordVideoEnable;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
         [_livingPreView addGestureRecognizer:singleTap];
         [self.view addSubview:_livingPreView];
+//        [self.view insertSubview:_videoView atIndex:0];
     }
     return _livingPreView;
 }
 
-- (SubtitleViewController *)subtitleViewController {
-    if (!_subtitleViewController) {
-        _subtitleViewController = [[SubtitleViewController alloc] init];
+- (LX520View *)videoView {
+    if (!_videoView) {
+        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _videoView.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+        [_videoView addGestureRecognizer:singleTap];
+        _videoView.backgroundColor = [UIColor blackColor];
+        
+        [_videoView set_log_level:4];
+        [_videoView sound:YES];
+        [_videoView delegate:self];
+        [self.view insertSubview:_videoView atIndex:0];
     }
-    return _subtitleViewController;
+    return _videoView;
 }
 
-- (BannerViewController *)bannerViewController {
-    if (!_bannerViewController) {
-        _bannerViewController = [[BannerViewController alloc] init];
-    }
-    return _bannerViewController;
-}
-
-- (AudioViewController *)audioViewController {
-    if (!_audioViewController) {
-        _audioViewController = [[AudioViewController alloc] init];
-    }
-    return _audioViewController;
-}
-
-- (NetworkViewController *)networkViewController {
-    if (!_networkViewController) {
-        _networkViewController = [[NetworkViewController alloc] init];
-    }
-    return _networkViewController;
-}
 
 #pragma mark - ------------------lifeCycle----
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self viewControllerSettings];
+    
+    [self addApplicationActiveNotifications];
+    
+    [self propertysInitialAndSetDefaultValue];
+    
+    [self liveViewInit];
+
+    if (_play_success == NO){
+        [self scanDevice];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    //判断设备的音频输入是不是手机麦克风
+    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
+        _isIphoneAudio = (BOOL)[standDefaults objectForKey:AudioSourceIsIphone];
+        if (_session) {
+            _session.isIphoneAudio = _isIphoneAudio;
+        }
+    }
+    [self getSelectedPlatform];
+    [self replayVideoView];
+}
+
+
+- (void)replayVideoView {
+    [self getDeviceConfig];
+    if (_userip) {
+        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+        NSLog(@"----------------log%@",urlString);
+        [self.videoView play:urlString useTcp:NO];
+        [self.videoView sound:YES];
+        [self.videoView startGetYUVData:YES];
+        [self.videoView startGetAudioData:YES];
+        [self.videoView startGetH264Data:YES];
+        [self.videoView show_view:YES];
+        self.videoisplaying = YES;
+        
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (_isBroswer) {
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+        _isBroswer=NO;
+    }
+    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self stopVideo];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    _isExit = YES;
+    
+    [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    if(_isLiveView){
+        [_tipLabel removeFromSuperview];
+    }
+    else{
+        if ([_streamingAddress.text isEqualToString:@""]&&
+            [_streamingAddress.text isEqualToString:@"address_text"]) {
+            [self Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
+            [self addUrls];
+        }
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    NSLog(@"---------receiceMemoryWarning.....");
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    
+}
 
 - (void)propertysInitialAndSetDefaultValue {
     _viewH = self.view.frame.size.width;
@@ -222,7 +304,9 @@ static enum ButtonEnable RecordVideoEnable;
     _subtitle_interval=0;
     _isShowBanner=NO;
     _isShowSubtitle=NO;
-    _albumObject=[[AlbumObject alloc]init];
+    [_albumObject delegate:nil];
+    _albumObject = nil;
+    _albumObject = [[AlbumObject alloc]init];
     [_albumObject delegate:self];
     SavePictureEnable = Unable;
     RecordVideoEnable = Unable;
@@ -238,101 +322,6 @@ static enum ButtonEnable RecordVideoEnable;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
     [self prefersStatusBarHidden:YES];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self viewControllerSettings];
-    
-    [self addApplicationActiveNotifications];
-    
-    [self propertysInitialAndSetDefaultValue];
-    
-    [self liveViewInit];
-
-    if (_play_success==NO){
-        [self scanDevice];
-    }
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    //判断设备的音频输入是不是手机麦克风
-    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
-    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
-        _isIphoneAudio = (BOOL)[standDefaults objectForKey:AudioSourceIsIphone];
-        if (_session) {
-            _session.isIphoneAudio = _isIphoneAudio;
-        }
-    }
-    
-    [self getSelectedPlatform];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (_isBroswer) {
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-        _isBroswer=NO;
-    }
-    
-    
-    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
-
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    _isExit=YES;
-    
-    if(_isLiveView){
-        [_tipLabel removeFromSuperview];
-//        [self stopActivityIndicatorView];
-//        [ActivityIndicatorView removeFromSuperview];
-    }
-    else{
-        if ([_streamingAddress.text isEqualToString:@""]&&
-            [_streamingAddress.text isEqualToString:@"address_text"]) {
-            [self Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
-            [self addUrls];
-        }
-    }
-    [self stopVideo];
-}
-
-
-- (void)addApplicationActiveNotifications {
-    // app从后台进入前台都会调用这个方法
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
-    // 添加检测app进入后台的观察者
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
-
-}
-
-- (void)dealloc {
-    
-    [self timersInvalidate];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)applicationBecomeActive {
-    
-    NSLog(@"----------进入前台");
-}
-
-- (void)applicationEnterBackground {
-    [self.videoView stop];
-    NSLog(@"----------进入后台");
 }
 
 - (void)getSelectedPlatform
@@ -374,12 +363,7 @@ static enum ButtonEnable RecordVideoEnable;
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    NSLog(@"---------receiceMemoryWarning.....");
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    
-}
+
 
 
 - (void)getViewHAndViewWWithRightSize {
@@ -593,8 +577,37 @@ static enum ButtonEnable RecordVideoEnable;
     _recordTimeLabel.hidden=YES;
     [self.view addSubview:_recordTimeLabel];
     
+    
+    _searchDeviceImageView =[[UIImageView alloc] initWithFrame:CGRectMake(_viewW*304/_totalWeight,129*_viewH/_totalHeight, _viewW*58.5/_totalWeight, _viewW*58.5/_totalWeight)];
+    
+    _searchDeviceImageView.image=[UIImage imageNamed:@"logo_148"];
+    
+    [self.view addSubview:_searchDeviceImageView];
+    
+    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,129*_viewH/_totalHeight +  _viewW*58.5/_totalWeight + 10, _viewW*300/_totalWeight, _viewH*40/_totalHeight)];
+    _tipLabel.center = CGPointMake(_searchDeviceImageView.center.x,_tipLabel.center.y);
+    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
+    _tipLabel.textColor = MAIN_COLOR;
+    _tipLabel.font = [UIFont systemFontOfSize:12.5];
+//    _tipLabel.adjustsFontSizeToFitWidth = YES;
+    _tipLabel.textAlignment = NSTextAlignmentCenter;
+    _tipLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _tipLabel.numberOfLines = 0;
+    _tipLabel.backgroundColor=[UIColor clearColor]; //可以去掉背景色
+    [self.view addSubview:_tipLabel];
+    [self hidenSearchingMessageTips];
     //调用手机摄像头显示画面才显示出来
     self.livingPreView.hidden = YES;
+}
+
+- (void)hidenSearchingMessageTips {
+    _tipLabel.hidden = YES;
+    _searchDeviceImageView.hidden = YES;
+}
+
+- (void)showSearchingMessagesTips {
+    _tipLabel.hidden = NO;
+    _searchDeviceImageView.hidden = NO;
 }
 
 /** 直播界面初始化*/
@@ -651,55 +664,6 @@ static enum ButtonEnable RecordVideoEnable;
     else{
         [self revealAnimation];
     }
-}
-
-/**
- *  移入效果
- */
--(void)moveInAnimation{
-    _topBg.hidden=NO;
-    _bottomBg.hidden=NO;
-    _statusBg.hidden=NO;
-    if (_livingState==1) {
-        _livePauseBtn.hidden=NO;
-        _liveStopBtn.hidden=NO;
-    }
-    else if (_livingState==2) {
-        _livePauseBtn.hidden=NO;
-        _liveStopBtn.hidden=NO;
-    }
-    CATransition *anima = [CATransition animation];
-    anima.type = kCATransitionMoveIn;//设置动画的类型
-    anima.subtype = kCATransitionFromBottom; //设置动画的方向
-    [_topBg.layer addAnimation:anima forKey:@"moveInAnimation"];
-    [_statusBg.layer addAnimation:anima forKey:@"moveInAnimation"];
-    
-    anima.subtype = kCATransitionFromTop; //设置动画的方向
-    anima.duration = 0.3f;
-    [_bottomBg.layer addAnimation:anima forKey:@"moveInAnimation"];
-}
-
-/**
- *  移出效果
- */
--(void)revealAnimation{
-    [UIView animateWithDuration:0.3 animations:^{
-        CATransition *anima = [CATransition animation];
-        anima.type = kCATransitionReveal;//设置动画的类型
-        anima.subtype = kCATransitionFromTop; //设置动画的方向
-        [_topBg.layer addAnimation:anima forKey:@"revealAnimation"];
-        [_statusBg.layer addAnimation:anima forKey:@"revealAnimation"];
-        
-        anima.subtype = kCATransitionFromBottom; //设置动画的方向
-        anima.duration = 0.3f;
-        [_bottomBg.layer addAnimation:anima forKey:@"revealAnimation"];
-    } completion:^(BOOL finished) {
-        _topBg.hidden=YES;
-        _bottomBg.hidden=YES;
-        _statusBg.hidden=YES;
-        _livePauseBtn.hidden=YES;
-        _liveStopBtn.hidden=YES;
-    }];
 }
 
 /** 使能相关按钮 */
@@ -819,172 +783,6 @@ bool VideoRecordIsEnable = NO;
     
 }
 
-- (NSString *)stringFromDate:(NSDate *)date
-{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-    return [dateFormatter stringFromDate:[NSDate date]];
-}
-
-
-/**
- 截屏
- */
-- (UIImage *)getSnapshotImage
-{
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame)), NO,0.0);
-    
-    [self.view drawViewHierarchyInRect:CGRectMake(0,0,CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame)) afterScreenUpdates:NO];
-    
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return snapshot;
-}
-
-/**
- *  拍照
- */
-
-#pragma mark - 拍照
--(void)_takephotoBtnClick
-{
-    
-    [self playSound:@"shutter.mp3"];
-    
-    if (_liveCameraSource == IphoneBackCamera) {
-        
-        UIImage * image = [self getSnapshotImage];
-        if (image) {
-            [_albumObject saveImageToAlbum:image albumName:album_name];
-        }
-        return;
-    }
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [_albumObject createAlbumInPhoneAlbum:album_name];
-        [_albumObject getPathForRecord:album_name];
-    });
-    
-    if (_livingState!=1) {
-        [_videoView take_photo];
-    }
-    else{
-        _isTakePhoto=YES;
-    }
-}
-
-/**
- *  拍照回调
- */
-bool _isTakePhoto=NO;
-- (void)take_photo:(UIImage *)image
-{
-    _isTakePhoto=NO;
-    [_albumObject saveImageToAlbum:image albumName:album_name];
-}
-
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary  *)contextInfo
-{
-    [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
-}
-
-- (void)saveImageToAlbum:(BOOL)success{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (success) {
-            [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
-        }
-        else{
-            [self showAllTextDialog:NSLocalizedString(@"save_photo_failed", nil)];
-        }
-    });
-}
-
-
-/**
- *  录像
- */
-#pragma mark - 录像
--(void)_recordBtnClick{
-    if (!_play_success) {
-        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-        return;
-    }
-    if (RecordVideoEnable == Unable) {
-        [self playSound:@"begin_record.mp3"];
-        RecordVideoEnable = Enable;
-        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
-        
-        _takephotoBtn.enabled = NO;
-        
-        if (_liveCameraSource == IphoneBackCamera) {
-            [self.session startRecord];
-        }
-        else if (_liveCameraSource == ExternalDevices)
-        {
-            long recordTime = [[NSDate date] timeIntervalSince1970];
-            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
-            NSLog(@"video_timesamp:%@",timesamp);
-            self.video_timesamp = [self Get_Urls:@"video_flag"];
-            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            [mutaArray addObjectsFromArray:self.video_timesamp];
-            [mutaArray addObject:timesamp];
-            [self Save_Urls:mutaArray :@"video_flag"];
-            
-            [_videoView begin_record:0];
-            [_videoView set_record_frame_rate:24];
-        }
-        
-        VideoRecordTimerTick_s = 0;
-        VideoRecordTimerTick_m = 0;
-        _recordTimeLabel.text = @"REC 00:00";
-        _recordTimeLabel.hidden=NO;
-    }
-    else{
-        _takephotoBtn.enabled = YES;
-        [self playSound:@"end_record.mp3"];
-        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
-        RecordVideoEnable = Unable;
-        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
-        _recordTimeLabel.hidden=YES;
-        if (_liveCameraSource == IphoneBackCamera)
-        {
-            [self.session stopRecord];
-        }
-        else if (_liveCameraSource == ExternalDevices)
-        {
-            [_videoView end_record];
-        }
-
-        
-    }
-}
-
-#pragma mark - 底部按钮跳转相关界面
-/**
- *  跳转到浏览相片和视频的界面
- */
--(void)_browserBtnClick{
-    NSLog(@"浏览");
-    _isBroswer=YES;
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    BrowseViewController *v = [[BrowseViewController alloc] init];
-    [self.navigationController pushViewController: v animated:true];
-}
-
-
-/**
- 推流平台选择
- */
-- (void)platformButtonClick
-{
-    _isBroswer=YES;
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 /**
  *  跳转到配置推流信息的界面
  */
@@ -1001,10 +799,10 @@ bool _isTakePhoto=NO;
     
     v.changeVideoNeedReplayBlock = ^()
     {
-//        NSLog(@"改变了参数  等5秒重新播放");
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-            NSLog(@"重新播放 urlString：%@",urlString);
+////        NSLog(@"改变了参数  等5秒重新播放");
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+//            NSLog(@"重新播放 urlString：%@",urlString);
 //            [self.videoView removeFromSuperview];
 //            [self.videoView delegate:nil];
 //            self.videoView = nil;
@@ -1023,12 +821,12 @@ bool _isTakePhoto=NO;
 //            [self.view insertSubview:_videoView atIndex:0];
 
             
-            [self.videoView play:urlString useTcp:NO];
-            [self.videoView sound:_audioisEnable];
-            [self.videoView startGetYUVData:YES];
-            [self.videoView startGetAudioData:YES];
-            [self.videoView startGetH264Data:YES];
-        });
+//            [self.videoView play:urlString useTcp:NO];
+//            [self.videoView sound:_audioisEnable];
+//            [self.videoView startGetYUVData:YES];
+//            [self.videoView startGetAudioData:YES];
+//            [self.videoView startGetH264Data:YES];
+//        });
     };
     
     [self.navigationController pushViewController:v animated:YES];
@@ -1119,77 +917,46 @@ int valOrientation;
  *  扫描设备
  */
 #pragma mark - 扫描设备--------------------------
-- (void)scanDevice
-{
+- (void)scanDevice {
     if (_isExit) {
+        
         return;
     }
-    
-    
-    
     _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
-    _tipLabel.hidden = NO;
+    [self showSearchingMessagesTips];
     [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
-    
 }
 
-
-- (LX520View *)videoView
-{
-    if (!_videoView) {
-        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-        _videoView.userInteractionEnabled = YES;
-        
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
-        [_videoView addGestureRecognizer:singleTap];
-        _videoView.backgroundColor = [UIColor blackColor];
-        
-        [_videoView set_log_level:4];
-        [_videoView sound:YES];
-        [_videoView delegate:self];
-        [self.view insertSubview:_videoView atIndex:0];
-    }
-    
-    return _videoView;
-}
-
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
-{
+- (void)scanDeviceOver:(Lx52x_Device_Info *)result {
     if (_isExit) {
         return;
     }
-    
     if (result.Device_ID_Arr.count > 0) {
-        
         //使用扫描到的第一个设备
-        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         _userid = [result.Device_ID_Arr objectAtIndex:0];
-        
-//        self.subtitleViewController.ip=_userip;
-//        self.bannerViewController.ip=_userip;
-//        self.audioViewController.ip=_userip;
-//        self.networkViewController.ip=_userip;
-        //[self showAllTextDialog:_userip];
-        if (!_isLiveView){
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
-            });
-            if (!_isUser) {
-                _isUser=NO;
-                return;
-            }
-        }
-        
+        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+        NSLog(@"??????????????????????????scan userip=%@",urlString);
+//        if (!_isLiveView){
+////            dispatch_async(dispatch_get_main_queue(),^ {
+////                [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+////            });
+//            if (!_isUser) {
+//                _isUser=NO;
+//                return;
+//            }
+//        }
         [self getDeviceConfig];
-        NSLog(@"start play==%@",urlString);
+//        NSLog(@"start play==%@",urlString);
         [self.videoView play:urlString useTcp:NO];
-        [self.videoView sound:_audioisEnable];
+        [self.videoView sound:YES];
         [self.videoView startGetYUVData:YES];
         [self.videoView startGetAudioData:YES];
         [self.videoView startGetH264Data:YES];
+        [self.videoView show_view:YES];
+        
         self.videoisplaying = YES;
         
     } else {
@@ -1198,12 +965,10 @@ int valOrientation;
             [self showActionSheetWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" action1title:@"Continue Search" action2title:@"Use iPhone Camera" action3title:@"Cancel" action1Handler:^(UIAlertAction *action) {
                 [self scanDevice];
             } action2Handler:^(UIAlertAction *action) {
-                _tipLabel.hidden=YES;
-//                [self stopActivityIndicatorView];
+                [self hidenSearchingMessageTips];
                 _session = [self getSessionWithSystemCamera];
                 self.livingPreView.hidden = NO;
                 [self.view sendSubviewToBack:self.livingPreView];
-                
                 _play_success = YES;
                 _liveCameraSource = IphoneBackCamera;
 
@@ -1271,7 +1036,7 @@ int valOrientation;
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
         _fps=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
-            //            [self setVideoFrameRate:[fps intValue]];
+//                        [self setVideoFrameRate:[fps intValue]];
             _session = [self getSessionWithRakisrak:YES];
         });
         
@@ -1282,21 +1047,18 @@ int valOrientation;
     
 }
 
-
-/**
- *  用于判断是否断开，需要重连
- */
-- (void)isPlaying:(BOOL)playing
-{
-    _isPlaying=playing;
-}
+///**
+// *  用于判断是否断开，需要重连
+// */
+//- (void)isPlaying:(BOOL)playing
+//{
+//    _isPlaying=playing;
+//}
 
 
 #pragma mark -------------------
 #pragma mark LX520Delegate
-- (void)state_changed:(int)state
-{
-    
+- (void)state_changed:(int)state {
     NSLog(@"LX520Delegatestate_changed state = %d", state);
     switch (state) {
         case 0: //STATE_IDLE
@@ -1316,37 +1078,27 @@ int valOrientation;
             if (_isLiveView) {
                 [self enableControl];
                 dispatch_async(dispatch_get_main_queue(),^ {
-                    _tipLabel.hidden=YES;
+                    [self hidenSearchingMessageTips];
                     [self noHiddenStatus];
-//                    [self stopActivityIndicatorView];
                 });
             }
-            else
-            {
-           
-            }
-            
             break;
         }
         case 3: //STATE_STOPPED
         {
             _play_success = NO;
             break;
-            
         }
-            
         default:
             break;
     }
 }
 
-- (void)video_info:(NSString *)codecName codecLongName:(NSString *)codecLongName
-{
+- (void)video_info:(NSString *)codecName codecLongName:(NSString *)codecLongName {
     NSLog(@"video_info :  codecName:%@ codecLongName:%@",codecName,codecLongName);
 }
 
-- (void)audio_info:(NSString *)codecName codecLongName:(NSString *)codecLongName sampleRate:(int)sampleRate channels:(int)channels
-{
+- (void)audio_info:(NSString *)codecName codecLongName:(NSString *)codecLongName sampleRate:(int)sampleRate channels:(int)channels {
     NSLog(@"audio_info : codecName:%@ codecLongName:%@ sampleRate:%d channels:%d",codecName,codecLongName,sampleRate,channels);
 }
 
@@ -1361,10 +1113,7 @@ int valOrientation;
             [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
         }
         [self.session upload_imageRef:imageRef];
-        
-    }
-    else
-    {
+    } else {
         CGImageRelease(imageRef);
     }
 }
@@ -1399,7 +1148,7 @@ int valOrientation;
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
-    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
+//    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
     _isPlaying=YES;
     if(_livingState==2){
         [self.session upload_PauseImg];
@@ -1411,7 +1160,7 @@ int valOrientation;
         if ((height!=kHeight)||(width!=kWidth)) {
             kHeight=height;
             kWidth=width;
-            NSLog(@"_width=%d,height=%d",kWidth,kHeight);
+            NSLog(@"_width=%ld,height=%ld",(long)kWidth,(long)kHeight);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (_viewH>_viewW) {
                     _temp=_viewW;
@@ -1502,12 +1251,10 @@ int valOrientation;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (flow>0) {
                     if(flow<20){
-//                        [self stopActivityIndicatorView];
                         _tipLabel.text=NSLocalizedString(@"no_video", nil);
-                        _tipLabel.hidden=NO;
+                        [self showSearchingMessagesTips];
                     }else{
-                        _tipLabel.hidden=YES;
-//                        [self stopActivityIndicatorView];
+                        [self hidenSearchingMessageTips];
                     }
                 }
             });
@@ -1515,9 +1262,6 @@ int valOrientation;
     }
     _scanCount++;
 }
-
-
-
 
 /**
  *  监测流量判断是否接入相机并作相应的提示
@@ -1982,8 +1726,11 @@ int valOrientation;
 - (void)stopVideo
 {
     if (_isPlaying) {
-        _livingState=0;
+        
+        [self.videoView sound:NO];
+        _livingState = 0;
         _isPlaying=NO;
+        self.videoisplaying = NO;
         [self.videoView stop];
         NSLog(@"stop play");
     }
@@ -1994,11 +1741,7 @@ int valOrientation;
  *  关闭直播
  */
 -(void)closeLivingSession{
-    if (_isLiveView) {
-        
-    }
-    else{
-        
+    if (!_isLiveView) {
         [self stopVideo];
     }
     [self setStopStreamStatus];
@@ -2575,162 +2318,180 @@ int posStep=1;
     }
 }
 
-- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
+
+
+
+
+
+
+
+
+- (NSString *)stringFromDate:(NSDate *)date
 {
-    UIView *view = panGestureRecognizer.view;
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        if (((view.center.x + translation.x)>=_l_control_pos)&&((view.center.x + translation.x)<=_r_control_pos)){
-            [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
-            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+    return [dateFormatter stringFromDate:[NSDate date]];
+}
+
+
+/**
+ 截屏
+ */
+- (UIImage *)getSnapshotImage
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame)), NO,0.0);
+    
+    [self.view drawViewHierarchyInRect:CGRectMake(0,0,CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame)) afterScreenUpdates:NO];
+    
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return snapshot;
+}
+
+/**
+ *  拍照
+ */
+
+#pragma mark - 拍照
+-(void)_takephotoBtnClick
+{
+    
+    [self playSound:@"shutter.mp3"];
+    
+    if (_liveCameraSource == IphoneBackCamera) {
+        
+        UIImage * image = [self getSnapshotImage];
+        if (image) {
+            [_albumObject saveImageToAlbum:image albumName:album_name];
         }
+        return;
     }
-    if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        NSLog(@"UIGestureRecognizerStateEnded");
-        if (((view.center.x)>_l_control_pos)
-            &&(view.center.x)<=(_l_control_pos+(_c_control_pos-_l_control_pos)/2))//停止推流
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [_albumObject createAlbumInPhoneAlbum:album_name];
+        [_albumObject getPathForRecord:album_name];
+    });
+    
+    if (_livingState!=1) {
+        [_videoView take_photo];
+    }
+    else{
+        _isTakePhoto=YES;
+    }
+}
+
+/**
+ *  拍照回调
+ */
+bool _isTakePhoto=NO;
+- (void)take_photo:(UIImage *)image
+{
+    _isTakePhoto=NO;
+    [_albumObject saveImageToAlbum:image albumName:album_name];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary  *)contextInfo
+{
+    [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
+}
+
+- (void)saveImageToAlbum:(BOOL)success{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (success) {
+            [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
+        }
+        else{
+            [self showAllTextDialog:NSLocalizedString(@"save_photo_failed", nil)];
+        }
+    });
+}
+
+/**
+ *  录像
+ */
+#pragma mark - 录像
+-(void)_recordBtnClick{
+    if (!_play_success) {
+        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+        return;
+    }
+    if (RecordVideoEnable == Unable) {
+        [self playSound:@"begin_record.mp3"];
+        RecordVideoEnable = Enable;
+        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
+        
+        _takephotoBtn.enabled = NO;
+        
+        if (_liveCameraSource == IphoneBackCamera) {
+            [self.session startRecord];
+        }
+        else if (_liveCameraSource == ExternalDevices)
         {
-            [self setStopStreamStatus];
-            _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
-            [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
-            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+            long recordTime = [[NSDate date] timeIntervalSince1970];
+            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
+            NSLog(@"video_timesamp:%@",timesamp);
+            self.video_timesamp = [self Get_Urls:@"video_flag"];
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            [mutaArray addObjectsFromArray:self.video_timesamp];
+            [mutaArray addObject:timesamp];
+            [self Save_Urls:mutaArray :@"video_flag"];
             
-            [self closeLivingSession];
-            _isExit=YES;
+            [_videoView begin_record:0];
+            [_videoView set_record_frame_rate:24];
         }
-        else if (((view.center.x)>(_l_control_pos+(_c_control_pos-_l_control_pos)/2))&&(view.center.x)<=(_c_control_pos+(_r_control_pos-_c_control_pos)/2))//开始推流
+        
+        VideoRecordTimerTick_s = 0;
+        VideoRecordTimerTick_m = 0;
+        _recordTimeLabel.text = @"REC 00:00";
+        _recordTimeLabel.hidden=NO;
+    }
+    else{
+        _takephotoBtn.enabled = YES;
+        [self playSound:@"end_record.mp3"];
+        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
+        RecordVideoEnable = Unable;
+        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
+        _recordTimeLabel.hidden=YES;
+        if (_liveCameraSource == IphoneBackCamera)
         {
-            if(_livingState==0){
-                if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
-                     ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
-                    [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
-                    [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-                    [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
-                    return;
-                }
-                
-                _isExit=NO;
-                if (_isLiveView) {
-                    [self _liveStreamBtnClick];
-                }
-                else{
-                    if (_userip!=nil) {
-                        NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-                        [self.videoView play:url useTcp:NO];
-                        [self.videoView sound:_audioisEnable];
-                        self.videoisplaying = YES;
-                    }
-                    else{
-                        [self scanDevice];
-                        _isUser=YES;
-                    }
-                }
-            }
-            else{
-                [self setStartStreamStatus];
-            }
-            _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_star button@3x.png"];
-            [view setCenter:(CGPoint){_c_control_pos, view.center.y}];
-            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+            [self.session stopRecord];
         }
-        else if (((view.center.x)>(_c_control_pos+(_r_control_pos-_c_control_pos)/2))&&(view.center.x)<=_r_control_pos)//暂停推流
+        else if (_liveCameraSource == ExternalDevices)
         {
-            if (_livingState==0) {
-                [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
-                [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
-                [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-                _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
-                _streamStatusImg.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
-            }
-            else{
-                [self setPauseStreamStatus];
-                _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_pause button@3x.png"];
-                [view setCenter:(CGPoint){_r_control_pos, view.center.y}];
-                [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-            }
+            [_videoView end_record];
         }
+        
+        
     }
 }
 
+#pragma mark - 底部按钮跳转相关界面
 /**
- * 左右滑动显示出所有直播参数设置选项
+ *  跳转到浏览相片和视频的界面
  */
-- (void)panView2:(UIPanGestureRecognizer *)panGestureRecognizer
-{
-    UIView *view = panGestureRecognizer.view;
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        if (((view.center.x + translation.x)>=3*_viewW/8)&&((view.center.x + translation.x)<=5*_viewW/8)){
-            [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
-            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-        }
-    }
-}
-
-/**
- * 设置字幕
- */
-- (void)_linkmanBtn0Click{
-    NSLog(@"_linkmanBtn0Click");
-    [self.navigationController pushViewController: self.subtitleViewController animated:true];
-}
-
-/**
- * 设置角标
- */
-- (void)_linkmanBtn1Click{
-    NSLog(@"_linkmanBtn1Click");
-    [self.navigationController pushViewController: self.bannerViewController animated:true];
-}
-
-/**
- * 设置暂停界面
- */
-- (void)_linkmanBtn2Click{
-    NSLog(@"_linkmanBtn2Click");
-    PauseScreenViewController *v = [[PauseScreenViewController alloc] init];
+-(void)_browserBtnClick{
+    NSLog(@"浏览");
+    _isBroswer=YES;
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    BrowseViewController *v = [[BrowseViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
 }
 
-/**
- * 设置声音
- */
-- (void)_linkmanBtn3Click{
-    NSLog(@"_linkmanBtn3Click");
-    [self.navigationController pushViewController: self.audioViewController animated:true];
-}
 
 /**
- * 设置网络
+ 推流平台选择
  */
-- (void)_linkmanBtn4Click{
-    NSLog(@"_linkmanBtn4Click");
-    [self.navigationController pushViewController: self.networkViewController animated:true];
+- (void)platformButtonClick
+{
+    _isBroswer=YES;
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
-/**
- * 分享直播链接
- */
-- (void)_streamingShareBtnClick{
-    NSLog(@"_streamingShareBtnClick");
-}
 
-/**
- * 选择输入直播链接
- */
-- (void)_addressViewClick{
-    NSLog(@"_addressViewClick");
-    myTextField.txtField.text=_streamingAddress.text;
-    [self setInfoViewFrame:_inputAddressView :NO];
-}
-
-/**
- * 选择平台获取直播链接
- */
-- (void)_platformViewClick{
-    NSLog(@"_platformViewClick");
-    [self setInfoViewFrame:_choosePlatformView :NO];
-}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     //隐藏键盘
@@ -2837,4 +2598,243 @@ int posStep=1;
     return wifiName;
 }
 
+#pragma mark - 注册通知
+- (void)addApplicationActiveNotifications {
+    // app从后台进入前台都会调用这个方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    // 添加检测app进入后台的观察者
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
+    
+}
+
+- (void)dealloc {
+    
+    [self timersInvalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationBecomeActive {
+    [self replayVideoView];
+    NSLog(@"----------进入前台");
+}
+
+- (void)applicationEnterBackground {
+    [self stopVideo];
+    NSLog(@"----------进入后台");
+}
+
+#pragma mark - maybe not use
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *  移入效果
+ */
+-(void)moveInAnimation{
+    _topBg.hidden=NO;
+    _bottomBg.hidden=NO;
+    _statusBg.hidden=NO;
+    if (_livingState==1) {
+        _livePauseBtn.hidden=NO;
+        _liveStopBtn.hidden=NO;
+    }
+    else if (_livingState==2) {
+        _livePauseBtn.hidden=NO;
+        _liveStopBtn.hidden=NO;
+    }
+    CATransition *anima = [CATransition animation];
+    anima.type = kCATransitionMoveIn;//设置动画的类型
+    anima.subtype = kCATransitionFromBottom; //设置动画的方向
+    [_topBg.layer addAnimation:anima forKey:@"moveInAnimation"];
+    [_statusBg.layer addAnimation:anima forKey:@"moveInAnimation"];
+    
+    anima.subtype = kCATransitionFromTop; //设置动画的方向
+    anima.duration = 0.3f;
+    [_bottomBg.layer addAnimation:anima forKey:@"moveInAnimation"];
+}
+
+/**
+ *  移出效果
+ */
+-(void)revealAnimation{
+    [UIView animateWithDuration:0.3 animations:^{
+        CATransition *anima = [CATransition animation];
+        anima.type = kCATransitionReveal;//设置动画的类型
+        anima.subtype = kCATransitionFromTop; //设置动画的方向
+        [_topBg.layer addAnimation:anima forKey:@"revealAnimation"];
+        [_statusBg.layer addAnimation:anima forKey:@"revealAnimation"];
+        
+        anima.subtype = kCATransitionFromBottom; //设置动画的方向
+        anima.duration = 0.3f;
+        [_bottomBg.layer addAnimation:anima forKey:@"revealAnimation"];
+    } completion:^(BOOL finished) {
+        _topBg.hidden=YES;
+        _bottomBg.hidden=YES;
+        _statusBg.hidden=YES;
+        _livePauseBtn.hidden=YES;
+        _liveStopBtn.hidden=YES;
+    }];
+}
+
+
+
+- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    UIView *view = panGestureRecognizer.view;
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
+        if (((view.center.x + translation.x)>=_l_control_pos)&&((view.center.x + translation.x)<=_r_control_pos)){
+            [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
+            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+        }
+    }
+    if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        NSLog(@"UIGestureRecognizerStateEnded");
+        if (((view.center.x)>_l_control_pos)
+            &&(view.center.x)<=(_l_control_pos+(_c_control_pos-_l_control_pos)/2))//停止推流
+        {
+            [self setStopStreamStatus];
+            _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
+            [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
+            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+            
+            [self closeLivingSession];
+            _isExit=YES;
+        }
+        else if (((view.center.x)>(_l_control_pos+(_c_control_pos-_l_control_pos)/2))&&(view.center.x)<=(_c_control_pos+(_r_control_pos-_c_control_pos)/2))//开始推流
+        {
+            if(_livingState==0){
+                if ((([_streamingAddress.text compare:@""]==NSOrderedSame)||
+                     ([_streamingAddress.text compare:NSLocalizedString(@"address_text", nil)]==NSOrderedSame))  &&([_streamingPlatform.text isEqual: NSLocalizedString(@"platform_text", nil)])){
+                    [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
+                    [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+                    [self showAllTextDialog:NSLocalizedString(@"streaminig_no_url_tips", nil)];
+                    return;
+                }
+                
+                _isExit=NO;
+                if (_isLiveView) {
+                    [self _liveStreamBtnClick];
+                }
+                else{
+                    if (_userip!=nil) {
+                        NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+                        [self.videoView play:url useTcp:NO];
+                        [self.videoView sound:_audioisEnable];
+                        self.videoisplaying = YES;
+                    }
+                    else{
+                        [self scanDevice];
+                        _isUser=YES;
+                    }
+                }
+            }
+            else{
+                [self setStartStreamStatus];
+            }
+            _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_star button@3x.png"];
+            [view setCenter:(CGPoint){_c_control_pos, view.center.y}];
+            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+        }
+        else if (((view.center.x)>(_c_control_pos+(_r_control_pos-_c_control_pos)/2))&&(view.center.x)<=_r_control_pos)//暂停推流
+        {
+            if (_livingState==0) {
+                [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
+                [view setCenter:(CGPoint){_l_control_pos, view.center.y}];
+                [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+                _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_stop button@3x.png"];
+                _streamStatusImg.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
+            }
+            else{
+                [self setPauseStreamStatus];
+                _streamingControlImg.image=[UIImage imageNamed:@"stream_Slide bar_pause button@3x.png"];
+                [view setCenter:(CGPoint){_r_control_pos, view.center.y}];
+                [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+            }
+        }
+    }
+}
+
+/**
+ * 左右滑动显示出所有直播参数设置选项
+ */
+- (void)panView2:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    UIView *view = panGestureRecognizer.view;
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
+        if (((view.center.x + translation.x)>=3*_viewW/8)&&((view.center.x + translation.x)<=5*_viewW/8)){
+            [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
+            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+        }
+    }
+}
+
+
+
+/**
+ * 设置暂停界面
+ */
+- (void)_linkmanBtn2Click{
+    NSLog(@"_linkmanBtn2Click");
+    PauseScreenViewController *v = [[PauseScreenViewController alloc] init];
+    [self.navigationController pushViewController: v animated:true];
+}
+
+
+/**
+ * 分享直播链接
+ */
+- (void)_streamingShareBtnClick{
+    NSLog(@"_streamingShareBtnClick");
+}
+
+/**
+ * 选择输入直播链接
+ */
+- (void)_addressViewClick{
+    NSLog(@"_addressViewClick");
+    myTextField.txtField.text=_streamingAddress.text;
+    [self setInfoViewFrame:_inputAddressView :NO];
+}
+
+/**
+ * 选择平台获取直播链接
+ */
+- (void)_platformViewClick{
+    NSLog(@"_platformViewClick");
+    [self setInfoViewFrame:_choosePlatformView :NO];
+}
+
+
+
+///**
+// * 设置声音
+// */
+//- (void)_linkmanBtn3Click{
+//    NSLog(@"_linkmanBtn3Click");
+//    [self.navigationController pushViewController: self.audioViewController animated:true];
+//}
+//
+///**
+// * 设置网络
+// */
+//- (void)_linkmanBtn4Click{
+//    NSLog(@"_linkmanBtn4Click");
+//    [self.navigationController pushViewController: self.networkViewController animated:true];
+//}
+/**
+ * 设置字幕
+ */
+//- (void)_linkmanBtn0Click{
+//    NSLog(@"_linkmanBtn0Click");
+//    [self.navigationController pushViewController: self.subtitleViewController animated:true];
+//}
+//
+///**
+// * 设置角标
+// */
+//- (void)_linkmanBtn1Click{
+//    NSLog(@"_linkmanBtn1Click");
+//    [self.navigationController pushViewController: self.bannerViewController animated:true];
+//}
 @end

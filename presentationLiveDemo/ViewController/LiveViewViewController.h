@@ -23,7 +23,7 @@
     
     UIView *_liveView;
     UILabel *_tipLabel;
-    UIImageView* ActivityIndicatorView;
+    UIImageView* _searchDeviceImageView;
     bool ActivityIndicatorViewisenable;
     UIImageView *_bottomBg;
     UIButton *_takephotoBtn;
