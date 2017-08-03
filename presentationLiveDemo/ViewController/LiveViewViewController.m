@@ -63,6 +63,7 @@ typedef NS_ENUM(NSUInteger, LivingState) {
 
 static NSInteger kWidth = 1280;
 static NSInteger kHeight = 720;
+static NSInteger configPort=80;//端口号
 static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
@@ -189,20 +190,6 @@ static enum ButtonEnable RecordVideoEnable;
     }
     return _networkViewController;
 }
-
-//- (NSTimer *)recordVideoTimer {
-//    if (!_recordVideoTimer) {
-//      _recordVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recordVideoTimerLoop) userInfo:nil repeats:YES];
-//    }
-//    return _recordVideoTimer;
-//}
-//
-//- (NSTimer *)updateUITimer {
-//    if (!_updateUITimer) {
-//        _updateUITimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
-//    }
-//    return _updateUITimer;
-//}
 
 #pragma mark - ------------------lifeCycle----
 
@@ -715,29 +702,22 @@ static enum ButtonEnable RecordVideoEnable;
     }];
 }
 
-/**
- *  使能相关按钮
- */
+/** 使能相关按钮 */
 -(void)enableControl{
     _takephotoBtn.enabled=true;
     _liveStreamBtn.enabled=true;
     _recordBtn.enabled=true;
 }
 
-/**
- *  禁用相关按钮
- */
+/** 禁用相关按钮 */
 -(void)disableControl{
     _takephotoBtn.enabled=false;
     _liveStreamBtn.enabled=false;
     _recordBtn.enabled=false;
 }
 
-/**
- *  添加按钮声音效果
- */
-- (void)playSound:(NSString *)sourcePath
-{
+/** 添加按钮声音效果 */
+- (void)playSound:(NSString *)sourcePath {
     //1.获得音效文件的全路径
     NSURL *url=[[NSBundle mainBundle]URLForResource:sourcePath      withExtension:nil];
     //2.加载音效文件，创建音效ID（SoundID,一个ID对应一个音效文件）
@@ -749,12 +729,11 @@ static enum ButtonEnable RecordVideoEnable;
     AudioServicesPlaySystemSound(soundID);
 }
 
-/**
- *  记录录像时间
- */
+/** 记录录像时间 */
 int VideoRecordTimerTick_s = 0;
 int VideoRecordTimerTick_m = 0;
 bool VideoRecordIsEnable = NO;
+
 - (void)recordVideoTimerLoop {
     
     if (RecordVideoEnable == Unable) {
@@ -1146,8 +1125,10 @@ int valOrientation;
         return;
     }
     
-    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     
+    
+    _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
+    _tipLabel.hidden = NO;
     [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
@@ -1186,16 +1167,12 @@ int valOrientation;
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         _userid = [result.Device_ID_Arr objectAtIndex:0];
+        
 //        self.subtitleViewController.ip=_userip;
 //        self.bannerViewController.ip=_userip;
 //        self.audioViewController.ip=_userip;
 //        self.networkViewController.ip=_userip;
-        
         //[self showAllTextDialog:_userip];
-        
-        
-//        NSLog(@"user ifo:id=%@ username=%@ userpassword=%@",_userid,_username,_userpassword);
-        
         if (!_isLiveView){
             dispatch_async(dispatch_get_main_queue(),^ {
                 [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
@@ -1207,29 +1184,15 @@ int valOrientation;
         }
         
         [self getDeviceConfig];
-        
         NSLog(@"start play==%@",urlString);
-        
         [self.videoView play:urlString useTcp:NO];
         [self.videoView sound:_audioisEnable];
         [self.videoView startGetYUVData:YES];
         [self.videoView startGetAudioData:YES];
         [self.videoView startGetH264Data:YES];
-        
         self.videoisplaying = YES;
         
-//        if (_isLiveView) {
-        
-            //            [NSThread detachNewThreadSelector:@selector(GetStreamStatus) toTarget:self withObject:nil];
-            //            [NSThread detachNewThreadSelector:@selector(GetAudioInput) toTarget:self withObject:nil];
-            //            [NSThread detachNewThreadSelector:@selector(GetPower) toTarget:self withObject:nil];
-//        }
-        
-        
-    }
-    else
-    {
-        
+    } else {
         
         dispatch_async(dispatch_get_main_queue(),^ {
             [self showActionSheetWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" action1title:@"Continue Search" action2title:@"Use iPhone Camera" action3title:@"Cancel" action1Handler:^(UIAlertAction *action) {
@@ -1254,25 +1217,22 @@ int valOrientation;
 
 #pragma mark - 获取设备的参数  码率 fps 等 --------------------
 
-- (void)getDeviceConfig
-{
+- (void)getDeviceConfig {
     
-    int configPort=80;
     NSString * configIP = _userip;
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",configIP,configPort];
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_resol&type=h264&pipe=0",configIP,(long)configPort];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        NSLog(@"rrrrrrrrrrrrrrrrrespoonseString = %@",http_request.ResponseString);
         _resolution=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
             if ([_resolution compare:@"3"]==NSOrderedSame) {
                 //                [self set1080P];
             }
             else if ([_resolution compare:@"2"]==NSOrderedSame) {
-                //                [self set720P];
+//                                [self set720P];
             }
             else{
                 //                [self set480P];
@@ -1282,7 +1242,7 @@ int valOrientation;
     }
     
     //get quality
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,configPort];
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,(long)configPort];
     http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
@@ -1304,7 +1264,7 @@ int valOrientation;
     }
     
     //get fps
-    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",configIP,configPort];
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_max_fps&type=h264&pipe=0",configIP,(long)configPort];
     http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {

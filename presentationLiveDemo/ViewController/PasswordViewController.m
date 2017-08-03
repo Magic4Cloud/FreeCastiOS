@@ -9,14 +9,12 @@
 #import "PasswordViewController.h"
 #import "CommanParameter.h"
 #import "HttpRequest.h"
-#import "Rak_Lx52x_Device_Control.h"
 #import "MBProgressHUD.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "CommanParameters.h"
 
 #import "TTSearchDeviceClass.h"
 
-Rak_Lx52x_Device_Control *_configScan;
 @interface PasswordViewController ()
 {
     bool _Exit;
@@ -30,6 +28,7 @@ Rak_Lx52x_Device_Control *_configScan;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:244/255.0 green:245/255.0 blue:247/255.0 alpha:1.0];
+    
     _configPort=80;
     
     //顶部
@@ -636,7 +635,7 @@ Rak_Lx52x_Device_Control *_configScan;
     }
     else
     {
-            _configScan = [[Rak_Lx52x_Device_Control alloc] init];
+        
             [self scanDevice];
     }
 }
@@ -804,7 +803,6 @@ NSString *quality;
                 [self _videoBtnClick:VediosegmentedControl];
             }
         });
-    
 }
 
 //返回
@@ -1080,9 +1078,11 @@ bool _modifyOK=YES;
 {
     
     NSLog(@"_videoModifyBtnClick");
+    
+    
     _modifyOK=YES;
+    
     //set resolution
-//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
     NSString * urlStr = [NSString stringWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
     
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:urlStr andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
