@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "CommanParameters.h"
-
+#import "TTNetMannger.h"
 #import "TTSearchDeviceClass.h"
 
 @interface PasswordViewController ()
@@ -43,7 +43,7 @@
     _Bg.contentMode=UIViewContentModeScaleToFill;
     _Bg.backgroundColor=[UIColor blackColor];
     _Bg.alpha=0.1;
-//    [self.view addSubview:_Bg];
+    //    [self.view addSubview:_Bg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
@@ -51,10 +51,17 @@
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-    [_backBtn addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_backBtn];
+    UIButton * bigBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    bigBackButton.frame = CGRectMake(0, 20, viewH*44/totalHeight, viewH*44/totalHeight);
+    bigBackButton.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
+    [bigBackButton addTarget:nil action:@selector(_backBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
-//
+    [self.view addSubview:bigBackButton];
+    
+    
+    
+    //
     
     //设置分段控件点击相应事件
     NSArray *segmentedData = [[NSArray alloc]initWithObjects:NSLocalizedString(@"configure_video_title", nil),NSLocalizedString(@"password_title", nil),nil];
@@ -71,11 +78,11 @@
     
     NSDictionary *highlightedAttributes =
     @{NSForegroundColorAttributeName : MAIN_COLOR,
-                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
+      NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     [segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateSelected];
     
     NSDictionary *highlightedAttributes2 = @{NSForegroundColorAttributeName : GRAY_COLOR,
-                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
+                                             NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     
     [segmentedControl setTitleTextAttributes:highlightedAttributes2 forState:UIControlStateNormal];
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
@@ -85,7 +92,7 @@
     videoline.center = segmentedControl.center;
     videoline.backgroundColor = MAIN_COLOR;
     [self.view addSubview:videoline];
-
+    
     
     //Password
     _passwordView=[[UIView alloc]init];
@@ -96,16 +103,16 @@
     _passwordImg=[[UIImageView alloc]init];
     _passwordImg.frame = CGRectMake(0, 0, viewW, viewH*156.5/totalHeight);
     [_passwordImg setImage:[UIImage imageNamed:@"configure_password_banner_image@3x.png"]];
-//    [_passwordView  addSubview:_passwordImg];
+    //    [_passwordView  addSubview:_passwordImg];
     
     //SSID
-//    _ssidView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _passwordImg.frame.origin.y+_passwordImg.frame.size.height+viewH*13/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
-//    [[_ssidView layer] setBorderWidth:1.0];//画线的宽度
-//    [[_ssidView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
-//    [[_ssidView layer]setCornerRadius:viewW*14/totalWeight];//圆角
-//    _ssidView.backgroundColor=[UIColor whiteColor];
-//    [_ssidView.layer setMasksToBounds:YES];
-//    [_passwordView addSubview:_ssidView];
+    //    _ssidView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _passwordImg.frame.origin.y+_passwordImg.frame.size.height+viewH*13/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
+    //    [[_ssidView layer] setBorderWidth:1.0];//画线的宽度
+    //    [[_ssidView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
+    //    [[_ssidView layer]setCornerRadius:viewW*14/totalWeight];//圆角
+    //    _ssidView.backgroundColor=[UIColor whiteColor];
+    //    [_ssidView.layer setMasksToBounds:YES];
+    //    [_passwordView addSubview:_ssidView];
     
     _ssidLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, viewW*83.5/totalWeight, viewW*110/totalWeight, viewH*17.5/totalHeight)];
     _ssidLabel.text = NSLocalizedString(@"password_ssid_label", nil);
@@ -139,13 +146,13 @@
     [_passwordView addSubview:_ssidImg];
     
     //Init Password
-//    _initPasswordView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _ssidView.frame.origin.y+_ssidView.frame.size.height+viewH*15/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
-//    [[_initPasswordView layer] setBorderWidth:1.0];//画线的宽度
-//    [[_initPasswordView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
-//    [[_initPasswordView layer]setCornerRadius:viewW*14/totalWeight];//圆角
-//    _initPasswordView.backgroundColor=[UIColor whiteColor];
-//    [_initPasswordView.layer setMasksToBounds:YES];
-//    [_passwordView addSubview:_initPasswordView];
+    //    _initPasswordView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _ssidView.frame.origin.y+_ssidView.frame.size.height+viewH*15/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
+    //    [[_initPasswordView layer] setBorderWidth:1.0];//画线的宽度
+    //    [[_initPasswordView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
+    //    [[_initPasswordView layer]setCornerRadius:viewW*14/totalWeight];//圆角
+    //    _initPasswordView.backgroundColor=[UIColor whiteColor];
+    //    [_initPasswordView.layer setMasksToBounds:YES];
+    //    [_passwordView addSubview:_initPasswordView];
     
     _initPasswordLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, viewH*119.5/totalHeight, viewW*120/totalWeight, viewH*17.5/totalHeight)];
     _initPasswordLabel.text = NSLocalizedString(@"password_initial_label", nil);
@@ -154,12 +161,12 @@
     _initPasswordLabel.textColor = MAIN_COLOR;
     _initPasswordLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _initPasswordLabel.numberOfLines = 0;
-//    [_passwordView addSubview:_initPasswordLabel];
+    //    [_passwordView addSubview:_initPasswordLabel];
     
-//    UIView *_initPasswordLine=[[UIView alloc]init];
-//    _initPasswordLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
-//    _initPasswordLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-//    [_initPasswordView addSubview:_initPasswordLine];
+    //    UIView *_initPasswordLine=[[UIView alloc]init];
+    //    _initPasswordLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
+    //    _initPasswordLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+    //    [_initPasswordView addSubview:_initPasswordLine];
     
     _initPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _initPasswordImg.userInteractionEnabled=YES;
@@ -167,7 +174,7 @@
     [_initPasswordImg addGestureRecognizer:singleTap2];
     _initPasswordImg.frame = CGRectMake(viewW*318/totalWeight, _initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*10/totalHeight, viewH*15/totalHeight, viewH*15/totalHeight);
     _initPasswordImg.contentMode=UIViewContentModeScaleToFill;
-//    [_passwordView addSubview:_initPasswordImg];
+    //    [_passwordView addSubview:_initPasswordImg];
     
     _initPasswordText=[[UITextField alloc]init];
     _initPasswordText.frame=CGRectMake(viewW*37/totalWeight,_initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*10/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
@@ -176,7 +183,7 @@
     _initPasswordText.secureTextEntry = YES;
     _initPasswordText.delegate=self;
     _initPasswordText.placeholder=NSLocalizedString(@"password_initial_label", nil);
-//    [_passwordView addSubview:_initPasswordText];
+    //    [_passwordView addSubview:_initPasswordText];
     
     
     //Device
@@ -216,13 +223,13 @@
     [_passwordView addSubview:_newPasswordText];
     
     //Confirm
-//    _confirmView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _newPasswordView.frame.origin.y+_newPasswordView.frame.size.height+viewH*15/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
-//    [[_confirmView layer] setBorderWidth:1.0];//画线的宽度
-//    [[_confirmView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
-//    [[_confirmView layer]setCornerRadius:viewW*14/totalWeight];//圆角
-//    _confirmView.backgroundColor=[UIColor whiteColor];
-//    [_confirmView.layer setMasksToBounds:YES];
-//    [_passwordView addSubview:_confirmView];
+    //    _confirmView=[[UIView alloc] initWithFrame:CGRectMake( viewW*15/totalWeight, _newPasswordView.frame.origin.y+_newPasswordView.frame.size.height+viewH*15/totalHeight,viewW*345/totalWeight, viewH*40/totalHeight)];
+    //    [[_confirmView layer] setBorderWidth:1.0];//画线的宽度
+    //    [[_confirmView layer] setBorderColor:[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0].CGColor];//颜色
+    //    [[_confirmView layer]setCornerRadius:viewW*14/totalWeight];//圆角
+    //    _confirmView.backgroundColor=[UIColor whiteColor];
+    //    [_confirmView.layer setMasksToBounds:YES];
+    //    [_passwordView addSubview:_confirmView];
     
     _confirmLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*37/totalWeight, _newPasswordLabel.frame.origin.y+_newPasswordLabel.frame.size.height+viewH*47.5/totalHeight, viewW*110/totalWeight, viewH*17.5/totalHeight)];
     _confirmLabel.text = NSLocalizedString(@"password_confirm_label", nil);
@@ -232,10 +239,10 @@
     _confirmLabel.numberOfLines = 0;
     [_passwordView addSubview:_confirmLabel];
     
-//    UIView *_confirmLine=[[UIView alloc]init];
-//    _confirmLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
-//    _confirmLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
-//    [_confirmView addSubview:_confirmLine];
+    //    UIView *_confirmLine=[[UIView alloc]init];
+    //    _confirmLine.frame=CGRectMake(viewW*141/totalWeight,0, 1, viewH*40/totalHeight);
+    //    _confirmLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
+    //    [_confirmView addSubview:_confirmLine];
     
     _confirmPasswordImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_display_nor"]];
     _confirmPasswordImg.userInteractionEnabled=YES;
@@ -253,15 +260,15 @@
     _confirmText.delegate=self;
     _confirmText.placeholder=NSLocalizedString(@"password_confirm_label", nil);
     [_passwordView addSubview:_confirmText];
-
+    
     
     
     //Modify
     _passwordModifyBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _passwordModifyBtn.frame = CGRectMake(viewW*77.5/totalWeight, viewH*534.5/totalHeight - viewH*67/totalHeight, viewW*220/totalWeight, viewH*35/totalHeight);
-//    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
-//    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
-//    [_passwordModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+    //    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_passwordModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
+    //    [_passwordModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
     [_passwordModifyBtn setTitle: @"Modify" forState: UIControlStateNormal];
     [_passwordModifyBtn setBackgroundColor:[UIColor colorWithRed:(192 / 255.0f) green:(236 / 255.0f) blue:(248 / 255.0f) alpha:1.0]];
     _passwordModifyBtn.layer.cornerRadius = viewW*18/totalWeight;
@@ -366,10 +373,10 @@
     _viewBtn.userInteractionEnabled=YES;
     _viewBtn.frame=CGRectMake(0, viewH*156.5/totalHeight, viewW, viewH*127/totalHeight);
     _viewBtn.backgroundColor=[UIColor orangeColor];
-//    [_videoView  addSubview:_viewBtn];
+    //    [_videoView  addSubview:_viewBtn];
     
     _videoParametersLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _videoImg.frame.origin.y+_videoImg.frame.size.height+viewH*17/totalHeight, viewW, viewH*20/totalHeight)];
-//    _videoParametersLabel.text = NSLocalizedString(@"parameters_note", nil);
+    //    _videoParametersLabel.text = NSLocalizedString(@"parameters_note", nil);
     _videoParametersLabel.text = @"Image Quality";
     _videoParametersLabel.center=CGPointMake(viewW*0.5, _videoParametersLabel.center.y);
     _videoParametersLabel.font = [UIFont systemFontOfSize: viewH*20/totalHeight*0.8];
@@ -393,13 +400,13 @@
     
     NSDictionary *VediohighlightedAttributes =
     @{NSForegroundColorAttributeName : MAIN_COLOR,
-                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
+      NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     
     [VediosegmentedControl setTitleTextAttributes:VediohighlightedAttributes forState:UIControlStateSelected];
     
     NSDictionary *VediohighlightedAttributes2 =
     @{NSForegroundColorAttributeName : GRAY_COLOR,
-                 NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
+      NSFontAttributeName : [UIFont systemFontOfSize:viewH*16*0.8/totalHeight],};
     [VediosegmentedControl setTitleTextAttributes:VediohighlightedAttributes2 forState:UIControlStateNormal];
     [VediosegmentedControl addTarget:self action:@selector(_videoBtnClick:)forControlEvents:UIControlEventValueChanged];
     [_videoView addSubview:VediosegmentedControl];
@@ -414,9 +421,9 @@
     //Modify
     _videoModifyBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _videoModifyBtn.frame = CGRectMake(viewW*77.5/totalWeight, viewH-viewH*96/totalHeight-viewH*35/totalHeight, viewW*220/totalWeight, viewH*35/totalHeight);
-//    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
-//    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
-//    [_videoModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
+    //    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_videoModifyBtn setBackgroundImage:[UIImage imageNamed:@"button_rectangle_dis@3x.png"] forState:UIControlStateHighlighted];
+    //    [_videoModifyBtn setTitle: NSLocalizedString(@"password_modify_label", nil) forState: UIControlStateNormal];
     [_videoModifyBtn setTitle: @"Modify" forState: UIControlStateNormal];
     [_videoModifyBtn setBackgroundColor:[UIColor colorWithRed:(192 / 255.0f) green:(236 / 255.0f) blue:(248 / 255.0f) alpha:1.0]];
     _videoModifyBtn.layer.cornerRadius = viewW*18/totalWeight;
@@ -434,7 +441,7 @@
     _videoParametersView.frame=CGRectMake(0,viewH*270/totalHeight, viewW, viewH*206/totalHeight);
     _videoParametersView.backgroundColor=[UIColor clearColor];
     [_videoView addSubview:_videoParametersView];
-
+    
     //Resolution
     _videoResolutionView=[[UIView alloc]init];
     _videoResolutionView.frame=CGRectMake(0,viewH*6/totalHeight,viewW, viewH*44/totalHeight);
@@ -495,7 +502,7 @@
     _videoResolutionValueLabel.textAlignment = NSTextAlignmentCenter;
     _videoResolutionValueLabel.numberOfLines = 0;
     [_videoResolutionView addSubview:_videoResolutionValueLabel];
-
+    
     //Rate
     _videoRateView=[[UIView alloc]init];
     _videoRateView.userInteractionEnabled=YES;
@@ -562,7 +569,7 @@
     [_videoParametersView addSubview:_videoFrameRateView];
     
     _videoFrameRateLabel= [[UILabel alloc] initWithFrame:CGRectMake(viewW*15/totalWeight,viewH*13/totalHeight, viewW*80/totalWeight, viewH*44/totalHeight)];
-//    _videoFrameRateLabel.text = NSLocalizedString(@"video_framerate", nil);
+    //    _videoFrameRateLabel.text = NSLocalizedString(@"video_framerate", nil);
     _videoFrameRateLabel.text = @"Frame Rate";
     _videoFrameRateLabel.font = [UIFont systemFontOfSize: viewH*12.5/totalHeight*0.8];
     _videoFrameRateLabel.backgroundColor = [UIColor clearColor];
@@ -584,7 +591,7 @@
     [_videoFrameRateView addSubview:_videoFrameRateSlider];
     
     _videoFrameRateMinLabel=[[UILabel alloc] initWithFrame:CGRectMake(_videoFrameRateLabel.frame.size.width+_videoFrameRateLabel.frame.origin.x+viewH*22/totalHeight, viewH*48/totalHeight, viewH*44/totalHeight, viewH*18/totalHeight)];
-//    _videoFrameRateMinLabel.text = NSLocalizedString(@"video_framerate_min", nil);
+    //    _videoFrameRateMinLabel.text = NSLocalizedString(@"video_framerate_min", nil);
     _videoFrameRateMinLabel.text = @"10FPS";
     _videoFrameRateMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMinLabel.backgroundColor = [UIColor clearColor];
@@ -595,7 +602,7 @@
     [_videoFrameRateView addSubview:_videoFrameRateMinLabel];
     
     _videoFrameRateMaxLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW-viewH*66/totalHeight, viewH*48/totalHeight, viewH*44/totalHeight, viewH*18/totalHeight)];
-//    _videoFrameRateMaxLabel.text = NSLocalizedString(@"video_framerate_max", nil);
+    //    _videoFrameRateMaxLabel.text = NSLocalizedString(@"video_framerate_max", nil);
     _videoFrameRateMaxLabel.text = @"30FPS";
     _videoFrameRateMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoFrameRateMaxLabel.backgroundColor = [UIColor clearColor];
@@ -631,12 +638,12 @@
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
             [self getDeviceinformation];
         });
-
+        
     }
     else
     {
         
-            [self scanDevice];
+        [self scanDevice];
     }
 }
 
@@ -667,7 +674,7 @@
         [self scanDeviceOver:resultinfo];
     }];
     
-//    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
+    //    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
 }
 
 //- (void)scanDeviceTask
@@ -711,98 +718,98 @@ NSString *quality;
     if (!_configIP || !_configPort) {
         return;
     }
-        //get resolution
-        NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",_configIP,_configPort];
-        HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-        if(http_request.StatusCode==200)
-        {
-            http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-            resolution=[self parseJsonString:http_request.ResponseString];
-            dispatch_async(dispatch_get_main_queue(),^ {
-                if ([resolution compare:@"3"]==NSOrderedSame) {
-                    [self set1080P];
-                }
-                else if ([resolution compare:@"2"]==NSOrderedSame) {
-                    [self set720P];
-                }
-                else{
-                    [self set480P];
-                }
-            });
-            NSLog(@"resolution=%@",resolution);
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [self showAllTextDialog:NSLocalizedString(@"get_reslution_failed", nil)];
-            });
-        }
-        
-        //get quality
-        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",_configIP,_configPort];
-        http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-        if(http_request.StatusCode==200)
-        {
-            http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-            quality=[self parseJsonString:http_request.ResponseString];
-            dispatch_async(dispatch_get_main_queue(),^ {
-                float value=[quality intValue]*3000/52.0;
-//                if (((int)value%100)!=0) {
-//                    value=value+100;
-//                }
-                [self setVideoRate:value];
-            });
-            NSLog(@"quality=%@",quality);
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [self showAllTextDialog:NSLocalizedString(@"get_quality_failed", nil)];
-            });
-        }
-        
-        //get fps
-        URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",_configIP,_configPort];
-        http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-        if(http_request.StatusCode==200)
-        {
-            http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-            fps=[self parseJsonString:http_request.ResponseString];
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [self setVideoFrameRate:[fps intValue]];
-            });
-            
-            NSLog(@"fps=%@",fps);
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [self showAllTextDialog:NSLocalizedString(@"get_fps_failed", nil)];
-            });
-        }
-        
+    //get resolution
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_resol&type=h264&pipe=0",_configIP,_configPort];
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        resolution=[self parseJsonString:http_request.ResponseString];
         dispatch_async(dispatch_get_main_queue(),^ {
-            if (([resolution compare:@"2"]==NSOrderedSame)
-                &&([quality compare:@"35"]==NSOrderedSame)
-                &&([fps compare:@"24"]==NSOrderedSame)) {
-                VediosegmentedControl.selectedSegmentIndex = 1;
-                [self _videoBtnClick:VediosegmentedControl];
+            if ([resolution compare:@"3"]==NSOrderedSame) {
+                [self set1080P];
             }
-            else if (([resolution compare:@"3"]==NSOrderedSame)
-                     &&([quality compare:@"139"]==NSOrderedSame)
-                     &&([fps compare:@"24"]==NSOrderedSame)) {
-                VediosegmentedControl.selectedSegmentIndex = 2;
-                [self _videoBtnClick:VediosegmentedControl];
-            }
-            else if ((([resolution compare:@"0"]==NSOrderedSame)||([resolution compare:@"1"]==NSOrderedSame))
-                     &&([quality compare:@"4"]==NSOrderedSame)
-                     &&([fps compare:@"12"]==NSOrderedSame)) {
-                VediosegmentedControl.selectedSegmentIndex = 0;
-                [self _videoBtnClick:VediosegmentedControl];
+            else if ([resolution compare:@"2"]==NSOrderedSame) {
+                [self set720P];
             }
             else{
-                VediosegmentedControl.selectedSegmentIndex = 3;
-                [self _videoBtnClick:VediosegmentedControl];
+                [self set480P];
             }
         });
+        NSLog(@"resolution=%@",resolution);
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_reslution_failed", nil)];
+        });
+    }
+    
+    //get quality
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_enc_quality&type=h264&pipe=0",_configIP,_configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        quality=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            float value=[quality intValue]*3000/52.0;
+            //                if (((int)value%100)!=0) {
+            //                    value=value+100;
+            //                }
+            [self setVideoRate:value];
+        });
+        NSLog(@"quality=%@",quality);
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_quality_failed", nil)];
+        });
+    }
+    
+    //get fps
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_max_fps&type=h264&pipe=0",_configIP,_configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        fps=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self setVideoFrameRate:[fps intValue]];
+        });
+        
+        NSLog(@"fps=%@",fps);
+    }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_fps_failed", nil)];
+        });
+    }
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        if (([resolution compare:@"2"]==NSOrderedSame)
+            &&([quality compare:@"35"]==NSOrderedSame)
+            &&([fps compare:@"24"]==NSOrderedSame)) {
+            VediosegmentedControl.selectedSegmentIndex = 1;
+            [self _videoBtnClick:VediosegmentedControl];
+        }
+        else if (([resolution compare:@"3"]==NSOrderedSame)
+                 &&([quality compare:@"139"]==NSOrderedSame)
+                 &&([fps compare:@"24"]==NSOrderedSame)) {
+            VediosegmentedControl.selectedSegmentIndex = 2;
+            [self _videoBtnClick:VediosegmentedControl];
+        }
+        else if ((([resolution compare:@"0"]==NSOrderedSame)||([resolution compare:@"1"]==NSOrderedSame))
+                 &&([quality compare:@"4"]==NSOrderedSame)
+                 &&([fps compare:@"12"]==NSOrderedSame)) {
+            VediosegmentedControl.selectedSegmentIndex = 0;
+            [self _videoBtnClick:VediosegmentedControl];
+        }
+        else{
+            VediosegmentedControl.selectedSegmentIndex = 3;
+            [self _videoBtnClick:VediosegmentedControl];
+        }
+    });
 }
 
 //返回
@@ -873,9 +880,9 @@ NSString *quality;
         switch ((int)round(value)) {
             case 0:
             {
-               NSLog(@"480P");
-               [self set480P];
-               break;
+                NSLog(@"480P");
+                [self set480P];
+                break;
             }
             case 1:
             {
@@ -918,7 +925,7 @@ NSString *quality;
     _videoResolutionMinLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionValueLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _videoResolutionMaxLabel.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
-
+    
     _videoResolutionMinImg.hidden=NO;
     _videoResolutionMaxImg.hidden=NO;
     _videoResolutionValueImg.hidden=YES;
@@ -977,17 +984,17 @@ NSString *quality;
 //-(void)_videoBtnClick:(UIButton *)Seg
 -(void)_videoBtnClick:(UISegmentedControl *)Seg
 {
-//    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
-//    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    //    [_smoothBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_smoothBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    //    [_goodBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_goodBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    //    [_bestBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_bestBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    //    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
+    //    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
     NSInteger Index = Seg.selectedSegmentIndex;
     NSLog(@"indexindexindex = %ld",Index);
-//    NSInteger Index = Seg.tag;
+    //    NSInteger Index = Seg.tag;
     switch (Index)
     {
         case 0:
@@ -1074,14 +1081,10 @@ NSString *quality;
 }
 
 bool _modifyOK=YES;
--(void)_videoModifyBtnClick
-{
-    
+-(void)_videoModifyBtnClick {
     NSLog(@"_videoModifyBtnClick");
     
-    
     _modifyOK=YES;
-    
     //set resolution
     NSString * urlStr = [NSString stringWithFormat:@"http://%@:%d/server.command?command=set_resol&type=h264&pipe=0&value=%d",_configIP,_configPort,(int)_videoResolutionSlider.value+1];
     
@@ -1156,7 +1159,7 @@ bool _modifyOK=YES;
             [self showAllTextDialog:NSLocalizedString(@"set_fps_failed", nil)];
         });
     }
-
+    
     if (_modifyOK) {
         dispatch_async(dispatch_get_main_queue(),^ {
             [self showAllTextDialog:NSLocalizedString(@"set_video_success", nil)];
@@ -1233,10 +1236,10 @@ bool _modifyOK=YES;
         URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
     }
     else{
-//        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+        //        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
         URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
     }
-   HttpRequest * http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    HttpRequest * http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
         http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1259,7 +1262,7 @@ bool _modifyOK=YES;
             [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
         });
     }
-
+    
 }
 - (void)_passwordModifyBtnClick{
     NSLog(@"_passwordModifyBtnClick");
@@ -1277,60 +1280,60 @@ bool _modifyOK=YES;
     
     [self updatePassWord];
     return;
-//    //设置STA模块的密码
-//    [NSString stringWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
-//    
-//    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
-//    
-//    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-//    if(http_request.StatusCode==200)
-//    {
-//        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-//        resolution=[self parseJsonString:http_request.ResponseString];
-//        if ([resolution compare:@"0"]!=NSOrderedSame) {
-//            //设置AP模块的密码
-//            if ([_newPasswordText.text compare:@""]==NSOrderedSame) {
-//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
-//            }
-//            else{
-//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
-//                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.101/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
-//            }
-//            http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-//            if(http_request.StatusCode==200)
-//            {
-//                http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-//                resolution=[self parseJsonString:http_request.ResponseString];
-//                if ([resolution compare:@"0"]!=NSOrderedSame) {
-//                    dispatch_async(dispatch_get_main_queue(),^ {
-//                        dispatch_async(dispatch_get_main_queue(),^ {
-//                            [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
-//                        });
-//                    });
-//                }
-//                else{
-//                    dispatch_async(dispatch_get_main_queue(),^ {
-//                        [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-//                    });
-//                }
-//            }
-//            else{
-//                dispatch_async(dispatch_get_main_queue(),^ {
-//                    [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-//                });
-//            }
-//        }
-//        else{
-//            dispatch_async(dispatch_get_main_queue(),^ {
-//                [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-//            });
-//        }
-//    }
-//    else{
-//        dispatch_async(dispatch_get_main_queue(),^ {
-//            [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
-//        });
-//    }
+    //    //设置STA模块的密码
+    //    [NSString stringWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
+    //
+    //    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/param.cgi?action=update&group=wifi&sta_mac=0&sta_ssid=%@&sta_auth_key=%@",_configIP,_configPort,_ssidText.text,_newPasswordText.text];
+    //
+    //    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    //    if(http_request.StatusCode==200)
+    //    {
+    //        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //        resolution=[self parseJsonString:http_request.ResponseString];
+    //        if ([resolution compare:@"0"]!=NSOrderedSame) {
+    //            //设置AP模块的密码
+    //            if ([_newPasswordText.text compare:@""]==NSOrderedSame) {
+    //                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=12345678&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36"];
+    //            }
+    //            else{
+    //                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+    //                URL=[[NSString alloc]initWithFormat:@"http://192.168.100.101/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
+    //            }
+    //            http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    //            if(http_request.StatusCode==200)
+    //            {
+    //                http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //                resolution=[self parseJsonString:http_request.ResponseString];
+    //                if ([resolution compare:@"0"]!=NSOrderedSame) {
+    //                    dispatch_async(dispatch_get_main_queue(),^ {
+    //                        dispatch_async(dispatch_get_main_queue(),^ {
+    //                            [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
+    //                        });
+    //                    });
+    //                }
+    //                else{
+    //                    dispatch_async(dispatch_get_main_queue(),^ {
+    //                        [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+    //                    });
+    //                }
+    //            }
+    //            else{
+    //                dispatch_async(dispatch_get_main_queue(),^ {
+    //                    [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+    //                });
+    //            }
+    //        }
+    //        else{
+    //            dispatch_async(dispatch_get_main_queue(),^ {
+    //                [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+    //            });
+    //        }
+    //    }
+    //    else{
+    //        dispatch_async(dispatch_get_main_queue(),^ {
+    //            [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+    //        });
+    //    }
 }
 
 
@@ -1367,27 +1370,27 @@ bool _modifyOK=YES;
     [_newPasswordText resignFirstResponder];
     [_confirmText resignFirstResponder];
 }
-    // 开始编辑输入框时，键盘出现，视图的Y坐标向上移动offset个单位，腾出空间显示键盘
+// 开始编辑输入框时，键盘出现，视图的Y坐标向上移动offset个单位，腾出空间显示键盘
 - (void)textFieldDidBeginEditing:(UITextField *)textField
-    {
-        
-        CGRect textFrame = textField.frame;
-        CGPoint textPoint = [textField convertPoint:CGPointMake(0, textField.frame.size.height) toView:self.view];// 关键的一句，一定要转换
-        int offset = textPoint.y + textFrame.size.height + 216 - self.view.frame.size.height + 70;// 50是textfield和键盘上方的间距，可以自由设定
-        
-        NSTimeInterval animationDuration = 0.30f;
-        [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-        [UIView setAnimationDuration:animationDuration];
-        
-        // 将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-        if (offset > 0) {
-            self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-        }
-        
-        [UIView commitAnimations];
+{
+    
+    CGRect textFrame = textField.frame;
+    CGPoint textPoint = [textField convertPoint:CGPointMake(0, textField.frame.size.height) toView:self.view];// 关键的一句，一定要转换
+    int offset = textPoint.y + textFrame.size.height + 216 - self.view.frame.size.height + 70;// 50是textfield和键盘上方的间距，可以自由设定
+    
+    NSTimeInterval animationDuration = 0.30f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    
+    // 将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+    if (offset > 0) {
+        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
     }
     
-    // 用户输入时
+    [UIView commitAnimations];
+}
+
+// 用户输入时
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     // 输入结束后，将视图恢复到原始状态
     self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
