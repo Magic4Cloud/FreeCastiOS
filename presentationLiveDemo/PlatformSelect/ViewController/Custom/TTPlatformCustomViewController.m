@@ -75,7 +75,7 @@
     {
         _streamKeyTextFiled.text = @"";
         _streamUrlTextFiled.text = @"";
-        
+        [_resetButton setTitle:@"Save" forState:UIControlStateNormal];
     }
     else if ([button.currentTitle isEqualToString:@"Save"])
     {

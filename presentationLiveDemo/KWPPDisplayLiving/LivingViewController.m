@@ -139,7 +139,7 @@ int count11 =1;
 //    NSTimer *newTimer = [NSTimer scheduledTimerWithTimeInterval:20.0 target:self selector:@selector(timeToChangePic) userInfo:nil repeats:YES];
 //    [[NSRunLoop mainRunLoop] addTimer:newTimer forMode:NSDefaultRunLoopMode];
     
-    LFLiveStreamInfo *stream = [LFLiveStreamInfo new ];
+    LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
     stream .url=@"rtmp://rak.uplive.ks-cdn.com/live/LIVEQU15612334A4A?vdoid=1474526229";
     self.session.dataSoureType = type;
     [self.session startLive:stream];

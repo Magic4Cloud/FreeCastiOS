@@ -222,7 +222,7 @@ static enum ButtonEnable RecordVideoEnable;
     if (!_searchDeviceHasResult) {//没有搜索结果
         return;
     }
-    //     [self getDeviceConfig];
+         [self getDeviceConfig];
     NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
     NSLog(@"----------------log%@",urlString);
     
@@ -487,7 +487,7 @@ static enum ButtonEnable RecordVideoEnable;
     _liveStreamBtn.frame = [buttonFrameArray[2] CGRectValue];
     [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_nor"] forState:UIControlStateNormal];
     [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_pre"] forState:UIControlStateHighlighted];
-    [_liveStreamBtn addTarget:self action:@selector(_liveStreamBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_liveStreamBtn addTarget:self action:@selector(liveStreamBtnOnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_liveStreamBtn];
     
     
@@ -856,6 +856,9 @@ bool VideoRecordIsEnable = NO;
         _userid = [result.Device_ID_Arr objectAtIndex:0];
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
         //        NSLog(@"??????????????????????????scan userip=%@",urlString);
+        
+        [self getDeviceConfig];
+        
         [self.videoView play:urlString useTcp:NO];
         [self.videoView sound:YES];
         [self.videoView startGetYUVData:YES];
@@ -1302,6 +1305,7 @@ bool VideoRecordIsEnable = NO;
     
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
     NSLog(@"====>%@",http_request.ResponseString);
+    NSLog(@"----------------%ld",http_request.StatusCode);
     if(http_request.StatusCode==200)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1501,11 +1505,6 @@ bool VideoRecordIsEnable = NO;
     return _session;
 }
 
-
-
-
-
-
 /**
  *  开始直播
  */
@@ -1513,8 +1512,6 @@ bool VideoRecordIsEnable = NO;
 -(void)openLivingSession:(LivingDataSouceType) type{
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
     //    stream.url=[self Get_String:STREAM_URL_KEY];
-    
-    
     NSString * rtmpUrl;
     
     if (_selectedPlatformModel) {
@@ -1523,16 +1520,10 @@ bool VideoRecordIsEnable = NO;
     
     if (rtmpUrl) {
         stream.url = rtmpUrl;
-    }
-    
-    else
-    {
+    } else {
         //没有推流地址
-        
-        
     }
-    
-    
+
     if (stream.url==nil || stream.url.length == 0) {
         [self showAllTextDialog:NSLocalizedString(@"video_url_empty", nil)];
         return;
@@ -1730,6 +1721,69 @@ bool VideoRecordIsEnable = NO;
         if (_subtitle_count_interval>=_subtitle_interval) {
             _isShowSubtitle=YES;
         }
+    }
+    
+}
+
+- (void)getDeviceConfig {
+    
+    NSString * configIP = _userip;
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_resol&type=h264&pipe=0",configIP,(long)configPort];
+    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        _resolution=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            if ([_resolution compare:@"3"]==NSOrderedSame) {
+                //                [self set1080P];
+            }
+            else if ([_resolution compare:@"2"]==NSOrderedSame) {
+                //                                [self set720P];
+            }
+            else{
+                //                [self set480P];
+            }
+        });
+        NSLog(@"============resolution=%@",_resolution);
+    }
+    
+    //get quality
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,(long)configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        _quality=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            float value=[_quality intValue]*3000/52.0;
+            if (((int)value%100)!=0) {
+                value=value+100;
+            }
+            //            [self setVideoRate:value];
+        });
+        NSLog(@"******************quality=%@",_quality);
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self showAllTextDialog:NSLocalizedString(@"get_quality_failed", nil)];
+        });
+    }
+    
+    //get fps
+    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_max_fps&type=h264&pipe=0",configIP,(long)configPort];
+    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+    if(http_request.StatusCode==200)
+    {
+        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        _fps=[self parseJsonString:http_request.ResponseString];
+        dispatch_async(dispatch_get_main_queue(),^ {
+            //                        [self setVideoFrameRate:[fps intValue]];
+            _session = [self getSessionWithRakisrak:YES];
+        });
+        
+        NSLog(@"???????????????????????fps=%@",_fps);
     }
     
 }
@@ -2087,7 +2141,7 @@ int posStep=1;
         
         _isExit=NO;
         if (_isLiveView) {
-            [self _liveStreamBtnClick];
+            [self liveStreamBtnOnClick];
         }
         else{
             if (_userip!=nil) {
@@ -2277,17 +2331,17 @@ bool _isTakePhoto=NO;
  *  点击直播按钮
  */
 #pragma mark - 点击直播按钮
--(void)_liveStreamBtnClick{
+-(void)liveStreamBtnOnClick{
     
     //如果是系统摄像头
-    if (_liveCameraSource == IphoneBackCamera){
+    if (_liveCameraSource == IphoneBackCamera) {
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
     }else{
+        
         if (!_play_success){
             [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
             return;
         }
-        
         //RAK设备
         if(_livingState==0){
             _isExit = NO;
@@ -2478,6 +2532,7 @@ bool _isTakePhoto=NO;
         CFRelease(wifiInterfaces);
         return wifiSSID;
 }
+
 #pragma mark - 注册通知
 - (void)addApplicationActiveNotifications {
     // app从后台进入前台都会调用这个方法
@@ -2625,7 +2680,7 @@ bool _isTakePhoto=NO;
                 
                 _isExit=NO;
                 if (_isLiveView) {
-                    [self _liveStreamBtnClick];
+                    [self liveStreamBtnOnClick];
                 }
                 else{
                     if (_userip!=nil) {
@@ -2751,67 +2806,6 @@ bool _isTakePhoto=NO;
 //}
 #pragma mark - 获取设备的参数  码率 fps 等 --------------------
 
-- (void)getDeviceConfig {
-    //
-    //    NSString * configIP = _userip;
-    //    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_resol&type=h264&pipe=0",configIP,(long)configPort];
-    //    HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-    //
-    //    if(http_request.StatusCode==200)
-    //    {
-    //        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    //        _resolution=[self parseJsonString:http_request.ResponseString];
-    //        dispatch_async(dispatch_get_main_queue(),^ {
-    //            if ([_resolution compare:@"3"]==NSOrderedSame) {
-    //                //                [self set1080P];
-    //            }
-    //            else if ([_resolution compare:@"2"]==NSOrderedSame) {
-    ////                                [self set720P];
-    //            }
-    //            else{
-    //                //                [self set480P];
-    //            }
-    //        });
-    //        NSLog(@"============resolution=%@",_resolution);
-    //    }
-    //
-    //    //get quality
-    //    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_enc_quality&type=h264&pipe=0",configIP,(long)configPort];
-    //    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-    //    if(http_request.StatusCode==200)
-    //    {
-    //        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    //        _quality=[self parseJsonString:http_request.ResponseString];
-    //        dispatch_async(dispatch_get_main_queue(),^ {
-    //            float value=[_quality intValue]*3000/52.0;
-    //            if (((int)value%100)!=0) {
-    //                value=value+100;
-    //            }
-    //            //            [self setVideoRate:value];
-    //        });
-    //        NSLog(@"******************quality=%@",_quality);
-    //    }
-    //    else{
-    //        dispatch_async(dispatch_get_main_queue(),^ {
-    //            [self showAllTextDialog:NSLocalizedString(@"get_quality_failed", nil)];
-    //        });
-    //    }
-    //
-    //    //get fps
-    //    URL=[[NSString alloc]initWithFormat:@"http://%@:%ld/server.command?command=get_max_fps&type=h264&pipe=0",configIP,(long)configPort];
-    //    http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
-    //    if(http_request.StatusCode==200)
-    //    {
-    //        http_request.ResponseString=[http_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    //        _fps=[self parseJsonString:http_request.ResponseString];
-    //        dispatch_async(dispatch_get_main_queue(),^ {
-    ////                        [self setVideoFrameRate:[fps intValue]];
-    //            _session = [self getSessionWithRakisrak:YES];
-    //        });
-    //        
-    //        NSLog(@"???????????????????????fps=%@",_fps);
-    //    }
-    
-}
+
 
 @end
