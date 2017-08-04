@@ -42,6 +42,8 @@
 #import "LFLiveSessionWithPicSource.h"
 #import "PicToBufferToPic.h"
 #import "Rak_Lx52x_Device_Control.h"
+#import "CoreStore.h"
+#import "CoreStore+App.h"
 //#import "AppDelegate.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
@@ -258,7 +260,7 @@ static enum ButtonEnable RecordVideoEnable;
     [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     if(_isLiveView){
-        [_tipLabel removeFromSuperview];
+//        [_tipLabel removeFromSuperview];
     }
     else{
         if ([_streamingAddress.text isEqualToString:@""]&&
@@ -663,6 +665,7 @@ static enum ButtonEnable RecordVideoEnable;
     _takephotoBtn.enabled=true;
     _liveStreamBtn.enabled=true;
     _recordBtn.enabled=true;
+    _configureBtn.enabled = YES;
 }
 
 /** 禁用相关按钮 */
@@ -670,6 +673,7 @@ static enum ButtonEnable RecordVideoEnable;
     _takephotoBtn.enabled=false;
     _liveStreamBtn.enabled=false;
     _recordBtn.enabled=false;
+    _configureBtn.enabled = NO;
 }
 
 /** 添加按钮声音效果 */
@@ -774,6 +778,10 @@ bool VideoRecordIsEnable = NO;
 /** 跳转到配置推流信息的界面*/
 -(void)_configureBtnClick
 {
+    if (_liveCameraSource == IphoneBackCamera) {
+        return;
+    }
+    
     //    _isConfig = YES;
     _isBroswer=YES;
     [self stopVideo];
@@ -783,36 +791,8 @@ bool VideoRecordIsEnable = NO;
         v.configIP = _userip;
     }
     
-    v.changeVideoNeedReplayBlock = ^()
-    {
-        ////        NSLog(@"改变了参数  等5秒重新播放");
-        //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-        //            NSLog(@"重新播放 urlString：%@",urlString);
-        //            [self.videoView removeFromSuperview];
-        //            [self.videoView delegate:nil];
-        //            self.videoView = nil;
-        //
-        //
-        //            _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-        //            _videoView.userInteractionEnabled = YES;
-        //
-        //            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
-        //            [_videoView addGestureRecognizer:singleTap];
-        //            _videoView.backgroundColor = [UIColor blackColor];
-        //
-        //            [_videoView set_log_level:4];
-        //            [_videoView sound:YES];
-        //            [_videoView delegate:self];
-        //            [self.view insertSubview:_videoView atIndex:0];
-        
-        
-        //            [self.videoView play:urlString useTcp:NO];
-        //            [self.videoView sound:_audioisEnable];
-        //            [self.videoView startGetYUVData:YES];
-        //            [self.videoView startGetAudioData:YES];
-        //            [self.videoView startGetH264Data:YES];
-        //        });
+    v.changeVideoNeedReplayBlock = ^(){
+       
     };
     
     [self.navigationController pushViewController:v animated:YES];
@@ -857,6 +837,7 @@ bool VideoRecordIsEnable = NO;
     _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     [self showSearchingMessagesTips];
     [_updateUITimer setFireDate:[NSDate distantPast]];//启动
+    [self disableControl];
     [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
@@ -866,7 +847,9 @@ bool VideoRecordIsEnable = NO;
     if (_isExit) {
         return;
     }
+    
     if (result.Device_ID_Arr.count > 0) {
+        self.scanCount = 0;
         _searchDeviceHasResult = YES;
         //使用扫描到的第一个设备
         _userip = [result.Device_IP_Arr objectAtIndex:0];
@@ -880,6 +863,8 @@ bool VideoRecordIsEnable = NO;
         [self.videoView startGetH264Data:YES];
         [self.videoView show_view:YES];
         self.videoisplaying = YES;
+        
+        [self enableControl];
     } else {
         _searchDeviceHasResult = NO;
         [_updateUITimer setFireDate:[NSDate distantFuture]];
@@ -896,6 +881,7 @@ bool VideoRecordIsEnable = NO;
                 [self noHiddenStatus];
                 _play_success = YES;
                 _liveCameraSource = IphoneBackCamera;
+                [self enableControl];
             } action3Handler:^(UIAlertAction *action) {
                 [self backBtnOnClicked];
             }];
@@ -1050,6 +1036,7 @@ bool VideoRecordIsEnable = NO;
     if (self.videoisplaying ==NO) {
         if (_scanCount >= 5) {
             _tipLabel.text = NSLocalizedString(@"no_device", nil);
+            _scanCount = 0;
         }
     }else{
         if (_play_success ==NO){
@@ -1075,17 +1062,8 @@ bool VideoRecordIsEnable = NO;
             _tipLabel.center=CGPointMake(_viewW*0.5, _tipLabel.center.y);
         }
         _tipLabel.textAlignment=NSTextAlignmentCenter;
-    }
-    else{
+    } else {
         _playCount++;
-        //        if (playCount>5) {
-        //            [_videoView stop];
-        //            play_success=NO;
-        //            NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-        //            [_videoView play:url useTcp:NO];
-        //            [_videoView sound:audioisEnable];
-        //            playCount=0;
-        //        }
     }
     _isPlaying=NO;
     
@@ -1594,7 +1572,7 @@ bool VideoRecordIsEnable = NO;
 
 -(void)liveSession:(LFLiveSession *)session liveStateDidChange:(LFLiveState)state{
     NSString *networkStatusInfo;
-    
+    [self hideHudLoading];
     switch (state) {
         case LFLiveReady:
             networkStatusInfo = @"LiveReady....";
@@ -2183,8 +2161,7 @@ int posStep=1;
  */
 
 #pragma mark - 拍照
--(void)_takephotoBtnClick
-{
+-(void)_takephotoBtnClick {
     
     [self playSound:@"shutter.mp3"];
     
@@ -2477,6 +2454,30 @@ bool _isTakePhoto=NO;
     return wifiName;
 }
 
+- (NSString *)getWifiSSID {
+        NSString *wifiSSID = nil;
+        CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();
+        if (!wifiInterfaces) {
+            return nil;
+        }
+        
+        NSArray *interfaces = (__bridge NSArray *)wifiInterfaces;
+        
+        for (NSString *interfaceName in interfaces) {
+            CFDictionaryRef dictRef = CNCopyCurrentNetworkInfo((__bridge CFStringRef)(interfaceName));
+            
+            if (dictRef) {
+                NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
+                NSLog(@"----------------------network info -> %@", networkInfo);
+                wifiSSID = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeyBSSID];
+                
+                CFRelease(dictRef);
+            }
+        }
+        
+        CFRelease(wifiInterfaces);
+        return wifiSSID;
+}
 #pragma mark - 注册通知
 - (void)addApplicationActiveNotifications {
     // app从后台进入前台都会调用这个方法
@@ -2495,26 +2496,43 @@ bool _isTakePhoto=NO;
 - (void)applicationBecomeActive {
     //    [self replayVideoView];
     NSLog(@"----------进入前台");
-    NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-    NSLog(@"----------------log%@",urlString);
+    _topLabel.text = [self getWifiName];
+    BOOL isSameWIfi = ([CoreStore sharedStore].currentUseDeviceID == [self getWifiSSID]);
+    BOOL isNotnil  = ([self getWifiSSID].length > 0);
+    NSLog(@"----------------%u,%u,%u",isSameWIfi,isNotnil,_searchDeviceHasResult);
+    if (([[CoreStore sharedStore].currentUseDeviceID isEqualToString:[self getWifiSSID]])&&([self getWifiSSID].length > 0)&&_searchDeviceHasResult) {
+        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
+        NSLog(@"----------------log%@",urlString);
+        
+        //    [self.videoView removeFromSuperview];
+        
+        //    self.videoView.frame = CGRectMake(0, 0, _viewW, _viewH);
+        //    [self.videoView setView1Frame:CGRectMake(0, 0, _viewW, _viewH)];
+        
+        [self.videoView play:urlString useTcp:NO];
+        [self.videoView sound:YES];
+        [self.videoView startGetYUVData:YES];
+        [self.videoView startGetAudioData:YES];
+        [self.videoView startGetH264Data:YES];
+        [self.videoView show_view:YES];
+        self.videoisplaying = YES;
+    } else if (_liveCameraSource == IphoneBackCamera) {
+        
+    } else {
+        
+        [_updateUITimer setFireDate:[NSDate distantFuture]];
+        _tipLabel.text = @"PLEASE CHECK WIFI CONECT TO EXTERNAL DEVICE";
+        [self showSearchingMessagesTips];
+    }
     
-    //    [self.videoView removeFromSuperview];
-    
-    //    self.videoView.frame = CGRectMake(0, 0, _viewW, _viewH);
-    //    [self.videoView setView1Frame:CGRectMake(0, 0, _viewW, _viewH)];
-    
-    [self.videoView play:urlString useTcp:NO];
-    [self.videoView sound:YES];
-    [self.videoView startGetYUVData:YES];
-    [self.videoView startGetAudioData:YES];
-    [self.videoView startGetH264Data:YES];
-    [self.videoView show_view:YES];
-    self.videoisplaying = YES;
+
 }
 
 - (void)applicationEnterBackground {
     [self stopVideo];
     NSLog(@"----------进入后台");
+   [CoreStore sharedStore].currentUseDeviceID = [self getWifiSSID];
+    NSLog(@"----------------+++%@",[CoreStore sharedStore].currentUseDeviceID);
 }
 
 #pragma mark - maybe not use

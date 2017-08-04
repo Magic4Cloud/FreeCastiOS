@@ -351,6 +351,15 @@ NSMutableArray *Medias;
 
 - (void)_shareBtnClick{
     NSLog(@"_shareBtnClick");
+    
+    NSString *onlySelectOne ;
+    if (segmentedControl.selectedSegmentIndex == 0) {
+        onlySelectOne = @"Only one picture can be shared at a time!";
+    }else {
+        onlySelectOne = @"Only one video can be shared at a time!";
+    }
+    
+    
     if ([selectedDic count]==0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please select a picture or video to share!"
                                                             message:nil
@@ -359,7 +368,7 @@ NSMutableArray *Medias;
                                                   otherButtonTitles:nil];
         [alertView show];
     } else if([selectedDic count] > 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Only one picture can be shared at a time!"
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:onlySelectOne
                                                             message:nil
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"

@@ -922,6 +922,9 @@
 		84E634A11E554CD50049573E /* 333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E6349F1E554CD50049573E /* 333.bmp */; };
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
+		975B8FD91F3420E8005003E2 /* CoreStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD61F3420E8005003E2 /* CoreStore.m */; };
+		975B8FDA1F3420E8005003E2 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD81F3420E8005003E2 /* NSObject+JSON.m */; };
+		975B8FDD1F342191005003E2 /* CoreStore+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FDC1F342191005003E2 /* CoreStore+App.m */; };
 		9E043E281F25E1A200DDE35E /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E043E271F25E1A200DDE35E /* StartViewController.m */; };
 		9EB463D21F18AFDE00DD0F81 /* TTFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */; };
 		9EB463D31F18AFDE00DD0F81 /* TTFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */; };
@@ -2285,6 +2288,12 @@
 		84E634A51E5576F00049573E /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		84E634A61E5576F00049573E /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		975B8FD51F3420E8005003E2 /* CoreStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreStore.h; path = CoreStore/CoreStore.h; sourceTree = "<group>"; };
+		975B8FD61F3420E8005003E2 /* CoreStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreStore.m; path = CoreStore/CoreStore.m; sourceTree = "<group>"; };
+		975B8FD71F3420E8005003E2 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JSON.h"; path = "CoreStore/NSObject+JSON.h"; sourceTree = "<group>"; };
+		975B8FD81F3420E8005003E2 /* NSObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+JSON.m"; path = "CoreStore/NSObject+JSON.m"; sourceTree = "<group>"; };
+		975B8FDB1F342191005003E2 /* CoreStore+App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CoreStore+App.h"; path = "CoreStore/CoreStore+App.h"; sourceTree = "<group>"; };
+		975B8FDC1F342191005003E2 /* CoreStore+App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CoreStore+App.m"; path = "CoreStore/CoreStore+App.m"; sourceTree = "<group>"; };
 		9E043E261F25E1A200DDE35E /* StartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
 		9E043E271F25E1A200DDE35E /* StartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		9EB463CF1F18AFDE00DD0F81 /* TTFacebookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFacebookViewController.h; sourceTree = "<group>"; };
@@ -3210,6 +3219,7 @@
 		8464B9A71D95104700B67944 /* presentationLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				975B8FD41F3420C0005003E2 /* CoreStore */,
 				7A85D1BA1F2C1D4300190221 /* Tools */,
 				7A6850431F1898B100EEDE2D /* LFLiveKit */,
 				7A4E135F1F05F60C00E53E38 /* NetWorkMannger */,
@@ -4402,6 +4412,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		975B8FD41F3420C0005003E2 /* CoreStore */ = {
+			isa = PBXGroup;
+			children = (
+				975B8FD51F3420E8005003E2 /* CoreStore.h */,
+				975B8FD61F3420E8005003E2 /* CoreStore.m */,
+				975B8FD71F3420E8005003E2 /* NSObject+JSON.h */,
+				975B8FD81F3420E8005003E2 /* NSObject+JSON.m */,
+				975B8FDB1F342191005003E2 /* CoreStore+App.h */,
+				975B8FDC1F342191005003E2 /* CoreStore+App.m */,
+			);
+			name = CoreStore;
+			sourceTree = "<group>";
+		};
 		D8BA26AC1D6AD13500D28C0F = {
 			isa = PBXGroup;
 			children = (
@@ -5119,7 +5142,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -5152,6 +5175,7 @@
 				7A6852021F1898B200EEDE2D /* GPUImage3x3TextureSamplingFilter.m in Sources */,
 				7A68521F1F1898B200EEDE2D /* GPUImageCrosshairGenerator.m in Sources */,
 				7A9830FF1F04FA3C000FE44D /* PlatformModel+CoreDataProperties.m in Sources */,
+				975B8FDA1F3420E8005003E2 /* NSObject+JSON.m in Sources */,
 				7A68522F1F1898B200EEDE2D /* GPUImageFilterGroup.m in Sources */,
 				7A68524B1F1898B200EEDE2D /* GPUImageKuwaharaRadius3Filter.m in Sources */,
 				7A6851F01F1898B200EEDE2D /* LFH264VideoEncoder.mm in Sources */,
@@ -5201,6 +5225,7 @@
 				7A6852251F1898B200EEDE2D /* GPUImageDirectionalSobelEdgeDetectionFilter.m in Sources */,
 				8488BCA81DB776ED006357AD /* LivingView.m in Sources */,
 				7A6852571F1898B300EEDE2D /* GPUImageLuminosity.m in Sources */,
+				975B8FDD1F342191005003E2 /* CoreStore+App.m in Sources */,
 				7A6852361F1898B200EEDE2D /* GPUImageGaussianBlurPositionFilter.m in Sources */,
 				7A9830E11F04B332000FE44D /* CollectionReusableFooterView.m in Sources */,
 				84B988C91DC084CE00BE7FCE /* SWRevealViewController.m in Sources */,
@@ -5367,6 +5392,7 @@
 				7A6851F91F1898B200EEDE2D /* LFFrame.m in Sources */,
 				7A6851F81F1898B200EEDE2D /* LFAudioFrame.m in Sources */,
 				7A6852741F1898B300EEDE2D /* GPUImageRawDataInput.m in Sources */,
+				975B8FD91F3420E8005003E2 /* CoreStore.m in Sources */,
 				7A68529D1F1898B300EEDE2D /* GPUImageTwoPassTextureSamplingFilter.m in Sources */,
 				84E375EF1DBB62B600217030 /* PlayVideoViewController.m in Sources */,
 				7A9830DC1F04A7AA000FE44D /* CollectionHeaderView.m in Sources */,
