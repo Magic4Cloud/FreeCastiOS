@@ -1558,7 +1558,7 @@ bool VideoRecordIsEnable = NO;
     
     if(self.session.state == LFLivePending || self.session.state ==LFLiveStart){
         [self.session stopLive];
-        [self.session setRunning:NO];
+//        [self.session setRunning:NO];
     }
 }
 
