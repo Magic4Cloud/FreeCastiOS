@@ -1515,4 +1515,9 @@ bool _modifyOK=YES;
     UIGraphicsEndImageContext();
     return scaleImage;
 }
+
+- (void)dealloc {
+    
+}
+
 @end

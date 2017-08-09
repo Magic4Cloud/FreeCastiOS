@@ -14,7 +14,7 @@
 @interface CAAutoFillTextField : UIView <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableArray <CAAutoCompleteObject *> *dataSourceArray;
 @property (nonatomic, strong) UITextField * txtField;
-@property (nonatomic, assign) id<CAAutoFillDelegate>delegate;
+@property (nonatomic, weak) id<CAAutoFillDelegate>delegate;
 - (void)clear;
 @end
 

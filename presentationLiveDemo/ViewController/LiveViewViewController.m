@@ -72,7 +72,7 @@ static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 
-@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate>
+@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate,CAAutoFillDelegate,AlbumDelegate>
 
 @property (nonatomic, strong) LX520View *videoView;
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
@@ -313,7 +313,6 @@ static enum ButtonEnable RecordVideoEnable;
     [_albumObject delegate:self];
     SavePictureEnable = Unable;
     RecordVideoEnable = Unable;
-    
     _scanCount=0;
     
     _liveCameraSource = ExternalDevices;
@@ -471,7 +470,7 @@ static enum ButtonEnable RecordVideoEnable;
     [_takephotoBtn setImage:[UIImage imageNamed:@"icon_camera_nor"] forState:UIControlStateNormal];
     [_takephotoBtn setImage:[UIImage imageNamed:@"icon_camera_pre"] forState:UIControlStateHighlighted];
     
-    [_takephotoBtn addTarget:nil action:@selector(_takephotoBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_takephotoBtn addTarget:nil action:@selector(takephotoBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg addSubview:_takephotoBtn];
     
     _recordBtn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -480,7 +479,7 @@ static enum ButtonEnable RecordVideoEnable;
     [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
     [_recordBtn setImage:[UIImage imageNamed:@"icon_play_pre"] forState:UIControlStateHighlighted];
     
-    [_recordBtn addTarget:self action:@selector(_recordBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_recordBtn addTarget:self action:@selector(recordBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_recordBtn];
     
     _liveStreamBtn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -495,7 +494,7 @@ static enum ButtonEnable RecordVideoEnable;
     _browserBtn.frame = [buttonFrameArray[3] CGRectValue];
     [_browserBtn setImage:[UIImage imageNamed:@"icon_library_nor"] forState:UIControlStateNormal];
     [_browserBtn setImage:[UIImage imageNamed:@"icon_library_pre"] forState:UIControlStateHighlighted];
-    [_browserBtn addTarget:self action:@selector(_browserBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_browserBtn addTarget:self action:@selector(browserBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_browserBtn];
     
     _configureBtn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -519,7 +518,7 @@ static enum ButtonEnable RecordVideoEnable;
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_pre@3x.png"] forState:UIControlStateHighlighted];
     _livePauseBtn.contentMode=UIViewContentModeScaleToFill;
-    [_livePauseBtn addTarget:nil action:@selector(_livePauseBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_livePauseBtn addTarget:nil action:@selector(livePauseBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_livePauseBtn];
     _livePauseBtn.hidden=YES;
     
@@ -528,7 +527,7 @@ static enum ButtonEnable RecordVideoEnable;
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_nor@3x.png"] forState:UIControlStateNormal];
     [_liveStopBtn setImage:[UIImage imageNamed:@"stop live_pre@3x.png"] forState:UIControlStateHighlighted];
     _liveStopBtn.contentMode=UIViewContentModeScaleToFill;
-    [_liveStopBtn addTarget:nil action:@selector(_liveStopBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_liveStopBtn addTarget:nil action:@selector(liveStopBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view  addSubview:_liveStopBtn];
     _liveStopBtn.hidden=YES;
     
@@ -654,8 +653,7 @@ static enum ButtonEnable RecordVideoEnable;
 -(void)touchesImage{
     if(_topBg.hidden){
         [self moveInAnimation];
-    }
-    else{
+    }else{
         [self revealAnimation];
     }
 }
@@ -751,17 +749,20 @@ bool VideoRecordIsEnable = NO;
     //        [self _scaleBtnClick:0];
     //        _isConfig=NO;
     //    }else{
+    [self closeLivingSession];
     [self stopVideo];
-    _isExit=YES;
+    self.isExit = YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     [self prefersStatusBarHidden:YES];
     [self back];
+    NSLog(@"----------------back button on clicked");
     //    }
 }
 
 /** 返回上个界面*/
 -(void)back {
     NSLog(@"back");
+    
     [self timersInvalidate];
     
     self.videoisplaying = NO;
@@ -1011,7 +1012,7 @@ bool VideoRecordIsEnable = NO;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-    NSLog(@"GetAudioData");
+//    NSLog(@"GetAudioData");
     if(_livingState == LivingStateLiving && !_isIphoneAudio){
         
         AudioBufferList audioBufferList;
@@ -1026,7 +1027,7 @@ bool VideoRecordIsEnable = NO;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-    NSLog(@"GetH264Data");
+//    NSLog(@"GetH264Data");
     if(_livingState == LivingStateLiving){
         [self.session upload_h264:size :data];
     }
@@ -1069,19 +1070,19 @@ bool VideoRecordIsEnable = NO;
         _playCount++;
     }
     _isPlaying=NO;
-    
+    __weak typeof(self) weakself = self;
     if (_play_success) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            int netFlow = [self checkNetworkflow];
+            int netFlow = [weakself checkNetworkflow];
             int flow=(int)(netFlow/1024);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (flow>0) {
                     if(flow<20){
                         _tipLabel.text=NSLocalizedString(@"no_video", nil);
-                        [self showSearchingMessagesTips];
+                        [weakself showSearchingMessagesTips];
                     }else{
-                        [self hidenSearchingMessageTips];
+                        [weakself hidenSearchingMessageTips];
                     }
                 }
             });
@@ -1187,12 +1188,12 @@ bool VideoRecordIsEnable = NO;
 
 #pragma mark-- Toast显示示例
 -(void)showAllTextDialog:(NSString *)str{
-    
+    __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         //更新UI操作
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:HUD];
+        [weakself.view addSubview:HUD];
         HUD.labelText = str;
         HUD.mode = MBProgressHUDModeText;
         [HUD showAnimated:YES whileExecutingBlock:^{
@@ -1215,8 +1216,9 @@ bool VideoRecordIsEnable = NO;
         NSLog(@"====>%@",http_request.ResponseString);
         if(http_request.StatusCode==200)
         {
+            __weak typeof(self) weakself = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *_signal=[self parseJsonString:http_request.ResponseString];
+                NSString *_signal=[weakself parseJsonString:http_request.ResponseString];
                 int strength=0;
                 if (([_signal compare:@"76"] == NSOrderedAscending)) {
                     strength=1;
@@ -1249,8 +1251,9 @@ bool VideoRecordIsEnable = NO;
     NSLog(@"====>%@",http_request.ResponseString);
     if(http_request.StatusCode==200)
     {
+        __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            NSString *_signal=[weakself parseJsonString:http_request.ResponseString];
             if (([_signal compare:@"0"] == NSOrderedSame)) {
                 
             }
@@ -1266,13 +1269,15 @@ bool VideoRecordIsEnable = NO;
 
 #pragma mark-- 获取直播状态
 -(void)GetStreamStatus{
+    
     NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=is_pipe_live&type=h264&pipe=0",_userip,80];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
     NSLog(@"====>%@",http_request.ResponseString);
     if(http_request.StatusCode==200)
     {
+        __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            NSString *_signal=[weakself parseJsonString:http_request.ResponseString];
             if (([_signal compare:@"0"] == NSOrderedSame)) {
                 _onliveLabel.text = NSLocalizedString(@"not_live", nil);
                 _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
@@ -1305,11 +1310,12 @@ bool VideoRecordIsEnable = NO;
     
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
     NSLog(@"====>%@",http_request.ResponseString);
-    NSLog(@"----------------%ld",http_request.StatusCode);
+    NSLog(@"----------------%d",http_request.StatusCode);
     if(http_request.StatusCode==200)
     {
+        __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *_signal=[self parseJsonString:http_request.ResponseString];
+            NSString *_signal=[weakself parseJsonString:http_request.ResponseString];
             if (([_signal compare:@"0"] == NSOrderedSame)) {
                 if ([_onliveLabel.text compare:NSLocalizedString(@"on_live", nil)]==NSOrderedSame){
                     _onliveLabel.text = NSLocalizedString(@"not_live", nil);
@@ -1406,7 +1412,7 @@ bool VideoRecordIsEnable = NO;
     _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
     _session.captureDevicePosition = AVCaptureDevicePositionBack;
     _session.delegate  = self;
-    _session.isRAK=NO;
+    _session.isRAK = NO;
     _session.running = YES;
     _session.preView = self.livingPreView;
     return _session;
@@ -1510,6 +1516,7 @@ bool VideoRecordIsEnable = NO;
  */
 #pragma mark - 开始直播************************************
 -(void)openLivingSession:(LivingDataSouceType) type{
+    
     LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
     //    stream.url=[self Get_String:STREAM_URL_KEY];
     NSString * rtmpUrl;
@@ -1582,15 +1589,15 @@ bool VideoRecordIsEnable = NO;
         case LFLiveError:
         {
             networkStatusInfo =@"连接出错";
-            
+            __weak typeof(self) weakself = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
+                [weakself showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
                     if (_session) {
                         [_session stopLive];
                     }
                     
                 }];
-                [self setStopStreamStatus];
+                [weakself setStopStreamStatus];
             });
             
         }
@@ -1599,8 +1606,7 @@ bool VideoRecordIsEnable = NO;
             break;
     }
     
-    if (networkStatusInfo)
-    {
+    if (networkStatusInfo){
         [self showHudMessage:networkStatusInfo];
     }
     
@@ -1635,7 +1641,7 @@ bool VideoRecordIsEnable = NO;
     
     _takephotoBtn.enabled = NO;
     _recordBtn.enabled = NO;
-    _livingState=1;
+    _livingState=LivingStateLiving;
 }
 
 -(void)setPauseStreamStatus{
@@ -1656,12 +1662,14 @@ bool VideoRecordIsEnable = NO;
     
     _takephotoBtn.enabled = YES;
     _recordBtn.enabled = YES;
-    _livingState=2;
+    _livingState=LivingStatePause;
 }
 
 -(void)setStopStreamStatus{
     //直播界面
-    [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_nor@3x.png"] forState:UIControlStateNormal];
+//    [_liveStreamBtn setImage:[UIImage imageNamed:@"start live_nor@3x.png"] forState:UIControlStateNormal];
+    [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_nor"] forState:UIControlStateNormal];
+    [_liveStreamBtn setImage:[UIImage imageNamed:@"icon_plush_pre"] forState:UIControlStateHighlighted];
     
     _onliveView.image=[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"];
     _onliveLabel.text = NSLocalizedString(@"not_live", nil);
@@ -1680,7 +1688,7 @@ bool VideoRecordIsEnable = NO;
     _takephotoBtn.enabled = YES;
     _recordBtn.enabled = YES;
     
-    _livingState=0;
+    _livingState=LivingStateStop;
 }
 
 /**
@@ -1815,8 +1823,9 @@ int posStep=1;
             _isShowSubtitle=NO;
         }
         if (_uploadTimer==nil) {
+            __weak typeof(self) weakself = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                _uploadTimer =  [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFunction) userInfo:nil repeats:YES];
+                _uploadTimer =  [NSTimer scheduledTimerWithTimeInterval:1.0 target:weakself selector:@selector(timerFunction) userInfo:nil repeats:YES];
             });
             if([[self Get_Keys:BANNER_PHOTO_ENABLE_KEY] compare:@"on"]==NSOrderedSame){
                 _isShowBanner=YES;
@@ -1996,6 +2005,7 @@ int posStep=1;
     }
     [myTextField setDataSourceArray:tempArray];
     [myTextField setDelegate:self];
+    myTextField.delegate = self;
     
     UIView *line=[[UIView alloc]init];
     line.frame=CGRectMake(_viewW*19/_totalWeight,_viewH*247/_totalHeight,_viewW*246/_totalWeight,1);
@@ -2022,11 +2032,12 @@ int posStep=1;
 
 - (void) CAAutoTextFillEndEditing:(CAAutoFillTextField *) textField {
     NSLog(@"CAAutoTextFillEndEditing");
+    __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([textField.txtField.text compare:@""]!=NSOrderedSame) {
             _streamingAddress.text=textField.txtField.text;
-            [self Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
-            [self addUrls];
+            [weakself Save_Paths:_streamingAddress.text :STREAM_URL_KEY];
+            [weakself addUrls];
         }
         else{
             if ([[self Get_Paths:STREAM_URL_KEY] compare:@""]==NSOrderedSame) {
@@ -2142,33 +2153,30 @@ int posStep=1;
         _isExit=NO;
         if (_isLiveView) {
             [self liveStreamBtnOnClick];
-        }
-        else{
+        }else{
             if (_userip!=nil) {
                 NSString *url = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
                 [self.videoView play:url useTcp:NO];
                 [self.videoView sound:_audioisEnable];
                 self.videoisplaying = YES;
-            }
-            else{
+            }else{
                 [self scanDevice];
                 _isUser=YES;
             }
         }
-    }
-    else{
+    }else{
         [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];
     }
 }
 
 -(void)_streamingPauseBtnClick{
-    if (_livingState==0) {
+    if (_livingState==LivingStateStop) {
         [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
     }
-    else if (_livingState==1) {//暂停推流
+    else if (_livingState==LivingStateLiving) {//暂停推流
         [self setPauseStreamStatus];
     }
-    else if (_livingState==2) {//重新开始推流
+    else if (_livingState==LivingStatePause) {//重新开始推流
         [self setStartStreamStatus];
     }
 }
@@ -2215,7 +2223,7 @@ int posStep=1;
  */
 
 #pragma mark - 拍照
--(void)_takephotoBtnClick {
+-(void)takephotoBtnClicked {
     
     [self playSound:@"shutter.mp3"];
     
@@ -2257,12 +2265,13 @@ bool _isTakePhoto=NO;
 }
 
 - (void)saveImageToAlbum:(BOOL)success{
+    __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (success) {
-            [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
+            [weakself showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
         }
         else{
-            [self showAllTextDialog:NSLocalizedString(@"save_photo_failed", nil)];
+            [weakself showAllTextDialog:NSLocalizedString(@"save_photo_failed", nil)];
         }
     });
 }
@@ -2271,7 +2280,7 @@ bool _isTakePhoto=NO;
  *  录像
  */
 #pragma mark - 录像
--(void)_recordBtnClick{
+-(void)recordBtnClicked{
     if (!_play_success) {
         [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
         return;
@@ -2355,7 +2364,7 @@ bool _isTakePhoto=NO;
 /**
  *  暂停推流或开启推流
  */
--(void)_livePauseBtnClick{
+-(void)livePauseBtnClicked{
     NSLog(@"暂停推流");
     if (_livingState==1) {//暂停推流
         [self setPauseStreamStatus];
@@ -2368,13 +2377,13 @@ bool _isTakePhoto=NO;
 /**
  *  停止推流
  */
--(void)_liveStopBtnClick{
+-(void)liveStopBtnClicked{
     [self closeLivingSession];
 }
 /**
  *  跳转到浏览相片和视频的界面
  */
--(void)_browserBtnClick{
+-(void)browserBtnClicked{
     NSLog(@"浏览");
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
@@ -2544,7 +2553,7 @@ bool _isTakePhoto=NO;
 
 - (void)dealloc {
     
-    [self timersInvalidate];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -2644,7 +2653,7 @@ bool _isTakePhoto=NO;
 
 
 
-- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
+- (void)panView:(UIPanGestureRecognizer *)panGestureRecognizer
 {
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {

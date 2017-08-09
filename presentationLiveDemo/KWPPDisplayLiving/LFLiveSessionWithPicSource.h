@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger,LivingDataSouceType){
 @class LFLiveStreamInfo;
 @interface LFLiveSessionWithPicSource : NSObject
 //代理
-@property (nullable,nonatomic, assign) id<LFLiveSessionWithPicSourceDelegate> delegate;
+@property (nullable,nonatomic, weak) id<LFLiveSessionWithPicSourceDelegate> delegate;
 
 //是否正在运行
 @property (nonatomic, assign) BOOL running;
