@@ -40,6 +40,7 @@
 @property (nonatomic, strong) NSMutableArray<PlatformModel *> * platformsArray;
 
 @property (nonatomic, strong) NSThread * searchThread;
+@property (nonatomic, strong) UIAlertView *waitAlertView;
 @end
 
 @implementation TTPlatformSelectViewController
@@ -61,9 +62,14 @@
     [self initUI];
     // Do any additional setup after loading the view.
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    dispatch_async(dispatch_get_main_queue(),^ {
+        [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    });
+}
 
-- (void)initData
-{
+- (void)initData {
     NSArray * array = [[TTCoreDataClass shareInstance] localAllPlatforms];
     _platformsArray = [NSMutableArray arrayWithArray:array];
     [self.collectionView reloadData];
@@ -89,9 +95,14 @@
 }
 
 #pragma mark - 扫描设备--------------------------
-- (void)scanDevice
-{
+- (void)scanDevice {
     
+    _waitAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"main_scan_indicator_title", nil)
+                                               message:NSLocalizedString(@"main_scan_indicator", nil)
+                                              delegate:nil
+                                     cancelButtonTitle:nil
+                                     otherButtonTitles:nil, nil];
+    [_waitAlertView show];
     [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
@@ -119,8 +130,15 @@
 //        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         
+    }else{
+        
+        
+        
     }
-   
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    });
 }
 
 #pragma mark - actions
@@ -223,13 +241,11 @@
     return 3;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 2;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableview = nil;
     
     if (kind == UICollectionElementKindSectionHeader)
@@ -238,27 +254,22 @@
         
         if (indexPath.section == 0) {
             view.headerLabel.text = @"Live Platform";
-        }
-        else
-        {
+        }else{
             view.headerLabel.text = @"Personalize your Live Stream";
         }
         reusableview = view;
-    }
-    else if (kind == UICollectionElementKindSectionFooter)
-    {
+    }else if (kind == UICollectionElementKindSectionFooter) {
+        
         CollectionReusableFooterView * footerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"CollectionReusableFooterView" forIndexPath:indexPath];
         
         [footerView.button addTarget:self action:@selector(goliVeNowButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        
         if (indexPath.section == 1) {
             reusableview = footerView;
-
         }
-        
     }
 
     return reusableview;
-    
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section

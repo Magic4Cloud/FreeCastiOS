@@ -11,11 +11,14 @@
 #import "HttpRequest.h"
 #import "MBProgressHUD.h"
 #import "CommanParameters.h"
+#import "CoreStore+App.h"
+#import "NSObject+JSON.h"
 
 @interface AudioViewController ()
-{
-    int _audioStatus;
-}
+//{
+//    int _audioStatus;
+//}
+@property (nonatomic, assign) AudioInputSelected audioStatus;
 @end
 
 @implementation AudioViewController
@@ -170,8 +173,16 @@
 //    _audioTips3Label.textAlignment=UITextAlignmentCenter;
 //    _audioTips3Label.numberOfLines = 0;
 //    [self.view addSubview:_audioTips3Label];
-    [NSThread detachNewThreadSelector:@selector(GetAudioFormart) toTarget:self withObject:nil];
-
+    
+    
+    
+#warning  faker,等待SDK改进支持
+//    [NSThread detachNewThreadSelector:@selector(GetAudioFormart) toTarget:self withObject:nil];
+    if (![CoreStore sharedStore].isSelectedAudio) {
+        [CoreStore sharedStore].audioInput = AudioInputSelectedExternAudio;
+        [CoreStore sharedStore].isSelectedAudio = YES;
+    }
+    [self settingSelectedImages];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -183,6 +194,7 @@
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];//屏幕常亮
+    
 }
 
 //返回
@@ -192,7 +204,7 @@
 
 - (void)_audioHDMIBtnClick{
     NSLog(@"_audioHDMIBtnClick");
-    _audioStatus=1;
+    _audioStatus = AudioInputSelectedHDMIAudio;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
@@ -208,7 +220,7 @@
 
 - (void)_audioExternalBtnClick{
     NSLog(@"_audioExternalBtnClick");
-    _audioStatus=2;
+    _audioStatus = AudioInputSelectedExternAudio;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
@@ -224,7 +236,7 @@
 
 - (void)_aduioInternalBunClick{
     NSLog(@"_aduioInternalBunClick");
-    _audioStatus=2;
+    _audioStatus = AudioInputSelectedInternalAudio;
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AudioSourceIsIphone];
     [[NSUserDefaults standardUserDefaults] synchronize];
     //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
@@ -241,7 +253,7 @@
 
 - (void)_NOaudioBtnClick{
     NSLog(@"_NOaudioBtnClick");
-    _audioStatus=0;
+    _audioStatus = AudioInputSelectedNoAudio;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:AudioSourceIsIphone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 //    _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
@@ -253,21 +265,23 @@
 //    [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
 //    [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [NSThread detachNewThreadSelector:@selector(SetAudioFormart) toTarget:self withObject:nil];
+    
 }
 
 
 #pragma mark-- 设置音频输入    0:禁止  1:HDMI  2:外部音源输入
 -(void)SetAudioFormart
 {
-    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_audio_source&pipe=0&value=%d",_ip,80,_audioStatus];
+    NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=set_audio_source&pipe=0&value=%ld",_ip,80,(long)_audioStatus];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
     NSLog(@"====>%@",http_request.ResponseString);
     if(http_request.StatusCode==200)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *value=[self parseJsonString2:http_request.ResponseString :@"\"info\":\""];
+            NSLog(@"----------------%@",value);
             if ([value compare:@"suc"]==NSOrderedSame) {
-                
+                [CoreStore sharedStore].audioInput = _audioStatus;
             }
             else{
                 [self showAllTextDialog:NSLocalizedString(@"settings_failed", nil)];
@@ -293,9 +307,10 @@
             if ([http_request.ResponseString compare:@""]==NSOrderedSame) {
                 return;
             }
-            NSString *_value=[self parseJsonString:http_request.ResponseString];
-            if (([_value compare:@"0"] == NSOrderedSame)) {
-                _audioStatus=0;
+            NSString *value=[self parseJsonString:http_request.ResponseString];
+            NSLog(@"----------------%@",value);
+            if (([value compare:@"0"] == NSOrderedSame)) {
+                _audioStatus = AudioInputSelectedNoAudio;
 //                _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //                _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
                 _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
@@ -305,8 +320,8 @@
 //                [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //                [_audioExternalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             }
-            else if (([_value compare:@"1"] == NSOrderedSame)) {
-                _audioStatus=1;
+            else if (([value compare:@"1"] == NSOrderedSame)) {
+                _audioStatus = AudioInputSelectedHDMIAudio;
 //                _audioExternalBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //                _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
                 _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
@@ -316,8 +331,8 @@
 //                [_audioHDMIBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
 //                [_audioExternalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             }
-            else if (([_value compare:@"2"] == NSOrderedSame)) {
-                _audioStatus=2;
+            else if (([value compare:@"2"] == NSOrderedSame)) {
+                _audioStatus= AudioInputSelectedExternAudio;
 //                _audioHDMIBtn.backgroundColor=[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0];
 //                _audioExternalBtn.backgroundColor=[UIColor colorWithRed:67/255.0 green:69/255.0 blue:83/255.0 alpha:1.0];
                 _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
@@ -326,10 +341,14 @@
                 _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
 //                [_audioExternalBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
 //                [_audioHDMIBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            }else if ([value compare:@"3"] == NSOrderedSame){
+                _audioStatus = AudioInputSelectedInternalAudio;
+                _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+                _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+                _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_pre"];
+                _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
             }
         });
-
-        
     }
 }
 
@@ -412,6 +431,40 @@
 {
     return UIInterfaceOrientationPortrait;
 }
+
+- (void)settingSelectedImages{
+    NSLog(@"----------------%ld",[CoreStore sharedStore].audioInput);
+    switch ([CoreStore sharedStore].audioInput) {
+        case AudioInputSelectedExternAudio:
+            _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+            _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
+            _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+            _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+            break;
+        case AudioInputSelectedHDMIAudio:
+            _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
+            _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+            _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+            _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+            break;
+        case AudioInputSelectedInternalAudio:
+            _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+            _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+            _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_pre"];
+            _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
+            break;
+        case AudioInputSelectedNoAudio:
+            _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
+            _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
+            _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
+            _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_pre"];
+            break;
+        default:
+            break;
+    }
+}
+
+
 
 
 @end

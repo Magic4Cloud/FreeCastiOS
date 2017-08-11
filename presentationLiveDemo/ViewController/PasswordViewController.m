@@ -1038,6 +1038,7 @@ NSString *quality;
         }
         case 3:
         {
+            [self setCustomValues];
             _videoResolutionSlider.enabled=YES;
             _videoRateSlider.enabled=YES;
             _videoFrameRateSlider.enabled=YES;
@@ -1049,6 +1050,10 @@ NSString *quality;
         default:
             break;
     }
+}
+
+- (void)setCustomValues {
+    
 }
 
 /**

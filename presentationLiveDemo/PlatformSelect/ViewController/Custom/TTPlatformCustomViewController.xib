@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -79,9 +78,8 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Stream Key" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="F2W-mN-nkl">
-                            <rect key="frame" x="43" y="269" width="245" height="30"/>
+                            <rect key="frame" x="43" y="269" width="280" height="30"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="245" id="CLV-3Y-vML"/>
                                 <constraint firstAttribute="height" constant="30" id="U6N-xV-cor"/>
                             </constraints>
                             <nil key="textColor"/>
@@ -92,11 +90,9 @@
                             </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlK-Ds-DyM">
-                            <rect key="frame" x="45" y="299" width="245" height="1"/>
+                            <rect key="frame" x="45" y="299" width="280" height="1"/>
                             <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="245" id="9NT-mZ-uEZ"/>
-                                <constraint firstAttribute="width" constant="245" id="LJS-N5-b22"/>
                                 <constraint firstAttribute="height" constant="1" id="tXz-q7-hxM"/>
                             </constraints>
                         </view>
@@ -104,9 +100,11 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="F2W-mN-nkl" firstAttribute="leading" secondItem="a2D-MP-Xf7" secondAttribute="leading" constant="43" id="3qw-lp-Lb1"/>
+                        <constraint firstItem="QlK-Ds-DyM" firstAttribute="width" secondItem="zRX-bz-JZW" secondAttribute="width" id="4Az-ew-GLC"/>
                         <constraint firstItem="uJF-Rp-2ri" firstAttribute="top" secondItem="zRX-bz-JZW" secondAttribute="bottom" id="8hS-HI-1pt"/>
                         <constraint firstItem="zRX-bz-JZW" firstAttribute="top" secondItem="p7A-iT-if5" secondAttribute="bottom" constant="8" id="CLP-gb-RId"/>
                         <constraint firstItem="rmb-KA-oSj" firstAttribute="leading" secondItem="a2D-MP-Xf7" secondAttribute="leading" constant="43" id="CmW-GL-sEL"/>
+                        <constraint firstItem="F2W-mN-nkl" firstAttribute="width" secondItem="zRX-bz-JZW" secondAttribute="width" id="EjU-ue-flM"/>
                         <constraint firstItem="rsK-8L-5eF" firstAttribute="centerX" secondItem="a2D-MP-Xf7" secondAttribute="centerX" id="Gx5-AO-oi5"/>
                         <constraint firstItem="F2W-mN-nkl" firstAttribute="top" secondItem="rmb-KA-oSj" secondAttribute="bottom" constant="8" id="Mcw-zc-r5X"/>
                         <constraint firstItem="uJF-Rp-2ri" firstAttribute="leading" secondItem="a2D-MP-Xf7" secondAttribute="leading" constant="43" id="O1F-Rn-RmM"/>

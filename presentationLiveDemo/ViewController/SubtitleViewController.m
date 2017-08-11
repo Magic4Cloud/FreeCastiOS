@@ -279,9 +279,12 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     
     
     
-    _subtitleOpacityLabel=[[UILabel alloc] initWithFrame:CGRectMake(viewW*30/totalWeight,viewH*37/totalHeight, viewW*53/totalWeight, viewH*15/totalHeight)];
-    //CGRectMake(viewW*22/totalWeight,viewH*119/totalHeight, viewW*53/totalWeight, viewH*25/totalHeight)];
+    _subtitleOpacityLabel=[[UILabel alloc] initWithFrame:
+                           CGRectMake(viewW*30/totalWeight,viewH*37/totalHeight, viewW*53/totalWeight, viewH*15/totalHeight)];
+//    CGRectMake(viewW*22/totalWeight,viewH*119/totalHeight, viewW*53/
+//    totalWeight, viewH*25/totalHeight)];
     _subtitleOpacityLabel.text = NSLocalizedString(@"subtitle_opacity", nil);
+    
     _subtitleOpacityLabel.font = [UIFont boldSystemFontOfSize: viewH*15/totalHeight*0.8];
     _subtitleOpacityLabel.backgroundColor = [UIColor clearColor];
     _subtitleOpacityLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
@@ -305,13 +308,14 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_subtitleSettingsView addSubview:_subtitleOpacitySlider];
     
     _subtitleOpacityValue = [[UITextField alloc] initWithFrame:CGRectMake(viewW*308/totalWeight, viewH*55/totalHeight, viewW*44/totalWeight, viewH*10/totalHeight)];
-    _subtitleOpacityValue.text = @"100%";
+    
+    _subtitleOpacityValue.text = @"50%";
     [_subtitleOpacityValue addTarget:self action:@selector(_subtitleOpacityValueDidChange:) forControlEvents:UIControlEventEditingChanged];
     _subtitleOpacityValue.font = [UIFont systemFontOfSize: viewH*10/totalHeight*0.8];
     _subtitleOpacityValue.backgroundColor = [UIColor clearColor];
     _subtitleOpacityValue.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];;
     _subtitleOpacityValue.delegate=self;
-    _subtitleOpacityValue.textAlignment=UITextAlignmentCenter;
+    _subtitleOpacityValue.textAlignment = NSTextAlignmentCenter;
     [_subtitleSettingsView addSubview:_subtitleOpacityValue];
     
     //SizePicker
