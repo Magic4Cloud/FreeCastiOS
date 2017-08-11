@@ -14,7 +14,8 @@
 #import "CommanParameters.h"
 #import "TTNetMannger.h"
 #import "TTSearchDeviceClass.h"
-
+#import "CoreStore+App.h"
+#import "CoreStore.h"
 @interface PasswordViewController ()
 {
     bool _Exit;
@@ -869,39 +870,6 @@ NSString *quality;
     
 }
 
--(IBAction)_videoResolutionSliderValue:(id)sender{
-    float value = _videoResolutionSlider.value; //读取滑块的值
-    NSLog(@"value=%f",value);
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        _videoResolutionSlider.value=round(value);
-        NSLog(@"round(value)=%f",round(value));
-    } completion:^(BOOL finished){
-        switch ((int)round(value)) {
-            case 0:
-            {
-                NSLog(@"480P");
-                [self set480P];
-                break;
-            }
-            case 1:
-            {
-                NSLog(@"720P");
-                [self set720P];
-                break;
-            }
-            case 2:
-            {
-                NSLog(@"1080");
-                [self set1080P];
-                break;
-            }
-                
-            default:
-                break;
-        }
-    }];
-}
 
 - (void)set480P{
     _videoResolutionSlider.value=0;
@@ -933,7 +901,7 @@ NSString *quality;
     _videoResolutionValueLabel.center = CGPointMake(_videoResolutionSlider.center.x, _videoResolutionValueLabel.center.y);
 }
 - (void)set1080P{
-    _videoResolutionSlider.value=2;
+    _videoResolutionSlider.value = 2;
     _videoResolutionValueLabel.textColor = MAIN_COLOR;
     _videoResolutionMinLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
     _videoResolutionMaxLabel.textColor = [UIColor colorWithRed:176.359/255.0 green:176.359/255.0 blue:176.359/255.0 alpha:1.0];
@@ -953,14 +921,51 @@ NSString *quality;
     return[scan scanInt:&val] && [scan isAtEnd];
 }
 
--(IBAction)_videoRateSliderValue:(id)sender{
+-(IBAction)_videoResolutionSliderValue:(id)sender{
+    float value = _videoResolutionSlider.value; //读取滑块的值
+    
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        _videoResolutionSlider.value=round(value);
+        NSLog(@"round(value)=%f",round(value));
+    } completion:^(BOOL finished){
+        switch ((int)round(value)) {
+            case 0:
+            {
+                NSLog(@"480P");
+                [self set480P];
+                break;
+            }
+            case 1:
+            {
+                NSLog(@"720P");
+                [self set720P];
+                break;
+            }
+            case 2:
+            {
+                NSLog(@"1080");
+                [self set1080P];
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }];
+
+}
+
+- (IBAction)_videoRateSliderValue:(id)sender{
     float value = _videoRateSlider.value; //读取滑块的值
     [self setVideoRate:value];
+    
 }
 
 -(IBAction)_videoFrameRateSliderValue:(id)sender{
     float value = _videoFrameRateSlider.value; //读取滑块的值
     [self setVideoFrameRate:value];
+    
 }
 
 - (void)setVideoRate:(float)value{
@@ -1052,7 +1057,32 @@ NSString *quality;
     }
 }
 
+- (void)switchResolution {
+    switch ([CoreStore sharedStore].resolution) {
+        case FSResolution480P:
+            [self set480P];
+            break;
+        case FSResolution720P:
+            [self set720P];
+            break;
+        default:
+            [self set1080P];
+            break;
+    }
+}
+
 - (void)setCustomValues {
+    if ([CoreStore sharedStore].isChangedCustomValues) {
+        [self switchResolution];
+        [self setVideoFrameRate:[CoreStore sharedStore].frameRate];
+        [self setVideoRate:[CoreStore sharedStore].bitRate];
+        NSLog(@"----------------%ld",[CoreStore sharedStore].bitRate);
+    } else {
+        [self set1080P];
+        [self setVideoRate:8000];
+        [self setVideoFrameRate:24];
+    }
+    
     
 }
 
@@ -1168,7 +1198,12 @@ bool _modifyOK=YES;
     if (_modifyOK) {
         dispatch_async(dispatch_get_main_queue(),^ {
             [self showAllTextDialog:NSLocalizedString(@"set_video_success", nil)];
-            
+            [CoreStore sharedStore].bitRate = (NSInteger)_videoRateSlider.value;
+            NSLog(@"----------------%lf",_videoRateSlider.value);
+            [CoreStore sharedStore].frameRate = (NSInteger)_videoFrameRateSlider.value;
+            [CoreStore sharedStore].resolution = (NSInteger)round(_videoResolutionSlider.value);
+            [CoreStore sharedStore].isChangedCustomValues = YES;
+            NSLog(@"revolution=%ld",[CoreStore sharedStore].resolution);
             if (self.changeVideoNeedReplayBlock) {
                 self.changeVideoNeedReplayBlock();
             }

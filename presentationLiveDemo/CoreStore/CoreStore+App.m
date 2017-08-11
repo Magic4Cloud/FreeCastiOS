@@ -23,6 +23,22 @@
     return [self BOOLDataForKey:APP_IS_SELECTED_AUDIO];
 }
 
+- (BOOL)isChangedCustomValues {
+    return [self BOOLDataForKey:APP_IS_CHANGED_CUSTOM_VALUES];
+}
+
+- (FSResolution)resolution {
+    return [self integerDataForKey:APP_RESOLUTION];
+}
+
+- (NSInteger)bitRate {
+    return [self integerDataForKey:APP_BIT_RATE];
+}
+
+- (NSInteger)frameRate {
+    return  [self integerDataForKey:APP_FRAME_RATE];
+}
+
 /////////////////////////////set///////////////////////////////////
 
 - (void)setCurrentUseDeviceID:(NSString *)currentUseDeviceID {
@@ -35,6 +51,22 @@
 
 - (void)setIsSelectedAudio:(BOOL)isSelectedAudio {
     [self setBOOLData:isSelectedAudio forKey:APP_IS_SELECTED_AUDIO];
+}
+
+- (void)setIsChangedCustomValues:(BOOL)isChangedCustomValues {
+    [self setBOOLData:isChangedCustomValues forKey:APP_IS_CHANGED_CUSTOM_VALUES];
+}
+
+- (void)setResolution:(FSResolution)resolution {
+    [self setIntegerData:resolution forKey:APP_RESOLUTION];
+}
+
+- (void)setBitRate:(NSInteger)bitRate {
+    [self setIntegerData:bitRate forKey:APP_BIT_RATE];
+}
+
+- (void)setFrameRate:(NSInteger)frameRate {
+    [self setIntegerData:frameRate forKey:APP_FRAME_RATE];
 }
 
 @end
