@@ -1082,8 +1082,6 @@ NSString *quality;
         [self setVideoRate:8000];
         [self setVideoFrameRate:24];
     }
-    
-    
 }
 
 /**

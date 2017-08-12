@@ -922,6 +922,8 @@
 		84E634A11E554CD50049573E /* 333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E6349F1E554CD50049573E /* 333.bmp */; };
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
+		974081341F3DA19B00F2A6DB /* UIAlertController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 974081331F3DA19B00F2A6DB /* UIAlertController+Rotation.m */; };
+		974081371F3DAD9100F2A6DB /* TTAlertViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 974081361F3DAD9100F2A6DB /* TTAlertViewController+Rotation.m */; };
 		975B8FD91F3420E8005003E2 /* CoreStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD61F3420E8005003E2 /* CoreStore.m */; };
 		975B8FDA1F3420E8005003E2 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD81F3420E8005003E2 /* NSObject+JSON.m */; };
 		975B8FDD1F342191005003E2 /* CoreStore+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FDC1F342191005003E2 /* CoreStore+App.m */; };
@@ -2288,6 +2290,10 @@
 		84E634A51E5576F00049573E /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		84E634A61E5576F00049573E /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		974081321F3DA19A00F2A6DB /* UIAlertController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertController+Rotation.h"; path = "CoreStore/UIAlertController+Rotation.h"; sourceTree = "<group>"; };
+		974081331F3DA19B00F2A6DB /* UIAlertController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertController+Rotation.m"; path = "CoreStore/UIAlertController+Rotation.m"; sourceTree = "<group>"; };
+		974081351F3DAD9100F2A6DB /* TTAlertViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TTAlertViewController+Rotation.h"; path = "CoreStore/TTAlertViewController+Rotation.h"; sourceTree = "<group>"; };
+		974081361F3DAD9100F2A6DB /* TTAlertViewController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TTAlertViewController+Rotation.m"; path = "CoreStore/TTAlertViewController+Rotation.m"; sourceTree = "<group>"; };
 		975B8FD51F3420E8005003E2 /* CoreStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreStore.h; path = CoreStore/CoreStore.h; sourceTree = "<group>"; };
 		975B8FD61F3420E8005003E2 /* CoreStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreStore.m; path = CoreStore/CoreStore.m; sourceTree = "<group>"; };
 		975B8FD71F3420E8005003E2 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JSON.h"; path = "CoreStore/NSObject+JSON.h"; sourceTree = "<group>"; };
@@ -2928,6 +2934,10 @@
 			children = (
 				7A85D1BB1F2C1DF700190221 /* TTSearchDeviceClass.h */,
 				7A85D1BC1F2C1DF700190221 /* TTSearchDeviceClass.m */,
+				974081321F3DA19A00F2A6DB /* UIAlertController+Rotation.h */,
+				974081331F3DA19B00F2A6DB /* UIAlertController+Rotation.m */,
+				974081351F3DAD9100F2A6DB /* TTAlertViewController+Rotation.h */,
+				974081361F3DAD9100F2A6DB /* TTAlertViewController+Rotation.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -5220,6 +5230,7 @@
 				7A68528D1F1898B300EEDE2D /* GPUImageStretchDistortionFilter.m in Sources */,
 				7A6852821F1898B300EEDE2D /* GPUImageSketchFilter.m in Sources */,
 				7A6852231F1898B200EEDE2D /* GPUImageDilationFilter.m in Sources */,
+				974081341F3DA19B00F2A6DB /* UIAlertController+Rotation.m in Sources */,
 				7A6851EE1F1898B200EEDE2D /* LFNALUnit.cpp in Sources */,
 				7A6852791F1898B300EEDE2D /* GPUImageRGBFilter.m in Sources */,
 				7A6852251F1898B200EEDE2D /* GPUImageDirectionalSobelEdgeDetectionFilter.m in Sources */,
@@ -5409,6 +5420,7 @@
 				7A6852A81F1898B300EEDE2D /* GPUImageMovieWriter.m in Sources */,
 				7A6852181F1898B200EEDE2D /* GPUImageColorLocalBinaryPatternFilter.m in Sources */,
 				8488BE181DB77992006357AD /* AlbumObject.m in Sources */,
+				974081371F3DAD9100F2A6DB /* TTAlertViewController+Rotation.m in Sources */,
 				7A92FADC1F04FD5000DC9178 /* WebViewController.m in Sources */,
 				8488BE221DB77992006357AD /* LiveViewViewController.m in Sources */,
 				7A68528B1F1898B300EEDE2D /* GPUImageSphereRefractionFilter.m in Sources */,

@@ -13,6 +13,8 @@
 @protocol AlbumDelegate <NSObject>
 - (void)readFileFromAlbum:(ALAssetsGroup *)group;
 - (void)saveImageToAlbum:(BOOL)success;
+
+- (void)pressentAlertViewControllerWithError:(NSError *)error;
 @end
 
 

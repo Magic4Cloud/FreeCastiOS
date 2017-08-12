@@ -758,7 +758,7 @@ BOOL _isExist;
             switch ([error code]) {
                 case ALAssetsLibraryAccessUserDeniedError:
                 case ALAssetsLibraryAccessGloballyDeniedError:
-                    errorMessage = @"The user refused to visit the album, please open in < privacy >";
+                    errorMessage = @"The user has denied the application access to their media.";
                     break;
                     
                 default:
@@ -767,7 +767,7 @@ BOOL _isExist;
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Unable to access"
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"User denied access"
                                                                    message:errorMessage
                                                                   delegate:self
                                                          cancelButtonTitle:@"OK"

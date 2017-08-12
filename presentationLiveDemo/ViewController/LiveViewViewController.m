@@ -44,6 +44,8 @@
 #import "Rak_Lx52x_Device_Control.h"
 #import "CoreStore.h"
 #import "CoreStore+App.h"
+//#import "UIAlertController+Rotation.h"
+//#import "TTAlertViewController+Rotation.h"
 //#import "AppDelegate.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
@@ -1027,7 +1029,7 @@ bool VideoRecordIsEnable = NO;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-//    NSLog(@"GetH264Data");
+    NSLog(@"GetH264Data");
     if(_livingState == LivingStateLiving){
         [self.session upload_h264:size :data];
     }
@@ -1171,19 +1173,26 @@ bool VideoRecordIsEnable = NO;
     
 }
 
-- (BOOL)shouldAutorotate
-{
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationPortrait;
+//}
+- (BOOL)shouldAutorotate{
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationPortrait;
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return UIInterfaceOrientationPortrait;
+    return  UIInterfaceOrientationLandscapeLeft;
 }
 
 #pragma mark-- Toast显示示例
@@ -2263,6 +2272,31 @@ bool _isTakePhoto=NO;
 {
     [self showAllTextDialog:NSLocalizedString(@"save_photo", nil)];
 }
+
+- (void)pressentAlertViewControllerWithError:(NSError *)error {
+//    
+//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedFailureReason preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    
+//    
+//    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        [alertController dismissViewControllerAnimated:YES completion:^{
+//            nil;
+//        }];
+//    }];
+//    [alertController addAction:ok];
+//    [self presentViewController:alertController animated:YES completion:^{
+//        nil;
+//    }];
+    
+                         
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
+    [alert show];
+    
+}
+
+
+
 
 - (void)saveImageToAlbum:(BOOL)success{
     __weak typeof(self) weakself = self;
