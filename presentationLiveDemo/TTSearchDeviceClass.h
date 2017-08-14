@@ -6,10 +6,10 @@
 //  Copyright © 2017 ZYH. All rights reserved.
 //
 
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 #import <Foundation/Foundation.h>
 
-typedef void(^searchResultBlock)(Lx52x_Device_Info * resultinfo);
+typedef void(^searchResultBlock)(Scanner * resultinfo);
 
 /**
  搜索设备 工具类

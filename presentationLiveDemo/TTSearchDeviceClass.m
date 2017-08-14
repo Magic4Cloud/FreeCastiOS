@@ -12,7 +12,7 @@ static TTSearchDeviceClass * _instance;
 
 @interface TTSearchDeviceClass()
 
-@property (nonatomic, strong) Rak_Lx52x_Device_Control * searchControl;
+@property (nonatomic, strong) Scanner * searchControl;
 
 @property (nonatomic, assign) BOOL isSearching;
 
@@ -31,7 +31,7 @@ static TTSearchDeviceClass * _instance;
     NSLog(@"开始搜索设备");
     _isSearching = YES;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
-        __block Lx52x_Device_Info * resultInfo = [self.searchControl ScanDeviceWithTime:seconds];
+        __block Scanner * resultInfo = [self.searchControl ScanDeviceWithTime:seconds];
         dispatch_async(dispatch_get_main_queue(), ^{
             _isSearching = NO;
             NSLog(@"结束搜索设备");
@@ -44,10 +44,10 @@ static TTSearchDeviceClass * _instance;
 }
 
 #pragma mark - getter
-- (Rak_Lx52x_Device_Control *)searchControl
+- (Scanner *)searchControl
 {
     if (!_searchControl) {
-        _searchControl = [[Rak_Lx52x_Device_Control alloc] init];
+        _searchControl = [[Scanner alloc] init];
     }
     return _searchControl;
 }

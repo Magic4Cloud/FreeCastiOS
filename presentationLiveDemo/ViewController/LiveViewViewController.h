@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LX520View.h"
+#import "WisView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIViewLinkmanTouch.h"
 #import "CAAutoFillTextField.h"

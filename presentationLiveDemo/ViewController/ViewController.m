@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "CommanParameter.h"
 #import "LiveViewViewController.h"
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 #import "BrowseViewController.h"
 #import "StreamViewController.h"
 #import "ConfigureViewController.h"
@@ -21,7 +21,7 @@
 #import "TTPlatformSelectViewController.h"
 
 
-Rak_Lx52x_Device_Control *_Scan;
+Scanner *_Scan;
 
 
 @interface ViewController ()
@@ -276,7 +276,7 @@ Rak_Lx52x_Device_Control *_Scan;
     [self.view addSubview:_browseImgBtn];
     
     _Exit=NO;
-    _Scan = [[Rak_Lx52x_Device_Control alloc] init];
+    _Scan = [[Scanner alloc] init];
 }
 
 - (void)scanDevice
@@ -289,11 +289,11 @@ Rak_Lx52x_Device_Control *_Scan;
 
 - (void)scanDeviceTask
 {
-    Lx52x_Device_Info *result = [_Scan ScanDeviceWithTime:1.0f];
+    Scanner *result = [_Scan ScanDeviceWithTime:1.0f];
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
+- (void)scanDeviceOver:(Scanner *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
         dispatch_async(dispatch_get_main_queue(),^ {

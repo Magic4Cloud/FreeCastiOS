@@ -759,6 +759,7 @@ BOOL _isExist;
                 case ALAssetsLibraryAccessUserDeniedError:
                 case ALAssetsLibraryAccessGloballyDeniedError:
                     errorMessage = @"The user has denied the application access to their media.";
+
                     break;
                     
                 default:

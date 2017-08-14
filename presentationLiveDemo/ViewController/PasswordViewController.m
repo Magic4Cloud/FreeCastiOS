@@ -671,7 +671,7 @@
                                      otherButtonTitles:nil, nil];
     [waitAlertView show];
     
-    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Scanner *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
     
@@ -688,7 +688,7 @@ NSString *resolution;
 NSString *fps;
 NSString *quality;
 
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
+- (void)scanDeviceOver:(Scanner *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
         _configIP=[result.Device_IP_Arr objectAtIndex:0];
@@ -1082,6 +1082,8 @@ NSString *quality;
         [self setVideoRate:8000];
         [self setVideoFrameRate:24];
     }
+    
+    
 }
 
 /**

@@ -41,12 +41,12 @@
 #import "LFLiveKit.h"
 #import "LFLiveSessionWithPicSource.h"
 #import "PicToBufferToPic.h"
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 #import "CoreStore.h"
 #import "CoreStore+App.h"
+//#import "AppDelegate.h"
 //#import "UIAlertController+Rotation.h"
 //#import "TTAlertViewController+Rotation.h"
-//#import "AppDelegate.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
@@ -74,9 +74,9 @@ static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 
-@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,LX520Delegate,CAAutoFillDelegate,AlbumDelegate>
+@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,WisViewDelegate,CAAutoFillDelegate,AlbumDelegate>
 
-@property (nonatomic, strong) LX520View *videoView;
+@property (nonatomic, strong) WisView *videoView;
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
 @property (nonatomic, strong) LFLiveSessionWithPicSource *session;
 @property (nonatomic, strong) UIAlertView *waitAlertView;
@@ -166,9 +166,9 @@ static enum ButtonEnable RecordVideoEnable;
     return _livingPreView;
 }
 
-- (LX520View *)videoView {
+- (WisView *)videoView {
     if (!_videoView) {
-        _videoView = [[LX520View alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
         _videoView.userInteractionEnabled = YES;
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
@@ -204,7 +204,10 @@ static enum ButtonEnable RecordVideoEnable;
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
     //判断设备的音频输入是不是手机麦克风
     NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
     if ([standDefaults objectForKey:AudioSourceIsIphone]) {
@@ -216,6 +219,12 @@ static enum ButtonEnable RecordVideoEnable;
     [self getSelectedPlatform];
     
     [self replayVideoView];
+    [super viewDidAppear:animated];
+    if (_isBroswer) {
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+        _isBroswer=NO;
+    }
+    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
 }
 
 
@@ -228,6 +237,9 @@ static enum ButtonEnable RecordVideoEnable;
     NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
     NSLog(@"----------------log%@",urlString);
     
+//    _videoView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
+//    [_videoView setView1Frame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+//    [_videoView delegate:self];
     [self.videoView play:urlString useTcp:NO];
     [self.videoView sound:YES];
     [self.videoView startGetYUVData:YES];
@@ -235,22 +247,13 @@ static enum ButtonEnable RecordVideoEnable;
     [self.videoView startGetH264Data:YES];
     [self.videoView show_view:YES];
     self.videoisplaying = YES;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
-    if (_isBroswer) {
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-        _isBroswer=NO;
-    }
-    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //    if (_liveCameraSource != IphoneBackCamera) {
-    [self stopVideo];
+    //[self stopVideo];
     //    }
     
 }
@@ -841,12 +844,12 @@ bool VideoRecordIsEnable = NO;
     [self showSearchingMessagesTips];
     [_updateUITimer setFireDate:[NSDate distantPast]];//启动
     [self disableControl];
-    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Scanner *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
 }
 
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result {
+- (void)scanDeviceOver:(Scanner *)result {
     if (_isExit) {
         return;
     }
@@ -896,7 +899,7 @@ bool VideoRecordIsEnable = NO;
 }
 
 #pragma mark -------------------
-#pragma mark LX520Delegate
+#pragma mark WisviewDelegate
 
 
 /**
@@ -953,7 +956,7 @@ bool VideoRecordIsEnable = NO;
 
 
 - (void)state_changed:(int)state {
-    NSLog(@"LX520Delegatestate_changed state = %d", state);
+    NSLog(@"WisviewDelegate state_changed state = %d", state);
     switch (state) {
         case 0: //STATE_IDLE
         {
@@ -981,6 +984,16 @@ bool VideoRecordIsEnable = NO;
         case 3: //STATE_STOPPED
         {
             _play_success = NO;
+            break;
+        }
+        case 4: //STATE_OPEN_URL_FAILED
+        {
+            _play_success = NO;
+            NSLog(@"STATE_OPEN_URL_FAILED");
+            dispatch_async(dispatch_get_main_queue(),^ {
+                [self replayVideoView];
+            });
+            
             break;
         }
         default:
@@ -1029,7 +1042,7 @@ bool VideoRecordIsEnable = NO;
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data//回调获取H264数据
 {
-    NSLog(@"GetH264Data");
+//    NSLog(@"GetH264Data");
     if(_livingState == LivingStateLiving){
         [self.session upload_h264:size :data];
     }
@@ -1071,7 +1084,7 @@ bool VideoRecordIsEnable = NO;
     } else {
         _playCount++;
     }
-    _isPlaying=NO;
+    //_isPlaying=NO;
     __weak typeof(self) weakself = self;
     if (_play_success) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -1173,22 +1186,15 @@ bool VideoRecordIsEnable = NO;
     
 }
 
-//- (BOOL)shouldAutorotate
-//{
-//    return NO;
-//}
-//
-//- (NSUInteger)supportedInterfaceOrientations
-//{
-//    return UIInterfaceOrientationPortrait;
-//}
-- (BOOL)shouldAutorotate{
+- (BOOL)shouldAutorotate
+{
     return NO;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskLandscape;
 }
+
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
@@ -2274,29 +2280,24 @@ bool _isTakePhoto=NO;
 }
 
 - (void)pressentAlertViewControllerWithError:(NSError *)error {
-//    
-//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedFailureReason preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    
-//    
-//    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        [alertController dismissViewControllerAnimated:YES completion:^{
-//            nil;
-//        }];
-//    }];
-//    [alertController addAction:ok];
-//    [self presentViewController:alertController animated:YES completion:^{
-//        nil;
-//    }];
+    //
+    //    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedFailureReason preferredStyle:UIAlertControllerStyleAlert];
+    //
+    //
+    //
+    //    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    //        [alertController dismissViewControllerAnimated:YES completion:^{
+    //            nil;
+    //        }];
+    //    }];
+    //    [alertController addAction:ok];
+    //    [self presentViewController:alertController animated:YES completion:^{
+    //        nil;
+    //    }];
     
-                         
     UIAlertView *alert=[[UIAlertView alloc]initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
     [alert show];
-    
 }
-
-
-
 
 - (void)saveImageToAlbum:(BOOL)success{
     __weak typeof(self) weakself = self;
@@ -2315,58 +2316,58 @@ bool _isTakePhoto=NO;
  */
 #pragma mark - 录像
 -(void)recordBtnClicked{
-    if (!_play_success) {
-        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-        return;
-    }
-    if (RecordVideoEnable == Unable) {
-        [self playSound:@"begin_record.mp3"];
-        RecordVideoEnable = Enable;
-        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
-        
-        _takephotoBtn.enabled = NO;
-        
-        if (_liveCameraSource == IphoneBackCamera) {
-            [self.session startRecord];
-        }
-        else if (_liveCameraSource == ExternalDevices)
-        {
-            long recordTime = [[NSDate date] timeIntervalSince1970];
-            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
-            NSLog(@"video_timesamp:%@",timesamp);
-            self.video_timesamp = [self Get_Urls:@"video_flag"];
-            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-            [mutaArray addObjectsFromArray:self.video_timesamp];
-            [mutaArray addObject:timesamp];
-            [self Save_Urls:mutaArray :@"video_flag"];
-            
-            [_videoView begin_record:0];
-            [_videoView set_record_frame_rate:24];
-        }
-        
-        VideoRecordTimerTick_s = 0;
-        VideoRecordTimerTick_m = 0;
-        _recordTimeLabel.text = @"REC 00:00";
-        _recordTimeLabel.hidden=NO;
-    }
-    else{
-        _takephotoBtn.enabled = YES;
-        [self playSound:@"end_record.mp3"];
-        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
-        RecordVideoEnable = Unable;
-        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
-        _recordTimeLabel.hidden=YES;
-        if (_liveCameraSource == IphoneBackCamera)
-        {
-            [self.session stopRecord];
-        }
-        else if (_liveCameraSource == ExternalDevices)
-        {
-            [_videoView end_record];
-        }
-        
-        
-    }
+    [self replayVideoView];
+    
+//    if (!_play_success) {
+//        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+//        return;
+//    }
+//    if (RecordVideoEnable == Unable) {
+//        [self playSound:@"begin_record.mp3"];
+//        RecordVideoEnable = Enable;
+//        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
+//        
+//        _takephotoBtn.enabled = NO;
+//        
+//        if (_liveCameraSource == IphoneBackCamera) {
+//            [self.session startRecord];
+//        }
+//        else if (_liveCameraSource == ExternalDevices)
+//        {
+//            long recordTime = [[NSDate date] timeIntervalSince1970];
+//            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
+//            NSLog(@"video_timesamp:%@",timesamp);
+//            self.video_timesamp = [self Get_Urls:@"video_flag"];
+//            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+//            [mutaArray addObjectsFromArray:self.video_timesamp];
+//            [mutaArray addObject:timesamp];
+//            [self Save_Urls:mutaArray :@"video_flag"];
+//            
+//            [_videoView begin_record:0];
+//            [_videoView set_record_frame_rate:24];
+//        }
+//        
+//        VideoRecordTimerTick_s = 0;
+//        VideoRecordTimerTick_m = 0;
+//        _recordTimeLabel.text = @"REC 00:00";
+//        _recordTimeLabel.hidden=NO;
+//    }
+//    else{
+//        _takephotoBtn.enabled = YES;
+//        [self playSound:@"end_record.mp3"];
+//        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
+//        RecordVideoEnable = Unable;
+//        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
+//        _recordTimeLabel.hidden=YES;
+//        if (_liveCameraSource == IphoneBackCamera)
+//        {
+//            [self.session stopRecord];
+//        }
+//        else if (_liveCameraSource == ExternalDevices)
+//        {
+//            [_videoView end_record];
+//        }
+//    }
 }
 
 #pragma mark - 底部按钮跳转相关界面

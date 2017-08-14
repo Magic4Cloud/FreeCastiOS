@@ -15,7 +15,7 @@
 #import "BannerViewController.h"
 #import "AudioViewController.h"
 
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 
 #import "TTCoreDataClass.h"
 
@@ -31,7 +31,7 @@
 #import "TTSearchDeviceClass.h"
 
 @interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
-@property (nonatomic, strong)Rak_Lx52x_Device_Control * device_Scan;
+@property (nonatomic, strong)Scanner * device_Scan;
 
 @property (nonatomic, copy) NSString * userip;
 
@@ -103,7 +103,7 @@
                                      cancelButtonTitle:nil
                                      otherButtonTitles:nil, nil];
     [_waitAlertView show];
-    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Lx52x_Device_Info *resultinfo) {
+    [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Scanner *resultinfo) {
         [self scanDeviceOver:resultinfo];
     }];
     
@@ -120,7 +120,7 @@
 //    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 //}
 
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
+- (void)scanDeviceOver:(Scanner *)result;
 {
     
     if (result.Device_ID_Arr.count > 0) {

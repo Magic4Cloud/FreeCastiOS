@@ -134,8 +134,8 @@
     [alertVc addAction:action2];
     [alertVc addAction:action3];
     [self presentViewController:alertVc animated:YES completion:^{
+        
     }];
-    
 }
 
 

@@ -11,7 +11,7 @@
 #import "KeychainManager.h"
 #import <Photos/Photos.h>
 
-@interface AlbumObject ()<UIAlertViewDelegate>
+@interface AlbumObject ()
 
 -(void)_addAssetURL:(NSURL *)assetURL
         toAlbum:(NSString *)albumName
@@ -48,15 +48,17 @@
             //添加失败一般是由用户不允许应用访问相册造成的，这边可以取出这种情况加以判断一下
             if([error.localizedDescription rangeOfString:@"User denied access"].location != NSNotFound ||[error.localizedDescription rangeOfString:@"用户拒绝访问"].location!=NSNotFound){
                 
+                
                 //这里可以创建添加成功的方法
                 if (_delegateProxy.delegate && [_delegateProxy.delegate respondsToSelector:@selector(pressentAlertViewControllerWithError:)]) {
                     [_delegateProxy.delegate pressentAlertViewControllerWithError:error];
                 }else{
                     UIAlertView *alert=[[UIAlertView alloc]initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
-                 
+                    
                     [alert show];
-
+                    
                 }
+                
             }
         });
     };
@@ -114,7 +116,6 @@ BOOL haveHDRGroup = NO;
                      }
                  }
                  failureBlock:nil];
-                
             }
         }
     };

@@ -10,7 +10,7 @@
 #import "CommanParameter.h"
 #import "HttpRequest.h"
 #import "ProgressView.h"
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 #import "MBProgressHUD.h"
 #import "Brett.h"
 #import <AFNetworking.h>

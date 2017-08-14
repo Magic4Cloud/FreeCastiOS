@@ -9,12 +9,12 @@
 #import "EditionViewController.h"
 #import "CommanParameter.h"
 #import "UpdateFirmwareViewController.h"
-#import "Rak_Lx52x_Device_Control.h"
+#import "Scanner.h"
 #import "MBProgressHUD.h"
 #import "HttpRequest.h"
 #import "CommanParameters.h"
 
-Rak_Lx52x_Device_Control *_firmwareScan;
+Scanner *_firmwareScan;
 @interface EditionViewController ()
 {
     bool _Exit;
@@ -209,7 +209,7 @@ Rak_Lx52x_Device_Control *_firmwareScan;
 //    [_newVersionImg setTransform:rotate];
     [_newVersionView  addSubview:_newVersionImg];
     
-    _firmwareScan = [[Rak_Lx52x_Device_Control alloc] init];
+    _firmwareScan = [[Scanner alloc] init];
     [self scanDevice];
 }
 
@@ -246,12 +246,12 @@ Rak_Lx52x_Device_Control *_firmwareScan;
 
 - (void)scanDeviceTask
 {
-    Lx52x_Device_Info *result = [_firmwareScan ScanDeviceWithTime:3.0f];
+    Scanner *result = [_firmwareScan ScanDeviceWithTime:3.0f];
     [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
 }
 
 NSString *version;
-- (void)scanDeviceOver:(Lx52x_Device_Info *)result;
+- (void)scanDeviceOver:(Scanner *)result;
 {
     if (result.Device_ID_Arr.count > 0) {
         dispatch_async(dispatch_get_main_queue(),^ {
