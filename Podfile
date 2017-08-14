@@ -7,4 +7,5 @@ target 'presentationLiveDemo' do
     #pod 'LFLiveKit',       '1.9.6'
     pod 'PureLayout'
     pod 'YYModel'
+    pod 'Bugly'
 end

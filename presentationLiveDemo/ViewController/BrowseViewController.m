@@ -632,7 +632,7 @@ BOOL _isExist;
         [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ALAsset * result = (ALAsset *)obj;
             
-            if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo] )
+            if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo])
             {
                 NSString *date= [self DateToString:[result valueForProperty:ALAssetPropertyDate]];
                 UIImage *image = [UIImage imageWithCGImage:[result thumbnail]];
@@ -648,7 +648,9 @@ BOOL _isExist;
                 NSLog(@"url = %@",url);
                 NSLog(@"fileSize = %lld",fileSize);
                 NSLog(@"timeSp = %@",timeSp);
-                //                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
+                
+                
+//                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
                 [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     MediaGroup *get_group=Medias[idx];
                     //已分组则将数据添加到对应组
@@ -659,11 +661,11 @@ BOOL _isExist;
                     }
                 }];
                 //未分组则添加一组，并将数据添加进去
-                if (is_grouped==false) {
+//                if (is_grouped==false) {
                     MediaData *media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
                     MediaGroup *group=[MediaGroup initWithName:date andMedias:[NSMutableArray arrayWithObjects:media, nil]];
                     [Medias addObject:group];
-                }
+//                }
 
             }
             

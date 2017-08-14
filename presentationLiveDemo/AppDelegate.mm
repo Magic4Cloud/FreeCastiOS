@@ -12,6 +12,9 @@
 #import "RotateNavigationControllerViewController.h"
 #import "MenuViewController.h"
 #import "StartViewController.h"
+
+//=====================bugly收集================================
+#import <Bugly/Bugly.h>
 //＝＝＝＝＝＝＝＝＝＝ShareSDK头文件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
@@ -309,6 +312,17 @@
     
 //    self.window.rootViewController = [[RotateNavigationControllerViewController alloc] initWithRootViewController:self.revealViewController];
     [self loadStartPage];
+    
+//    bugly 收集bug
+    BuglyConfig *config = [[BuglyConfig alloc] init];
+    // 自定义config
+    // 如：config.unexpectedTerminatingDetectionEnable = YES;
+    config.blockMonitorEnable = YES;
+    config.unexpectedTerminatingDetectionEnable = YES;
+    config.debugMode = YES;
+    config.reportLogLevel = BuglyLogLevelWarn;
+    [Bugly startWithAppId:@"3027ad3ed7" config:config];
+    
     
     return YES;
 }

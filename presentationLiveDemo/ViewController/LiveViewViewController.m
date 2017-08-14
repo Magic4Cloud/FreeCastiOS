@@ -2311,63 +2311,67 @@ bool _isTakePhoto=NO;
     });
 }
 
+- (void)readFileFromAlbum:(ALAssetsGroup *)group {
+    
+}
+
 /**
  *  录像
  */
 #pragma mark - 录像
 -(void)recordBtnClicked{
-    [self replayVideoView];
+//    [self replayVideoView];
     
-//    if (!_play_success) {
-//        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
-//        return;
-//    }
-//    if (RecordVideoEnable == Unable) {
-//        [self playSound:@"begin_record.mp3"];
-//        RecordVideoEnable = Enable;
-//        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
-//        
-//        _takephotoBtn.enabled = NO;
-//        
-//        if (_liveCameraSource == IphoneBackCamera) {
-//            [self.session startRecord];
-//        }
-//        else if (_liveCameraSource == ExternalDevices)
-//        {
-//            long recordTime = [[NSDate date] timeIntervalSince1970];
-//            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
-//            NSLog(@"video_timesamp:%@",timesamp);
-//            self.video_timesamp = [self Get_Urls:@"video_flag"];
-//            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
-//            [mutaArray addObjectsFromArray:self.video_timesamp];
-//            [mutaArray addObject:timesamp];
-//            [self Save_Urls:mutaArray :@"video_flag"];
-//            
-//            [_videoView begin_record:0];
-//            [_videoView set_record_frame_rate:24];
-//        }
-//        
-//        VideoRecordTimerTick_s = 0;
-//        VideoRecordTimerTick_m = 0;
-//        _recordTimeLabel.text = @"REC 00:00";
-//        _recordTimeLabel.hidden=NO;
-//    }
-//    else{
-//        _takephotoBtn.enabled = YES;
-//        [self playSound:@"end_record.mp3"];
-//        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
-//        RecordVideoEnable = Unable;
-//        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
-//        _recordTimeLabel.hidden=YES;
-//        if (_liveCameraSource == IphoneBackCamera)
-//        {
-//            [self.session stopRecord];
-//        }
-//        else if (_liveCameraSource == ExternalDevices)
-//        {
-//            [_videoView end_record];
-//        }
-//    }
+    if (!_play_success) {
+        [self showAllTextDialog:NSLocalizedString(@"video_not_play", nil)];
+        return;
+    }
+    if (RecordVideoEnable == Unable) {
+        [self playSound:@"begin_record.mp3"];
+        RecordVideoEnable = Enable;
+        [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
+        
+        _takephotoBtn.enabled = NO;
+        
+        if (_liveCameraSource == IphoneBackCamera) {
+            [self.session startRecord];
+        }
+        else if (_liveCameraSource == ExternalDevices)
+        {
+            long recordTime = [[NSDate date] timeIntervalSince1970];
+            NSString *timesamp=[NSString stringWithFormat:@"%ld",recordTime];
+            NSLog(@"video_timesamp:%@",timesamp);
+            self.video_timesamp = [self Get_Urls:@"video_flag"];
+            NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
+            [mutaArray addObjectsFromArray:self.video_timesamp];
+            [mutaArray addObject:timesamp];
+            [self Save_Urls:mutaArray :@"video_flag"];
+            
+            [_videoView begin_record:0];
+            [_videoView set_record_frame_rate:24];
+        }
+        
+        VideoRecordTimerTick_s = 0;
+        VideoRecordTimerTick_m = 0;
+        _recordTimeLabel.text = @"REC 00:00";
+        _recordTimeLabel.hidden=NO;
+    }
+    else{
+        _takephotoBtn.enabled = YES;
+        [self playSound:@"end_record.mp3"];
+        [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
+        RecordVideoEnable = Unable;
+        [_recordBtn setImage:[UIImage imageNamed:@"icon_play_nor"] forState:UIControlStateNormal];
+        _recordTimeLabel.hidden=YES;
+        if (_liveCameraSource == IphoneBackCamera)
+        {
+            [self.session stopRecord];
+        }
+        else if (_liveCameraSource == ExternalDevices)
+        {
+            [_videoView end_record];
+        }
+    }
 }
 
 #pragma mark - 底部按钮跳转相关界面
