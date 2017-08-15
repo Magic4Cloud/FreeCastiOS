@@ -165,8 +165,8 @@ NSMutableArray *Medias;
     //底部
     _bottomBg=[[UIView alloc]init];
     _bottomBg.userInteractionEnabled=YES;
-    UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@""]];
-    _bottomBg.backgroundColor = MAIN_COLOR;
+//    UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@""]];
+    _bottomBg.backgroundColor = TEXT_BG_COLOR;
 //    [_bottomBg setBackgroundColor:bgColor];
     _bottomBg.frame = CGRectMake(0, viewH-viewH*44/totalHeight, viewW,viewH*44/totalHeight);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
@@ -187,7 +187,7 @@ NSMutableArray *Medias;
     _deleteLabel.text = NSLocalizedString(@"delete", nil);
     _deleteLabel.font = [UIFont systemFontOfSize: viewH*12/totalHeight*0.8];
     _deleteLabel.backgroundColor = [UIColor clearColor];
-    _deleteLabel.textColor = [UIColor whiteColor];
+    _deleteLabel.textColor = MAIN_COLOR;
     _deleteLabel.lineBreakMode = UILineBreakModeWordWrap;
     _deleteLabel.textAlignment=UITextAlignmentCenter;
     _deleteLabel.numberOfLines = 0;
@@ -208,7 +208,7 @@ NSMutableArray *Medias;
     _shareLabel.text = NSLocalizedString(@"share", nil);
     _shareLabel.font = [UIFont systemFontOfSize: viewH*12/totalHeight*0.8];
     _shareLabel.backgroundColor = [UIColor clearColor];
-    _shareLabel.textColor = [UIColor whiteColor];
+    _shareLabel.textColor = MAIN_COLOR;
     _shareLabel.lineBreakMode = UILineBreakModeWordWrap;
     _shareLabel.textAlignment=UITextAlignmentCenter;
     _shareLabel.numberOfLines = 0;
@@ -257,6 +257,10 @@ NSMutableArray *Medias;
         [_collectionView reloadData];
     }
 }
+
+
+    
+
 
 //返回
 - (void)_backBtnClick{
@@ -553,6 +557,13 @@ NSMutableArray *Medias;
 -(void)doSomethingInSegment:(UISegmentedControl *)Seg
 {
     NSInteger Index = Seg.selectedSegmentIndex;
+    //隐藏bottombg 清空数组,还原selected 文字
+    _bottomBg.hidden=YES;
+    [_editBtn setTitle:NSLocalizedString(@"edit", nil) forState:UIControlStateNormal];
+    [shareImg removeAllObjects];
+    [selectedDic removeAllObjects];
+    [photoImages removeAllObjects];
+    
     switch (Index)
     {
         case 0:
@@ -591,6 +602,7 @@ NSMutableArray *Medias;
                     UIImage *fullImage=[UIImage imageWithCGImage:result.defaultRepresentation.fullResolutionImage];
                     //int64_t fileSize = [[result defaultRepresentation] size];
                     //NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
+                    NSLog(@"----------------%@",fileName);
                     is_grouped=false;
                     [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         MediaGroup *get_group=Medias[idx];
@@ -643,11 +655,11 @@ BOOL _isExist;
                 int64_t fileSize = [[result defaultRepresentation] size];
                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                 
-                NSLog(@"date = %@",date);
+//                NSLog(@"date = %@",date);
                 NSLog(@"fileName = %@",fileName);
-                NSLog(@"url = %@",url);
-                NSLog(@"fileSize = %lld",fileSize);
-                NSLog(@"timeSp = %@",timeSp);
+//                NSLog(@"url = %@",url);
+//                NSLog(@"fileSize = %lld",fileSize);
+//                NSLog(@"timeSp = %@",timeSp);
                 
                 
 //                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
@@ -664,7 +676,20 @@ BOOL _isExist;
 //                if (is_grouped==false) {
                     MediaData *media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
                     MediaGroup *group=[MediaGroup initWithName:date andMedias:[NSMutableArray arrayWithObjects:media, nil]];
+                
+                
+//              去重
+                BOOL isExisted = NO;
+                for (MediaGroup *group in Medias) {
+                    if ([group.name isEqualToString:date]) {
+                        isExisted = YES;
+                        break;
+                    }
+                }
+                if (!isExisted) {
                     [Medias addObject:group];
+                }
+                
 //                }
 
             }
@@ -705,10 +730,11 @@ BOOL _isExist;
                                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                                 
 //                                NSLog(@"date = %@",date);
-//                                NSLog(@"fileName = %@",fileName);
+                                NSLog(@"fileName = %@",fileName);
 //                                NSLog(@"url = %@",url);
 //                                NSLog(@"fileSize = %lld",fileSize);
 //                                NSLog(@"timeSp = %@",timeSp);
+                                
                                 NSMutableArray *videos=[self Get_Paths:@"video_flag"];
                                 _isExist=false;
                                 for(int i=0;i<[videos count];i++)

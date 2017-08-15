@@ -788,6 +788,7 @@ NSString *quality;
     }
     
     dispatch_async(dispatch_get_main_queue(),^ {
+        NSLog(@"----------------%@",resolution);
         if (([resolution compare:@"2"]==NSOrderedSame)
             &&([quality compare:@"35"]==NSOrderedSame)
             &&([fps compare:@"24"]==NSOrderedSame)) {
@@ -998,7 +999,7 @@ NSString *quality;
     //    [_customBtn setBackgroundImage:[UIImage imageNamed:@"configure_setting_button_nor@3x.png"] forState:UIControlStateNormal];
     //    [_customBtn setTitleColor:[UIColor colorWithRed:142/255.0 green:143/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
     NSInteger Index = Seg.selectedSegmentIndex;
-    NSLog(@"indexindexindex = %ld",Index);
+    NSLog(@"===============index = %ld",Index);
     //    NSInteger Index = Seg.tag;
     switch (Index)
     {
@@ -1082,8 +1083,6 @@ NSString *quality;
         [self setVideoRate:8000];
         [self setVideoFrameRate:24];
     }
-    
-    
 }
 
 /**

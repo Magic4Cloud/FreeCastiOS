@@ -926,7 +926,7 @@ bool VideoRecordIsEnable = NO;
             CGFloat videoviewW = (MAX(height, width) > kWidth )? _viewW: _viewW * (resultH/resultW);
             
             self.videoView.frame = CGRectMake((_viewW - videoviewW)/2.f, (_viewH - videoviewH)/2.f, _viewW  , _viewH);
-            NSLog(@"=++++++++=========+%@,,,%@",NSStringFromCGRect(self.videoView.frame),NSStringFromCGRect(self.view.frame));
+//            NSLog(@"=++++++++=========+%@,,,%@",NSStringFromCGRect(self.videoView.frame),NSStringFromCGRect(self.view.frame));
             [self.videoView setView1Frame:self.videoView.frame];
             //            self.videoView.center = CGPointMake( _viewH*0.5,_viewW*0.5);
             //            NSLog(@"_width=%ld,height=%ld",(long)kWidth,(long)kHeight);
