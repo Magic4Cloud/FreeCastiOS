@@ -280,59 +280,41 @@ NSMutableArray *Medias;
     NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
     [mutaArray addObjectsFromArray:videos];
     
-    
-    
-    NSMutableArray * mediasCopy = Medias.copy;
-    
-    
-    [selectedDic removeObjectsInArray:mediasCopy];
-    
-    
-    
-    for (int i = 0; i < count; i++) {
-        [mediasCopy enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            //根据记录的删除的键值，删除组内元素
-            MediaGroup *group = Medias[idx];
-            NSMutableArray * mediasInGroup;//存放group中的medias,存储的是没有被删除的
-            [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop) {
-                MediaData *media = group.medias[idx2];
-                if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
-                        [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
-                            if (isSuccess) {
-                                if (!is_photo_choose) {
-                                    NSString *timeSp=[media getTimesamp];
-                                    for(int i=0;i<[videos count];i++) {
-                                        if (([timeSp compare:videos[i]]==NSOrderedSame )) {
-                                            [mutaArray removeObject:timeSp];
-                                            break;
-                                        }
-                                    }
-                                }
-                                NSMutableArray * getMedias = [Medias[idx] getMedias];
-                                [getMedias removeObject:media];
-                                
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    [_collectionView reloadData];
-                                });
-                            }
-//                            else {
-//                                [mediasInGroup addObject:media];
-//                            }
-                        }];
-//                } else{
-//                    [mediasInGroup addObject:media];
-//                        NSString *timeSp=[media getTimesamp];
-//                        for(int i=0;i<[videos count];i++){
-//                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
-//                                [mutaArray removeObject:timeSp];
-//                                break;}      }
-//                        [[Medias[idx] getMedias] removeObject:media];
-                }
-//                    NSLog(@"Medias=%@",[media getUrl]);
-            }];
-        }];
+    NSMutableArray * selectedMeidaFileUrls= @[].mutableCopy;
+    for (MediaData * media in selectedDic) {
+        [selectedMeidaFileUrls addObject:media.Url];
+    NSLog(@"----------------%@",media.Url);
     }
     
+    [_albumObject removeFilesFromAlbum:selectedMeidaFileUrls isSuccessBlock:^(BOOL isSuccess) {
+            if (isSuccess) {
+            NSMutableArray *mediasNew = @[].mutableCopy;
+            [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop2) {
+                //根据记录的删除的键值，删除组内元素
+                MediaGroup *group = Medias[idx];
+                NSMutableArray *groupInMedias;//存在的数组
+                
+                [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop2) {
+                    MediaData *media = group.medias[idx2];
+                    __block  BOOL isSelectedMedia = NO;
+                    [selectedDic enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx3, BOOL * _Nonnull stop3) {
+                        if([[selectedDic[idx3] getName] isEqualToString:media.Name]){
+                            isSelectedMedia = YES;
+                            *stop3 = YES;
+                        }
+                    }];
+                    if (!isSelectedMedia) {
+                        [groupInMedias addObject:media];
+                    }
+                }];
+                if (groupInMedias.count > 0) {
+                    [mediasNew addObject:groupInMedias];
+                }
+            }];
+            Medias = mediasNew.mutableCopy;
+            [_collectionView reloadData];
+        }
+    }];
     if(!is_photo_choose) {
         [self Save_Paths:mutaArray :@"video_flag"];
     }
@@ -340,6 +322,72 @@ NSMutableArray *Medias;
     [shareImg removeAllObjects];
     [photoImages removeAllObjects];
     [_collectionView reloadData];
+    
+    
+    
+//    
+//    
+////    NSMutableArray * mediasCopy = Medias.copy;
+//    NSMutableArray *mediasNew = @[].mutableCopy;
+//    
+//    
+//    for (int i = 0; i < count; i++) {
+//        [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//            //根据记录的删除的键值，删除组内元素
+//            MediaGroup *group = Medias[idx];
+//            NSMutableArray *groupInMedias;//存在的数组
+//            [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop) {
+//                MediaData *media = group.medias[idx2];
+//                if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
+////                        [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
+////                            if (isSuccess) {
+////                                if (!is_photo_choose) {
+////                                    NSString *timeSp=[media getTimesamp];
+////                                    for(int i=0;i<[videos count];i++) {
+////                                        if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+////                                            [mutaArray removeObject:timeSp];
+////                                            break;
+////                                        }
+////                                    }
+////                                }
+////                                NSMutableArray * getMedias = [Medias[idx] getMedias];
+////                                [getMedias removeObject:media];
+////                                if (getMedias.count ==0) {
+////                                    [Medias removeObjectAtIndex:idx];
+////                                }
+//////
+////                                dispatch_async(dispatch_get_main_queue(), ^{
+////                                    [_collectionView reloadData];
+////                                });
+////                            }
+//////                            else {
+//////                                [mediasInGroup addObject:media];
+//////                            }
+////                        }];
+//                    
+//                    
+//                    
+////                } else{
+////                    [mediasInGroup addObject:media];
+////                        NSString *timeSp=[media getTimesamp];
+////                        for(int i=0;i<[videos count];i++){
+////                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+////                                [mutaArray removeObject:timeSp];
+////                                break;}      }
+////                        [[Medias[idx] getMedias] removeObject:media];
+//                }
+////                    NSLog(@"Medias=%@",[media getUrl]);
+//            }];
+//        }];
+//    }
+//    
+//    if(!is_photo_choose) {
+//        [self Save_Paths:mutaArray :@"video_flag"];
+//    }
+//    [selectedDic removeAllObjects];
+//    [shareImg removeAllObjects];
+//    [photoImages removeAllObjects];
+//    [_collectionView reloadData];
 }
 
 - (void)_shareBtnClick{
@@ -865,9 +913,13 @@ NSString *_lastDate=@"";
     
     MediaGroup *group=Medias[indexPath.section];
     MediaData *contact=group.medias[indexPath.row];
+    
     cell.selectImageView.tag = indexPath.row;
+    
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    
     [dic setObject:[contact getImage] forKey:@"img"];
+    
     if ([_editBtn.titleLabel.text compare:NSLocalizedString(@"edit", nil)]==NSOrderedSame){
         [dic setObject:@"" forKey:@"flag"];
     }
@@ -877,6 +929,7 @@ NSString *_lastDate=@"";
     
     [photoImages addObject:dic];
     [cell sendValue:dic];
+    
     if (!is_photo_choose) {
         [cell sendVideoValue:[self getMovieDuration:[contact getUrl]]];
     }
@@ -942,16 +995,16 @@ NSString *_lastDate=@"";
     }
     else{
         id dic = [photoImages objectAtIndex:indexPath.row];
+        NSLog(@"photoImages");
         BOOL flag = [[dic objectForKey:@"flag"] boolValue];
-        if (!flag)
-        {
+        if (!flag) {
             [dic setObject:@"1" forKey:@"flag"];
-            [selectedDic addObject:[media[row] getName]];
+            [selectedDic addObject:media[row]];
             NSLog(@"[contact getUrl]=%@",[contact getUrl]);
             [shareImg addObject:[contact getFullImage]];
         } else {
             [dic setObject:@"0" forKey:@"flag"];
-            [selectedDic removeObject:[media[row] getName]];
+            [selectedDic removeObject:media[row]];
             [shareImg removeObject:[contact getFullImage]];
         }
         [cell setSelectFlag:!flag];

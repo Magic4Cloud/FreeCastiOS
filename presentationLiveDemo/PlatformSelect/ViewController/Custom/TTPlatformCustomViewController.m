@@ -8,13 +8,13 @@
 
 #import "TTPlatformCustomViewController.h"
 #import "TTCoreDataClass.h"
-
+#import "FSTextField.h"
 @interface TTPlatformCustomViewController ()<UITextFieldDelegate>
 {
     CGFloat keyboardHeight;
 }
-@property (weak, nonatomic) IBOutlet UITextField *streamUrlTextFiled;
-@property (weak, nonatomic) IBOutlet UITextField *streamKeyTextFiled;
+@property (weak, nonatomic) IBOutlet FSTextField *streamUrlTextFiled;
+@property (weak, nonatomic) IBOutlet FSTextField *streamKeyTextFiled;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;

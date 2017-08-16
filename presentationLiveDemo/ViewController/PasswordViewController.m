@@ -129,7 +129,7 @@
     _ssidLine.backgroundColor =[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_ssidView addSubview:_ssidLine];
     
-    _ssidText=[[UITextField alloc]init];
+    _ssidText=[[FSTextField alloc]init];
     _ssidText.frame=CGRectMake(viewW*37/totalWeight,_ssidLabel.frame.origin.y+_ssidLabel.frame.size.height+viewH*30/totalHeight, viewW*180/totalWeight, viewH*15/totalHeight);
     _ssidText.backgroundColor = [UIColor clearColor];
     _ssidText.enabled=NO;
@@ -177,7 +177,7 @@
     _initPasswordImg.contentMode=UIViewContentModeScaleToFill;
     //    [_passwordView addSubview:_initPasswordImg];
     
-    _initPasswordText=[[UITextField alloc]init];
+    _initPasswordText=[[FSTextField alloc]init];
     _initPasswordText.frame=CGRectMake(viewW*37/totalWeight,_initPasswordLabel.frame.origin.y+_initPasswordLabel.frame.size.height+viewH*10/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
     _initPasswordText.backgroundColor = [UIColor clearColor];
     _initPasswordText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
@@ -214,7 +214,7 @@
     _newPasswordImg.contentMode=UIViewContentModeScaleToFill;
     [_passwordView addSubview:_newPasswordImg];
     
-    _newPasswordText=[[UITextField alloc]init];
+    _newPasswordText=[[FSTextField alloc]init];
     _newPasswordText.frame=CGRectMake(viewW*37/totalWeight, deviceLabel.frame.origin.y+deviceLabel.frame.size.height+viewH*47.5/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
     _newPasswordText.backgroundColor = [UIColor clearColor];
     _newPasswordText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
@@ -253,7 +253,7 @@
     _confirmPasswordImg.contentMode=UIViewContentModeScaleToFill;
     [_passwordView addSubview:_confirmPasswordImg];
     
-    _confirmText=[[UITextField alloc]init];
+    _confirmText=[[FSTextField alloc]init];
     _confirmText.frame=CGRectMake(viewW*37/totalWeight, _newPasswordLabel.frame.origin.y+_newPasswordLabel.frame.size.height+viewH*76/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
     _confirmText.backgroundColor = [UIColor clearColor];
     _confirmText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];

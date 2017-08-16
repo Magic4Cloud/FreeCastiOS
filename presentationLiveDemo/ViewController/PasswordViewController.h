@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "FSTextField.h"
 @interface PasswordViewController : UIViewController<UITextFieldDelegate>
 {
     UISegmentedControl *segmentedControl;
@@ -21,22 +21,22 @@
     UIView *_ssidView;
     UIImageView *_ssidImg;
     UILabel *_ssidLabel;
-    UITextField *_ssidText;
+    FSTextField *_ssidText;
     
     UIView *_initPasswordView;
     UIImageView *_initPasswordImg;
     UILabel *_initPasswordLabel;
-    UITextField *_initPasswordText;
+    FSTextField *_initPasswordText;
     
     UIView *_newPasswordView;
     UIImageView *_newPasswordImg;
     UILabel *_newPasswordLabel;
-    UITextField *_newPasswordText;
+    FSTextField *_newPasswordText;
     
     UIView *_confirmView;
     UIImageView *_confirmPasswordImg;
     UILabel *_confirmLabel;
-    UITextField *_confirmText;
+    FSTextField *_confirmText;
     
     UIButton *_passwordForgetBtn;
     UIButton *_passwordModifyBtn;

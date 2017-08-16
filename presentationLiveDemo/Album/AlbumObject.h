@@ -31,5 +31,8 @@
 - (void)_addAssetURL:(NSURL *)assetURL toAlbum:(NSString *)albumName;
 - (void)readFileFromAlbum:(NSString*)albumName;
 - (void)removeFileFromAlbum:(NSString*)fileUrl isSuccessBlock:(void (^)(BOOL isSuccess))completionHandle;
+
+- (void)removeFilesFromAlbum:(NSArray *)fileUrls isSuccessBlock:(void (^)(BOOL isSuccess))completionHandler;//移除多个
+
 - (NSString *)getPathForRecord:(NSString*)albumName;
 @end

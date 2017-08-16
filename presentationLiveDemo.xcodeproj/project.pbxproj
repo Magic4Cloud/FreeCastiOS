@@ -921,6 +921,8 @@
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
 		84EE3BDB1F3D9A49006DF97E /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EE3BD81F3D9A49006DF97E /* libWisView.a */; };
+		972EBF141F4453F200FF5F26 /* FSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 972EBF131F4453F200FF5F26 /* FSTextField.m */; };
+		972EBF171F4457BA00FF5F26 /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 972EBF161F4457BA00FF5F26 /* NSString+Size.m */; };
 		975B8FD91F3420E8005003E2 /* CoreStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD61F3420E8005003E2 /* CoreStore.m */; };
 		975B8FDA1F3420E8005003E2 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD81F3420E8005003E2 /* NSObject+JSON.m */; };
 		975B8FDD1F342191005003E2 /* CoreStore+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FDC1F342191005003E2 /* CoreStore+App.m */; };
@@ -2159,6 +2161,10 @@
 		84EE3BD91F3D9A49006DF97E /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		84EE3BDA1F3D9A49006DF97E /* WisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WisView.h; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		972EBF121F4453F200FF5F26 /* FSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTextField.h; sourceTree = "<group>"; };
+		972EBF131F4453F200FF5F26 /* FSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTextField.m; sourceTree = "<group>"; };
+		972EBF151F4457BA00FF5F26 /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Size.h"; path = "CoreStore/NSString+Size.h"; sourceTree = "<group>"; };
+		972EBF161F4457BA00FF5F26 /* NSString+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Size.m"; path = "CoreStore/NSString+Size.m"; sourceTree = "<group>"; };
 		975B8FD51F3420E8005003E2 /* CoreStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreStore.h; path = CoreStore/CoreStore.h; sourceTree = "<group>"; };
 		975B8FD61F3420E8005003E2 /* CoreStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreStore.m; path = CoreStore/CoreStore.m; sourceTree = "<group>"; };
 		975B8FD71F3420E8005003E2 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JSON.h"; path = "CoreStore/NSObject+JSON.h"; sourceTree = "<group>"; };
@@ -2798,6 +2804,8 @@
 			children = (
 				7A85D1BB1F2C1DF700190221 /* TTSearchDeviceClass.h */,
 				7A85D1BC1F2C1DF700190221 /* TTSearchDeviceClass.m */,
+				972EBF121F4453F200FF5F26 /* FSTextField.h */,
+				972EBF131F4453F200FF5F26 /* FSTextField.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -4131,6 +4139,8 @@
 				975B8FD81F3420E8005003E2 /* NSObject+JSON.m */,
 				975B8FDB1F342191005003E2 /* CoreStore+App.h */,
 				975B8FDC1F342191005003E2 /* CoreStore+App.m */,
+				972EBF151F4457BA00FF5F26 /* NSString+Size.h */,
+				972EBF161F4457BA00FF5F26 /* NSString+Size.m */,
 			);
 			name = CoreStore;
 			sourceTree = "<group>";
@@ -4990,6 +5000,7 @@
 				7A6852811F1898B300EEDE2D /* GPUImageSingleComponentGaussianBlurFilter.m in Sources */,
 				7A6852671F1898B300EEDE2D /* GPUImageOpeningFilter.m in Sources */,
 				7A6852491F1898B200EEDE2D /* GPUImageJFAVoronoiFilter.m in Sources */,
+				972EBF171F4457BA00FF5F26 /* NSString+Size.m in Sources */,
 				7A6852421F1898B200EEDE2D /* GPUImageHistogramFilter.m in Sources */,
 				7A6852A91F1898B300EEDE2D /* GPUImagePicture+TextureSubimage.m in Sources */,
 				7A68522B1F1898B200EEDE2D /* GPUImageExposureFilter.m in Sources */,
@@ -5112,6 +5123,7 @@
 				7A6852731F1898B300EEDE2D /* GPUImagePrewittEdgeDetectionFilter.m in Sources */,
 				7A31EE411F2044C6005A6479 /* TTAlertViewController.m in Sources */,
 				7A6852541F1898B300EEDE2D /* GPUImageLowPassFilter.m in Sources */,
+				972EBF141F4453F200FF5F26 /* FSTextField.m in Sources */,
 				7A6851ED1F1898B200EEDE2D /* LFMP4Atom.m in Sources */,
 				84B988F71DC0B50300BE7FCE /* PrivacyPolicyViewController.m in Sources */,
 				7A6852631F1898B300EEDE2D /* GPUImageNobleCornerDetectionFilter.m in Sources */,

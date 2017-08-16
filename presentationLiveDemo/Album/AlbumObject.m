@@ -334,6 +334,63 @@ BOOL haveHDRGroup = NO;
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAlbum usingBlock:listGroupBlock failureBlock:failureBlock];
 }
 
+- (void)removeFilesFromAlbum:(NSArray *)fileUrls isSuccessBlock:(void (^)(BOOL isSuccess))completionHandler{
+    
+    if (fileUrls.count == 0){
+        return;
+    }
+    NSMutableArray * assetUrls = @[].mutableCopy;
+    for (NSString
+          * urlstr in fileUrls) {
+        NSURL *assetURL = [NSURL URLWithString:urlstr];
+        [assetUrls addObject:assetURL];
+    }
+
+//    Class PHPhotoLibrary_Class = NSClassFromString(@"PHPhotoLibrary");
+//    if (PHPhotoLibrary_Class) {//适用于IOS 8.0及以上
+        PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assetUrls options:nil];
+        if (result.count > 0)
+        {
+            PHAsset *phAsset = result.firstObject;
+            if ((phAsset != nil) && ([phAsset canPerformEditOperation:PHAssetEditOperationDelete]))
+            {
+                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^
+                 {
+                     [PHAssetChangeRequest deleteAssets:@[phAsset]];
+                 }
+                                                  completionHandler:^(BOOL success, NSError *error)
+                 {
+                     if ((!success) && (error != nil))
+                     {
+                         NSLog(@"Error deleting asset: %@", [error description]);
+                     }
+                     completionHandler(success);
+                 }];
+            }
+        }
+//    }else{//适用于IOS 8.0及以下
+//        ALAssetsLibrary *lib = [[ALAssetsLibrary alloc]init];
+//        [lib enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+//            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+//                if (result.isEditable) {
+//                    NSString *url = [[[result defaultRepresentation]url]description];
+//                    if([url isEqualToString:fileUrl])
+//                    {
+//                        [result setImageData:nil metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+//                            completionHandler(error?NO:YES);
+//                        }];
+//                    }
+//                }
+//            }];
+//        } failureBlock:^(NSError *error) {
+//            
+//        }];
+//    }
+
+    
+    
+}
+
 
 - (void)removeFileFromAlbum:(NSString*)fileUrl isSuccessBlock:(void (^)(BOOL isSuccess))completionHandler
 {
