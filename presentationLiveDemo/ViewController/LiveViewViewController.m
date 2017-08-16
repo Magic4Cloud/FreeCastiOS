@@ -109,6 +109,8 @@ static enum ButtonEnable RecordVideoEnable;
 @property (nonatomic, assign) BOOL isUser;
 @property (nonatomic, assign) BOOL play_success;
 @property (nonatomic, assign) BOOL searchDeviceHasResult;//default is NO
+@property (nonatomic, assign) BOOL isGetedData;//获取到数据了
+//@property (nonatomic, assign) BOOL videoViewIsNill;
 
 @property (nonatomic, assign) CGFloat viewH;
 @property (nonatomic, assign) CGFloat viewW;
@@ -252,15 +254,55 @@ static enum ButtonEnable RecordVideoEnable;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    //    if (_liveCameraSource != IphoneBackCamera) {
-    //[self stopVideo];
-    //    }
     
+    if(self.isBroswer){
+        NSLog(@"-----_________---------%s",__func__);
+        [self stopVideo];
+    }
+}
+
+/**
+ * 停止获取视频
+ */
+- (void)stopVideo {
+    if (_isPlaying) {
+        NSLog(@"-----_________---------%s",__func__);
+        [self.videoView sound:NO];
+        _livingState = 0;
+        _isPlaying=NO;
+        self.videoisplaying = NO;
+        [self.videoView stop];
+    }
+}
+/** 返回*/
+- (void)backBtnOnClicked{
+    NSLog(@"-----_________---------%s",__func__);
+    self.isExit = YES;
+    [self closeLivingSession];
+    [self stopVideo];
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+    [self prefersStatusBarHidden:YES];
+    
+    [self back];
+    
+}
+
+/** 返回上个界面*/
+-(void)back {
+    NSLog(@"-----_________---------%s",__func__);
+    [self timersInvalidate];
+    
+    self.videoisplaying = NO;
+    self.isShowBanner = NO;
+    self.isPlaying = NO;
+    self.play_success=NO;
+    self.isExit = YES;
+    self.videoView = nil;
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    _isExit = YES;
     
     [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -274,6 +316,7 @@ static enum ButtonEnable RecordVideoEnable;
             [self addUrls];
         }
     }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -729,57 +772,7 @@ bool VideoRecordIsEnable = NO;
     }
 }
 
-/**
- * 停止获取视频
- */
-- (void)stopVideo {
-    if (_isPlaying) {
-        [self.videoView sound:NO];
-        _livingState = 0;
-        _isPlaying=NO;
-        self.videoisplaying = NO;
-        [self.videoView stop];
-        NSLog(@"_----------___________stop play");
-    }
-}
-/** 返回*/
-- (void)backBtnOnClicked{
-    //    NSLog(@"isconfig = %lu",_isConfig);
-    //    if (_isConfig) {
-    //        self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
-    //        self.view.frame=CGRectMake(0, 0, _viewW, _viewH);
-    //        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-    //        [self prefersStatusBarHidden:YES];
-    //        _streamView.hidden=YES;
-    //        [self _scaleBtnClick:0];
-    //        _isConfig=NO;
-    //    }else{
-    [self closeLivingSession];
-    [self stopVideo];
-    self.isExit = YES;
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    [self prefersStatusBarHidden:YES];
-    [self back];
-    NSLog(@"----------------back button on clicked");
-    //    }
-}
 
-/** 返回上个界面*/
--(void)back {
-    NSLog(@"back");
-    
-    [self timersInvalidate];
-    
-    self.videoisplaying = NO;
-    self.isShowBanner = NO;
-    self.isPlaying = NO;
-    self.play_success=NO;
-    self.isExit = YES;
-    
-    self.videoView = nil;
-    
-    [self.navigationController popViewControllerAnimated:NO];
-}
 
 /** 跳转到配置推流信息的界面*/
 -(void)_configureBtnClick
@@ -909,7 +902,6 @@ bool VideoRecordIsEnable = NO;
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
-    
     CGFloat resultW = width;
     CGFloat resultH = height;
     //    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");
@@ -2424,6 +2416,7 @@ bool _isTakePhoto=NO;
  */
 -(void)browserBtnClicked{
     NSLog(@"浏览");
+    [self stopVideo];
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     BrowseViewController *v = [[BrowseViewController alloc] init];
@@ -2437,6 +2430,7 @@ bool _isTakePhoto=NO;
 - (void)platformButtonClick
 {
     _isBroswer=YES;
+    [self stopVideo];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -2545,7 +2539,7 @@ bool _isTakePhoto=NO;
         
         if (dictRef) {
             NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
-            NSLog(@"----------------------network info -> %@", networkInfo);
+//            NSLog(@"----------------------network info -> %@", networkInfo);
             wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
             
             CFRelease(dictRef);
@@ -2570,7 +2564,7 @@ bool _isTakePhoto=NO;
             
             if (dictRef) {
                 NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
-                NSLog(@"----------------------network info -> %@", networkInfo);
+//                NSLog(@"----------------------network info -> %@", networkInfo);
                 wifiSSID = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeyBSSID];
                 
                 CFRelease(dictRef);
