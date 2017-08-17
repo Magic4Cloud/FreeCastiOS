@@ -281,6 +281,7 @@ static enum ButtonEnable RecordVideoEnable;
 }
 /** 返回*/
 - (void)backBtnOnClicked{
+    _backBtn.enabled = NO;
     NSLog(@"-----_________---------%s",__func__);
     self.isExit = YES;
     [self closeLivingSession];
