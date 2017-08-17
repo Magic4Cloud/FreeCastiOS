@@ -168,22 +168,22 @@ static enum ButtonEnable RecordVideoEnable;
     return _livingPreView;
 }
 
-- (WisView *)videoView {
-    if (!_videoView) {
-        _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-        _videoView.userInteractionEnabled = YES;
-        
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
-        [_videoView addGestureRecognizer:singleTap];
-        _videoView.backgroundColor = [UIColor blackColor];
-        
-        [_videoView set_log_level:2];
-        [_videoView sound:YES];
-        [_videoView delegate:self];
-        [self.view insertSubview:_videoView atIndex:0];
-    }
-    return _videoView;
-}
+//- (WisView *)videoView {
+//    if (!_videoView) {
+//        _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+//        _videoView.userInteractionEnabled = YES;
+//        
+//        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+//        [_videoView addGestureRecognizer:singleTap];
+//        _videoView.backgroundColor = [UIColor blackColor];
+//        
+//        [_videoView set_log_level:2];
+//        [_videoView sound:YES];
+//        [_videoView delegate:self];
+//        [self.view insertSubview:_videoView atIndex:0];
+//    }
+//    return _videoView;
+//}
 
 
 #pragma mark - ------------------lifeCycle----
@@ -267,15 +267,16 @@ static enum ButtonEnable RecordVideoEnable;
 - (void)stopVideo {
     if (_isPlaying) {
         NSLog(@"-----_________---------%s",__func__);
-        [self.videoView sound:NO];
-        [self.videoView stop];
+        _livingState = 0;
         _isPlaying=NO;
         self.videoisplaying = NO;
-        _livingState = 0;
+        self.play_success = NO;
+        [_videoView sound:NO];
+        [_videoView stop];
     }else{
-        [self.videoView sound:NO];
-        [self.videoView stop];
         _livingState = 0;
+        [_videoView sound:NO];
+        [_videoView stop];
         NSLog(@"----------------xxxxxxxxxxxxxxxxx没有播放你就退出了");
     }
 }
@@ -285,7 +286,7 @@ static enum ButtonEnable RecordVideoEnable;
     NSLog(@"-----_________---------%s",__func__);
     self.isExit = YES;
     [self closeLivingSession];
-    [self stopVideo];
+//    [self stopVideo];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     [self prefersStatusBarHidden:YES];
     [self back];
@@ -296,13 +297,15 @@ static enum ButtonEnable RecordVideoEnable;
 -(void)back {
     NSLog(@"-----_________---------%s",__func__);
     [self timersInvalidate];
+
+    [self stopVideo];
     
     self.videoisplaying = NO;
     self.isShowBanner = NO;
     self.isPlaying = NO;
     self.play_success=NO;
     self.isExit = YES;
-    self.videoView = nil;
+//    _videoView = nil;
     [self.navigationController popViewControllerAnimated:NO];
 }
 
@@ -372,6 +375,19 @@ static enum ButtonEnable RecordVideoEnable;
     
     //调用手机摄像头显示画面才显示出来
     self.livingPreView.hidden = YES;
+    
+    _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    _videoView.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
+    [_videoView addGestureRecognizer:singleTap];
+    _videoView.backgroundColor = [UIColor blackColor];
+    
+    [_videoView set_log_level:2];
+    [_videoView sound:YES];
+    [_videoView delegate:self];
+    [self.view insertSubview:_videoView atIndex:0];
+    
 }
 
 - (void)viewControllerSettings {
@@ -2593,9 +2609,22 @@ bool _isTakePhoto=NO;
 }
 
 - (void)dealloc {
-    
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (_updateUITimer) {
+        [_updateUITimer invalidate];
+        _updateUITimer = nil;
+    }
+    
+    if (_uploadTimer) {
+        [_uploadTimer invalidate];
+        _uploadTimer=nil;
+    }
+    
+    if (_recordVideoTimer) {
+        [_recordVideoTimer invalidate];
+        _recordVideoTimer = nil;
+    }
+
 }
 
 - (void)applicationBecomeActive {
