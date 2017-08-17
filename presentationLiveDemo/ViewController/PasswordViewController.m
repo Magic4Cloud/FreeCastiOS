@@ -638,8 +638,7 @@
     if (_configIP && _configPort) {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
             [self getDeviceinformation];
-        });
-        
+        }); 
     }
     else
     {

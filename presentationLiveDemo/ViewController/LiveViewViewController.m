@@ -324,7 +324,6 @@ static enum ButtonEnable RecordVideoEnable;
             [self addUrls];
         }
     }
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -805,6 +804,7 @@ bool VideoRecordIsEnable = NO;
     //    _isConfig = YES;
     _isBroswer=YES;
     [self stopVideo];
+    [self closeLivingSession];
     
     PasswordViewController * v = [[PasswordViewController alloc] init];
     if (_userip) {
@@ -819,8 +819,6 @@ bool VideoRecordIsEnable = NO;
     
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
 }
-
-
 
 ///** 设置横竖屏*/
 //int valOrientation;
@@ -2360,7 +2358,7 @@ bool _isTakePhoto=NO;
             [mutaArray addObject:timesamp];
             [self Save_Urls:mutaArray :@"video_flag"];
             
-            [_videoView begin_record:0];
+            [_videoView begin_record:1];
             [_videoView set_record_frame_rate:24];
         }
         
@@ -2438,6 +2436,9 @@ bool _isTakePhoto=NO;
 -(void)browserBtnClicked{
     NSLog(@"浏览");
     [self stopVideo];
+    
+    [self closeLivingSession];
+    
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     BrowseViewController *v = [[BrowseViewController alloc] init];
@@ -2452,6 +2453,7 @@ bool _isTakePhoto=NO;
 {
     _isBroswer=YES;
     [self stopVideo];
+    [self closeLivingSession];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
     if (_userip) {
