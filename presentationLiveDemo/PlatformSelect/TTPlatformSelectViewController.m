@@ -48,7 +48,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    _userip = _configIP;
     [self initData];
     
 }
@@ -57,14 +57,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
-    
     if (!_configIP ) {
-        _userip = _configIP;
         [self scanDevice];
     }
     [self initUI];
-    // Do any additional setup after loading the view.
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
