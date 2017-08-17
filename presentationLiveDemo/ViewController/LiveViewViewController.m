@@ -2433,6 +2433,9 @@ bool _isTakePhoto=NO;
     [self stopVideo];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     TTPlatformSelectViewController * vc = [[TTPlatformSelectViewController alloc] init];
+    if (_userip) {
+        vc.configIP = _userip;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 

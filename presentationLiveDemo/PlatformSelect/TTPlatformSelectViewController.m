@@ -41,12 +41,12 @@
 
 @property (nonatomic, strong) NSThread * searchThread;
 @property (nonatomic, strong) UIAlertView *waitAlertView;
+
 @end
 
 @implementation TTPlatformSelectViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self initData];
@@ -58,7 +58,11 @@
     [super viewDidLoad];
     
 //    _device_Scan = [[Rak_Lx52x_Device_Control alloc] init];
-    [self scanDevice];
+    
+    if (!_configIP ) {
+        _userip = _configIP;
+        [self scanDevice];
+    }
     [self initUI];
     // Do any additional setup after loading the view.
 }
@@ -138,6 +142,7 @@
     
     dispatch_async(dispatch_get_main_queue(),^ {
         [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        [_collectionView reloadData];
     });
 }
 
@@ -242,7 +247,12 @@
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 2;
+    
+    if (_userip == nil) {
+        return 1;
+    }else{
+        return 2;
+    }
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -264,9 +274,9 @@
         
         [footerView.button addTarget:self action:@selector(goliVeNowButtonClick) forControlEvents:UIControlEventTouchUpInside];
         
-        if (indexPath.section == 1) {
+//        if (indexPath.section == 1) {
             reusableview = footerView;
-        }
+//        }
     }
 
     return reusableview;
@@ -274,10 +284,16 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return CGSizeZero;
+    
+    if (_userip == nil) {
+        return CGSizeMake(ScreenWidth, 100);
+    }else{
+        if (section == 0) {
+            return CGSizeZero;
+        }else {
+            return CGSizeMake(ScreenWidth, 100);
+        }
     }
-    return CGSizeMake(ScreenWidth, 100);
 }
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {

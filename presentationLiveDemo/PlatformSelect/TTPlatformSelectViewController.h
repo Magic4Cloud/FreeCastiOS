@@ -12,5 +12,5 @@
  推流平台选择控制器
  */
 @interface TTPlatformSelectViewController : UIViewController
-
+@property (nonatomic, copy) NSString* configIP;
 @end
