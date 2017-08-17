@@ -237,7 +237,7 @@ static enum ButtonEnable RecordVideoEnable;
     }
          [self getDeviceConfig];
     NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-    NSLog(@"----------------log%@",urlString);
+//    NSLog(@"----------------log%@",urlString);
     
 //    _videoView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
 //    [_videoView setView1Frame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
@@ -272,6 +272,11 @@ static enum ButtonEnable RecordVideoEnable;
         _isPlaying=NO;
         self.videoisplaying = NO;
         [self.videoView stop];
+    }else{
+        [self.videoView sound:NO];
+        [self.videoView stop];
+        _livingState = 0;
+        NSLog(@"----------------xxxxxxxxxxxxxxxxx没有播放你就退出了");
     }
 }
 /** 返回*/
@@ -282,7 +287,6 @@ static enum ButtonEnable RecordVideoEnable;
     [self stopVideo];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     [self prefersStatusBarHidden:YES];
-    
     [self back];
     
 }
@@ -1798,7 +1802,7 @@ bool VideoRecordIsEnable = NO;
             _session = [self getSessionWithRakisrak:YES];
         });
         
-        NSLog(@"???????????????????????fps=%@",_fps);
+//        NSLog(@"???????????????????????fps=%@",_fps);
     }
     
 }
