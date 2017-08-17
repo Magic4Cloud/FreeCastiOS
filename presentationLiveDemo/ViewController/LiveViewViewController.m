@@ -268,10 +268,10 @@ static enum ButtonEnable RecordVideoEnable;
     if (_isPlaying) {
         NSLog(@"-----_________---------%s",__func__);
         [self.videoView sound:NO];
-        _livingState = 0;
+        [self.videoView stop];
         _isPlaying=NO;
         self.videoisplaying = NO;
-        [self.videoView stop];
+        _livingState = 0;
     }else{
         [self.videoView sound:NO];
         [self.videoView stop];
@@ -2606,13 +2606,9 @@ bool _isTakePhoto=NO;
     BOOL isNotnil  = ([self getWifiSSID].length > 0);
     NSLog(@"----------------%u,%u,%u",isSameWIfi,isNotnil,_searchDeviceHasResult);
     if (([[CoreStore sharedStore].currentUseDeviceID isEqualToString:[self getWifiSSID]])&&([self getWifiSSID].length > 0)&&_searchDeviceHasResult) {
+        if(!_isExit&&!_isBroswer){
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
         NSLog(@"----------------log%@",urlString);
-        
-        //    [self.videoView removeFromSuperview];
-        
-        //    self.videoView.frame = CGRectMake(0, 0, _viewW, _viewH);
-        //    [self.videoView setView1Frame:CGRectMake(0, 0, _viewW, _viewH)];
         
         [self.videoView play:urlString useTcp:NO];
         [self.videoView sound:YES];
@@ -2621,6 +2617,9 @@ bool _isTakePhoto=NO;
         [self.videoView startGetH264Data:YES];
         [self.videoView show_view:YES];
         self.videoisplaying = YES;
+        }
+        
+        
     } else if (_liveCameraSource == IphoneBackCamera) {
         
     } else {
