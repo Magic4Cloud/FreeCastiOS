@@ -638,7 +638,7 @@
     if (_configIP && _configPort) {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
             [self getDeviceinformation];
-        }); 
+        });
     }
     else
     {
@@ -736,7 +736,7 @@ NSString *quality;
                 [self set480P];
             }
         });
-        NSLog(@"resolution=%@",resolution);
+//        NSLog(@"+++++++++++++resolution=%@",resolution);
     }
     else{
         dispatch_async(dispatch_get_main_queue(),^ {
@@ -758,7 +758,7 @@ NSString *quality;
             //                }
             [self setVideoRate:value];
         });
-        NSLog(@"quality=%@",quality);
+//        NSLog(@"+++++++++++++++++quality=%@",quality);
     }
     else{
         dispatch_async(dispatch_get_main_queue(),^ {
@@ -777,7 +777,7 @@ NSString *quality;
             [self setVideoFrameRate:[fps intValue]];
         });
         
-        NSLog(@"fps=%@",fps);
+//        NSLog(@"+++++++++++++++fps=%@",fps);
     }
     else
     {
@@ -788,6 +788,8 @@ NSString *quality;
     
     dispatch_async(dispatch_get_main_queue(),^ {
         NSLog(@"----------------%@",resolution);
+        NSLog(@"-------------quality=%@",quality);
+        NSLog(@"-------------fps=%@",fps);
         if (([resolution compare:@"2"]==NSOrderedSame)
             &&([quality compare:@"35"]==NSOrderedSame)
             &&([fps compare:@"24"]==NSOrderedSame)) {

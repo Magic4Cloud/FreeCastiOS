@@ -277,6 +277,7 @@
     NSLog(@"====>%@",http_request.ResponseString);
     if(http_request.StatusCode==200)
     {
+        NSLog(@"----------------%@",http_request.ResponseString);
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *value=[self parseJsonString2:http_request.ResponseString :@"\"info\":\""];
             NSLog(@"----------------%@",value);

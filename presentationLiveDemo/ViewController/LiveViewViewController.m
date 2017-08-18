@@ -1532,7 +1532,7 @@ bool VideoRecordIsEnable = NO;
     _session.delegate  = self;
     _session.isRAK=rak;
     _session.isIphoneAudio = _isIphoneAudio;
-    _session.running =YES;
+    _session.running = YES;
     _session.preView = self.livingPreView;
     return _session;
 }
@@ -1570,8 +1570,6 @@ bool VideoRecordIsEnable = NO;
     }
     
 }
-
-
 
 /**
  *  关闭直播
@@ -2638,6 +2636,7 @@ bool _isTakePhoto=NO;
     NSLog(@"----------------%u,%u,%u",isSameWIfi,isNotnil,_searchDeviceHasResult);
     if (([[CoreStore sharedStore].currentUseDeviceID isEqualToString:[self getWifiSSID]])&&([self getWifiSSID].length > 0)&&_searchDeviceHasResult) {
         if(!_isExit&&!_isBroswer){
+        [self getDeviceConfig];
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
         NSLog(@"----------------log%@",urlString);
         
@@ -2648,6 +2647,9 @@ bool _isTakePhoto=NO;
         [self.videoView startGetH264Data:YES];
         [self.videoView show_view:YES];
         self.videoisplaying = YES;
+            
+            
+            
         }
         
         
@@ -2664,7 +2666,9 @@ bool _isTakePhoto=NO;
 }
 
 - (void)applicationEnterBackground {
+    [self closeLivingSession];
     [self stopVideo];
+    
     NSLog(@"----------进入后台");
    [CoreStore sharedStore].currentUseDeviceID = [self getWifiSSID];
     NSLog(@"----------------+++%@",[CoreStore sharedStore].currentUseDeviceID);

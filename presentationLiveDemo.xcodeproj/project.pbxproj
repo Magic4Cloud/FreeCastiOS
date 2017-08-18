@@ -923,6 +923,7 @@
 		84EE3BDB1F3D9A49006DF97E /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EE3BD81F3D9A49006DF97E /* libWisView.a */; };
 		972EBF141F4453F200FF5F26 /* FSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 972EBF131F4453F200FF5F26 /* FSTextField.m */; };
 		972EBF171F4457BA00FF5F26 /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 972EBF161F4457BA00FF5F26 /* NSString+Size.m */; };
+		972EBF1B1F468BCA00FF5F26 /* FSMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 972EBF1A1F468BCA00FF5F26 /* FSMediaManager.m */; };
 		975B8FD91F3420E8005003E2 /* CoreStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD61F3420E8005003E2 /* CoreStore.m */; };
 		975B8FDA1F3420E8005003E2 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FD81F3420E8005003E2 /* NSObject+JSON.m */; };
 		975B8FDD1F342191005003E2 /* CoreStore+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 975B8FDC1F342191005003E2 /* CoreStore+App.m */; };
@@ -2165,6 +2166,8 @@
 		972EBF131F4453F200FF5F26 /* FSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTextField.m; sourceTree = "<group>"; };
 		972EBF151F4457BA00FF5F26 /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Size.h"; path = "CoreStore/NSString+Size.h"; sourceTree = "<group>"; };
 		972EBF161F4457BA00FF5F26 /* NSString+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Size.m"; path = "CoreStore/NSString+Size.m"; sourceTree = "<group>"; };
+		972EBF191F468BCA00FF5F26 /* FSMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSMediaManager.h; path = Album/FSMediaManager.h; sourceTree = "<group>"; };
+		972EBF1A1F468BCA00FF5F26 /* FSMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSMediaManager.m; path = Album/FSMediaManager.m; sourceTree = "<group>"; };
 		975B8FD51F3420E8005003E2 /* CoreStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreStore.h; path = CoreStore/CoreStore.h; sourceTree = "<group>"; };
 		975B8FD61F3420E8005003E2 /* CoreStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreStore.m; path = CoreStore/CoreStore.m; sourceTree = "<group>"; };
 		975B8FD71F3420E8005003E2 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JSON.h"; path = "CoreStore/NSObject+JSON.h"; sourceTree = "<group>"; };
@@ -3097,6 +3100,7 @@
 		8464B9A71D95104700B67944 /* presentationLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				972EBF181F468B7D00FF5F26 /* mediaManager */,
 				975B8FD41F3420C0005003E2 /* CoreStore */,
 				7A85D1BA1F2C1D4300190221 /* Tools */,
 				7A6850431F1898B100EEDE2D /* LFLiveKit */,
@@ -4130,6 +4134,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		972EBF181F468B7D00FF5F26 /* mediaManager */ = {
+			isa = PBXGroup;
+			children = (
+				972EBF191F468BCA00FF5F26 /* FSMediaManager.h */,
+				972EBF1A1F468BCA00FF5F26 /* FSMediaManager.m */,
+			);
+			name = mediaManager;
+			sourceTree = "<group>";
+		};
 		975B8FD41F3420C0005003E2 /* CoreStore */ = {
 			isa = PBXGroup;
 			children = (
@@ -4905,6 +4918,7 @@
 				7A6851F21F1898B200EEDE2D /* LFHardwareVideoEncoder.m in Sources */,
 				7A6852951F1898B300EEDE2D /* GPUImageThresholdSketchFilter.m in Sources */,
 				7A6852921F1898B300EEDE2D /* GPUImageThreeInputFilter.m in Sources */,
+				972EBF1B1F468BCA00FF5F26 /* FSMediaManager.m in Sources */,
 				8488BE1D1DB77992006357AD /* HttpRequest.m in Sources */,
 				7A6852A71F1898B300EEDE2D /* GPUImageContext.m in Sources */,
 				7A68527F1F1898B300EEDE2D /* GPUImageSharpenFilter.m in Sources */,

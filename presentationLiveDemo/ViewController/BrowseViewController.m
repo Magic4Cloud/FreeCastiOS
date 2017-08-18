@@ -292,7 +292,7 @@ NSMutableArray *Medias;
             [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop2) {
                 //根据记录的删除的键值，删除组内元素
                 MediaGroup *group = Medias[idx];
-                NSMutableArray *groupInMedias;//存在的数组
+                NSMutableArray *groupInMedias = @[].mutableCopy;//存在的数组
                 
                 [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop2) {
                     MediaData *media = group.medias[idx2];
@@ -897,8 +897,6 @@ BOOL _isExist;
         MediaData *contact=group.medias[indexPath.row];
         cell.text.text=[contact getDate];
     }
-    
-
     return cell;
 }
 
