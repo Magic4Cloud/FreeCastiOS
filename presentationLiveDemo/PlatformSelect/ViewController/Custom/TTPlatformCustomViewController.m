@@ -7,6 +7,7 @@
 //
 
 #import "TTPlatformCustomViewController.h"
+#import "CommonAppHeaders.h"
 #import "TTCoreDataClass.h"
 #import "FSTextField.h"
 @interface TTPlatformCustomViewController ()<UITextFieldDelegate>

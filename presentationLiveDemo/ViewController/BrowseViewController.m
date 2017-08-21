@@ -30,6 +30,9 @@
 #import "CommanParameters.h"
 
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
+#import "FSMediaManager.h"
+
+#import "CommonAppHeaders.h"
 
 NSMutableArray *Medias;
 

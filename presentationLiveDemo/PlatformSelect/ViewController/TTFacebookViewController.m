@@ -7,6 +7,7 @@
 //
 
 #import "TTFacebookViewController.h"
+#import "CommonAppHeaders.h"
 #import "FacebookWebViewController.h"
 #import "TTNetMannger.h"
 #import "TTCoreDataClass.h"

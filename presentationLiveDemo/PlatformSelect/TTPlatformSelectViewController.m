@@ -29,6 +29,7 @@
 #import "CommanParameters.h"
 
 #import "TTSearchDeviceClass.h"
+#import "CommonAppHeaders.h"
 
 @interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong)Scanner * device_Scan;
@@ -48,7 +49,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _userip = _configIP;
+    
+    if (_configIP != nil) {
+        _userip = _configIP;
+    }
     [self initData];
     
 }
@@ -57,7 +61,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!_configIP ) {
+    if (!_configIP) {
         [self scanDevice];
     }
     [self initUI];

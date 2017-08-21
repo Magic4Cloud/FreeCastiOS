@@ -11,8 +11,7 @@
 #import "HttpRequest.h"
 #import "MBProgressHUD.h"
 #import "CommanParameters.h"
-#import "CoreStore+App.h"
-#import "NSObject+JSON.h"
+#import "CommonAppHeaders.h"
 
 @interface AudioViewController ()
 //{
@@ -25,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [self GetAudioFormart];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     

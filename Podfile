@@ -8,4 +8,5 @@ target 'presentationLiveDemo' do
     pod 'PureLayout'
     pod 'YYModel'
     pod 'Bugly'
+    pod 'SVProgressHUD'
 end

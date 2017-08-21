@@ -12,10 +12,9 @@
 
 #ifdef __OBJC__
 
-#import "MacroDefinition.h"
-#import "UIColor+systemColor.h"
+
 #import "UIViewController+Navigation.h"
-#import "NSString+Extention.h"
+
 
 #import <PureLayout.h>
 #import <AFNetworking.h>

@@ -7,6 +7,7 @@
 //
 
 #import "TTPlatFormCell.h"
+#import "CommonAppHeaders.h"
 
 @implementation TTPlatFormCell
 

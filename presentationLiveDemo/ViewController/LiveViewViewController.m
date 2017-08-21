@@ -41,12 +41,10 @@
 #import "LFLiveKit.h"
 #import "LFLiveSessionWithPicSource.h"
 #import "PicToBufferToPic.h"
-#import "Scanner.h"
-#import "CoreStore.h"
-#import "CoreStore+App.h"
-//#import "AppDelegate.h"
-//#import "UIAlertController+Rotation.h"
-//#import "TTAlertViewController+Rotation.h"
+
+
+#import "CommonAppHeaders.h"
+
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
@@ -1028,7 +1026,8 @@ bool VideoRecordIsEnable = NO;
     if(_livingState==1){
         if (_isTakePhoto) {
             _isTakePhoto=NO;
-            [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
+//            [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
+            [FSMediaManager saveImage:[UIImage imageWithCGImage:imageRef]];
         }
         [self.session upload_imageRef:imageRef];
     } else {
@@ -1038,7 +1037,7 @@ bool VideoRecordIsEnable = NO;
 
 - (void)GetAudioData:(Byte*)data :(int)size//回调获取音频数据
 {
-//    NSLog(@"GetAudioData");
+    NSLog(@"GetAudioData");
     if(_livingState == LivingStateLiving && !_isIphoneAudio){
         
         AudioBufferList audioBufferList;
@@ -2255,7 +2254,8 @@ int posStep=1;
         
         UIImage * image = [self getSnapshotImage];
         if (image) {
-            [_albumObject saveImageToAlbum:image albumName:album_name];
+//            [_albumObject saveImageToAlbum:image albumName:album_name];
+            [FSMediaManager saveImage:image];
         }
         return;
     }
@@ -2280,7 +2280,8 @@ bool _isTakePhoto=NO;
 - (void)take_photo:(UIImage *)image
 {
     _isTakePhoto=NO;
-    [_albumObject saveImageToAlbum:image albumName:album_name];
+//    [_albumObject saveImageToAlbum:image albumName:album_name];
+    [FSMediaManager saveImage:image];
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary  *)contextInfo
