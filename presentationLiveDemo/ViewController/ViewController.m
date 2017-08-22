@@ -19,10 +19,8 @@
 #import "CommanParameters.h"
 
 #import "TTPlatformSelectViewController.h"
-#import "FSBrowseViewController.h"
 
 Scanner *_Scan;
-
 
 @interface ViewController ()
 {
@@ -381,8 +379,8 @@ Scanner *_Scan;
     _browseImgBtn.text.textColor=[UIColor whiteColor];
     [_browseImgBtn draw:MAIN_COLOR_T];
 #warning coding...
-//    BrowseViewController *v = [[BrowseViewController alloc] init];
-    FSBrowseViewController *v = [[FSBrowseViewController alloc] init];
+    BrowseViewController *v = [[BrowseViewController alloc] init];
+//    FSBrowseViewController *v = [[FSBrowseViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
 }
 

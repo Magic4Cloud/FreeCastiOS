@@ -972,8 +972,6 @@
 		9739E0371F4ADCF000E7B7CF /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E00C1F4ADCF000E7B7CF /* BaseTableViewController.m */; };
 		9739E0381F4ADCF000E7B7CF /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E00E1F4ADCF000E7B7CF /* BaseViewController.m */; };
 		9739E0391F4ADCF000E7B7CF /* BaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0101F4ADCF000E7B7CF /* BaseWebViewController.m */; };
-		9739E0461F4AF10600E7B7CF /* FSBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */; };
-		9739E0471F4AF10600E7B7CF /* FSBrowseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */; };
 		9739E0511F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0501F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m */; };
 		9739E0531F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9739E0521F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib */; };
 		9739E0561F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0551F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m */; };
@@ -2322,9 +2320,6 @@
 		9739E00E1F4ADCF000E7B7CF /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9739E00F1F4ADCF000E7B7CF /* BaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseWebViewController.h; sourceTree = "<group>"; };
 		9739E0101F4ADCF000E7B7CF /* BaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseWebViewController.m; sourceTree = "<group>"; };
-		9739E0431F4AF10600E7B7CF /* FSBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSBrowseViewController.h; sourceTree = "<group>"; };
-		9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSBrowseViewController.m; sourceTree = "<group>"; };
-		9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSBrowseViewController.xib; sourceTree = "<group>"; };
 		9739E04F1F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSPhotoCollectionViewCell.h; path = Views/FSPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		9739E0501F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSPhotoCollectionViewCell.m; path = Views/FSPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		9739E0521F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FSPhotoCollectionViewCell.xib; path = Views/FSPhotoCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -3642,7 +3637,6 @@
 		8488BDF91DB77992006357AD /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				9739E0481F4AF11B00E7B7CF /* BrowseViewController */,
 				8488BDFA1DB77992006357AD /* BrowseViewController.h */,
 				8488BDFB1DB77992006357AD /* BrowseViewController.m */,
 				84E375EA1DBB62B600217030 /* PlayPhotoViewController.h */,
@@ -4601,16 +4595,6 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		9739E0481F4AF11B00E7B7CF /* BrowseViewController */ = {
-			isa = PBXGroup;
-			children = (
-				9739E0431F4AF10600E7B7CF /* FSBrowseViewController.h */,
-				9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */,
-				9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */,
-			);
-			name = BrowseViewController;
-			sourceTree = "<group>";
-		};
 		9739E0491F4BD27900E7B7CF /* Browse */ = {
 			isa = PBXGroup;
 			children = (
@@ -4912,7 +4896,6 @@
 				847E13431E8A4FBB00486BA7 /* WIFI@3x.png in Resources */,
 				84123F8C1DBDE66000CC7B4C /* live stream_address_button_nor@3x.png in Resources */,
 				84DA85361E88E7AC0027B06A /* _0008_09.png in Resources */,
-				9739E0471F4AF10600E7B7CF /* FSBrowseViewController.xib in Resources */,
 				841BEC5E1DBF00B100D03A97 /* ins@2x.png in Resources */,
 				8488BD741DB7792B006357AD /* 01_00032.png in Resources */,
 				841BEC661DBF00B100D03A97 /* QQ.png in Resources */,
@@ -5474,7 +5457,6 @@
 				9739E0391F4ADCF000E7B7CF /* BaseWebViewController.m in Sources */,
 				9739DF9D1F4ADCE500E7B7CF /* CoreUIViewController+Notification.m in Sources */,
 				7A68522D1F1898B200EEDE2D /* GPUImageFASTCornerDetectionFilter.m in Sources */,
-				9739E0461F4AF10600E7B7CF /* FSBrowseViewController.m in Sources */,
 				7A68523F1F1898B200EEDE2D /* GPUImageHighlightShadowTintFilter.m in Sources */,
 				7A68520E1F1898B200EEDE2D /* GPUImageCannyEdgeDetectionFilter.m in Sources */,
 				7A6852A01F1898B300EEDE2D /* GPUImageVideoCamera.m in Sources */,

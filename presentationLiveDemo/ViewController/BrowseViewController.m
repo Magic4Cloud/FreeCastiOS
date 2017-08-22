@@ -30,8 +30,6 @@
 #import "CommanParameters.h"
 
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
-#import "FSMediaManager.h"
-
 #import "CommonAppHeaders.h"
 
 NSMutableArray *Medias;
@@ -90,18 +88,18 @@ NSMutableArray *Medias;
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
-//    UIImageView *_Bg=[[UIImageView alloc]init];
-//    _Bg.frame = CGRectMake(0, 0, viewW, viewH*20/totalHeight);
-//    _Bg.contentMode=UIViewContentModeScaleToFill;
-//    _Bg.backgroundColor=[UIColor blackColor];
-//    _Bg.alpha=0.1;
-//    [self.view addSubview:_Bg];
+    //    UIImageView *_Bg=[[UIImageView alloc]init];
+    //    _Bg.frame = CGRectMake(0, 0, viewW, viewH*20/totalHeight);
+    //    _Bg.contentMode=UIViewContentModeScaleToFill;
+    //    _Bg.backgroundColor=[UIColor blackColor];
+    //    _Bg.alpha=0.1;
+    //    [self.view addSubview:_Bg];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _backBtn.frame = CGRectMake(viewW*10.5/totalHeight, viewH*32.5/totalHeight, viewH*24.5/totalHeight, viewH*24.5/totalHeight);
     [_backBtn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
-//    _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
-//    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
+    //    _backBtn.frame = CGRectMake(0, viewH*20/totalHeight, viewH*44/totalHeight, viewH*44/totalHeight);
+    //    [_backBtn setImage:[UIImage imageNamed:@"nav_icon_back_pre@3x.png"] forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
@@ -129,7 +127,7 @@ NSMutableArray *Medias;
     segmentedControl.layer.cornerRadius = viewW*5/totalWeight;
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBezeled;
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引
-
+    
     
     
     
@@ -168,9 +166,9 @@ NSMutableArray *Medias;
     //底部
     _bottomBg=[[UIView alloc]init];
     _bottomBg.userInteractionEnabled=YES;
-//    UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@""]];
+    //    UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@""]];
     _bottomBg.backgroundColor = TEXT_BG_COLOR;
-//    [_bottomBg setBackgroundColor:bgColor];
+    //    [_bottomBg setBackgroundColor:bgColor];
     _bottomBg.frame = CGRectMake(0, viewH-viewH*44/totalHeight, viewW,viewH*44/totalHeight);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
@@ -178,7 +176,7 @@ NSMutableArray *Medias;
     _deleteBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _deleteBtn.frame = CGRectMake(viewW/2-viewH*60/totalHeight, 4, viewH*30/totalHeight, viewH*25/totalHeight);
     [_deleteBtn setImage:[UIImage imageNamed:@"icon_crash"] forState:UIControlStateNormal];
-//    [_deleteBtn setImage:[UIImage imageNamed:@"edit_delete_pre@3x.png"] forState:UIControlStateHighlighted];
+    //    [_deleteBtn setImage:[UIImage imageNamed:@"edit_delete_pre@3x.png"] forState:UIControlStateHighlighted];
     [_deleteBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_deleteBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _deleteBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
@@ -199,7 +197,7 @@ NSMutableArray *Medias;
     _shareBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _shareBtn.frame = CGRectMake(viewW/2+viewH*30/totalHeight, 4,viewH*25/totalHeight, viewH*25/totalHeight);
     [_shareBtn setImage:[UIImage imageNamed:@"icon_share"] forState:UIControlStateNormal];
-//    [_shareBtn setImage:[UIImage imageNamed:@"edit_share_pre@3x.png"] forState:UIControlStateHighlighted];
+    //    [_shareBtn setImage:[UIImage imageNamed:@"edit_share_pre@3x.png"] forState:UIControlStateHighlighted];
     [_shareBtn setTitleColor:[UIColor lightGrayColor]forState:UIControlStateNormal];
     [_shareBtn setTitleColor:[UIColor grayColor]forState:UIControlStateHighlighted];
     _shareBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
@@ -262,7 +260,7 @@ NSMutableArray *Medias;
 }
 
 
-    
+
 
 
 //返回
@@ -274,7 +272,11 @@ NSMutableArray *Medias;
 - (void)_deleteBtnClick{
     NSLog(@"_deleteBtnClick");
     if ([selectedDic count]==0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please select a picture or video to Delete!" message:nil delegate:nil cancelButtonTitle:@"OK"    otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please select a picture or video to Delete!"
+                                                            message:nil
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
         [alertView show];
     }
     
@@ -282,115 +284,74 @@ NSMutableArray *Medias;
     NSMutableArray *videos=[self Get_Paths:@"video_flag"];
     NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
     [mutaArray addObjectsFromArray:videos];
-    
-    NSMutableArray * selectedMeidaFileUrls= @[].mutableCopy;
-    for (MediaData * media in selectedDic) {
-        [selectedMeidaFileUrls addObject:media.Url];
-    NSLog(@"----------------%@",media.Url);
-    }
-    
-    [_albumObject removeFilesFromAlbum:selectedMeidaFileUrls isSuccessBlock:^(BOOL isSuccess) {
-            if (isSuccess) {
-            NSMutableArray *mediasNew = @[].mutableCopy;
-            [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop2) {
-                //根据记录的删除的键值，删除组内元素
-                MediaGroup *group = Medias[idx];
-                NSMutableArray *groupInMedias = @[].mutableCopy;//存在的数组
-                
-                [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop2) {
-                    MediaData *media = group.medias[idx2];
-                    __block  BOOL isSelectedMedia = NO;
-                    [selectedDic enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx3, BOOL * _Nonnull stop3) {
-                        if([[selectedDic[idx3] getName] isEqualToString:media.Name]){
-                            isSelectedMedia = YES;
-                            *stop3 = YES;
+    for (int i = 0; i < count; i++) {
+        [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            //根据记录的删除的键值，删除组内元素
+            MediaGroup *get_medias=Medias[idx];
+            [get_medias.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop) {
+                MediaData *media=get_medias.medias[idx2];
+                if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
+                    
+                    [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
+                        if (isSuccess) {
+                            
+                            if (!is_photo_choose) {
+                                NSString *timeSp=[media getTimesamp];
+                                
+                                for(int i=0;i<[videos count];i++)
+                                {
+                                    if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+                                        
+                                        [mutaArray removeObject:timeSp];
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            NSMutableArray * getMedias = [Medias[idx] getMedias];
+                            [getMedias removeObject:media];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [_collectionView reloadData];
+                            });
+                            
                         }
                     }];
-                    if (!isSelectedMedia) {
-                        [groupInMedias addObject:media];
-                    }
-                }];
-                if (groupInMedias.count > 0) {
-                    [mediasNew addObject:groupInMedias];
+                    
+                    //                    else
+                    //                    {
+                    //
+                    //                        NSString *timeSp=[media getTimesamp];
+                    //
+                    //                        for(int i=0;i<[videos count];i++)
+                    //                        {
+                    //                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
+                    //
+                    //
+                    //                                [mutaArray removeObject:timeSp];
+                    //                                break;
+                    //                            }
+                    //                        }
+                    //                        [[Medias[idx] getMedias] removeObject:media];
+                    //                    }
+                    NSLog(@"Medias=%@",[media getUrl]);
                 }
             }];
-            Medias = mediasNew.mutableCopy;
-            [_collectionView reloadData];
-        }
-    }];
-    if(!is_photo_choose) {
+            //当组内元素为0时，删除组
+            if ([[Medias[idx] getMedias] count]==0) {
+                [Medias removeObject :Medias[idx]];
+            }
+        }];
+    }
+    
+    if(!is_photo_choose)
+    {
         [self Save_Paths:mutaArray :@"video_flag"];
     }
+    
     [selectedDic removeAllObjects];
     [shareImg removeAllObjects];
     [photoImages removeAllObjects];
     [_collectionView reloadData];
-    
-    
-    
-//    
-//    
-////    NSMutableArray * mediasCopy = Medias.copy;
-//    NSMutableArray *mediasNew = @[].mutableCopy;
-//    
-//    
-//    for (int i = 0; i < count; i++) {
-//        [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//            //根据记录的删除的键值，删除组内元素
-//            MediaGroup *group = Medias[idx];
-//            NSMutableArray *groupInMedias;//存在的数组
-//            [group.medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop) {
-//                MediaData *media = group.medias[idx2];
-//                if([([media getName]) compare:(selectedDic[i])]==NSOrderedSame ){
-////                        [_albumObject removeFileFromAlbum:[media getUrl] isSuccessBlock:^(BOOL isSuccess) {
-////                            if (isSuccess) {
-////                                if (!is_photo_choose) {
-////                                    NSString *timeSp=[media getTimesamp];
-////                                    for(int i=0;i<[videos count];i++) {
-////                                        if (([timeSp compare:videos[i]]==NSOrderedSame )) {
-////                                            [mutaArray removeObject:timeSp];
-////                                            break;
-////                                        }
-////                                    }
-////                                }
-////                                NSMutableArray * getMedias = [Medias[idx] getMedias];
-////                                [getMedias removeObject:media];
-////                                if (getMedias.count ==0) {
-////                                    [Medias removeObjectAtIndex:idx];
-////                                }
-//////
-////                                dispatch_async(dispatch_get_main_queue(), ^{
-////                                    [_collectionView reloadData];
-////                                });
-////                            }
-//////                            else {
-//////                                [mediasInGroup addObject:media];
-//////                            }
-////                        }];
-//                    
-//                    
-//                    
-////                } else{
-////                    [mediasInGroup addObject:media];
-////                        NSString *timeSp=[media getTimesamp];
-////                        for(int i=0;i<[videos count];i++){
-////                            if (([timeSp compare:videos[i]]==NSOrderedSame )) {
-////                                [mutaArray removeObject:timeSp];
-////                                break;}      }
-////                        [[Medias[idx] getMedias] removeObject:media];
-//                }
-////                    NSLog(@"Medias=%@",[media getUrl]);
-//            }];
-//        }];
-//    }
-//    
-//    if(!is_photo_choose) {
-//        [self Save_Paths:mutaArray :@"video_flag"];
-//    }
-//    [selectedDic removeAllObjects];
-//    [shareImg removeAllObjects];
-//    [photoImages removeAllObjects];
-//    [_collectionView reloadData];
 }
 
 - (void)_shareBtnClick{
@@ -449,22 +410,22 @@ NSMutableArray *Medias;
                                        type:SSDKContentTypeImage];
     
     //1.2、自定义分享平台（非必要）
-//    NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:[ShareSDK activePlatforms]];
-//    //添加一个自定义的平台（非必要）
-//    SSUIShareActionSheetCustomItem *item = [SSUIShareActionSheetCustomItem itemWithIcon:[UIImage imageNamed:@"Icon.png"]
-//                                                                                  label:@"自定义"
-//                                                                                onClick:^{
-//                                                                                    
-//                                                                                    //自定义item被点击的处理逻辑
-//                                                                                    NSLog(@"=== 自定义item被点击 ===");
-//                                                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"自定义item被点击"
-//                                                                                                                                        message:nil
-//                                                                                                                                       delegate:nil
-//                                                                                                                              cancelButtonTitle:@"确定"
-//                                                                                                                              otherButtonTitles:nil];
-//                                                                                    [alertView show];
-//                                                                                }];
-//    [activePlatforms addObject:item];
+    //    NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:[ShareSDK activePlatforms]];
+    //    //添加一个自定义的平台（非必要）
+    //    SSUIShareActionSheetCustomItem *item = [SSUIShareActionSheetCustomItem itemWithIcon:[UIImage imageNamed:@"Icon.png"]
+    //                                                                                  label:@"自定义"
+    //                                                                                onClick:^{
+    //
+    //                                                                                    //自定义item被点击的处理逻辑
+    //                                                                                    NSLog(@"=== 自定义item被点击 ===");
+    //                                                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"自定义item被点击"
+    //                                                                                                                                        message:nil
+    //                                                                                                                                       delegate:nil
+    //                                                                                                                              cancelButtonTitle:@"确定"
+    //                                                                                                                              otherButtonTitles:nil];
+    //                                                                                    [alertView show];
+    //                                                                                }];
+    //    [activePlatforms addObject:item];
     
     //设置分享菜单栏样式（非必要）
     //        [SSUIShareActionSheetStyle setActionSheetBackgroundColor:[UIColor colorWithRed:249/255.0 green:0/255.0 blue:12/255.0 alpha:0.5]];
@@ -541,12 +502,12 @@ NSMutableArray *Medias;
                        }
                        case SSDKResponseStateCancel:
                        {
-//                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
-//                                                                               message:nil
-//                                                                              delegate:nil
-//                                                                     cancelButtonTitle:@"确定"
-//                                                                     otherButtonTitles:nil];
-//                           [alertView show];
+                           //                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                           //                                                                               message:nil
+                           //                                                                              delegate:nil
+                           //                                                                     cancelButtonTitle:@"确定"
+                           //                                                                     otherButtonTitles:nil];
+                           //                           [alertView show];
                            break;
                        }
                        default:
@@ -695,14 +656,14 @@ BOOL _isExist;
                 int64_t fileSize = [[result defaultRepresentation] size];
                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                 
-//                NSLog(@"date = %@",date);
+                //                NSLog(@"date = %@",date);
                 NSLog(@"fileName = %@",fileName);
-//                NSLog(@"url = %@",url);
-//                NSLog(@"fileSize = %lld",fileSize);
-//                NSLog(@"timeSp = %@",timeSp);
+                //                NSLog(@"url = %@",url);
+                //                NSLog(@"fileSize = %lld",fileSize);
+                //                NSLog(@"timeSp = %@",timeSp);
                 
                 
-//                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
+                //                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
                 [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     MediaGroup *get_group=Medias[idx];
                     //已分组则将数据添加到对应组
@@ -713,12 +674,12 @@ BOOL _isExist;
                     }
                 }];
                 //未分组则添加一组，并将数据添加进去
-//                if (is_grouped==false) {
-                    MediaData *media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
-                    MediaGroup *group=[MediaGroup initWithName:date andMedias:[NSMutableArray arrayWithObjects:media, nil]];
+                //                if (is_grouped==false) {
+                MediaData *media=[MediaData initWithDate:date andName:fileName andUrl:url andTimesamp:timeSp andImage:image andFullImage:fullImage];
+                MediaGroup *group=[MediaGroup initWithName:date andMedias:[NSMutableArray arrayWithObjects:media, nil]];
                 
                 
-//              去重
+                //              去重
                 BOOL isExisted = NO;
                 for (MediaGroup *group in Medias) {
                     if ([group.name isEqualToString:date]) {
@@ -730,8 +691,8 @@ BOOL _isExist;
                     [Medias addObject:group];
                 }
                 
-//                }
-
+                //                }
+                
             }
             
             
@@ -741,7 +702,7 @@ BOOL _isExist;
             
             [_collectionView reloadData];
         });
-
+        
     }];
     
     //设备的视频
@@ -769,11 +730,11 @@ BOOL _isExist;
                                 int64_t fileSize = [[result defaultRepresentation] size];
                                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                                 
-//                                NSLog(@"date = %@",date);
+                                //                                NSLog(@"date = %@",date);
                                 NSLog(@"fileName = %@",fileName);
-//                                NSLog(@"url = %@",url);
-//                                NSLog(@"fileSize = %lld",fileSize);
-//                                NSLog(@"timeSp = %@",timeSp);
+                                //                                NSLog(@"url = %@",url);
+                                //                                NSLog(@"fileSize = %lld",fileSize);
+                                //                                NSLog(@"timeSp = %@",timeSp);
                                 
                                 NSMutableArray *videos=[self Get_Paths:@"video_flag"];
                                 _isExist=false;
@@ -808,7 +769,7 @@ BOOL _isExist;
                         }
                         else{
                             dispatch_async(dispatch_get_main_queue(), ^{
-                              
+                                
                                 [_collectionView reloadData];
                             });
                         }
@@ -827,7 +788,7 @@ BOOL _isExist;
                 case ALAssetsLibraryAccessUserDeniedError:
                 case ALAssetsLibraryAccessGloballyDeniedError:
                     errorMessage = @"The user has denied the application access to their media.";
-
+                    
                     break;
                     
                 default:
@@ -858,7 +819,7 @@ BOOL _isExist;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *strDate = [dateFormatter stringFromDate:date];
-//    NSLog(@"%@", strDate);
+    //    NSLog(@"%@", strDate);
     //[dateFormatter release];
     return strDate;
 }
@@ -900,6 +861,8 @@ BOOL _isExist;
         MediaData *contact=group.medias[indexPath.row];
         cell.text.text=[contact getDate];
     }
+    
+    
     return cell;
 }
 
@@ -914,13 +877,9 @@ NSString *_lastDate=@"";
     
     MediaGroup *group=Medias[indexPath.section];
     MediaData *contact=group.medias[indexPath.row];
-    
     cell.selectImageView.tag = indexPath.row;
-    
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    
     [dic setObject:[contact getImage] forKey:@"img"];
-    
     if ([_editBtn.titleLabel.text compare:NSLocalizedString(@"edit", nil)]==NSOrderedSame){
         [dic setObject:@"" forKey:@"flag"];
     }
@@ -930,7 +889,6 @@ NSString *_lastDate=@"";
     
     [photoImages addObject:dic];
     [cell sendValue:dic];
-    
     if (!is_photo_choose) {
         [cell sendVideoValue:[self getMovieDuration:[contact getUrl]]];
     }
@@ -975,7 +933,7 @@ NSString *_lastDate=@"";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CollectionViewCell *cell = (CollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-
+    
     NSInteger sec = indexPath.section;
     NSInteger row = indexPath.row;
     NSMutableArray *media=[Medias[sec] getMedias];
@@ -996,16 +954,16 @@ NSString *_lastDate=@"";
     }
     else{
         id dic = [photoImages objectAtIndex:indexPath.row];
-        NSLog(@"photoImages");
         BOOL flag = [[dic objectForKey:@"flag"] boolValue];
-        if (!flag) {
+        if (!flag)
+        {
             [dic setObject:@"1" forKey:@"flag"];
-            [selectedDic addObject:media[row]];
+            [selectedDic addObject:[media[row] getName]];
             NSLog(@"[contact getUrl]=%@",[contact getUrl]);
             [shareImg addObject:[contact getFullImage]];
         } else {
             [dic setObject:@"0" forKey:@"flag"];
-            [selectedDic removeObject:media[row]];
+            [selectedDic removeObject:[media[row] getName]];
             [shareImg removeObject:[contact getFullImage]];
         }
         [cell setSelectFlag:!flag];
@@ -1075,3 +1033,7 @@ UIImage *_getImage=nil;
 
 
 @end
+
+
+
+

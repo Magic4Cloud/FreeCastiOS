@@ -30,7 +30,7 @@
 #import "SubtitleViewController.h"
 #import "BannerViewController.h"
 #import "PauseScreenViewController.h"
-#import "FSBrowseViewController.h"
+
 //others
 #import "AlbumObject.h"
 #import "TTCoreDataClass.h"
@@ -42,7 +42,6 @@
 #import "LFLiveKit.h"
 #import "LFLiveSessionWithPicSource.h"
 #import "PicToBufferToPic.h"
-
 
 #import "CommonAppHeaders.h"
 
@@ -1027,8 +1026,8 @@ bool VideoRecordIsEnable = NO;
     if(_livingState==1){
         if (_isTakePhoto) {
             _isTakePhoto=NO;
-//            [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
-            [FSMediaManager saveImage:[UIImage imageWithCGImage:imageRef]];
+            [_albumObject saveImageToAlbum: [UIImage imageWithCGImage:imageRef] albumName:album_name];
+//            [FSMediaManager saveImage:[UIImage imageWithCGImage:imageRef]];
         }
         [self.session upload_imageRef:imageRef];
     } else {
@@ -2255,8 +2254,8 @@ int posStep=1;
         
         UIImage * image = [self getSnapshotImage];
         if (image) {
-//            [_albumObject saveImageToAlbum:image albumName:album_name];
-            [FSMediaManager saveImage:image];
+            [_albumObject saveImageToAlbum:image albumName:album_name];
+//            [FSMediaManager saveImage:image];
         }
         return;
     }
@@ -2281,8 +2280,8 @@ bool _isTakePhoto=NO;
 - (void)take_photo:(UIImage *)image
 {
     _isTakePhoto=NO;
-//    [_albumObject saveImageToAlbum:image albumName:album_name];
-    [FSMediaManager saveImage:image];
+    [_albumObject saveImageToAlbum:image albumName:album_name];
+//    [FSMediaManager saveImage:image];
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary  *)contextInfo
@@ -2442,8 +2441,8 @@ bool _isTakePhoto=NO;
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
 #warning coding...
-//    BrowseViewController *v = [[BrowseViewController alloc] init];
-    FSBrowseViewController * browseVC = [[FSBrowseViewController alloc] init];
+    BrowseViewController *browseVC = [[BrowseViewController alloc] init];
+//    FSBrowseViewController * browseVC = [[FSBrowseViewController alloc] init];
     [self.navigationController pushViewController:browseVC animated:true];
 }
 
