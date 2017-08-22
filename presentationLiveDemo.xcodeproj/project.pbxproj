@@ -474,8 +474,6 @@
 		84725C391E5C016E00E80045 /* 22.png in Resources */ = {isa = PBXBuildFile; fileRef = 84725C381E5C016E00E80045 /* 22.png */; };
 		847AFE571DB9F1EB00717496 /* Browse_edit_def_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847AFE531DB9F1EB00717496 /* Browse_edit_def_icon@3x.png */; };
 		847AFE581DB9F1EB00717496 /* Browse_edit_Sel_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847AFE541DB9F1EB00717496 /* Browse_edit_Sel_icon@3x.png */; };
-		847AFE591DB9F1EB00717496 /* Browse_video_info_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847AFE551DB9F1EB00717496 /* Browse_video_info_bg@3x.png */; };
-		847AFE5A1DB9F1EB00717496 /* Browse_videos_camera_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847AFE561DB9F1EB00717496 /* Browse_videos_camera_icon@3x.png */; };
 		847E13411E8A4FBB00486BA7 /* WIFI.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E133E1E8A4FBB00486BA7 /* WIFI.png */; };
 		847E13421E8A4FBB00486BA7 /* WIFI@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E133F1E8A4FBB00486BA7 /* WIFI@2x.png */; };
 		847E13431E8A4FBB00486BA7 /* WIFI@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E13401E8A4FBB00486BA7 /* WIFI@3x.png */; };
@@ -974,6 +972,12 @@
 		9739E0371F4ADCF000E7B7CF /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E00C1F4ADCF000E7B7CF /* BaseTableViewController.m */; };
 		9739E0381F4ADCF000E7B7CF /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E00E1F4ADCF000E7B7CF /* BaseViewController.m */; };
 		9739E0391F4ADCF000E7B7CF /* BaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0101F4ADCF000E7B7CF /* BaseWebViewController.m */; };
+		9739E0461F4AF10600E7B7CF /* FSBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */; };
+		9739E0471F4AF10600E7B7CF /* FSBrowseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */; };
+		9739E0511F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0501F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m */; };
+		9739E0531F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9739E0521F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib */; };
+		9739E0561F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739E0551F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m */; };
+		9739E05A1F4BD51900E7B7CF /* FSVideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9739E0591F4BD51900E7B7CF /* FSVideoCollectionViewCell.xib */; };
 		9E043E281F25E1A200DDE35E /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E043E271F25E1A200DDE35E /* StartViewController.m */; };
 		9EB463D21F18AFDE00DD0F81 /* TTFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463D01F18AFDE00DD0F81 /* TTFacebookViewController.m */; };
 		9EB463D31F18AFDE00DD0F81 /* TTFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463D11F18AFDE00DD0F81 /* TTFacebookViewController.xib */; };
@@ -1674,7 +1678,7 @@
 		845A04AE1DC33B5E0055DADB /* Live view_icon_pause status@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live view_icon_pause status@3x.png"; sourceTree = "<group>"; };
 		845B73691DDF073F00847219 /* Brett.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brett.h; sourceTree = "<group>"; };
 		845B736A1DDF073F00847219 /* Brett.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brett.m; sourceTree = "<group>"; };
-		8464B9A81D95104700B67944 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8464B9A81D95104700B67944 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = presentationLiveDemo/AppDelegate.h; sourceTree = "<group>"; };
 		8464B9AA1D95104700B67944 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8464B9AC1D95104700B67944 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8464B9AE1D95104700B67944 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1704,8 +1708,6 @@
 		84725C381E5C016E00E80045 /* 22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 22.png; sourceTree = "<group>"; };
 		847AFE531DB9F1EB00717496 /* Browse_edit_def_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_edit_def_icon@3x.png"; sourceTree = "<group>"; };
 		847AFE541DB9F1EB00717496 /* Browse_edit_Sel_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_edit_Sel_icon@3x.png"; sourceTree = "<group>"; };
-		847AFE551DB9F1EB00717496 /* Browse_video_info_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_video_info_bg@3x.png"; sourceTree = "<group>"; };
-		847AFE561DB9F1EB00717496 /* Browse_videos_camera_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_videos_camera_icon@3x.png"; sourceTree = "<group>"; };
 		847E133E1E8A4FBB00486BA7 /* WIFI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WIFI.png; sourceTree = "<group>"; };
 		847E133F1E8A4FBB00486BA7 /* WIFI@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WIFI@2x.png"; sourceTree = "<group>"; };
 		847E13401E8A4FBB00486BA7 /* WIFI@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WIFI@3x.png"; sourceTree = "<group>"; };
@@ -1871,7 +1873,7 @@
 		8488BE141DB77992006357AD /* UIViewLinkmanTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewLinkmanTouch.m; sourceTree = "<group>"; };
 		8488BE151DB77992006357AD /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		8488BE161DB77992006357AD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		8488BE2C1DB779D2006357AD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		8488BE2C1DB779D2006357AD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = presentationLiveDemo/AppDelegate.mm; sourceTree = "<group>"; };
 		848F4EEE1DDD912400163292 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
 		8491D1ED1E6E95F3005F11ED /* icon_password_setting@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_password_setting@3x.png"; sourceTree = "<group>"; };
 		849D6A841E10E9F400B9F4A2 /* H264HardwareCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = H264HardwareCodec.h; sourceTree = "<group>"; };
@@ -2320,6 +2322,15 @@
 		9739E00E1F4ADCF000E7B7CF /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9739E00F1F4ADCF000E7B7CF /* BaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseWebViewController.h; sourceTree = "<group>"; };
 		9739E0101F4ADCF000E7B7CF /* BaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseWebViewController.m; sourceTree = "<group>"; };
+		9739E0431F4AF10600E7B7CF /* FSBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSBrowseViewController.h; sourceTree = "<group>"; };
+		9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSBrowseViewController.m; sourceTree = "<group>"; };
+		9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSBrowseViewController.xib; sourceTree = "<group>"; };
+		9739E04F1F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSPhotoCollectionViewCell.h; path = Views/FSPhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		9739E0501F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSPhotoCollectionViewCell.m; path = Views/FSPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		9739E0521F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FSPhotoCollectionViewCell.xib; path = Views/FSPhotoCollectionViewCell.xib; sourceTree = "<group>"; };
+		9739E0541F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSVideoCollectionViewCell.h; path = Views/FSVideoCollectionViewCell.h; sourceTree = "<group>"; };
+		9739E0551F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSVideoCollectionViewCell.m; path = Views/FSVideoCollectionViewCell.m; sourceTree = "<group>"; };
+		9739E0591F4BD51900E7B7CF /* FSVideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FSVideoCollectionViewCell.xib; path = Views/FSVideoCollectionViewCell.xib; sourceTree = "<group>"; };
 		9E043E261F25E1A200DDE35E /* StartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StartViewController.h; path = ../StartViewController.h; sourceTree = "<group>"; };
 		9E043E271F25E1A200DDE35E /* StartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = StartViewController.m; path = ../StartViewController.m; sourceTree = "<group>"; };
 		9EB463CF1F18AFDE00DD0F81 /* TTFacebookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFacebookViewController.h; sourceTree = "<group>"; };
@@ -3009,7 +3020,7 @@
 				841BED6A1DBF621C00D03A97 /* Support */,
 			);
 			name = ShareSDK;
-			path = presentationLiveDemo/ShareSDK;
+			path = ../../ShareSDK;
 			sourceTree = "<group>";
 		};
 		841BED6A1DBF621C00D03A97 /* Support */ = {
@@ -3210,8 +3221,6 @@
 				9739E03E1F4AE3ED00E7B7CF /* Views */,
 				9739E03D1F4AE3E500E7B7CF /* Models */,
 				9739E03F1F4AE3FB00E7B7CF /* Libs */,
-				8464B9A81D95104700B67944 /* AppDelegate.h */,
-				8488BE2C1DB779D2006357AD /* AppDelegate.mm */,
 				8464B9AA1D95104700B67944 /* Assets.xcassets */,
 				8488BCB11DB7792B006357AD /* res */,
 				8464B9AB1D95104700B67944 /* LaunchScreen.storyboard */,
@@ -3479,8 +3488,6 @@
 				84123F7B1DBDE66000CC7B4C /* update_progress bar_complete_bg@3x.png */,
 				847AFE531DB9F1EB00717496 /* Browse_edit_def_icon@3x.png */,
 				847AFE541DB9F1EB00717496 /* Browse_edit_Sel_icon@3x.png */,
-				847AFE551DB9F1EB00717496 /* Browse_video_info_bg@3x.png */,
-				847AFE561DB9F1EB00717496 /* Browse_videos_camera_icon@3x.png */,
 				8488BCBD1DB7792B006357AD /* adress_prompt_image@3x.png */,
 				8488BCBE1DB7792B006357AD /* audio input_external_icon_sel@3x.png */,
 				8488BCBF1DB7792B006357AD /* audio input_external_icon_un sel@3x.png */,
@@ -3635,6 +3642,7 @@
 		8488BDF91DB77992006357AD /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9739E0481F4AF11B00E7B7CF /* BrowseViewController */,
 				8488BDFA1DB77992006357AD /* BrowseViewController.h */,
 				8488BDFB1DB77992006357AD /* BrowseViewController.m */,
 				84E375EA1DBB62B600217030 /* PlayPhotoViewController.h */,
@@ -4443,6 +4451,7 @@
 			children = (
 				9739DFF21F4ADCF000E7B7CF /* MCAuthorizationManager.h */,
 				9739DFF31F4ADCF000E7B7CF /* MCAuthorizationManager.m */,
+				841BED681DBF621C00D03A97 /* ShareSDK */,
 				7A6850431F1898B100EEDE2D /* LFLiveKit */,
 				8488BDE61DB77992006357AD /* Album */,
 				8488BC9B1DB776ED006357AD /* KWPPDisplayLiving */,
@@ -4541,6 +4550,7 @@
 		9739E03E1F4AE3ED00E7B7CF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9739E0491F4BD27900E7B7CF /* Browse */,
 				7AF024781F03A5EC0072CEED /* PlatformSelectView */,
 				8488BDEE1DB77992006357AD /* CollectionViewCell.h */,
 				8488BDEF1DB77992006357AD /* CollectionViewCell.m */,
@@ -4591,10 +4601,34 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		9739E0481F4AF11B00E7B7CF /* BrowseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				9739E0431F4AF10600E7B7CF /* FSBrowseViewController.h */,
+				9739E0441F4AF10600E7B7CF /* FSBrowseViewController.m */,
+				9739E0451F4AF10600E7B7CF /* FSBrowseViewController.xib */,
+			);
+			name = BrowseViewController;
+			sourceTree = "<group>";
+		};
+		9739E0491F4BD27900E7B7CF /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				9739E04F1F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.h */,
+				9739E0501F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m */,
+				9739E0521F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib */,
+				9739E0541F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.h */,
+				9739E0551F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m */,
+				9739E0591F4BD51900E7B7CF /* FSVideoCollectionViewCell.xib */,
+			);
+			name = Browse;
+			sourceTree = "<group>";
+		};
 		D8BA26AC1D6AD13500D28C0F = {
 			isa = PBXGroup;
 			children = (
-				841BED681DBF621C00D03A97 /* ShareSDK */,
+				8464B9A81D95104700B67944 /* AppDelegate.h */,
+				8488BE2C1DB779D2006357AD /* AppDelegate.mm */,
 				8464B9A71D95104700B67944 /* presentationLiveDemo */,
 				D8BA26B61D6AD13500D28C0F /* Products */,
 				91DC0D17C0CC87D46C5A4353 /* Frameworks */,
@@ -4748,7 +4782,6 @@
 				84DA84AE1E88E7AC0027B06A /* configure_pre.png in Resources */,
 				84DA85271E88E7AC0027B06A /* fixed_sel@2x.png in Resources */,
 				84DA845C1E88E7AC0027B06A /* continue live_pre@3x.png in Resources */,
-				847AFE591DB9F1EB00717496 /* Browse_video_info_bg@3x.png in Resources */,
 				84DA85461E88E7AC0027B06A /* _0009_09.png in Resources */,
 				8488BD6D1DB7792B006357AD /* 01_00025.png in Resources */,
 				84DA84541E88E7AC0027B06A /* rouned_pre.png in Resources */,
@@ -4879,6 +4912,7 @@
 				847E13431E8A4FBB00486BA7 /* WIFI@3x.png in Resources */,
 				84123F8C1DBDE66000CC7B4C /* live stream_address_button_nor@3x.png in Resources */,
 				84DA85361E88E7AC0027B06A /* _0008_09.png in Resources */,
+				9739E0471F4AF10600E7B7CF /* FSBrowseViewController.xib in Resources */,
 				841BEC5E1DBF00B100D03A97 /* ins@2x.png in Resources */,
 				8488BD741DB7792B006357AD /* 01_00032.png in Resources */,
 				841BEC661DBF00B100D03A97 /* QQ.png in Resources */,
@@ -4976,6 +5010,7 @@
 				841BEC771DBF00B100D03A97 /* Youtube@3x.png in Resources */,
 				8488BD511DB7792B006357AD /* begin_record.mp3 in Resources */,
 				84DA85351E88E7AC0027B06A /* _0007_08.png in Resources */,
+				9739E05A1F4BD51900E7B7CF /* FSVideoCollectionViewCell.xib in Resources */,
 				8488BD9A1DB7792B006357AD /* live view_icon_normal@3x.png in Resources */,
 				84DA850D1E88E7AC0027B06A /* eyes_on@3x.png in Resources */,
 				8488BD971DB7792B006357AD /* live view_gopro_icon_not connect@3x.png in Resources */,
@@ -5082,6 +5117,7 @@
 				8488BD921DB7792B006357AD /* live streaming_Position operation_phone@3x.png in Resources */,
 				84DA85201E88E7AC0027B06A /* subtitle.png in Resources */,
 				8488BD711DB7792B006357AD /* 01_00029.png in Resources */,
+				9739E0531F4BD4BE00E7B7CF /* FSPhotoCollectionViewCell.xib in Resources */,
 				84123FAB1DBDE66000CC7B4C /* stream_pause screen_add_button_nor@3x.png in Resources */,
 				841BEDD21DBF621D00D03A97 /* WeiboSDK.bundle in Resources */,
 				84DA84751E88E7AC0027B06A /* stop live_pre.png in Resources */,
@@ -5145,7 +5181,6 @@
 				842B31C81E56EA6500996E3E /* freecast.bmp in Resources */,
 				8488BDB51DB7792B006357AD /* subscript_add_button_pre@3x.png in Resources */,
 				8488BD751DB7792B006357AD /* 01_00033.png in Resources */,
-				847AFE5A1DB9F1EB00717496 /* Browse_videos_camera_icon@3x.png in Resources */,
 				841BEC491DBF00B100D03A97 /* Example image13.png in Resources */,
 				844E02941DE42F0600A31374 /* nav_bg@3x.png in Resources */,
 				84DA84921E88E7AC0027B06A /* edit_nor@3x.png in Resources */,
@@ -5439,6 +5474,7 @@
 				9739E0391F4ADCF000E7B7CF /* BaseWebViewController.m in Sources */,
 				9739DF9D1F4ADCE500E7B7CF /* CoreUIViewController+Notification.m in Sources */,
 				7A68522D1F1898B200EEDE2D /* GPUImageFASTCornerDetectionFilter.m in Sources */,
+				9739E0461F4AF10600E7B7CF /* FSBrowseViewController.m in Sources */,
 				7A68523F1F1898B200EEDE2D /* GPUImageHighlightShadowTintFilter.m in Sources */,
 				7A68520E1F1898B200EEDE2D /* GPUImageCannyEdgeDetectionFilter.m in Sources */,
 				7A6852A01F1898B300EEDE2D /* GPUImageVideoCamera.m in Sources */,
@@ -5504,6 +5540,7 @@
 				7A6852B01F1898B300EEDE2D /* parseurl.c in Sources */,
 				9739DFB31F4ADCE500E7B7CF /* WebViewProgressView.m in Sources */,
 				7A68524C1F1898B200EEDE2D /* GPUImageLanczosResamplingFilter.m in Sources */,
+				9739E0561F4BD4ED00E7B7CF /* FSVideoCollectionViewCell.m in Sources */,
 				7A6852831F1898B300EEDE2D /* GPUImageSkinToneFilter.m in Sources */,
 				848312401DC6E0C0002CDF1D /* BannerViewController.m in Sources */,
 				7A6852941F1898B300EEDE2D /* GPUImageThresholdedNonMaximumSuppressionFilter.m in Sources */,
@@ -5542,6 +5579,7 @@
 				7A68525D1F1898B300EEDE2D /* GPUImageMosaicFilter.m in Sources */,
 				84E375EE1DBB62B600217030 /* PlayPhotoViewController.m in Sources */,
 				7A6852391F1898B200EEDE2D /* GPUImageGrayscaleFilter.m in Sources */,
+				9739E0511F4BD49C00E7B7CF /* FSPhotoCollectionViewCell.m in Sources */,
 				9739E0311F4ADCF000E7B7CF /* MCRecordEncoder.m in Sources */,
 				9739DFB71F4ADCE500E7B7CF /* iOSVersion.m in Sources */,
 				9739E0211F4ADCF000E7B7CF /* Platform.xcdatamodeld in Sources */,

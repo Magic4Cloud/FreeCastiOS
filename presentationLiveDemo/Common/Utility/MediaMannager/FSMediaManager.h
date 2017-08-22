@@ -10,10 +10,9 @@
 #import <Photos/Photos.h>
 @interface FSMediaManager : NSObject
 
-//+ (instancetype)sharedMediaManager;
-
 + (void)saveImage:(UIImage *)image;
 
-+ (void)accessToImageAccordingToTheAsset:(PHAsset *)asset size:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)resizeMode completion:(void(^)(UIImage *image,NSDictionary *info))completion;
+//+ (void)accessToImageAccordingToTheAsset:(PHAsset *)asset size:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)resizeMode completion:(void(^)(UIImage *image,NSDictionary *info))completion;
 
++ (NSArray<UIImage *>*)getAllPhotoWithsize:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)imageResizeMode;
 @end

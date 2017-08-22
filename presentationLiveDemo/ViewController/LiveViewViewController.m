@@ -30,6 +30,7 @@
 #import "SubtitleViewController.h"
 #import "BannerViewController.h"
 #import "PauseScreenViewController.h"
+#import "FSBrowseViewController.h"
 //others
 #import "AlbumObject.h"
 #import "TTCoreDataClass.h"
@@ -2440,8 +2441,10 @@ bool _isTakePhoto=NO;
     
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    BrowseViewController *v = [[BrowseViewController alloc] init];
-    [self.navigationController pushViewController: v animated:true];
+#warning coding...
+//    BrowseViewController *v = [[BrowseViewController alloc] init];
+    FSBrowseViewController * browseVC = [[FSBrowseViewController alloc] init];
+    [self.navigationController pushViewController:browseVC animated:true];
 }
 
 

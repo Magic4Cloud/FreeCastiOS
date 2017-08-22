@@ -48,7 +48,7 @@
         self.videoImageView.clipsToBounds = YES;
         self.videoImageView.image=self.selectImageView.image = [UIImage imageNamed:@"Browse_videos_camera_icon@3x"];
         [self.imgView addSubview:self.videoImageView];
-        
+
         self.videoTimeLabel= [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(self.frame)-CGRectGetWidth(self.frame)*54/119, 0, CGRectGetWidth(self.frame)*48/119, CGRectGetHeight(self.frame)*15/119)];
         self.videoTimeLabel.center=CGPointMake(self.videoTimeLabel.center.x, self.videoInfoView.center.y);
         self.videoTimeLabel.backgroundColor = [UIColor clearColor];

@@ -26,3 +26,6 @@
 
 #define AudioSourceIsIphone @"isIphoneAudio"
 
+#define bugly_appid  @"3027ad3ed7"
+#define bugly_appkey @"df17f5a7-64d5-49b6-8883-ee78d1daf121"
+

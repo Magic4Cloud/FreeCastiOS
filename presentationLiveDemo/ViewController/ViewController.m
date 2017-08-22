@@ -19,7 +19,7 @@
 #import "CommanParameters.h"
 
 #import "TTPlatformSelectViewController.h"
-
+#import "FSBrowseViewController.h"
 
 Scanner *_Scan;
 
@@ -380,9 +380,10 @@ Scanner *_Scan;
     _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_nor"];
     _browseImgBtn.text.textColor=[UIColor whiteColor];
     [_browseImgBtn draw:MAIN_COLOR_T];
-    BrowseViewController *v = [[BrowseViewController alloc] init];
+#warning coding...
+//    BrowseViewController *v = [[BrowseViewController alloc] init];
+    FSBrowseViewController *v = [[FSBrowseViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
-    NSLog(@"回放");
 }
 
 -(void)_browseDown{

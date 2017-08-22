@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSPhotoCollectionViewCell">
+            <connections>
+                <outlet property="photoImageView" destination="cxm-3r-t4q" id="oLi-gw-ceQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Mvq-fs-ILI">
+            <rect key="frame" x="0.0" y="0.0" width="219" height="203"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cxm-3r-t4q">
+                    <rect key="frame" x="0.0" y="0.0" width="219" height="203"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit_nor.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Is-m0-eb6">
+                    <rect key="frame" x="175" y="0.0" width="44" height="44"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="cxm-3r-t4q" firstAttribute="leading" secondItem="Mvq-fs-ILI" secondAttribute="leading" id="L6q-pi-EKc"/>
+                <constraint firstAttribute="trailing" secondItem="4Is-m0-eb6" secondAttribute="trailing" id="Pfm-lW-3SQ"/>
+                <constraint firstAttribute="bottom" secondItem="cxm-3r-t4q" secondAttribute="bottom" id="Swe-Kj-eOr"/>
+                <constraint firstItem="4Is-m0-eb6" firstAttribute="top" secondItem="Mvq-fs-ILI" secondAttribute="top" id="fdV-UI-d2S"/>
+                <constraint firstAttribute="trailing" secondItem="cxm-3r-t4q" secondAttribute="trailing" id="iec-pB-YnZ"/>
+                <constraint firstItem="cxm-3r-t4q" firstAttribute="top" secondItem="Mvq-fs-ILI" secondAttribute="top" id="vx1-3v-4R7"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-69.5" y="-53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="edit_nor.png" width="44" height="44"/>
+    </resources>
+</document>

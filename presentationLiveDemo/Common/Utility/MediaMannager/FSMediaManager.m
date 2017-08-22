@@ -9,6 +9,7 @@
 #import "FSMediaManager.h"
 #import "MBProgressHUD.h"
 
+
 @implementation FSMediaManager
 
 
@@ -183,23 +184,37 @@
     }];
 }
 
--(NSMutableArray<PHAsset *>*)GetALLphotosUsingPohotKit {
-    //获取以 APP 的名称
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    NSString *title = [infoDictionary objectForKey:@"CFBundleDisplayName"];
++ (NSArray<UIImage *>*)getAllPhotoWithsize:(CGSize)size resizeMode:(PHImageRequestOptionsResizeMode)imageResizeMode{
+    NSArray <PHAsset *>*assetArray = [self GetALLphotosUsingPohotKit];
+    NSMutableArray *imagesArray = @[].mutableCopy;
+    [assetArray enumerateObjectsUsingBlock:^(PHAsset * _Nonnull asset, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [self accessToImageAccordingToTheAsset:asset size:CGSizeMake(100, 200) resizeMode:imageResizeMode completion:^(UIImage *image, NSDictionary *info) {
+            [imagesArray addObject:image];
+            NSLog(@"---+++=___info = %@",info);
+        }];
+    }];
+    return imagesArray;
+}
+
+//获取指定相册下的所有asset
++ (NSMutableArray<PHAsset *>*)GetALLphotosUsingPohotKit {
     NSMutableArray <PHAsset *>*arr = [NSMutableArray array];
     // 所有智能相册
-    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    if (albums.count == 0) {
+        return arr;
+    }
+    // 是否按创建时间排序
+    PHFetchOptions *option = [[PHFetchOptions alloc] init];
+    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    option.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld", PHAssetMediaTypeImage];
     
-    for (NSInteger i = 0; i < smartAlbums.count; i++) {
-        // 是否按创建时间排序
-        PHFetchOptions *option = [[PHFetchOptions alloc] init];
-        option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-        option.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld", PHAssetMediaTypeImage];
-        PHCollection *collection = smartAlbums[i];
+    for (PHCollection * collection in albums) {
         //遍历获取相册
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
-            if ([collection.localizedTitle isEqualToString:title]) {
+            if ([collection.localizedTitle isEqualToString:[self getAlbumName]]) {
+                
                 PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
                 PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
                 NSArray *assets;
@@ -212,12 +227,12 @@
             }
         }
     }
-    //返回指定相册内（freestream）的所有照片
+    //返回指定相册内（freestream）的所有照片asset
     return arr;
 }
 
 #pragma mark - <  获取相册里的所有图片的PHAsset对象  >
-- (NSArray<PHAsset *> *)getAllPhotosAssetInAblumCollection:(PHAssetCollection *)assetCollection ascending:(BOOL)ascending{
++ (NSArray<PHAsset *> *)getAllPhotosAssetInAblumCollection:(PHAssetCollection *)assetCollection ascending:(BOOL)ascending{
     // 存放所有图片对象
     NSMutableArray *assets = [NSMutableArray array];
     

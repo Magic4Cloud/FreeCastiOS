@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CommonAppHeaders.h"
 #import "ViewController.h"
 #import "CommonFunc.h"
 #import "RotateNavigationControllerViewController.h"
@@ -321,7 +322,7 @@
     config.unexpectedTerminatingDetectionEnable = YES;
     config.debugMode = YES;
     config.reportLogLevel = BuglyLogLevelWarn;
-    [Bugly startWithAppId:@"3027ad3ed7" config:config];
+    [Bugly startWithAppId:bugly_appid config:config];
     
     
     return YES;
