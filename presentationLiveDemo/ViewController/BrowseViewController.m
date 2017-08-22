@@ -34,7 +34,7 @@
 
 NSMutableArray *Medias;
 
-@interface BrowseViewController ()
+@interface BrowseViewController ()<AlbumDelegate>
 {
     AlbumObject *_albumObject;
     bool is_grouped;
@@ -282,6 +282,7 @@ NSMutableArray *Medias;
     
     int count = (int)[selectedDic count];
     NSMutableArray *videos=[self Get_Paths:@"video_flag"];
+    
     NSMutableArray *mutaArray = [[NSMutableArray alloc] init];
     [mutaArray addObjectsFromArray:videos];
     for (int i = 0; i < count; i++) {
@@ -311,7 +312,11 @@ NSMutableArray *Medias;
                             NSMutableArray * getMedias = [Medias[idx] getMedias];
                             [getMedias removeObject:media];
                             dispatch_async(dispatch_get_main_queue(), ^{
+                                if (i == count -1) {
+                                    [self removeEmptyGroup];
+                                }
                                 [_collectionView reloadData];
+                                
                             });
                             
                         }
@@ -338,13 +343,12 @@ NSMutableArray *Medias;
             }];
             //当组内元素为0时，删除组
             if ([[Medias[idx] getMedias] count]==0) {
-                [Medias removeObject :Medias[idx]];
+                [Medias removeObject:Medias[idx]];
             }
         }];
     }
     
-    if(!is_photo_choose)
-    {
+    if(!is_photo_choose) {
         [self Save_Paths:mutaArray :@"video_flag"];
     }
     
@@ -838,17 +842,29 @@ BOOL _isExist;
     [defaults synchronize];
 }
 
+- (void)removeEmptyGroup {
+    NSMutableArray * arr = @[].mutableCopy;
+    [Medias enumerateObjectsUsingBlock:^(MediaGroup *group, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (group.medias.count > 0) {
+            [arr addObject:group];
+        }
+    }];
+    Medias = arr.mutableCopy;
+}
 
 #pragma mark -- UICollectionViewDataSource
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    
     MediaGroup *group1=Medias[section];
+    NSLog(@"----------------个数:%lu",group1.medias.count);
     return group1.medias.count;
 }
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    
     return Medias.count;
 }
 
@@ -960,11 +976,27 @@ NSString *_lastDate=@"";
             [dic setObject:@"1" forKey:@"flag"];
             [selectedDic addObject:[media[row] getName]];
             NSLog(@"[contact getUrl]=%@",[contact getUrl]);
-            [shareImg addObject:[contact getFullImage]];
+            UIImage *fullImage = (UIImage*)[contact getFullImage];
+            if (fullImage) {
+                [shareImg addObject:fullImage];
+            }else {
+                UIImage *image = (UIImage*)[contact getImage];
+                if (image) {
+                    [shareImg addObject:image];
+                }
+            }
         } else {
             [dic setObject:@"0" forKey:@"flag"];
             [selectedDic removeObject:[media[row] getName]];
-            [shareImg removeObject:[contact getFullImage]];
+            UIImage *fullImage = (UIImage*)[contact getFullImage];
+            if (fullImage) {
+                [shareImg removeObject:fullImage];
+            }else {
+                UIImage *image = (UIImage*)[contact getImage];
+                if (image) {
+                    [shareImg removeObject:image];
+                }
+            }
         }
         [cell setSelectFlag:!flag];
     }

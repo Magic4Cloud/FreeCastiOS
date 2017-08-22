@@ -1588,7 +1588,7 @@ bool VideoRecordIsEnable = NO;
 
 #pragma mark --LFStreamingSessionDelegate
 -(void)liveSession:(LFLiveSession *)session debugInfo:(LFLiveDebug *)debugInfo{
-    
+    NSLog(@"----------------%@",debugInfo);
 }
 
 -(void)liveSession:(LFLiveSession *)session liveStateDidChange:(LFLiveState)state{
@@ -1712,6 +1712,7 @@ bool VideoRecordIsEnable = NO;
     _recordBtn.enabled = YES;
     
     _livingState=LivingStateStop;
+    
 }
 
 /**
