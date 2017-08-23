@@ -69,6 +69,8 @@ SAVC(mp4a);
 @property (nonatomic, assign) BOOL sendVideoHead;
 @property (nonatomic, assign) BOOL sendAudioHead;
 
+@property (nonatomic, assign) BOOL hasSendError;
+
 @end
 
 @implementation LFStreamRTMPSocket
@@ -242,7 +244,7 @@ SAVC(mp4a);
     _sendVideoHead = NO;
     self.debugInfo = nil;
     [self.buffer removeAllObject];
-    self.retryTimes4netWorkBreaken = 0;
+    self.retryTimes4netWorkBreaken = 60;
 }
 
 - (NSInteger)RTMP264_Connect:(char *)push_url {
@@ -483,6 +485,7 @@ Failed:
 
 // 断线重连
 - (void)reconnect {
+    
     dispatch_async(self.rtmpSendQueue, ^{
         if (self.retryTimes4netWorkBreaken++ < self.reconnectCount && !self.isReconnecting) {
             self.isConnected = NO;
@@ -493,12 +496,16 @@ Failed:
             });
            
         } else if (self.retryTimes4netWorkBreaken >= self.reconnectCount) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(socketStatus:status:)]) {
-                [self.delegate socketStatus:self status:LFLiveError];
+            if (!self.hasSendError) {
+                if (self.delegate && [self.delegate respondsToSelector:@selector(socketStatus:status:)]) {
+                    self.hasSendError = YES;
+                    [self.delegate socketStatus:self status:LFLiveError];
+                }
+                if (self.delegate && [self.delegate respondsToSelector:@selector(socketDidError:errorCode:)]) {
+                    [self.delegate socketDidError:self errorCode:LFLiveSocketError_ReConnectTimeOut];
+                }
             }
-            if (self.delegate && [self.delegate respondsToSelector:@selector(socketDidError:errorCode:)]) {
-                [self.delegate socketDidError:self errorCode:LFLiveSocketError_ReConnectTimeOut];
-            }
+            
         }
     });
 }
