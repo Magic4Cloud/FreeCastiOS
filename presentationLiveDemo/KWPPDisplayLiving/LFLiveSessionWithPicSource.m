@@ -142,6 +142,8 @@ static LFLiveSessionWithPicSource * _sharedInstance;
         isShowBanner=NO;
     }
     [self.socket stop];
+//    ////////////
+    self.socket = nil;
 }
 
 /**

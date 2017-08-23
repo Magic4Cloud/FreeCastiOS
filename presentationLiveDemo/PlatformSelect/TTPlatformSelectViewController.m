@@ -86,7 +86,7 @@
     
     self.view.backgroundColor = [UIColor TTBackLightGrayColor];
     
-    [self configNavigationWithTitle:@"stream" rightButtonTitle:nil];
+    [self configNavigationWithTitle:@"Stream" rightButtonTitle:nil];
     
     
     [self.view addSubview:self.collectionView];

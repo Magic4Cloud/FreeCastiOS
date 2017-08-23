@@ -10,6 +10,7 @@
 #import "CommonAppHeaders.h"
 #import "MBProgressHUD.h"
 #import "TTAlertViewController.h"
+#import "FSAlertController.h"
 
 @implementation UIViewController (Navigation)
 - (void)configNavigationWithTitle:(NSString *)title rightButtonTitle:(NSString *)buttonTitle
@@ -138,8 +139,5 @@
         
     }];
 }
-
-
-
 
 @end

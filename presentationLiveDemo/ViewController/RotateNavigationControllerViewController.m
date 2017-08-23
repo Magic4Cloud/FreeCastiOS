@@ -36,9 +36,9 @@
     return self.topViewController.shouldAutorotate;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     //NSLog(@"RotateNavigationControllerViewController supportedInterfaceOrientations = %i", self.topViewController.supportedInterfaceOrientations);
+    NSLog(@"----------------%@",self.topViewController);
     return self.topViewController.supportedInterfaceOrientations;
 }
 

@@ -72,7 +72,7 @@ static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 
-@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,WisViewDelegate,CAAutoFillDelegate,AlbumDelegate>
+@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,WisViewDelegate,CAAutoFillDelegate,AlbumDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) WisView *videoView;
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
@@ -166,24 +166,6 @@ static enum ButtonEnable RecordVideoEnable;
     return _livingPreView;
 }
 
-//- (WisView *)videoView {
-//    if (!_videoView) {
-//        _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-//        _videoView.userInteractionEnabled = YES;
-//        
-//        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
-//        [_videoView addGestureRecognizer:singleTap];
-//        _videoView.backgroundColor = [UIColor blackColor];
-//        
-//        [_videoView set_log_level:2];
-//        [_videoView sound:YES];
-//        [_videoView delegate:self];
-//        [self.view insertSubview:_videoView atIndex:0];
-//    }
-//    return _videoView;
-//}
-
-
 #pragma mark - ------------------lifeCycle----
 
 - (void)viewDidLoad {
@@ -233,13 +215,10 @@ static enum ButtonEnable RecordVideoEnable;
     if (!_searchDeviceHasResult) {//没有搜索结果
         return;
     }
-         [self getDeviceConfig];
-    NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-//    NSLog(@"----------------log%@",urlString);
     
-//    _videoView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
-//    [_videoView setView1Frame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-//    [_videoView delegate:self];
+    [self getDeviceConfig];
+    
+    NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
     [self.videoView play:urlString useTcp:NO];
     [self.videoView sound:YES];
     [self.videoView startGetYUVData:YES];
@@ -247,14 +226,12 @@ static enum ButtonEnable RecordVideoEnable;
     [self.videoView startGetH264Data:YES];
     [self.videoView show_view:YES];
     self.videoisplaying = YES;
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     if(self.isBroswer){
-        NSLog(@"-----_________---------%s",__func__);
         [self stopVideo];
     }
 }
@@ -264,7 +241,6 @@ static enum ButtonEnable RecordVideoEnable;
  */
 - (void)stopVideo {
     if (_isPlaying) {
-        NSLog(@"-----_________---------%s",__func__);
         _livingState = 0;
         _isPlaying=NO;
         self.videoisplaying = NO;
@@ -275,16 +251,13 @@ static enum ButtonEnable RecordVideoEnable;
         _livingState = 0;
         [_videoView sound:NO];
         [_videoView stop];
-        NSLog(@"----------------xxxxxxxxxxxxxxxxx没有播放你就退出了");
     }
 }
 /** 返回*/
 - (void)backBtnOnClicked{
     _backBtn.enabled = NO;
-    NSLog(@"-----_________---------%s",__func__);
     self.isExit = YES;
     [self closeLivingSession];
-//    [self stopVideo];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
     [self prefersStatusBarHidden:YES];
     [self back];
@@ -423,7 +396,7 @@ static enum ButtonEnable RecordVideoEnable;
         }
         else if ([name isEqualToString:custom])
         {
-            imageName = @"icon_choose";
+            imageName = @"icon_custom_pre";
         }
         else
         {
@@ -871,8 +844,7 @@ bool VideoRecordIsEnable = NO;
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         _userid = [result.Device_ID_Arr objectAtIndex:0];
         NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-        //        NSLog(@"??????????????????????????scan userip=%@",urlString);
-        
+
         [self getDeviceConfig];
         
         [self.videoView play:urlString useTcp:NO];
@@ -882,18 +854,17 @@ bool VideoRecordIsEnable = NO;
         [self.videoView startGetH264Data:YES];
         [self.videoView show_view:YES];
         self.videoisplaying = YES;
-        
         [self enableControl];
     } else {
         _searchDeviceHasResult = NO;
         [_updateUITimer setFireDate:[NSDate distantFuture]];
         self.videoisplaying = NO;
         dispatch_async(dispatch_get_main_queue(),^ {
+            
             [self showActionSheetWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" action1title:@"Continue Search" action2title:@"Use iPhone Camera" action3title:@"Cancel" action1Handler:^(UIAlertAction *action) {
                 self.scanCount = 0;
                 [self scanDevice];
             } action2Handler:^(UIAlertAction *action) {
-                
                 _session = [self getSessionWithSystemCamera];
                 self.livingPreView.hidden = NO;
                 [self hidenSearchingMessageTips];
@@ -910,7 +881,6 @@ bool VideoRecordIsEnable = NO;
 
 #pragma mark -------------------
 #pragma mark WisviewDelegate
-
 
 /**
  *  获取屏幕尺寸变化作相应适配
@@ -935,29 +905,8 @@ bool VideoRecordIsEnable = NO;
             CGFloat videoviewW = (MAX(height, width) > kWidth )? _viewW: _viewW * (resultH/resultW);
             
             self.videoView.frame = CGRectMake((_viewW - videoviewW)/2.f, (_viewH - videoviewH)/2.f, _viewW  , _viewH);
-//            NSLog(@"=++++++++=========+%@,,,%@",NSStringFromCGRect(self.videoView.frame),NSStringFromCGRect(self.view.frame));
+
             [self.videoView setView1Frame:self.videoView.frame];
-            //            self.videoView.center = CGPointMake( _viewH*0.5,_viewW*0.5);
-            //            NSLog(@"_width=%ld,height=%ld",(long)kWidth,(long)kHeight);
-            //
-            //            dispatch_async(dispatch_get_main_queue(), ^{
-            //                if (_viewH>_viewW) {
-            //                    _temp=_viewW;
-            //                    _tempviewW=_viewH;
-            //                    _tempviewH=_temp;
-            //                }
-            //                if (_tempviewH<_tempviewW*kHeight/kWidth) {
-            //                    self.videoView.frame =CGRectMake(0, 0, _tempviewH*kWidth/kHeight, _tempviewH);
-            //                    [self.videoView setView1Frame:CGRectMake(0, 0, _tempviewH*kWidth/kHeight, _tempviewH)];
-            //                    NSLog(@"w3=%f,h3=%f",self.videoView.frame.size.width,self.videoView.frame.size.height);
-            //                }
-            //                else{
-            //                    self.videoView.frame =CGRectMake(0, 0, _tempviewW, _tempviewW*kHeight/kWidth);
-            //                    [self.videoView setView1Frame:CGRectMake(0, 0, _tempviewW, _tempviewW*kHeight/kWidth)];
-            //                    NSLog(@"w4=%f,h4=%f",_videoView.frame.size.width,_videoView.frame.size.height);
-            //                }
-            //                self.videoView.center=CGPointMake(_tempviewW*0.5, _tempviewH*0.5);
-            //            });
         }
     }
 }
@@ -1063,8 +1012,10 @@ bool VideoRecordIsEnable = NO;
 -(void)updateUI{
     
     if (self.videoisplaying ==NO) {
-        if (_scanCount >= 5) {
-            _tipLabel.text = NSLocalizedString(@"no_device", nil);
+        if (_scanCount ==5) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                _tipLabel.text = NSLocalizedString(@"no_device", nil);
+            });
             _scanCount = 0;
         }
     }else{
@@ -1208,7 +1159,7 @@ bool VideoRecordIsEnable = NO;
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return  UIInterfaceOrientationLandscapeLeft;
+    return  UIInterfaceOrientationLandscapeRight;
 }
 
 #pragma mark-- Toast显示示例
@@ -1611,16 +1562,25 @@ bool VideoRecordIsEnable = NO;
             break;
         case LFLiveError:
         {
-            networkStatusInfo =@"连接出错";
+            networkStatusInfo =@"Connect server error";
             __weak typeof(self) weakself = self;
+            if (_session) {
+                [_session stopLive];
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
-                    if (_session) {
-                        [_session stopLive];
-                    }
-                    
-                }];
-                [weakself setStopStreamStatus];
+                
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Connect server error!" message:@"Connect error please check rtmp address or network" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                alert.delegate = self;
+            [alert show];
+            [weakself setStopStreamStatus];
+//                [weakself showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
+//                    if (_session) {
+//                        [_session stopLive];
+//                    }
+//                    
+//                }];
+//                [weakself setStopStreamStatus];
             });
             
         }
@@ -1632,8 +1592,6 @@ bool VideoRecordIsEnable = NO;
     if (networkStatusInfo){
         [self showHudMessage:networkStatusInfo];
     }
-    
-    
     NSLog(@"liveStateDidChange : networkStatusInfo :%@",networkStatusInfo);
     
 }
@@ -1712,7 +1670,6 @@ bool VideoRecordIsEnable = NO;
     _recordBtn.enabled = YES;
     
     _livingState=LivingStateStop;
-    
 }
 
 /**
