@@ -931,6 +931,7 @@ bool VideoRecordIsEnable = NO;
                   :(Byte*)yData :(Byte*)uData :(Byte*)vData
                   :(int)ySize :(int)uSize :(int)vSize
 {
+#warning need review...
     CGFloat resultW = width;
     CGFloat resultH = height;
     //    NSLog(@"获取屏幕尺寸变化作相应适配 GetYUVData ");

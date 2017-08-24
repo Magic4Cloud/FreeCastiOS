@@ -907,7 +907,6 @@
 		84E634A21E554CD50049573E /* 3333.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 84E634A01E554CD50049573E /* 3333.bmp */; };
 		84E634A71E5576F00049573E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E634A61E5576F00049573E /* ImageHelper.m */; };
 		84EE3BDB1F3D9A49006DF97E /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EE3BD81F3D9A49006DF97E /* libWisView.a */; };
-		97299EA91F4D3176002810CD /* FSAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97299EA81F4D3176002810CD /* FSAlertController.m */; };
 		9733166C1F4E81DA0034F4C7 /* GPUImageHighPassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6850FF1F1898B100EEDE2D /* GPUImageHighPassFilter.m */; };
 		9733166D1F4E81FC0034F4C7 /* GPUImageToonFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6851AF1F1898B200EEDE2D /* GPUImageToonFilter.m */; };
 		9733166E1F4E82170034F4C7 /* GPUImageLineGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6851211F1898B200EEDE2D /* GPUImageLineGenerator.m */; };
@@ -2196,8 +2195,6 @@
 		84EE3BD91F3D9A49006DF97E /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		84EE3BDA1F3D9A49006DF97E /* WisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WisView.h; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		97299EA71F4D3176002810CD /* FSAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSAlertController.h; sourceTree = "<group>"; };
-		97299EA81F4D3176002810CD /* FSAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSAlertController.m; sourceTree = "<group>"; };
 		9739DF561F4ADCE500E7B7CF /* CoreCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreCollectionViewCell.h; sourceTree = "<group>"; };
 		9739DF571F4ADCE500E7B7CF /* CoreCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreCollectionViewCell.m; sourceTree = "<group>"; };
 		9739DF581F4ADCE500E7B7CF /* CoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTableViewCell.h; sourceTree = "<group>"; };
@@ -4387,8 +4384,6 @@
 				9739DFCB1F4ADCF000E7B7CF /* UIImageView+Networking.m */,
 				9739DFCC1F4ADCF000E7B7CF /* UIViewController+MessageNotification.h */,
 				9739DFCD1F4ADCF000E7B7CF /* UIViewController+MessageNotification.m */,
-				97299EA71F4D3176002810CD /* FSAlertController.h */,
-				97299EA81F4D3176002810CD /* FSAlertController.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5622,7 +5617,6 @@
 				84123F481DBD9FB800CC7B4C /* UpdateFirmwareViewController.m in Sources */,
 				7A6852481F1898B200EEDE2D /* GPUImageiOSBlurFilter.m in Sources */,
 				848312461DC70FB2002CDF1D /* AudioViewController.m in Sources */,
-				97299EA91F4D3176002810CD /* FSAlertController.m in Sources */,
 				7A6852AE1F1898B300EEDE2D /* hashswf.c in Sources */,
 				7A68521C1F1898B200EEDE2D /* GPUImageColourFASTSamplingOperation.m in Sources */,
 				8464BAE41D95110200B67944 /* CommonFunc.m in Sources */,
