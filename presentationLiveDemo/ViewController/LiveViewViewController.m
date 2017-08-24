@@ -72,7 +72,7 @@ static const NSString *video_type = @"h264";
 static enum ButtonEnable SavePictureEnable;
 static enum ButtonEnable RecordVideoEnable;
 
-@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,WisViewDelegate,CAAutoFillDelegate,AlbumDelegate,UIAlertViewDelegate>
+@interface LiveViewViewController ()<LFLiveSessionWithPicSourceDelegate,WisViewDelegate,CAAutoFillDelegate,AlbumDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic, strong) WisView *videoView;
 @property (nonatomic, strong) PlatformModel *selectedPlatformModel;
@@ -860,23 +860,65 @@ bool VideoRecordIsEnable = NO;
         [_updateUITimer setFireDate:[NSDate distantFuture]];
         self.videoisplaying = NO;
         dispatch_async(dispatch_get_main_queue(),^ {
-            
-            [self showActionSheetWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" action1title:@"Continue Search" action2title:@"Use iPhone Camera" action3title:@"Cancel" action1Handler:^(UIAlertAction *action) {
-                self.scanCount = 0;
-                [self scanDevice];
-            } action2Handler:^(UIAlertAction *action) {
-                _session = [self getSessionWithSystemCamera];
-                self.livingPreView.hidden = NO;
-                [self hidenSearchingMessageTips];
-                [self noHiddenStatus];
-                _play_success = YES;
-                _liveCameraSource = IphoneBackCamera;
-                [self enableControl];
-            } action3Handler:^(UIAlertAction *action) {
-                [self backBtnOnClicked];
-            }];
+            [self presentAlertSheet];
         });
     }
+}
+
+- (void)presentAlertSheet {
+    UIAlertController *searchResultActionSheet = [UIAlertController alertControllerWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"Continue Search" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.scanCount = 0;
+        [self scanDevice];
+    }];
+    
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Use iPhone Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _session = [self getSessionWithSystemCamera];
+        self.livingPreView.hidden = NO;
+        [self hidenSearchingMessageTips];
+        [self noHiddenStatus];
+        _play_success = YES;
+        _liveCameraSource = IphoneBackCamera;
+        [self enableControl];
+    }];
+    
+    UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self backBtnOnClicked];
+    }];
+    
+    [searchResultActionSheet addAction:action1];
+    [searchResultActionSheet addAction:action2];
+    [searchResultActionSheet addAction:action3];
+    //setting for ipad
+    [searchResultActionSheet setModalPresentationStyle:UIModalPresentationPopover];
+    
+    UIPopoverPresentationController *popPresenter = [searchResultActionSheet popoverPresentationController];
+    popPresenter.sourceView = _bottomBg;
+    popPresenter.sourceRect = _bottomBg.bounds;
+    //隐藏，等待旋转好了才显示出来
+    searchResultActionSheet.view.hidden = YES;
+    
+    [self presentViewController:searchResultActionSheet animated:YES completion:^{
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            //ipad
+            searchResultActionSheet.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+            searchResultActionSheet.view.hidden = NO;
+            return;
+        }else{
+            //iphone
+            searchResultActionSheet.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+            
+            //从下往上冒出来动画
+            searchResultActionSheet.view.center = CGPointMake(-CGRectGetWidth(searchResultActionSheet.view.frame)/2,_topBg.center.x);
+            searchResultActionSheet.view.hidden = NO;
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear  animations:^{
+                searchResultActionSheet.view.center = CGPointMake(CGRectGetWidth(searchResultActionSheet.view.frame)/2,_topBg.center.x);
+            } completion:^(BOOL finished) {
+                nil;
+            }];
+        }
+    }];
 }
 
 #pragma mark -------------------

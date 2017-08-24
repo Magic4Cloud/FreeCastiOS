@@ -57,7 +57,6 @@
     
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -248,11 +247,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     
-    if (_userip == nil) {
-        return 1;
-    }else{
-        return 2;
-    }
+    return 2;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -274,9 +269,9 @@
         
         [footerView.button addTarget:self action:@selector(goliVeNowButtonClick) forControlEvents:UIControlEventTouchUpInside];
         
-//        if (indexPath.section == 1) {
+        if (indexPath.section == 1) {
             reusableview = footerView;
-//        }
+        }
     }
 
     return reusableview;
@@ -285,15 +280,11 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
     
-    if (_userip == nil) {
-        return CGSizeMake(ScreenWidth, 100);
-    }else{
         if (section == 0) {
             return CGSizeZero;
         }else {
             return CGSizeMake(ScreenWidth, 100);
         }
-    }
 }
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -342,27 +333,52 @@
     }
     else
     {
-        switch (indexPath.row) {
-            case 0:
-            {
-                [cell setImageviewImageWithImageName:@"button_subtitle"];
-                
+        if (_userip) {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [cell setImageviewImageWithImageName:@"button_subtitle_nor"];
+                    
+                }
+                    break;
+                case 1:
+                {
+                    [cell setImageviewImageWithImageName:@"button_logo_nor"];
+                    
+                }
+                    break;
+                case 2:
+                {
+                    [cell setImageviewImageWithImageName:@"button_audio_nor"];
+                }
+                    break;
+                    
+                default:
+                    break;
             }
-                break;
-            case 1:
-            {
-                [cell setImageviewImageWithImageName:@"button_logo_nor"];
-                
+        }else{
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [cell setImageviewImageWithImageName:@"button_subtitle"];
+                    
+                }
+                    break;
+                case 1:
+                {
+                    [cell setImageviewImageWithImageName:@"button_logo"];
+                    
+                }
+                    break;
+                case 2:
+                {
+                    [cell setImageviewImageWithImageName:@"button_audio"];
+                }
+                    break;
+                    
+                default:
+                    break;
             }
-                break;
-            case 2:
-            {
-                [cell setImageviewImageWithImageName:@"button_audio_nor"];
-            }
-                break;
-                
-            default:
-                break;
         }
     }
     return cell;
