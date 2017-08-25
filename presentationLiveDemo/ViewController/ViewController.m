@@ -378,9 +378,7 @@ Scanner *_Scan;
     _browseImgBtn.imgView.image=[UIImage imageNamed:@"button_browse_nor"];
     _browseImgBtn.text.textColor=[UIColor whiteColor];
     [_browseImgBtn draw:MAIN_COLOR_T];
-#warning coding...
     BrowseViewController *v = [[BrowseViewController alloc] init];
-//    FSBrowseViewController *v = [[FSBrowseViewController alloc] init];
     [self.navigationController pushViewController: v animated:true];
 }
 
@@ -471,11 +469,10 @@ Scanner *_Scan;
 
 - (BOOL)shouldAutorotate
 {
-    return YES;
+    return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -483,6 +480,11 @@ Scanner *_Scan;
 {
     return UIInterfaceOrientationPortrait;
 }
+
+
+
+
+
 
 
 @end

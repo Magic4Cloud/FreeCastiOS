@@ -311,12 +311,20 @@
 #pragma mark-- 获取音频输入
 -(void)GetAudioFormart
 {
+    UIAlertView *waitAlertView = [[UIAlertView alloc] initWithTitle:@"Get current Audio settings" message:@"Get current Audio settings..."
+                                               delegate:nil
+                                      cancelButtonTitle:nil
+                                      otherButtonTitles:nil, nil];
+    [waitAlertView show];
+    
     NSString *URL=[[NSString alloc]initWithFormat:@"http://%@:%d/server.command?command=get_audio_source",_ip,80];
     HttpRequest* http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"POST" andUserName:@"admin" andPassword:@"admin"];
     NSLog(@"====>%@",http_request.ResponseString);
     if(http_request.StatusCode==200)
     {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
+            [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
             if ([http_request.ResponseString compare:@""]==NSOrderedSame) {
                 return;
             }
@@ -326,46 +334,24 @@
                 _audioStatus = AudioInputSelectedNoAudio;
                 if ([CoreStore sharedStore].audioInput == AudioInputSelectedNoAudio) {
                     _audioStatus = AudioInputSelectedNoAudio;
-                    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-                    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
-                    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
-                    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_pre"];
                     NSLog(@"----------------%@",@"设置noAudio");
                 } else if([CoreStore sharedStore].audioInput == AudioInputSelectedInternalAudio){
                     _audioStatus = AudioInputSelectedInternalAudio;
-                    _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-                    _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
-                    _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_pre"];
-                    _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
                     NSLog(@"----------------%@",@"设置internalAudio");
                 }
             }
             else if (([value compare:@"1"] == NSOrderedSame)) {
                 _audioStatus = AudioInputSelectedHDMIAudio;
-
-                _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_pre"];
-                _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
-                _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
-                _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
-
             }
             else if (([value compare:@"2"] == NSOrderedSame)) {
                 _audioStatus= AudioInputSelectedExternAudio;
-
-                _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-                _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_pre"];
-                _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_nor"];
-                _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
-
             }
-            else if ([value compare:@"3"] == NSOrderedSame){
-//                _audioStatus = AudioInputSelectedInternalAudio;
-//                _audioHDMIImg.image =[UIImage imageNamed:@"button_hdmi aduio_nor"];
-//                _audioExternalImg.image =[UIImage imageNamed:@"button_external aduio_nor"];
-//                _aduioInternalImg.image =[UIImage imageNamed:@"button_internal aduio_pre"];
-//                _NOaudioImg.image =[UIImage imageNamed:@"button_no aduio_nor"];
-            }
+
+            [self settingSelectedImages];
         });
+    }else {
+        [waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        [self showAllTextDialog:@"Get current Audio settings failed"];
     }
 }
 

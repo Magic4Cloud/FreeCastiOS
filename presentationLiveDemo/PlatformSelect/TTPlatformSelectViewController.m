@@ -110,27 +110,13 @@
         [self scanDeviceOver:resultinfo];
     }];
     
-//    if (!_searchThread) {
-//        _searchThread = [[NSThread alloc] initWithTarget:self selector:@selector(scanDeviceTask) object:nil];
-//    }
-//    [_searchThread start];
-//    [NSThread detachNewThreadSelector:@selector(scanDeviceTask) toTarget:self withObject:nil];
 }
-
-//- (void)scanDeviceTask
-//{
-//    Lx52x_Device_Info *result = [_device_Scan ScanDeviceWithTime:3.0f];
-//    [self performSelectorOnMainThread:@selector(scanDeviceOver:) withObject:result waitUntilDone:NO];
-//}
 
 - (void)scanDeviceOver:(Scanner *)result;
 {
     
     if (result.Device_ID_Arr.count > 0) {
-        
-//        NSString *video_type=@"h264";
 //        //使用扫描到的第一个设备
-//        NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", [result.Device_IP_Arr objectAtIndex:0],video_type];
         _userip = [result.Device_IP_Arr objectAtIndex:0];
         
     }else{
@@ -138,7 +124,6 @@
         
         
     }
-    
     dispatch_async(dispatch_get_main_queue(),^ {
         [_waitAlertView dismissWithClickedButtonIndex:0 animated:YES];
         [_collectionView reloadData];

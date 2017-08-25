@@ -45,6 +45,7 @@
 
 #import "CommonAppHeaders.h"
 #import "FSMediaAuthorizationManager.h"
+#import "FSAlertController.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
@@ -191,12 +192,15 @@ static enum ButtonEnable RecordVideoEnable;
 - (void) viewDidAppear:(BOOL)animated
 {
     //判断设备的音频输入是不是手机麦克风
-    NSUserDefaults * standDefaults = [NSUserDefaults standardUserDefaults];
-    if ([standDefaults objectForKey:AudioSourceIsIphone]) {
-        _isIphoneAudio = (BOOL)[standDefaults objectForKey:AudioSourceIsIphone];
-        if (_session) {
-            _session.isIphoneAudio = _isIphoneAudio;
-        }
+    if ([CoreStore sharedStore].audioInput == AudioInputSelectedInternalAudio) {
+        _isIphoneAudio = YES;
+    }else {
+        _isIphoneAudio = NO;
+    }
+    
+    //        _isIphoneAudio = (BOOL)[standDefaults objectForKey:AudioSourceIsIphone];
+    if (_session) {
+        _session.isIphoneAudio = _isIphoneAudio;
     }
     [self getSelectedPlatform];
     
@@ -866,7 +870,7 @@ bool VideoRecordIsEnable = NO;
 }
 
 - (void)presentAlertSheet {
-    UIAlertController *searchResultActionSheet = [UIAlertController alertControllerWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" preferredStyle:UIAlertControllerStyleActionSheet];
+    FSAlertController *searchResultActionSheet = [FSAlertController alertControllerWithTitle:nil message:@"No search for equipment, whether to continue searching or using a mobile phone camera？" preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"Continue Search" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.scanCount = 0;
@@ -875,14 +879,6 @@ bool VideoRecordIsEnable = NO;
     
     UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Use iPhone Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self getSessionWithSystemCamera];
-//        if (_session) {
-//            self.livingPreView.hidden = NO;
-//            [self hidenSearchingMessageTips];
-//            [self noHiddenStatus];
-//            _play_success = YES;
-//            _liveCameraSource = IphoneBackCamera;
-//            [self enableControl];
-//        }
     }];
     
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -1458,7 +1454,9 @@ bool VideoRecordIsEnable = NO;
                     [FSMediaAuthorizationManager microphoneAuthorization:^(BOOL granted) {
                         if (!granted) {
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                [self showAllTextDialog:@"The user has denied the application use microphone"];
+                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                [alertView show];
+                                [self configCameraSession];
                                 return;
                             });
                         }else{
@@ -1471,7 +1469,23 @@ bool VideoRecordIsEnable = NO;
             }
         }];
     } else {
-        [self configCameraSession];
+        if (![FSMediaAuthorizationManager hasMicrophoneAuthorization]) {
+            [FSMediaAuthorizationManager microphoneAuthorization:^(BOOL granted) {
+                if (!granted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self showAllTextDialog:@"The user has denied the application use microphone,It can lead to live streaming without sound"];
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        [alertView show];
+                        [self configCameraSession];
+                        return;
+                    });
+                }else{
+                    [self configCameraSession];
+                }
+            }];
+        } else {
+            [self configCameraSession];
+        }
     }
 }
 
@@ -1482,14 +1496,15 @@ bool VideoRecordIsEnable = NO;
      *  构造音频配置器
      *       */
     LFLiveAudioConfiguration *audioConfiguration;
-    if ([CoreStore sharedStore].audioInput == AudioInputSelectedInternalAudio) {
-    audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
-    }else{
+//    if ([CoreStore sharedStore].audioInput == AudioInputSelectedInternalAudio) {
+//    audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
+//    }else{
     audioConfiguration = [LFLiveAudioConfiguration new];
     audioConfiguration .numberOfChannels = 2;
     audioConfiguration .audioBitrate = LFLiveAudioBitRate_96Kbps;
     audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_48000Hz;
-    }
+//    }
+    
     /**
      * 构造视频配置
      * 窗体大小，比特率，最大比特率，最小比特率，帧率，最大间隔帧数，分辨率（注意视频大小一定要小于分辨率）
@@ -1659,13 +1674,6 @@ bool VideoRecordIsEnable = NO;
                 alert.delegate = self;
             [alert show];
             [weakself setStopStreamStatus];
-//                [weakself showPromptAlertWithTitile:@"Connect server error!" message:@"Connect error please check rtmp address or network" buttonTitle:@"OK" buttonClickHandler:^(UIAlertAction *action) {
-//                    if (_session) {
-//                        [_session stopLive];
-//                    }
-//                    
-//                }];
-//                [weakself setStopStreamStatus];
             });
             
         }
@@ -2483,9 +2491,9 @@ bool _isTakePhoto=NO;
     
     _isBroswer=YES;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-#warning coding...
+
     BrowseViewController *browseVC = [[BrowseViewController alloc] init];
-//    FSBrowseViewController * browseVC = [[FSBrowseViewController alloc] init];
+
     [self.navigationController pushViewController:browseVC animated:true];
 }
 
@@ -2693,12 +2701,7 @@ bool _isTakePhoto=NO;
         [self.videoView startGetH264Data:YES];
         [self.videoView show_view:YES];
         self.videoisplaying = YES;
-            
-            
-            
         }
-        
-        
     } else if (_liveCameraSource == IphoneBackCamera) {
         
     } else {
@@ -2707,8 +2710,6 @@ bool _isTakePhoto=NO;
         _tipLabel.text = @"PLEASE CHECK WIFI CONECT TO EXTERNAL DEVICE";
         [self showSearchingMessagesTips];
     }
-    
-
 }
 
 - (void)applicationEnterBackground {

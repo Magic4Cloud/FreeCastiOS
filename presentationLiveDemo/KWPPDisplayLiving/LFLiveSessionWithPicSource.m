@@ -550,9 +550,11 @@ UIImage *pauseImage=nil;
     [self didChangeValueForKey:@"running"];
     if (_isRAK) {
         self.videoCaptureSource.running = NO;
-        self.audioCaptureSource.running = NO;
+        self.audioCaptureSource.running = _isIphoneAudio;
         _videoCaptureSource=nil;
-        _audioCaptureSource=nil;
+        if (!self.audioCaptureSource.running) {
+            _audioCaptureSource=nil;
+        }
     }
     else{
         self.videoCaptureSource.running = _running;
@@ -634,7 +636,7 @@ UIImage *pauseImage=nil;
 }
 
 - (LFAudioCapture*)audioCaptureSource{
-    if (_isRAK) {
+    if (_isRAK && !_isIphoneAudio) {
         return _audioCaptureSource;
     }
     if(!_audioCaptureSource){

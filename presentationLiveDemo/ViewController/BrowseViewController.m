@@ -313,6 +313,9 @@ NSMutableArray *Medias;
                             [getMedias removeObject:media];
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 if (i == count -1) {
+                                    [selectedDic removeAllObjects];
+                                    [shareImg removeAllObjects];
+                                    [photoImages removeAllObjects];
                                     [self removeEmptyGroup];
                                 }
                                 [_collectionView reloadData];
@@ -638,9 +641,7 @@ NSMutableArray *Medias;
 }
 
 BOOL _isExist;
-- (void)Get_Video
-{
-    
+- (void)Get_Video {
     [Medias removeAllObjects];
     //系统相册的视频
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]  init];
@@ -660,14 +661,8 @@ BOOL _isExist;
                 int64_t fileSize = [[result defaultRepresentation] size];
                 NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[result valueForProperty:ALAssetPropertyDate] timeIntervalSince1970]];
                 
-                //                NSLog(@"date = %@",date);
                 NSLog(@"fileName = %@",fileName);
-                //                NSLog(@"url = %@",url);
-                //                NSLog(@"fileSize = %lld",fileSize);
-                //                NSLog(@"timeSp = %@",timeSp);
-                
-                
-                //                NSMutableArray *videos=[self Get_Paths:@"video_flag"];
+
                 [Medias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     MediaGroup *get_group=Medias[idx];
                     //已分组则将数据添加到对应组

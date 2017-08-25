@@ -913,6 +913,7 @@
 		9733166F1F4E822B0034F4C7 /* GPUImageRGBErosionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A68516F1F1898B200EEDE2D /* GPUImageRGBErosionFilter.m */; };
 		973316701F4E823C0034F4C7 /* GPUImageLocalBinaryPatternFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6851231F1898B200EEDE2D /* GPUImageLocalBinaryPatternFilter.m */; };
 		973316771F4FC0960034F4C7 /* FSMediaAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 973316761F4FC0960034F4C7 /* FSMediaAuthorizationManager.m */; };
+		9733167A1F502C140034F4C7 /* FSAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 973316791F502C140034F4C7 /* FSAlertController.m */; };
 		9739DF9A1F4ADCE500E7B7CF /* CoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF571F4ADCE500E7B7CF /* CoreCollectionViewCell.m */; };
 		9739DF9B1F4ADCE500E7B7CF /* CoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF591F4ADCE500E7B7CF /* CoreTableViewCell.m */; };
 		9739DF9C1F4ADCE500E7B7CF /* CoreUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF5B1F4ADCE500E7B7CF /* CoreUIView.m */; };
@@ -2197,6 +2198,8 @@
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		973316751F4FC0960034F4C7 /* FSMediaAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSMediaAuthorizationManager.h; sourceTree = "<group>"; };
 		973316761F4FC0960034F4C7 /* FSMediaAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSMediaAuthorizationManager.m; sourceTree = "<group>"; };
+		973316781F502C140034F4C7 /* FSAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSAlertController.h; sourceTree = "<group>"; };
+		973316791F502C140034F4C7 /* FSAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSAlertController.m; sourceTree = "<group>"; };
 		9739DF561F4ADCE500E7B7CF /* CoreCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreCollectionViewCell.h; sourceTree = "<group>"; };
 		9739DF571F4ADCE500E7B7CF /* CoreCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreCollectionViewCell.m; sourceTree = "<group>"; };
 		9739DF581F4ADCE500E7B7CF /* CoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTableViewCell.h; sourceTree = "<group>"; };
@@ -3222,6 +3225,8 @@
 				8464B9AD1D95104700B67944 /* Main.storyboard */,
 				8464B9DA1D95104700B67944 /* Info.plist */,
 				8464B9E21D95104700B67944 /* main.m */,
+				8488BCB61DB7792B006357AD /* InfoPlist.strings */,
+				8488BCBA1DB7792B006357AD /* Localizable.strings */,
 				7AF024771F03A1890072CEED /* presentationLiveDemo.pch */,
 			);
 			path = presentationLiveDemo;
@@ -3292,8 +3297,6 @@
 			children = (
 				84DA83111E88E7AC0027B06A /* image2 */,
 				8488BCB21DB7792B006357AD /* audio */,
-				8488BCB61DB7792B006357AD /* InfoPlist.strings */,
-				8488BCBA1DB7792B006357AD /* Localizable.strings */,
 				8488BCBC1DB7792B006357AD /* image */,
 			);
 			path = res;
@@ -4525,6 +4528,8 @@
 				9739E0101F4ADCF000E7B7CF /* BaseWebViewController.m */,
 				7A31EE3F1F2044C6005A6479 /* TTAlertViewController.h */,
 				7A31EE401F2044C6005A6479 /* TTAlertViewController.m */,
+				973316781F502C140034F4C7 /* FSAlertController.h */,
+				973316791F502C140034F4C7 /* FSAlertController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -5625,6 +5630,7 @@
 				7A68525B1F1898B300EEDE2D /* GPUImageMissEtikateFilter.m in Sources */,
 				84123F481DBD9FB800CC7B4C /* UpdateFirmwareViewController.m in Sources */,
 				7A6852481F1898B200EEDE2D /* GPUImageiOSBlurFilter.m in Sources */,
+				9733167A1F502C140034F4C7 /* FSAlertController.m in Sources */,
 				848312461DC70FB2002CDF1D /* AudioViewController.m in Sources */,
 				7A6852AE1F1898B300EEDE2D /* hashswf.c in Sources */,
 				7A68521C1F1898B200EEDE2D /* GPUImageColourFASTSamplingOperation.m in Sources */,
@@ -5718,6 +5724,7 @@
 				8488BD4F1DB7792B006357AD /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			path = res;
 			sourceTree = "<group>";
 		};
 		8488BCBA1DB7792B006357AD /* Localizable.strings */ = {
@@ -5727,6 +5734,7 @@
 				8488BD501DB7792B006357AD /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			path = res;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
