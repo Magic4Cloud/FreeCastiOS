@@ -19,7 +19,6 @@
 #import "MCRecordManager.h"
 #import "FSTextField.h"
 #import "TTCoreDataClass.h"
-#import "FSMediaManager.h"
 
 //addition category
 #import "UIColor+App.h"

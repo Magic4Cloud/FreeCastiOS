@@ -912,6 +912,7 @@
 		9733166E1F4E82170034F4C7 /* GPUImageLineGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6851211F1898B200EEDE2D /* GPUImageLineGenerator.m */; };
 		9733166F1F4E822B0034F4C7 /* GPUImageRGBErosionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A68516F1F1898B200EEDE2D /* GPUImageRGBErosionFilter.m */; };
 		973316701F4E823C0034F4C7 /* GPUImageLocalBinaryPatternFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6851231F1898B200EEDE2D /* GPUImageLocalBinaryPatternFilter.m */; };
+		973316771F4FC0960034F4C7 /* FSMediaAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 973316761F4FC0960034F4C7 /* FSMediaAuthorizationManager.m */; };
 		9739DF9A1F4ADCE500E7B7CF /* CoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF571F4ADCE500E7B7CF /* CoreCollectionViewCell.m */; };
 		9739DF9B1F4ADCE500E7B7CF /* CoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF591F4ADCE500E7B7CF /* CoreTableViewCell.m */; };
 		9739DF9C1F4ADCE500E7B7CF /* CoreUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DF5B1F4ADCE500E7B7CF /* CoreUIView.m */; };
@@ -962,7 +963,6 @@
 		9739E02B1F4ADCF000E7B7CF /* PatrolUINavigationController+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFED1F4ADCF000E7B7CF /* PatrolUINavigationController+StatusBar.m */; };
 		9739E02C1F4ADCF000E7B7CF /* PatrolUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFEF1F4ADCF000E7B7CF /* PatrolUINavigationController.m */; };
 		9739E02D1F4ADCF000E7B7CF /* MCAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFF31F4ADCF000E7B7CF /* MCAuthorizationManager.m */; };
-		9739E02E1F4ADCF000E7B7CF /* FSMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFF61F4ADCF000E7B7CF /* FSMediaManager.m */; };
 		9739E02F1F4ADCF000E7B7CF /* TTSearchDeviceClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFF81F4ADCF000E7B7CF /* TTSearchDeviceClass.m */; };
 		9739E0301F4ADCF000E7B7CF /* MCMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFFB1F4ADCF000E7B7CF /* MCMotionManager.m */; };
 		9739E0311F4ADCF000E7B7CF /* MCRecordEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9739DFFE1F4ADCF000E7B7CF /* MCRecordEncoder.m */; };
@@ -2195,6 +2195,8 @@
 		84EE3BD91F3D9A49006DF97E /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		84EE3BDA1F3D9A49006DF97E /* WisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WisView.h; sourceTree = "<group>"; };
 		8534FBCA47CB9E7BF7D012DE /* Pods-presentationLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presentationLiveDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-presentationLiveDemo/Pods-presentationLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		973316751F4FC0960034F4C7 /* FSMediaAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSMediaAuthorizationManager.h; sourceTree = "<group>"; };
+		973316761F4FC0960034F4C7 /* FSMediaAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSMediaAuthorizationManager.m; sourceTree = "<group>"; };
 		9739DF561F4ADCE500E7B7CF /* CoreCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreCollectionViewCell.h; sourceTree = "<group>"; };
 		9739DF571F4ADCE500E7B7CF /* CoreCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreCollectionViewCell.m; sourceTree = "<group>"; };
 		9739DF581F4ADCE500E7B7CF /* CoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTableViewCell.h; sourceTree = "<group>"; };
@@ -2300,8 +2302,6 @@
 		9739DFEF1F4ADCF000E7B7CF /* PatrolUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatrolUINavigationController.m; sourceTree = "<group>"; };
 		9739DFF21F4ADCF000E7B7CF /* MCAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCAuthorizationManager.h; sourceTree = "<group>"; };
 		9739DFF31F4ADCF000E7B7CF /* MCAuthorizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCAuthorizationManager.m; sourceTree = "<group>"; };
-		9739DFF51F4ADCF000E7B7CF /* FSMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSMediaManager.h; sourceTree = "<group>"; };
-		9739DFF61F4ADCF000E7B7CF /* FSMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSMediaManager.m; sourceTree = "<group>"; };
 		9739DFF71F4ADCF000E7B7CF /* TTSearchDeviceClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSearchDeviceClass.h; sourceTree = "<group>"; };
 		9739DFF81F4ADCF000E7B7CF /* TTSearchDeviceClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSearchDeviceClass.m; sourceTree = "<group>"; };
 		9739DFFA1F4ADCF000E7B7CF /* MCMotionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCMotionManager.h; sourceTree = "<group>"; };
@@ -4222,6 +4222,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		973316741F4FC0360034F4C7 /* MediaAuthorizationManager */ = {
+			isa = PBXGroup;
+			children = (
+				973316751F4FC0960034F4C7 /* FSMediaAuthorizationManager.h */,
+				973316761F4FC0960034F4C7 /* FSMediaAuthorizationManager.m */,
+			);
+			name = MediaAuthorizationManager;
+			sourceTree = "<group>";
+		};
 		9739DF541F4ADCE500E7B7CF /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -4465,8 +4474,7 @@
 		9739DFF41F4ADCF000E7B7CF /* MediaMannager */ = {
 			isa = PBXGroup;
 			children = (
-				9739DFF51F4ADCF000E7B7CF /* FSMediaManager.h */,
-				9739DFF61F4ADCF000E7B7CF /* FSMediaManager.m */,
+				973316741F4FC0360034F4C7 /* MediaAuthorizationManager */,
 			);
 			path = MediaMannager;
 			sourceTree = "<group>";
@@ -5420,6 +5428,7 @@
 				7A6852661F1898B300EEDE2D /* GPUImageOpacityFilter.m in Sources */,
 				7A6852141F1898B200EEDE2D /* GPUImageColorBurnBlendFilter.m in Sources */,
 				7A6852971F1898B300EEDE2D /* GPUImageToneCurveFilter.m in Sources */,
+				973316771F4FC0960034F4C7 /* FSMediaAuthorizationManager.m in Sources */,
 				7A68527B1F1898B300EEDE2D /* GPUImageSaturationBlendFilter.m in Sources */,
 				7A68520B1F1898B200EEDE2D /* GPUImageBrightnessFilter.m in Sources */,
 				7A6852A21F1898B300EEDE2D /* GPUImageVoronoiConsumerFilter.m in Sources */,
@@ -5636,7 +5645,6 @@
 				7A6852071F1898B200EEDE2D /* GPUImageAverageColor.m in Sources */,
 				7A6851FA1F1898B200EEDE2D /* LFLiveDebug.m in Sources */,
 				7A6851F91F1898B200EEDE2D /* LFFrame.m in Sources */,
-				9739E02E1F4ADCF000E7B7CF /* FSMediaManager.m in Sources */,
 				7A6851F81F1898B200EEDE2D /* LFAudioFrame.m in Sources */,
 				7A6852741F1898B300EEDE2D /* GPUImageRawDataInput.m in Sources */,
 				7A68529D1F1898B300EEDE2D /* GPUImageTwoPassTextureSamplingFilter.m in Sources */,

@@ -44,7 +44,7 @@
 #import "PicToBufferToPic.h"
 
 #import "CommonAppHeaders.h"
-
+#import "FSMediaAuthorizationManager.h"
 
 #define MAIN_COLOR [UIColor colorWithRed:(0 / 255.0f) green:(179 / 255.0f) blue:(227 / 255.0f) alpha:1.0]
 
@@ -204,7 +204,7 @@ static enum ButtonEnable RecordVideoEnable;
     [super viewDidAppear:animated];
     if (_isBroswer) {
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-        _isBroswer=NO;
+        _isBroswer = NO;
     }
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
 }
@@ -874,13 +874,15 @@ bool VideoRecordIsEnable = NO;
     }];
     
     UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Use iPhone Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _session = [self getSessionWithSystemCamera];
-        self.livingPreView.hidden = NO;
-        [self hidenSearchingMessageTips];
-        [self noHiddenStatus];
-        _play_success = YES;
-        _liveCameraSource = IphoneBackCamera;
-        [self enableControl];
+        [self getSessionWithSystemCamera];
+//        if (_session) {
+//            self.livingPreView.hidden = NO;
+//            [self hidenSearchingMessageTips];
+//            [self noHiddenStatus];
+//            _play_success = YES;
+//            _liveCameraSource = IphoneBackCamera;
+//            [self enableControl];
+//        }
     }];
     
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -1412,29 +1414,65 @@ bool VideoRecordIsEnable = NO;
     return deviceIP;
 }
 
+- (void)configCameraSession {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        /**
+         *  构造音频配置器**/
+        LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
+        
+        LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
+        
+        //利用两设备配置 来构造一个直播会话
+        _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+        _session.captureDevicePosition = AVCaptureDevicePositionBack;
+        _session.delegate  = self;
+        _session.isRAK = NO;
+        _session.running = YES;
+        _session.preView = self.livingPreView;
+        //                return _session;
+        self.livingPreView.hidden = NO;
+        [self hidenSearchingMessageTips];
+        [self noHiddenStatus];
+        _play_success = YES;
+        _liveCameraSource = IphoneBackCamera;
+        [self enableControl];
+    });
+}
+
 
 #pragma mark - *********************** session 推流参数配置***********************************
 /**
  *  系统摄像头的直播参数
  */
-
-- (LFLiveSessionWithPicSource *)getSessionWithSystemCamera
-{
-    /**
-     *  构造音频配置器
-     *       */
-    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
+- (void)getSessionWithSystemCamera {
     
-    
-    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
-    //利用两设备配置 来构造一个直播会话
-    _session = [[LFLiveSessionWithPicSource alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-    _session.captureDevicePosition = AVCaptureDevicePositionBack;
-    _session.delegate  = self;
-    _session.isRAK = NO;
-    _session.running = YES;
-    _session.preView = self.livingPreView;
-    return _session;
+    if(![FSMediaAuthorizationManager hasCameraAuthorization]){
+        [FSMediaAuthorizationManager cameraAuthorization:^(BOOL granted) {
+            if (!granted) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [self showAllTextDialog:@"The user has denied the application use camera"];
+                     return;
+                 });
+            } else {
+                if (![FSMediaAuthorizationManager hasMicrophoneAuthorization]) {
+                    [FSMediaAuthorizationManager microphoneAuthorization:^(BOOL granted) {
+                        if (!granted) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self showAllTextDialog:@"The user has denied the application use microphone"];
+                                return;
+                            });
+                        }else{
+                            [self configCameraSession];
+                        }
+                    }];
+                } else {
+                    [self configCameraSession];
+                }
+            }
+        }];
+    } else {
+        [self configCameraSession];
+    }
 }
 
 //RAK设备的直播参数
@@ -1443,11 +1481,15 @@ bool VideoRecordIsEnable = NO;
     /**
      *  构造音频配置器
      *       */
-    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration new];
+    LFLiveAudioConfiguration *audioConfiguration;
+    if ([CoreStore sharedStore].audioInput == AudioInputSelectedInternalAudio) {
+    audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
+    }else{
+    audioConfiguration = [LFLiveAudioConfiguration new];
     audioConfiguration .numberOfChannels = 2;
     audioConfiguration .audioBitrate = LFLiveAudioBitRate_96Kbps;
     audioConfiguration .audioSampleRate = LFLiveAudioSampleRate_48000Hz;
-    
+    }
     /**
      * 构造视频配置
      * 窗体大小，比特率，最大比特率，最小比特率，帧率，最大间隔帧数，分辨率（注意视频大小一定要小于分辨率）
