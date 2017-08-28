@@ -304,7 +304,6 @@ static enum ButtonEnable RecordVideoEnable;
 - (void)didReceiveMemoryWarning {
     NSLog(@"---------receiceMemoryWarning.....");
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
     
 }
 
@@ -661,7 +660,6 @@ static enum ButtonEnable RecordVideoEnable;
     
     [self hiddenStatus];
     
-    
     _recordVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recordVideoTimerLoop) userInfo:nil repeats:YES];
     _updateUITimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
 }
@@ -767,15 +765,12 @@ bool VideoRecordIsEnable = NO;
     }
 }
 
-
-
 /** 跳转到配置推流信息的界面*/
 -(void)_configureBtnClick
 {
     if (_liveCameraSource == IphoneBackCamera) {
         return;
     }
-    
     //    _isConfig = YES;
     _isBroswer=YES;
     [self stopVideo];
@@ -1454,8 +1449,29 @@ bool VideoRecordIsEnable = NO;
                     [FSMediaAuthorizationManager microphoneAuthorization:^(BOOL granted) {
                         if (!granted) {
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                                [alertView show];
+//                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//                                [alertView show];
+                                
+                                FSAlertController *errorAlert = [FSAlertController alertControllerWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                    errorAlert.view.hidden = YES;
+                                }];
+                                [errorAlert addAction:okAction];
+                                
+                                //setting for ipad
+                                [errorAlert setModalPresentationStyle:UIModalPresentationPopover];
+                                
+                                UIPopoverPresentationController *popPresenter = [errorAlert popoverPresentationController];
+                                popPresenter.sourceView = _bottomBg;
+                                popPresenter.sourceRect = _bottomBg.bounds;
+                                //隐藏，等待旋转好了才显示出来
+                                errorAlert.view.hidden = YES;
+                                
+                                [self presentViewController:errorAlert animated:YES completion:^{
+                                    errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+                                    errorAlert.view.hidden = NO;
+                                }];
+
                                 [self configCameraSession];
                                 return;
                             });
@@ -1474,8 +1490,31 @@ bool VideoRecordIsEnable = NO;
                 if (!granted) {
                     dispatch_async(dispatch_get_main_queue(), ^{
 //                        [self showAllTextDialog:@"The user has denied the application use microphone,It can lead to live streaming without sound"];
-                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                        [alertView show];
+//                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//                        [alertView show];
+                        
+                        
+                        
+                        FSAlertController *errorAlert = [FSAlertController alertControllerWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            errorAlert.view.hidden = YES;
+                        }];
+                        [errorAlert addAction:okAction];
+                        
+                        //setting for ipad
+                        [errorAlert setModalPresentationStyle:UIModalPresentationPopover];
+                        
+                        UIPopoverPresentationController *popPresenter = [errorAlert popoverPresentationController];
+                        popPresenter.sourceView = _bottomBg;
+                        popPresenter.sourceRect = _bottomBg.bounds;
+                        //隐藏，等待旋转好了才显示出来
+                        errorAlert.view.hidden = YES;
+                        
+                        [self presentViewController:errorAlert animated:YES completion:^{
+                            errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+                            errorAlert.view.hidden = NO;
+                        }];
+                        
                         [self configCameraSession];
                         return;
                     });
@@ -1668,14 +1707,33 @@ bool VideoRecordIsEnable = NO;
                 [_session stopLive];
             }
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Connect server error!" message:@"Connect error please check rtmp address or network" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                alert.delegate = self;
-            [alert show];
-            [weakself setStopStreamStatus];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Connect server error!" message:@"Connect error please check rtmp address or network" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//                alert.delegate = self;
+//            [alert show];
+//            [weakself setStopStreamStatus];
+//            });
             
+            FSAlertController *errorAlert = [FSAlertController alertControllerWithTitle:@"Connect server error" message:@"Connect error please check rtmp address or network" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                errorAlert.view.hidden = YES;
+            }];
+            [errorAlert addAction:okAction];
+            
+            [weakself setStopStreamStatus];
+            //setting for ipad
+            [errorAlert setModalPresentationStyle:UIModalPresentationPopover];
+            
+            UIPopoverPresentationController *popPresenter = [errorAlert popoverPresentationController];
+            popPresenter.sourceView = _bottomBg;
+            popPresenter.sourceRect = _bottomBg.bounds;
+            //隐藏，等待旋转好了才显示出来
+            errorAlert.view.hidden = YES;
+            
+            [self presentViewController:errorAlert animated:YES completion:^{
+                errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+                errorAlert.view.hidden = NO;
+            }];
         }
             break;
         default:
@@ -2258,15 +2316,12 @@ int posStep=1;
 -(void)_streamingStopBtnClick{
     if (_livingState==0) {
         [self showAllTextDialog:NSLocalizedString(@"streaminig_no_start_live_tips", nil)];
-    }
-    else{
+    }else{
         [self setStopStreamStatus];
         [self closeLivingSession];
         _isExit=YES;
     }
 }
-
-
 
 - (NSString *)stringFromDate:(NSDate *)date
 {
@@ -2274,7 +2329,6 @@ int posStep=1;
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
     return [dateFormatter stringFromDate:[NSDate date]];
 }
-
 
 /**
  截屏
@@ -2295,7 +2349,6 @@ int posStep=1;
 /**
  *  拍照
  */
-
 #pragma mark - 拍照
 -(void)takephotoBtnClicked {
     
@@ -2341,23 +2394,30 @@ bool _isTakePhoto=NO;
 }
 
 - (void)pressentAlertViewControllerWithError:(NSError *)error {
-    //
-    //    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedFailureReason preferredStyle:UIAlertControllerStyleAlert];
-    //
-    //
-    //
-    //    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    //        [alertController dismissViewControllerAnimated:YES completion:^{
-    //            nil;
-    //        }];
-    //    }];
-    //    [alertController addAction:ok];
-    //    [self presentViewController:alertController animated:YES completion:^{
-    //        nil;
-    //    }];
+
+//    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
+//    [alert show];
     
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
-    [alert show];
+    FSAlertController *errorAlert = [FSAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedFailureReason preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        errorAlert.view.hidden = YES;
+    }];
+    [errorAlert addAction:okAction];
+    
+    //setting for ipad
+    [errorAlert setModalPresentationStyle:UIModalPresentationPopover];
+    
+    UIPopoverPresentationController *popPresenter = [errorAlert popoverPresentationController];
+    popPresenter.sourceView = _bottomBg;
+    popPresenter.sourceRect = _bottomBg.bounds;
+    //隐藏，等待旋转好了才显示出来
+    errorAlert.view.hidden = YES;
+    
+    [self presentViewController:errorAlert animated:YES completion:^{
+        errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+        errorAlert.view.hidden = NO;
+    }];
+    
 }
 
 - (void)saveImageToAlbum:(BOOL)success{
