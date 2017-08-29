@@ -221,13 +221,18 @@ NSString *subtitleAllEnd=@"\r\n------WebKitFormBoundary9jF0QWJdi6csfpFy--\r\n";
     [_subtitleTypeView  addSubview:line3];
     
     UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_subtitleTypeRollClick)];
+    
     subtitleTypeRollLabel=[UIButton buttonWithType:UIButtonTypeCustom];
     subtitleTypeRollLabel.frame = CGRectMake(viewW*326.5/totalWeight,viewH*23.5/totalHeight, viewW*28/totalWeight, viewH*15/totalHeight);
     subtitleTypeRollLabel.backgroundColor=[UIColor clearColor];
     subtitleTypeRollLabel.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [subtitleTypeRollLabel addTarget:nil action:@selector(_subtitleTypeRollClick) forControlEvents:UIControlEventTouchUpInside];
     [subtitleTypeRollLabel setTitle:NSLocalizedString(@"subtitle_roll", nil) forState:UIControlStateNormal];
+    
     [subtitleTypeRollLabel setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1] forState:UIControlStateNormal];
+    
+    
+    
     subtitleTypeRollLabel.titleLabel.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     [_subtitleTypeView  addSubview:subtitleTypeRollLabel];
     

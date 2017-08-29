@@ -531,7 +531,6 @@ static enum ButtonEnable RecordVideoEnable;
     [_liveStreamBtn addTarget:self action:@selector(liveStreamBtnOnClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBg  addSubview:_liveStreamBtn];
     
-    
     _browserBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _browserBtn.frame = [buttonFrameArray[3] CGRectValue];
     [_browserBtn setImage:[UIImage imageNamed:@"icon_library_nor"] forState:UIControlStateNormal];
@@ -1493,8 +1492,6 @@ bool VideoRecordIsEnable = NO;
 //                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                        [alertView show];
                         
-                        
-                        
                         FSAlertController *errorAlert = [FSAlertController alertControllerWithTitle:@"User denied access" message:@"The user has denied the application use microphone,It can lead to live streaming without sound" preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             errorAlert.view.hidden = YES;
@@ -2452,6 +2449,7 @@ bool _isTakePhoto=NO;
         RecordVideoEnable = Enable;
         [_recordBtn setImage:[UIImage imageNamed:@"video_stop"] forState:UIControlStateNormal];
         
+        _liveStreamBtn.enabled = NO;
         _takephotoBtn.enabled = NO;
         
         if (_liveCameraSource == IphoneBackCamera) {
@@ -2479,6 +2477,8 @@ bool _isTakePhoto=NO;
     }
     else{
         _takephotoBtn.enabled = YES;
+        _liveStreamBtn.enabled = YES;
+        
         [self playSound:@"end_record.mp3"];
         [self showAllTextDialog:NSLocalizedString(@"save_video", nil)];
         RecordVideoEnable = Unable;
@@ -2504,6 +2504,7 @@ bool _isTakePhoto=NO;
     
     //如果是系统摄像头
     if (_liveCameraSource == IphoneBackCamera) {
+        _recordBtn.enabled = NO;
         [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
     }else{
         
@@ -2514,6 +2515,8 @@ bool _isTakePhoto=NO;
         //RAK设备
         if(_livingState==0){
             _isExit = NO;
+            
+            _recordBtn.enabled = NO;
             [NSThread detachNewThreadSelector:@selector(openLivingSession:) toTarget:self withObject:nil];
         } else {
             //            [self showAllTextDialog:NSLocalizedString(@"streaminig_on_live_tips", nil)];

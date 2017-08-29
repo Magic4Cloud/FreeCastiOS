@@ -16,6 +16,7 @@
 #import "TTSearchDeviceClass.h"
 #import "CoreStore+App.h"
 #import "CoreStore.h"
+
 @interface PasswordViewController ()
 {
     bool _Exit;
@@ -162,6 +163,8 @@
     _initPasswordLabel.textColor = MAIN_COLOR;
     _initPasswordLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _initPasswordLabel.numberOfLines = 0;
+    
+    
     //    [_passwordView addSubview:_initPasswordLabel];
     
     //    UIView *_initPasswordLine=[[UIView alloc]init];
@@ -202,7 +205,7 @@
     _newPasswordLabel.font = [UIFont systemFontOfSize: viewH*17.5/totalHeight*0.8];
     _newPasswordLabel.backgroundColor = [UIColor clearColor];
     _newPasswordLabel.textColor = MAIN_COLOR;
-    _newPasswordLabel.numberOfLines = 0;
+    _newPasswordLabel.numberOfLines = 1;
     [_passwordView addSubview:_newPasswordLabel];
     
     
@@ -215,7 +218,8 @@
     [_passwordView addSubview:_newPasswordImg];
     
     _newPasswordText=[[FSTextField alloc]init];
-    _newPasswordText.frame=CGRectMake(viewW*37/totalWeight, deviceLabel.frame.origin.y+deviceLabel.frame.size.height+viewH*47.5/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
+    _newPasswordText.frame=CGRectMake(viewW*37/totalWeight, deviceLabel.frame.origin.y+deviceLabel.frame.size.height+viewH*47.5/totalHeight, (CGRectGetMinX(_newPasswordImg.frame) - (viewW*37/totalWeight)), viewH*15/totalHeight);
+
     _newPasswordText.backgroundColor = [UIColor clearColor];
     _newPasswordText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _newPasswordText.secureTextEntry = YES;
@@ -254,7 +258,7 @@
     [_passwordView addSubview:_confirmPasswordImg];
     
     _confirmText=[[FSTextField alloc]init];
-    _confirmText.frame=CGRectMake(viewW*37/totalWeight, _newPasswordLabel.frame.origin.y+_newPasswordLabel.frame.size.height+viewH*76/totalHeight, viewW*147/totalWeight, viewH*15/totalHeight);
+    _confirmText.frame=CGRectMake(viewW*37/totalWeight, _newPasswordLabel.frame.origin.y+_newPasswordLabel.frame.size.height+viewH*76/totalHeight, (CGRectGetMinX(_newPasswordImg.frame) - (viewW*37/totalWeight)), viewH*15/totalHeight);
     _confirmText.backgroundColor = [UIColor clearColor];
     _confirmText.font = [UIFont systemFontOfSize: viewH*15/totalHeight*0.8];
     _confirmText.secureTextEntry = YES;
@@ -1315,6 +1319,10 @@ bool _modifyOK=YES;
     
     if([_newPasswordText.text isEqualToString:@""]){
         [self showAllTextDialog:@"Password can not be empty!"];
+        return;
+    }
+    if ((_newPasswordText.text.length < 8)) {
+        [self showAllTextDialog:@"Password can not less than 8 characters"];
         return;
     }
     
