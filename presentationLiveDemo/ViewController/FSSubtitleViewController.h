@@ -9,5 +9,5 @@
 #import "CoreUIViewController.h"
 
 @interface FSSubtitleViewController : CoreUIViewController
-
+@property (nonatomic,copy) NSString *ip;
 @end

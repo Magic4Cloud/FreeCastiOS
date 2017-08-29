@@ -12,6 +12,9 @@
 #import "CollectionReusableFooterView.h"
 #import "LiveViewViewController.h"
 #import "SubtitleViewController.h"
+////
+#import "FSSubtitleViewController.h"
+////
 #import "BannerViewController.h"
 #import "AudioViewController.h"
 
@@ -441,9 +444,14 @@
         switch (indexPath.row) {
             case 0:
             {
-                SubtitleViewController * subtitleViewController = [[SubtitleViewController alloc] init];
-                subtitleViewController.ip = _userip;
+//                SubtitleViewController * subtitleViewController = [[SubtitleViewController alloc] init];
+//                subtitleViewController.ip = _userip;
+//                [self.navigationController pushViewController:subtitleViewController animated:YES];
+                
+                FSSubtitleViewController *subtitleViewController = [[FSSubtitleViewController alloc] init];
+
                 [self.navigationController pushViewController:subtitleViewController animated:YES];
+                
                 
             }
                 break;

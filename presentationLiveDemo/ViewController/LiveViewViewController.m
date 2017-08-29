@@ -1728,7 +1728,8 @@ bool VideoRecordIsEnable = NO;
             errorAlert.view.hidden = YES;
             
             [self presentViewController:errorAlert animated:YES completion:^{
-                errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);
+                if(([UIApplication sharedApplication].statusBarOrientation ==     UIInterfaceOrientationLandscapeLeft)||([UIApplication sharedApplication].statusBarOrientation ==UIInterfaceOrientationLandscapeRight)){//因为有可能弹框出现在二级界面上所以判断
+                    errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);}
                 errorAlert.view.hidden = NO;
             }];
         }

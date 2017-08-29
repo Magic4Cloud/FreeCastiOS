@@ -7,7 +7,7 @@
 //
 
 #import "StreamViewController.h"
-#import "StreamingViewController.h"
+//#import "StreamingViewController.h"
 #import "CommanParameter.h"
 
 @interface StreamViewController ()
@@ -364,8 +364,8 @@
 -(void)_streamViewClick
 {
     NSLog(@"_streamViewClick");
-    StreamingViewController *v = [[StreamingViewController alloc] init];
-    [self.navigationController pushViewController: v animated:true];
+//    StreamingViewController *v = [[StreamingViewController alloc] init];
+//    [self.navigationController pushViewController: v animated:true];
 }
 
 -(void)_subscriptViewClick

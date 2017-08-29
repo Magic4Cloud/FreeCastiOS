@@ -988,6 +988,10 @@
 		97E53F2E1F5543B900D40A71 /* ConfigureAudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53F2B1F5543B900D40A71 /* ConfigureAudioViewController.m */; };
 		97E53F2F1F5543B900D40A71 /* ConfigureVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53F2C1F5543B900D40A71 /* ConfigureVideoViewController.m */; };
 		97E53F301F5543B900D40A71 /* ConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53F2D1F5543B900D40A71 /* ConfigureViewController.m */; };
+		97E53F381F55760200D40A71 /* FSSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53F371F55760200D40A71 /* FSSliderView.m */; };
+		97E53F3A1F55762A00D40A71 /* FSSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97E53F391F55762A00D40A71 /* FSSliderView.xib */; };
+		97E53F3D1F558EE800D40A71 /* FSRecombinationLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53F3C1F558EE800D40A71 /* FSRecombinationLabel.m */; };
+		97E53F3F1F558F0D00D40A71 /* FSRecombinationLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97E53F3E1F558F0D00D40A71 /* FSRecombinationLabel.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -2353,6 +2357,12 @@
 		97E53F2B1F5543B900D40A71 /* ConfigureAudioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigureAudioViewController.m; sourceTree = "<group>"; };
 		97E53F2C1F5543B900D40A71 /* ConfigureVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigureVideoViewController.m; sourceTree = "<group>"; };
 		97E53F2D1F5543B900D40A71 /* ConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigureViewController.m; sourceTree = "<group>"; };
+		97E53F361F55760200D40A71 /* FSSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSSliderView.h; path = Views/FSSliderView/FSSliderView.h; sourceTree = "<group>"; };
+		97E53F371F55760200D40A71 /* FSSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSSliderView.m; path = Views/FSSliderView/FSSliderView.m; sourceTree = "<group>"; };
+		97E53F391F55762A00D40A71 /* FSSliderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FSSliderView.xib; path = Views/FSSliderView/FSSliderView.xib; sourceTree = "<group>"; };
+		97E53F3B1F558EE800D40A71 /* FSRecombinationLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FSRecombinationLabel.h; path = Views/FSSliderView/FSRecombinationLabel.h; sourceTree = "<group>"; };
+		97E53F3C1F558EE800D40A71 /* FSRecombinationLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FSRecombinationLabel.m; path = Views/FSSliderView/FSRecombinationLabel.m; sourceTree = "<group>"; };
+		97E53F3E1F558F0D00D40A71 /* FSRecombinationLabel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FSRecombinationLabel.xib; path = Views/FSSliderView/FSRecombinationLabel.xib; sourceTree = "<group>"; };
 		D8BA26B51D6AD13500D28C0F /* presentationLiveDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = presentationLiveDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -2994,6 +3004,7 @@
 		8488BDF91DB77992006357AD /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				97E53F311F554BD000D40A71 /* SubtitleViewController */,
 				8488BDFA1DB77992006357AD /* BrowseViewController.h */,
 				8488BDFB1DB77992006357AD /* BrowseViewController.m */,
 				84E375EA1DBB62B600217030 /* PlayPhotoViewController.h */,
@@ -3009,9 +3020,6 @@
 				97E53F281F5543B900D40A71 /* ConfigureAudioViewController.h */,
 				8488BE031DB77992006357AD /* LiveViewViewController.h */,
 				8488BE041DB77992006357AD /* LiveViewViewController.m */,
-				971293EC1F551BFF007E38FA /* FSSubtitleViewController.h */,
-				971293ED1F551BFF007E38FA /* FSSubtitleViewController.m */,
-				971293EE1F551BFF007E38FA /* FSSubtitleViewController.xib */,
 				8488BE051DB77992006357AD /* MediaData.h */,
 				8488BE061DB77992006357AD /* MediaData.m */,
 				8488BE071DB77992006357AD /* MediaGroup.h */,
@@ -3044,8 +3052,6 @@
 				84B988F91DC0B51B00BE7FCE /* CopyrightViewController.m */,
 				84B988FB1DC0B53200BE7FCE /* EditionViewController.h */,
 				84B988FC1DC0B53200BE7FCE /* EditionViewController.m */,
-				849ECA5C1DC61BBB00482063 /* SubtitleViewController.h */,
-				849ECA5D1DC61BBB00482063 /* SubtitleViewController.m */,
 				8483123E1DC6E0C0002CDF1D /* BannerViewController.h */,
 				8483123F1DC6E0C0002CDF1D /* BannerViewController.m */,
 				848312411DC6ECFB002CDF1D /* PauseScreenViewController.h */,
@@ -3920,6 +3926,7 @@
 		9739E03E1F4AE3ED00E7B7CF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				97E53F321F5574F000D40A71 /* FSSliderView */,
 				7AF024781F03A5EC0072CEED /* PlatformSelectView */,
 				97E53F151F5542F600D40A71 /* CollectionViewCell.h */,
 				97E53F191F5542F600D40A71 /* CollectionViewCell.m */,
@@ -4649,6 +4656,31 @@
 			path = presentationLiveDemo/Common/Utility/HTTP1/gtmbase64;
 			sourceTree = SOURCE_ROOT;
 		};
+		97E53F311F554BD000D40A71 /* SubtitleViewController */ = {
+			isa = PBXGroup;
+			children = (
+				849ECA5C1DC61BBB00482063 /* SubtitleViewController.h */,
+				849ECA5D1DC61BBB00482063 /* SubtitleViewController.m */,
+				971293EC1F551BFF007E38FA /* FSSubtitleViewController.h */,
+				971293ED1F551BFF007E38FA /* FSSubtitleViewController.m */,
+				971293EE1F551BFF007E38FA /* FSSubtitleViewController.xib */,
+			);
+			name = SubtitleViewController;
+			sourceTree = "<group>";
+		};
+		97E53F321F5574F000D40A71 /* FSSliderView */ = {
+			isa = PBXGroup;
+			children = (
+				97E53F361F55760200D40A71 /* FSSliderView.h */,
+				97E53F371F55760200D40A71 /* FSSliderView.m */,
+				97E53F391F55762A00D40A71 /* FSSliderView.xib */,
+				97E53F3B1F558EE800D40A71 /* FSRecombinationLabel.h */,
+				97E53F3C1F558EE800D40A71 /* FSRecombinationLabel.m */,
+				97E53F3E1F558F0D00D40A71 /* FSRecombinationLabel.xib */,
+			);
+			name = FSSliderView;
+			sourceTree = "<group>";
+		};
 		D8BA26AC1D6AD13500D28C0F = {
 			isa = PBXGroup;
 			children = (
@@ -4810,6 +4842,7 @@
 				84DA84AE1E88E7AC0027B06A /* configure_pre.png in Resources */,
 				97E53C301F55403100D40A71 /* read_me.txt in Resources */,
 				84DA85271E88E7AC0027B06A /* fixed_sel@2x.png in Resources */,
+				97E53F3F1F558F0D00D40A71 /* FSRecombinationLabel.xib in Resources */,
 				84DA845C1E88E7AC0027B06A /* continue live_pre@3x.png in Resources */,
 				84DA85461E88E7AC0027B06A /* _0009_09.png in Resources */,
 				8488BD6D1DB7792B006357AD /* 01_00025.png in Resources */,
@@ -4954,6 +4987,7 @@
 				84DA84701E88E7AC0027B06A /* stop live_dis@2x.png in Resources */,
 				84DA857D1E88F3AB0027B06A /* IMG_0992.JPG in Resources */,
 				841BEC751DBF00B100D03A97 /* Youtube.png in Resources */,
+				97E53F3A1F55762A00D40A71 /* FSSliderView.xib in Resources */,
 				84123F941DBDE66000CC7B4C /* live stream_platform_pre bg@3x.png in Resources */,
 				84DA849A1E88E7AC0027B06A /* edit_delete_pre@2x.png in Resources */,
 				8488BDB71DB7792B006357AD /* subtitle_Fonts color_icon@3x.png in Resources */,
@@ -5411,6 +5445,7 @@
 				97E53E231F55406200D40A71 /* GPUImageFramebuffer.m in Sources */,
 				9739DFAC1F4ADCE500E7B7CF /* UIScrollView+Extension.m in Sources */,
 				97E53E1D1F55406200D40A71 /* GPUImageFalseColorFilter.m in Sources */,
+				97E53F3D1F558EE800D40A71 /* FSRecombinationLabel.m in Sources */,
 				84B988F41DC0B4E600BE7FCE /* DisclaimerViewController.m in Sources */,
 				97E53EEB1F5541EF00D40A71 /* StreamViewController.m in Sources */,
 				97E53E121F55406200D40A71 /* GPUImageDarkenBlendFilter.m in Sources */,
@@ -5458,6 +5493,7 @@
 				97E53ED91F55417100D40A71 /* TTSearchDeviceClass.m in Sources */,
 				97E53E471F55406200D40A71 /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				97E53EF31F55423900D40A71 /* FacebookWebViewController.m in Sources */,
+				97E53F381F55760200D40A71 /* FSSliderView.m in Sources */,
 				8488BE1E1DB77992006357AD /* BrowseViewController.m in Sources */,
 				97E53E191F55406200D40A71 /* GPUImageEmbossFilter.m in Sources */,
 				97E53DEA1F55406200D40A71 /* LFFrame.m in Sources */,
