@@ -10,65 +10,71 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSSliderView">
             <connections>
-                <outlet property="keyValueLabel" destination="zoT-91-Vy7" id="oyq-uU-EvV"/>
-                <outlet property="leftValueLabel" destination="zgR-XX-ruE" id="tBd-Ph-FOz"/>
-                <outlet property="rightValueLabel" destination="tZY-YO-HtF" id="bIx-dd-zIw"/>
-                <outlet property="slider" destination="LNU-UJ-847" id="rvs-fc-qhq"/>
-                <outletCollection property="labelsCollection" destination="zgR-XX-ruE" id="SbY-hE-9Xc"/>
+                <outlet property="keyRecombinationLabel" destination="ZC4-JX-fzt" id="B8p-Ub-3bZ"/>
+                <outlet property="leftRecombinationLabel" destination="bNj-kh-Hb5" id="Dhy-GS-ds9"/>
+                <outlet property="rightRecombinationLabel" destination="h2h-SO-ZjB" id="9G0-Kp-oNf"/>
+                <outlet property="slider" destination="LNU-UJ-847" id="P1q-ta-crV"/>
+                <outletCollection property="recombinationLabelsCollection" destination="h2h-SO-ZjB" id="3al-9A-2L7"/>
+                <outletCollection property="recombinationLabelsCollection" destination="ZC4-JX-fzt" id="hC2-QL-enq"/>
+                <outletCollection property="recombinationLabelsCollection" destination="bNj-kh-Hb5" id="lor-9C-EMT"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="UDc-dx-rtA">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+            <rect key="frame" x="0.0" y="0.0" width="361" height="68"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="leo-d9-pWf">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                    <rect key="frame" x="0.0" y="0.0" width="361" height="68"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sP4-8T-OM1">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
+                            <rect key="frame" x="0.0" y="0.0" width="361" height="34"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="keyValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoT-91-Vy7" userLabel="overThumbLabel">
-                                    <rect key="frame" x="159" y="10" width="57.5" height="17"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZC4-JX-fzt" userLabel="KeyRecombinationLabel" customClass="FSRecombinationLabel">
+                                    <rect key="frame" x="150.5" y="14" width="60" height="20"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="QdB-Km-kbh"/>
+                                        <constraint firstAttribute="width" constant="60" id="Qvf-or-eJ4"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="zoT-91-Vy7" firstAttribute="centerX" secondItem="sP4-8T-OM1" secondAttribute="centerX" priority="250" id="RUo-sD-Gng"/>
-                                <constraint firstAttribute="bottom" secondItem="zoT-91-Vy7" secondAttribute="bottom" id="Ux9-kM-KB9"/>
+                                <constraint firstAttribute="bottom" secondItem="ZC4-JX-fzt" secondAttribute="bottom" id="dqh-Y5-cM1"/>
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8iL-rA-0CM" userLabel="bottomStack View">
-                            <rect key="frame" x="0.0" y="27" width="375" height="27"/>
+                            <rect key="frame" x="0.0" y="34" width="361" height="34"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="rightValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgR-XX-ruE" userLabel="rightLabel">
-                                    <rect key="frame" x="0.0" y="0.0" width="65.5" height="27"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bNj-kh-Hb5" userLabel="leftRecombination Label" customClass="FSRecombinationLabel">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="34"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="drm-yh-B8d"/>
+                                    </constraints>
+                                </view>
                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="LNU-UJ-847">
-                                    <rect key="frame" x="73.5" y="0.0" width="237" height="28"/>
+                                    <rect key="frame" x="68" y="0.0" width="225" height="35"/>
                                     <color key="minimumTrackTintColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="thumbTintColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <connections>
                                         <action selector="sliderDidChangeAction:" destination="-1" eventType="valueChanged" id="pvZ-mI-HhV"/>
                                     </connections>
                                 </slider>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="leftValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-YO-HtF" userLabel="leftLabel">
-                                    <rect key="frame" x="318.5" y="0.0" width="56.5" height="27"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="h2h-SO-ZjB" userLabel="rightRecombination Label" customClass="FSRecombinationLabel">
+                                    <rect key="frame" x="301" y="0.0" width="60" height="34"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="F71-kU-v5P"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                         </stackView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="8iL-rA-0CM" firstAttribute="width" secondItem="sP4-8T-OM1" secondAttribute="width" id="YnU-LS-hEo"/>
+                        <constraint firstItem="ZC4-JX-fzt" firstAttribute="centerX" secondItem="LNU-UJ-847" secondAttribute="centerX" priority="750" id="kKT-A0-hjS"/>
                     </constraints>
                 </stackView>
             </subviews>
@@ -81,7 +87,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="140.5" y="36"/>
+            <point key="canvasLocation" x="131.5" y="12"/>
         </view>
     </objects>
 </document>

@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSSubtitleViewController">
             <connections>
+                <outlet property="opacitySliderView" destination="GPE-Uw-Zip" id="arU-Zc-JAO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -346,28 +347,21 @@
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hAf-Wm-C8M">
-                            <rect key="frame" x="78" y="25" width="234" height="31"/>
-                            <color key="minimumTrackTintColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="thumbTintColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
-                        </slider>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCA-w4-pU0">
-                            <rect key="frame" x="320" y="31.5" width="35" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GPE-Uw-Zip" customClass="FSSliderView">
+                            <rect key="frame" x="80" y="0.0" width="285" height="80"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="AP3-SL-9I9" firstAttribute="leading" secondItem="ixv-kV-mBe" secondAttribute="leading" constant="20" id="1iy-1R-C2g"/>
-                        <constraint firstItem="hAf-Wm-C8M" firstAttribute="leading" secondItem="AP3-SL-9I9" secondAttribute="trailing" constant="10" id="eFs-yO-H3H"/>
+                        <constraint firstItem="GPE-Uw-Zip" firstAttribute="leading" secondItem="AP3-SL-9I9" secondAttribute="trailing" constant="10" id="CXi-PI-Ltx"/>
+                        <constraint firstItem="GPE-Uw-Zip" firstAttribute="centerY" secondItem="ixv-kV-mBe" secondAttribute="centerY" id="Km6-Yi-tmf"/>
                         <constraint firstItem="AP3-SL-9I9" firstAttribute="centerY" secondItem="ixv-kV-mBe" secondAttribute="centerY" id="f9p-Lm-dpl"/>
+                        <constraint firstAttribute="bottom" secondItem="GPE-Uw-Zip" secondAttribute="bottom" id="fV9-6V-DJd"/>
+                        <constraint firstItem="GPE-Uw-Zip" firstAttribute="top" secondItem="ixv-kV-mBe" secondAttribute="top" id="h5e-SS-v9o"/>
                         <constraint firstAttribute="height" constant="80" id="oij-T1-Jor"/>
-                        <constraint firstItem="hAf-Wm-C8M" firstAttribute="centerY" secondItem="AP3-SL-9I9" secondAttribute="centerY" id="rFB-cj-q6f"/>
-                        <constraint firstItem="CCA-w4-pU0" firstAttribute="centerY" secondItem="AP3-SL-9I9" secondAttribute="centerY" id="sLH-OY-W3p"/>
-                        <constraint firstItem="CCA-w4-pU0" firstAttribute="leading" secondItem="hAf-Wm-C8M" secondAttribute="trailing" constant="10" id="tnb-Um-B25"/>
-                        <constraint firstAttribute="trailing" secondItem="CCA-w4-pU0" secondAttribute="trailing" constant="20" id="wuR-nx-JMQ"/>
+                        <constraint firstAttribute="trailing" secondItem="GPE-Uw-Zip" secondAttribute="trailing" constant="10" id="wqx-sb-kim"/>
                     </constraints>
                 </view>
             </subviews>

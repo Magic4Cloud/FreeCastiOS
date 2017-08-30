@@ -112,8 +112,8 @@
     
     UIView *view = arrayViews.firstObject;
     [self addSubview:view];
-    [self sendSubviewToBack:view];
-    self.backgroundColor = [UIColor clearColor];
+//    [self sendSubviewToBack:view];
+//    self.backgroundColor = [UIColor clearColor];
     
     //Constraints
     view.translatesAutoresizingMaskIntoConstraints = NO;

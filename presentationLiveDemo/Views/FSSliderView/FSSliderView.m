@@ -9,11 +9,8 @@
 #import "FSSliderView.h"
 
 @interface FSSliderView()
-@property (weak, nonatomic) IBOutlet UILabel                      *keyValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel                      *rightValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel                      *leftValueLabel;
-@property (weak, nonatomic) IBOutlet UISlider                     *slider;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelsCollection;
+@property (strong, nonatomic) IBOutletCollection(FSRecombinationLabel) NSArray *recombinationLabelsCollection;
+
 
 @end
 @implementation FSSliderView
@@ -21,14 +18,23 @@
 - (void)setup {
     [super setup];
     
+    [self setupLabelsDefault];
+    [self setupSliderMaxValueAndMinValue];
     [self setupLabelsText];
     [self setupLabelsFont];
     [self setupLabelsColor];
     [self setupHidenViews];
-    [self setupSliderMaxValueAndMinValue];
+    
 }
 
-- (void)setUpHidenLeftValueLabel:(BOOL)hidenLeftValueLabel hidenRightValueLabel:(BOOL)hidenRightValueLabel hidenKeyValueLabel:(BOOL)hidenKeyValueLabel labelFont:(nullable UIFont*)labelsfont leftValueColor:(nullable UIColor*)leftValueColor rightValueColor:(nullable UIColor*)rightValueColor keyValueColor:(nullable UIColor*)keyValueColor maxValue:(nullable NSDecimalNumber *)maxValue minValue:(nullable NSDecimalNumber *)minValue{
+- (void)setupLabelsDefault {
+    for (FSRecombinationLabel * recombinationLabel in self.recombinationLabelsCollection) {
+        [recombinationLabel setupUseDefaultConfiguration];
+        recombinationLabel.suffixStr = @"%";
+    }
+}
+
+- (void)setUpHidenLeftValueLabel:(BOOL)hidenLeftValueLabel hidenRightValueLabel:(BOOL)hidenRightValueLabel hidenKeyValueLabel:(BOOL)hidenKeyValueLabel labelFont:(UIFont *_Nullable)labelsfont leftValueColor:(UIColor *_Nullable)leftValueColor rightValueColor:(UIColor *_Nullable)rightValueColor keyValueColor:(UIColor *_Nullable)keyValueColor maxValue:(NSDecimalNumber *_Nullable)maxValue minValue:(NSDecimalNumber *_Nullable)minValue {
     self.leftValueHiden = hidenLeftValueLabel;
     self.rightValueHiden = hidenRightValueLabel;
     self.keyValueHiden = hidenKeyValueLabel;
@@ -42,15 +48,17 @@
 }
 
 - (void)setupLabelsText {
-    self.leftValueLabel.text = @"";
+    self.leftRecombinationLabel.keyMainValue = self.sliderMinValue.floatValue;
+    self.rightRecombinationLabel.keyMainValue = self.sliderMaxValue.floatValue;
+    self.keyRecombinationLabel.keyMainValue = self.slider.value;
 }
 
 - (void)setupLabelsFont {
     if (!self.labelsFont) {
         return;
     }
-    for (UILabel *label in _labelsCollection) {
-        label.font = self.labelsFont;
+    for (FSRecombinationLabel * recombinationLabel in self.recombinationLabelsCollection) {
+        recombinationLabel.labelsFont = self.labelsFont;
     }
 }
 - (void)setupLabelsColor {
@@ -61,40 +69,45 @@
                            rightValueColor:(UIColor *)rightValueColor
                              keyValueColor:(UIColor *)keyValueColor {
     if (leftValueColor) {
-        self.leftValueLabel.tintColor = leftValueColor;
+        self.leftRecombinationLabel.labelsColor = leftValueColor;
     }
     if (rightValueColor) {
-        self.rightValueLabel.tintColor = rightValueColor;
+        self.rightRecombinationLabel.labelsColor = rightValueColor;
     }
     if (keyValueColor) {
-        self.keyValueLabel.tintColor = keyValueColor;
+        self.keyRecombinationLabel.labelsColor = keyValueColor;
     }
 }
 
 - (void)setupHidenViews {
-    [self setupHidenLeftValue:self.leftValueHiden hidenRightValue:self.rightValueHiden hidenKeyValue:self.keyValueLabel];
+    [self setupHidenLeftValue:self.leftValueHiden hidenRightValue:self.rightValueHiden hidenKeyValue:self.keyValueHiden];
 }
 
 - (void)setupHidenLeftValue:(BOOL)hidenLeftValue
             hidenRightValue:(BOOL)hidenRightValue
               hidenKeyValue:(BOOL)hidenKeyValue {
-    self.leftValueLabel.hidden = hidenLeftValue;
-    self.rightValueLabel.hidden = hidenRightValue;
-    self.keyValueLabel.hidden = hidenKeyValue;
+    self.leftRecombinationLabel.hidden = hidenLeftValue;
+    self.rightRecombinationLabel.hidden = hidenRightValue;
+    self.keyRecombinationLabel.hidden = hidenKeyValue;
 }
 
 - (void)setupSliderMaxValueAndMinValue {
     if (self.sliderMaxValue) {
         self.slider.maximumValue = self.sliderMaxValue.floatValue;
-        
+    }else {
+        self.slider.maximumValue = 1;
     }
     if (self.sliderMinValue) {
         self.slider.minimumValue = self.sliderMinValue.floatValue;
+        
+    }else {
+        self.slider.minimumValue = 0;
     }
 }
 
 - (IBAction)sliderDidChangeAction:(UISlider *)sender {
     NSLog(@"-------_____---------%lf,xposition = %lf",sender.value,[self xPositionFromSliderValue:sender]);
+    [self.keyRecombinationLabel setKeyMainValue:sender.value];
 }
 
 

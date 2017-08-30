@@ -7,8 +7,11 @@
 //
 
 #import "FSSubtitleViewController.h"
-
+#import "FSSliderView.h"
+#import "FSRecombinationLabel.h"
 @interface FSSubtitleViewController ()
+
+@property (weak, nonatomic) IBOutlet FSSliderView *opacitySliderView;
 
 @end
 
@@ -22,6 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self requestDataSource];
+    
+    [self.opacitySliderView setUpHidenLeftValueLabel:YES hidenRightValueLabel:NO hidenKeyValueLabel:NO labelFont:nil leftValueColor:nil rightValueColor:nil keyValueColor:nil maxValue:[NSDecimalNumber decimalNumberWithString:@"100"]     minValue:[NSDecimalNumber decimalNumberWithString:@"0"]];
     
 }
 
