@@ -1272,7 +1272,7 @@ bool _modifyOK=YES;
         });
     }
 }
-- (void)updatePassWord
+- (void)updatePassWord//调用update接口后还要调用reset接口才能起效
 {
     NSString *URL;
     //设置AP模块的密码
@@ -1283,6 +1283,7 @@ bool _modifyOK=YES;
         //        URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=WPA2PSK&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
         URL=[[NSString alloc]initWithFormat:@"http://192.168.100.1/param.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
     }
+    NSString *resetUrlStr = [NSString stringWithFormat:@"http://192.168.100.1/restart.cgi?action=update&group=wifi&ap_auth_key=%@&ap_auth_mode=OPEN&ap_hide_ssid=0&ap_channel=36",_newPasswordText.text];
     HttpRequest * http_request = [HttpRequest HTTPRequestWithUrl:URL andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
     if(http_request.StatusCode==200)
     {
@@ -1290,9 +1291,20 @@ bool _modifyOK=YES;
         resolution=[self parseJsonString:http_request.ResponseString];
         if ([resolution compare:@"0"]!=NSOrderedSame) {
             dispatch_async(dispatch_get_main_queue(),^ {
-                dispatch_async(dispatch_get_main_queue(),^ {
-                    [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
-                });
+               
+            HttpRequest * reset_request = [HttpRequest HTTPRequestWithUrl:resetUrlStr andData:nil andMethod:@"GET" andUserName:@"admin" andPassword:@"admin"];
+                if(reset_request.StatusCode==200)
+                {
+                    reset_request.ResponseString=[reset_request.ResponseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+                    resolution=[self parseJsonString:reset_request.ResponseString];
+                    if ([resolution compare:@"0"]!=NSOrderedSame) {
+                        dispatch_async(dispatch_get_main_queue(),^ {
+                            [self showAllTextDialog:NSLocalizedString(@"password_modify_success", nil)];
+                        });
+                    }
+                } else {
+                    [self showAllTextDialog:NSLocalizedString(@"password_modify_failed", nil)];
+                }
             });
         }
         else{
