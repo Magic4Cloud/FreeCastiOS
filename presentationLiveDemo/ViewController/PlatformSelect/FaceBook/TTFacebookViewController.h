@@ -1,9 +1,9 @@
 //
-//  TTFacebookViewController.h
+//  TTFacebookViewController.m
 //  presentationLiveDemo
 //
-//  Created by 周恒 on 2017/7/14.
-//  Copyright © 2017年 ZYH. All rights reserved.
+//  Created by FrankLi on 2017/9/19.
+//  Copyright © 2017年 FrankLi. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

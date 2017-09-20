@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebooklive" translatesAutoresizingMaskIntoConstraints="NO" id="xHi-RP-Tvq">
-                    <rect key="frame" x="86" y="100" width="200" height="70"/>
+                    <rect key="frame" x="87.5" y="100" width="200" height="70"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="dBF-UQ-Hao"/>
                         <constraint firstAttribute="width" constant="200" id="jP6-fs-MDm"/>
@@ -63,7 +62,7 @@ and paste the code displayed above</string>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Copied to Clipboard!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4jh-w5-daR">
-                    <rect key="frame" x="115" y="260" width="142" height="18"/>
+                    <rect key="frame" x="116.5" y="260" width="142" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.40000000600000002" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -124,6 +123,7 @@ and paste the code displayed above</string>
                 <constraint firstItem="tFI-Qu-Xye" firstAttribute="leading" secondItem="aSd-Pz-Ju6" secondAttribute="trailing" constant="20.5" id="bKi-f2-DwQ"/>
                 <constraint firstItem="bOT-GW-LhR" firstAttribute="top" secondItem="EKt-Kd-g5m" secondAttribute="bottom" constant="59" id="bvf-Hd-3uf"/>
                 <constraint firstItem="Ddh-yM-4pc" firstAttribute="leading" secondItem="Opm-jf-azR" secondAttribute="trailing" constant="21" id="eDK-5x-FjL"/>
+                <constraint firstItem="xHi-RP-Tvq" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eUW-Rd-C6x"/>
                 <constraint firstItem="bOT-GW-LhR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="ewD-2W-aY1"/>
                 <constraint firstItem="mF9-wi-eaI" firstAttribute="leading" secondItem="tFI-Qu-Xye" secondAttribute="leading" id="f7a-Sv-CVj"/>
                 <constraint firstAttribute="trailing" secondItem="tFI-Qu-Xye" secondAttribute="trailing" constant="20" id="fh7-WG-wWN"/>
@@ -131,7 +131,6 @@ and paste the code displayed above</string>
                 <constraint firstItem="Dq3-9W-you" firstAttribute="trailing" secondItem="mF9-wi-eaI" secondAttribute="trailing" id="hgA-y9-90L"/>
                 <constraint firstItem="bOT-GW-LhR" firstAttribute="leading" secondItem="aSd-Pz-Ju6" secondAttribute="leading" id="jvi-Ol-Hlr"/>
                 <constraint firstItem="Opm-jf-azR" firstAttribute="top" secondItem="xHi-RP-Tvq" secondAttribute="bottom" constant="43" id="lhC-Te-0FI"/>
-                <constraint firstItem="xHi-RP-Tvq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="86" id="tgj-ke-YCd"/>
                 <constraint firstItem="bOT-GW-LhR" firstAttribute="leading" secondItem="EKt-Kd-g5m" secondAttribute="leading" id="v1P-Fy-bQe"/>
                 <constraint firstItem="aSd-Pz-Ju6" firstAttribute="top" secondItem="Opm-jf-azR" secondAttribute="bottom" constant="86" id="vYs-r8-5pl"/>
                 <constraint firstItem="Dq3-9W-you" firstAttribute="leading" secondItem="mF9-wi-eaI" secondAttribute="leading" id="wMu-yO-wRu"/>

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
-	<string>FreeStream</string>
+	<string>Freestream</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>2.10</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -53,15 +53,17 @@
 				<string>QQ05FB8B52</string>
 				<string>wx4868b35061f87885</string>
 				<string>tencent100371282</string>
-				<string>fb107704292745179</string>
+				<string>fb115586109153322</string>
 				<string>wb568898243</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>001</string>
+	<string>100</string>
 	<key>FacebookAppID</key>
-	<string>107704292745179</string>
+	<string>115586109153322</string>
+	<key>FacebookDisplayName</key>
+	<string>Freestream</string>
 	<key>KAKAO_APP_KEY</key>
 	<string>48d3f524e4a636b08d81b3ceb50f1003</string>
 	<key>LSApplicationCategoryType</key>

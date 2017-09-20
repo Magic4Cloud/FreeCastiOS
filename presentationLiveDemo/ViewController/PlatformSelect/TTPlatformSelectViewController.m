@@ -170,7 +170,8 @@
     switch (index) {
         case 0://facebook
         {
-            
+            TTFacebookViewController * vc = [[TTFacebookViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
         case 1://youtubu
@@ -396,9 +397,9 @@
         switch (indexPath.row) {
             case 0://facebook
             {
-                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
-//                TTFacebookViewController *vc = [[TTFacebookViewController alloc] init];
-//                [self.navigationController pushViewController:vc animated:YES];
+//                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
+                TTFacebookViewController *vc = [[TTFacebookViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
             case 1://youtubu

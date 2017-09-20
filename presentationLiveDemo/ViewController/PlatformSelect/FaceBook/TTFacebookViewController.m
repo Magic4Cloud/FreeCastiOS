@@ -2,19 +2,34 @@
 //  TTFacebookViewController.m
 //  presentationLiveDemo
 //
-//  Created by 周恒 on 2017/7/14.
-//  Copyright © 2017年 ZYH. All rights reserved.
-//
+//  Created by FrankLi on 2017/9/19.
+//  Copyright © 2017年 FrankLi. All rights reserved.
+//验证流程:
+//1.获取一个user_code(可以理解为一个时效性为420秒的facebook验证参数)
+//2.登录facebook,登录成功,填入之前获取的user_code,然后用户授权。注意，我们要申请的五个权限必须要通过facebook的应用审核，需要很复杂的审核（这个并不是申请应用，而是权限的应用审核）。
+//3.
 
 #import "TTFacebookViewController.h"
 #import "CommonAppHeaders.h"
 #import "FacebookWebViewController.h"
+#import "WebViewController.h"
 #import "TTNetMannger.h"
 #import "TTCoreDataClass.h"
 
-static const NSString * client_id = @"107704292745179";
+static NSString const*app_id           = @"115586109153322";
+static NSString const*app_secret       = @"fd18fde29cdc12290fe08ad0672b7a0a";
+static NSString const*client_token     = @"766ef0f7747b190ca998851d5e277bce";
 
-static const NSString * client_secret = @"38053202e1a5fe26c80c753071f0b573";
+static NSString const*access_token_key = @"access_token";
+static NSString const*code_key         = @"code";
+static NSString const*scope_key        = @"scope";
+static NSString const*user_code_key    = @"user_code";
+static NSString const*stream_url_key   = @"stream_url";
+static NSString const*verification_uri_key = @"verification_uri";
+//请求的直播权限 包含以下五点
+#define Scope_value @"public_profile,publish_actions,manage_pages,publish_pages,user_managed_groups,user_events"
+//请求验证码时候 用这个作为access_token
+#define Access_token_value [NSString stringWithFormat:@"%@|%@",app_id,client_token]
 
 @interface TTFacebookViewController ()
 
@@ -26,224 +41,171 @@ static const NSString * client_secret = @"38053202e1a5fe26c80c753071f0b573";
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity2;
 
-@property (nonatomic, strong)NSDictionary * dict;
+@property (nonatomic, strong)NSDictionary * verificationDic;
 
-@property (nonatomic, strong)NSDictionary * accessTokenDic;
-
-@property (nonatomic, copy) NSString * boundStreamId;
-
-@property (nonatomic, copy) NSString * streamName;
+@property (nonatomic, copy) NSString * streamKey;
 
 @property (nonatomic, copy) NSString * accesstoken;
+
+@property (nonatomic, copy) NSString * userID;
 
 
 @end
 
 @implementation TTFacebookViewController
 
+#pragma mark - Setters/Getters
+
+#pragma mark – View lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self initUI];
-    [self deviceSigin];
-    // Do any additional setup after loading the view from its nib.
+    [self requestVerificationData];
 }
 
-
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
-    if (_dict) {
-        [self getaccesstoken];
+    if (_verificationDic) {
+        [self getAccesstoken];
     }
 }
-- (void)getaccesstoken
-{
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+}
+
+#pragma mark – Initialization & Memory management methods
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark – Request service methods
+//从facebook获取校验数据
+//responseData:{
+//    code = a90d5ee718ee48c6bc37891baeb0ffab;
+//    "expires_in" = 420;
+//    interval = 5;
+//    "user_code" = 9MT8FB3A;
+//    "verification_uri" = "https://www.facebook.com/device";
+//}
+- (void)requestVerificationData {
+    NSMutableDictionary *paramDic = @{}.mutableCopy;
+    [paramDic setObject:Access_token_value forKey:access_token_key];
+    [paramDic setObject:Scope_value forKey:scope_key];
     
-    NSString * device_code = _dict[@"device_code"];
-    //2.根据会话对象创建task
-    NSString *url = @"https://www.googleapis.com/oauth2/v4/token";
-    NSDictionary * paramDic = [NSDictionary dictionaryWithObjectsAndKeys:client_id,@"client_id",client_secret,@"client_secret",device_code,@"code", @"http://oauth.net/grant_type/device/1.0",@"grant_type",nil];
+    NSString * url = [NSString stringWithFormat:@"https://graph.facebook.com/v2.6/device/login"];
+    
+    [_activityView startAnimating];
+    
+    [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (dic[user_code_key]) {
+                _verificationDic = dic;
+                [_codeButton setTitle:dic[user_code_key] forState:UIControlStateNormal];
+            } else {
+                
+            }
+            [_activityView stopAnimating];
+        });
+    }];
+}
+
+
+- (void)getAccesstoken {
+    
+    NSString *url = @"https://graph.facebook.com/v2.6/device/login_status";
+    NSMutableDictionary *paramDic = @{}.mutableCopy;
+    [paramDic setObject:_verificationDic[code_key] forKey:code_key];
+    [paramDic setObject:Access_token_value forKey:access_token_key];
     [self showLoading];
     
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
-        _accessTokenDic = dic;
-        if (dic[@"access_token"])
-        {
-            _accesstoken = dic[@"access_token"];
-            [self getstream];
-        }
-        else
-        {
+        
+        if (dic[access_token_key]) {
+            _accesstoken = dic[access_token_key];
+            [self getId];
+        } else {
             [self hideLoading];
-            [self showHudMessage:dic[@"error_description"]];
+            [self showHudMessage:dic[@"error"][@"error_user_msg"]];
         }
-        
     }];
-    
 }
 
-- (void)showLoading
-{
-    [_activity2 startAnimating];
-    [self showHudLoading];
+- (void)getId {
     
-}
-
-- (void)hideLoading
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_activity2 stopAnimating];
-        [self hideHudLoading];
-    });
-}
-
-
-- (void)getstream
-{
-    
-    NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
-    NSDictionary * headerDic = [NSDictionary dictionaryWithObject:accessToken forKey:@"Authorization"];
-    NSString * url = @"https://www.googleapis.com/youtube/v3/liveBroadcasts?part=contentDetails&broadcastStatus=all&broadcastType=persistent";
-    [TTNetMannger getRequestUrl:url param:nil headerDic:headerDic completionHandler:^(NSDictionary *dic) {
-        
+    NSString *urlStr = [NSString stringWithFormat:@"https://graph.facebook.com/v2.10/me?fields=id&access_token=%@",_accesstoken];
+    [TTNetMannger getRequestUrl:urlStr param:nil headerDic:nil completionHandler:^(NSDictionary *dic) {
         if (dic[@"error"]) {
             
             [self showHudMessage:dic[@"error"][@"message"]];
             //如果请求失败  再次请求
             static int requestcount = 0;
             requestcount ++;
-            if (requestcount<2)
-            {
-                [self getstream];
-            }
-            else
-            {
+            if (requestcount<2) {
+                [self getId];
+            } else {
                 [self hideLoading];
             }
+        } else {
+            _userID = dic[@"id"];
+            [self getstream];
         }
-        
-        NSArray * item = dic[@"items"];
-        NSDictionary * firstDic = [item firstObject];
-        NSDictionary * contentDetails = firstDic[@"contentDetails"];
-        if (contentDetails) {
-            _boundStreamId = contentDetails[@"boundStreamId"];
-            [self getStreamKey];
-        }
-        else
-        {
-            [self hideLoading];
-        }
-        
-        
     }];
-    
-    
-    
 }
 
-- (void)getStreamKey
-{
+- (void)getstream {
     
-    NSMutableDictionary * paramDic = [NSMutableDictionary dictionary];
-    [paramDic setValue:@"id,snippet,cdn" forKey:@"part"];
-    [paramDic setValue:_boundStreamId forKey:@"id"];
+    NSMutableDictionary *paramDic = @{}.mutableCopy;
+    [paramDic setObject:_accesstoken forKey:@"access_token"];
     
-    NSString * accessToken =  [NSString stringWithFormat:@"Bearer %@",_accesstoken];
+    NSString * url = [NSString stringWithFormat:@"https://graph.facebook.com/v2.10/%@/live_videos",_userID];
     
-    [TTNetMannger getRequestUrl:@"https://www.googleapis.com/youtube/v3/liveStreams" param:paramDic headerDic:@{@"Authorization":accessToken} completionHandler:^(NSDictionary *dic) {
+    [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
         
-        
-        if (dic[@"error"])
-        {
+        if (dic[@"error"]) {
             [self showHudMessage:dic[@"error"][@"message"]];
-            static int requestcount2 = 0;
-            requestcount2 ++;
-            if (requestcount2<2)
-            {
-                [self getStreamKey];
-            }
-            else
-            {
+            //如果请求失败  再次请求
+            static int requestcount = 0;
+            requestcount ++;
+            if (requestcount<2) {
+                [self getstream];
+            } else {
                 [self hideLoading];
             }
-            //如果请求失败  再次请求
-        }
-        else
-        {
-            NSArray * item = dic[@"items"];
-            NSDictionary * firstDic = [item firstObject];
-            NSDictionary * cdn = firstDic[@"cdn"];
-            NSDictionary * ingestionInfo = cdn[@"ingestionInfo"];
-            NSString * streamKey = ingestionInfo[@"streamName"];
-            _streamName = streamKey;
+        } else {
+            NSLog(@"----------------%@",dic);
+            NSString *streamUrlString = dic[stream_url_key];
             
-            NSString * ingestionAddress = ingestionInfo[@"ingestionAddress"];
-            [[TTCoreDataClass shareInstance] updatePlatformWithName:youtubu rtmp:ingestionAddress streamKey:_streamName customString:nil enabel:YES selected:YES];
+            NSRange range = [streamUrlString rangeOfString:@"rtmp/"];
+            
+            NSString * rmtpUrlString = [streamUrlString substringToIndex:range.location + range.length];
+            NSString *streamKey = [streamUrlString substringFromIndex:range.location + range.length];
+            _streamKey = streamKey;
+            
+            [[TTCoreDataClass shareInstance] updatePlatformWithName:faceBook rtmp:rmtpUrlString streamKey:streamKey customString:nil enabel:YES selected:YES];
+            
             [self hideLoading];
             [self showHudMessage:@"get streamkey success!"];
         }
-        
     }];
 }
 
+#pragma mark – Private methods
 
-
-- (void)deviceSigin
-{
-    
-    //1.创建会话对象
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    //2.根据会话对象创建task
-    NSURL *url = [NSURL URLWithString:@"https://www.facebook.com/dialog/oauth"];
-    
-    //3.创建可变的请求对象
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    //4.修改请求方法为POST
-    request.HTTPMethod = @"POST";
-    NSString * body = [NSString stringWithFormat:@"client_id=%@&response_type=code&scope=user_friends",client_id];
-    //5.设置请求体
-    request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [_activityView startAnimating];
-    
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (!data) {
-            return ;
-        }
-        //8.解析数据
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        NSLog(@"%@",dict);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (dict[@"user_code"]) {
-                _dict = dict;
-                [_codeButton setTitle:dict[@"user_code"] forState:UIControlStateNormal];
-            }
-            else
-            {
-                
-            }
-            
-            [_activityView stopAnimating];
-        });
-
-    }];
-    
-    //7.执行任务
-    [dataTask resume];
-    
-    
-    
-    
-}
-
-- (void)initUI
-{
+- (void)initUI {
     [self configNavigationWithTitle:@"Authentication" rightButtonTitle:@"Done"];
     
     NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:@"Go to http://www.facebook.com/device and paste the code displayed above"];
@@ -257,34 +219,30 @@ static const NSString * client_secret = @"38053202e1a5fe26c80c753071f0b573";
     
     _codeButton.layer.cornerRadius = 15;
     
-    
 }
 
-#pragma mark - actions
-//done
-- (void)TTRightButtonClick
-{
-    
-    if (_streamName)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [self showHudMessage:NSLocalizedString(@"getyoutubeStreamKeyError", nil)];
-    }
-}
+#pragma mark – Target action methods
 
-
-- (void)linkLabelClick
-{
-    FacebookWebViewController * vc = [[FacebookWebViewController alloc] init];
-//    vc.url = _dict[@"verification_url"];
-    vc.url = @"http://www.facebook.com/device";
-    
+- (void)linkLabelClick {
+    WebViewController * vc = [[WebViewController alloc] init];
+    vc.url = _verificationDic[verification_uri_key];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showLoading {
+    [_activity2 startAnimating];
+    [self showHudLoading];
+}
+
+- (void)hideLoading {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_activity2 stopAnimating];
+        [self hideHudLoading];
+        [self hideHudLoading];
+    });
+}
+
+#pragma mark - IBActions
 
 - (IBAction)copyCodeButtonClick:(id)sender {
     
@@ -295,26 +253,34 @@ static const NSString * client_secret = @"38053202e1a5fe26c80c753071f0b573";
         UIPasteboard * pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = button.currentTitle;
         
-        [self showHudMessage:@"Has been copied!"];
-    }
-    else
-    {
-        [self showHudMessage:@"wating for get code!"];
+        [self showHudMessage:@"Copy successful!"];
+    } else {
+        [self showHudMessage:@"Wating for a code!"];
     }
 }
 
+//done
+- (void)TTRightButtonClick
+{
+    
+    if (_streamKey)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        [self showHudMessage:NSLocalizedString(@"getyoutubeStreamKeyError", nil)];
+    }
+}
 
+#pragma mark – Public methods
 
+#pragma mark – Class methods
 
+#pragma mark – Override properties
 
+#pragma mark - Override super methods
+
+#pragma mark – Delegate
 
 @end
-
-
-
-
-
-
-
-
-

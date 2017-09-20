@@ -2457,8 +2457,8 @@
 			isa = PBXGroup;
 			children = (
 				97E53EF91F55427200D40A71 /* TTPlatformCustomViewController.h */,
-				97E53EFA1F55427200D40A71 /* TTPlatformCustomViewController.xib */,
 				97E53EFB1F55427200D40A71 /* TTPlatformCustomViewController.m */,
+				97E53EFA1F55427200D40A71 /* TTPlatformCustomViewController.xib */,
 			);
 			name = Custom;
 			path = ViewController/Custom;
@@ -3951,8 +3951,8 @@
 			isa = PBXGroup;
 			children = (
 				97E53F011F55429F00D40A71 /* TTYoutubuViewController.h */,
-				97E53F021F55429F00D40A71 /* TTYoutubuViewController.xib */,
 				97E53F031F55429F00D40A71 /* TTYoutubuViewController.m */,
+				97E53F021F55429F00D40A71 /* TTYoutubuViewController.xib */,
 			);
 			name = Youtubu;
 			path = ViewController;
@@ -3972,8 +3972,8 @@
 			isa = PBXGroup;
 			children = (
 				97E53EF41F55425000D40A71 /* TTFacebookViewController.h */,
-				97E53EF51F55425000D40A71 /* TTFacebookViewController.xib */,
 				97E53EF61F55425000D40A71 /* TTFacebookViewController.m */,
+				97E53EF51F55425000D40A71 /* TTFacebookViewController.xib */,
 				9739E0411F4AE47100E7B7CF /* FaceBookWebViewController */,
 			);
 			name = FaceBook;
@@ -4745,8 +4745,8 @@
 				TargetAttributes = {
 					D8BA26B41D6AD13500D28C0F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 8YE8AXL3F3;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 29MHFKT8DQ;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -5908,8 +5908,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5958,10 +5958,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_TAPI_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "23b6f553-b716-4ffe-a4ce-f8145e50fd6d";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;
@@ -5972,9 +5972,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Sichuan Hoo View Technology Co., Ltd. (8YE8AXL3F3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6023,10 +6023,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_TAPI_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "918357e9-fe7d-493f-acba-51ed2abd668a";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;

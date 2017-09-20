@@ -8,7 +8,7 @@
 
 #import "FacebookWebViewController.h"
 
-@interface FacebookWebViewController ()
+@interface FacebookWebViewController ()<UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
