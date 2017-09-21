@@ -19,7 +19,7 @@
     [super viewDidLoad];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self configNavigationWithTitle:@"" rightButtonTitle:nil];
+    [self configNavigationWithTitle:@"Authentication" rightButtonTitle:nil];
     
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
     
@@ -61,6 +61,7 @@
 
 - (void)dealloc
 {
+    _webView.delegate = nil;
     [self cleanCacheAndCookie];
 }
 

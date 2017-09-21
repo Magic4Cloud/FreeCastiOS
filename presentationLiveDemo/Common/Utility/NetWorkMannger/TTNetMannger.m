@@ -76,10 +76,15 @@
     NSURLSession *session = [NSURLSession sharedSession];
     
     NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingMutableLeaves) error:nil];
-        NSLog(@"post\nresponseData:%@\nerror:%@",dict,error);
+        if (!data) {
+            comletionHandler(nil);
+            return ;
+        }
+        NSError *jsonError;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
+        NSLog(@"post\nresponseData:%@\nerror:%@",dict,jsonError);
         comletionHandler(dict);
+
     }];
     
     NSLog(@"post request :%@",request);

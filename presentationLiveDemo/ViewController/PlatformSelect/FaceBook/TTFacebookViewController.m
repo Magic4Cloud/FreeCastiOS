@@ -5,13 +5,12 @@
 //  Created by FrankLi on 2017/9/19.
 //  Copyright © 2017年 FrankLi. All rights reserved.
 //验证流程:
-//1.获取一个user_code(可以理解为一个时效性为420秒的facebook验证参数)
-//2.登录facebook,登录成功,填入之前获取的user_code,然后用户授权。注意，我们要申请的五个权限必须要通过facebook的应用审核，需要很复杂的审核（这个并不是申请应用，而是权限的应用审核）。
-//3.
+//1.获取VerificationData：一个时效性为420秒的facebook验证参数包
+//2.在弹出的webviewController中登录facebook,登录成功,填入之前获取的user_code,然后用户授权。PS:我们要申请的五个权限必须要通过facebook的应用权限审核，需要很复杂的审核 https://developers.facebook.com/apps/115586109153322/review-status/
+//3.完成用户授权后,回到上一界面,这里第一步，获取token(只要用户在420s之内完成授权就可以成功获取到了);第二步用第一步获取到的token,获取userId;第三步用前两步获取的token和id,请求视频推流地址可得到stream_url（可以拆分出rtmp地址和stream_key）
 
 #import "TTFacebookViewController.h"
 #import "CommonAppHeaders.h"
-#import "FacebookWebViewController.h"
 #import "WebViewController.h"
 #import "TTNetMannger.h"
 #import "TTCoreDataClass.h"
@@ -64,7 +63,7 @@ static NSString const*verification_uri_key = @"verification_uri";
     [self initUI];
     [self requestVerificationData];
 }
-
+//3.完成用户授权后,回到上一界面,这里第一步，获取token(只要用户在420s之内完成授权就可以成功获取到了);第二步用第一步获取到的token,获取userId;第三步用前两步获取的token和id,请求视频推流地址可得到stream_url（可以拆分出rtmp地址和stream_key）
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -92,12 +91,12 @@ static NSString const*verification_uri_key = @"verification_uri";
 }
 
 #pragma mark – Request service methods
-//从facebook获取校验数据
+//1.获取VerificationData：一个时效性为420秒的facebook验证参数包
 //responseData:{
 //    code = a90d5ee718ee48c6bc37891baeb0ffab;
 //    "expires_in" = 420;
 //    interval = 5;
-//    "user_code" = 9MT8FB3A;
+//    "user_code" = 9MT8FB3A;      //需要copy的验证码
 //    "verification_uri" = "https://www.facebook.com/device";
 //}
 - (void)requestVerificationData {
@@ -110,20 +109,22 @@ static NSString const*verification_uri_key = @"verification_uri";
     [_activityView startAnimating];
     
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
+        if(dic) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (dic[user_code_key]) {
+                    _verificationDic = dic;
+                    [_codeButton setTitle:dic[user_code_key] forState:UIControlStateNormal];
+                }
+                [_activityView stopAnimating];
+            });
+        } else {
+            [self showHudMessage:@"No network connection"];
+        }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (dic[user_code_key]) {
-                _verificationDic = dic;
-                [_codeButton setTitle:dic[user_code_key] forState:UIControlStateNormal];
-            } else {
-                
-            }
-            [_activityView stopAnimating];
-        });
     }];
 }
 
-
+//这里第一步，获取token(只要用户在420s之内完成授权,回到当前页面，利用之前的VerificationData中的code作为参数就可以成功获取到了)
 - (void)getAccesstoken {
     
     NSString *url = @"https://graph.facebook.com/v2.6/device/login_status";
@@ -133,40 +134,50 @@ static NSString const*verification_uri_key = @"verification_uri";
     [self showLoading];
     
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
-        
-        if (dic[access_token_key]) {
-            _accesstoken = dic[access_token_key];
-            [self getId];
+        if (dic){
+            if (dic[access_token_key]) {
+                _accesstoken = dic[access_token_key];
+                [self getId];
+            } else {
+                [self hideLoading];
+                [self showHudMessage:dic[@"error"][@"error_user_msg"]];
+            }
         } else {
             [self hideLoading];
-            [self showHudMessage:dic[@"error"][@"error_user_msg"]];
+            [self showHudMessage:@"No network connection"];
         }
+        
     }];
 }
-
+//第二步用第一步获取到的token,获取userId;
 - (void)getId {
     
     NSString *urlStr = [NSString stringWithFormat:@"https://graph.facebook.com/v2.10/me?fields=id&access_token=%@",_accesstoken];
     [TTNetMannger getRequestUrl:urlStr param:nil headerDic:nil completionHandler:^(NSDictionary *dic) {
-        if (dic[@"error"]) {
-            
-            [self showHudMessage:dic[@"error"][@"message"]];
-            //如果请求失败  再次请求
-            static int requestcount = 0;
-            requestcount ++;
-            if (requestcount<2) {
-                [self getId];
+        if (dic) {
+            if (dic[@"error"]) {
+                [self showHudMessage:dic[@"error"][@"message"]];
+                //如果请求失败  再次请求
+                static int requestcount = 0;
+                requestcount ++;
+                if (requestcount<2) {
+                    [self getId];
+                } else {
+                    [self hideLoading];
+                }
             } else {
-                [self hideLoading];
+                _userID = dic[@"id"];
+                [self getstreamUrl];
             }
         } else {
-            _userID = dic[@"id"];
-            [self getstream];
+            [self hideLoading];
+            [self showHudMessage:@"No network connection"];
         }
+
     }];
 }
-
-- (void)getstream {
+//第三步用前两步获取的token和id,请求视频推流地址可得到stream_url（可以拆分出rtmp地址和stream_key）
+- (void)getstreamUrl {
     
     NSMutableDictionary *paramDic = @{}.mutableCopy;
     [paramDic setObject:_accesstoken forKey:@"access_token"];
@@ -174,31 +185,34 @@ static NSString const*verification_uri_key = @"verification_uri";
     NSString * url = [NSString stringWithFormat:@"https://graph.facebook.com/v2.10/%@/live_videos",_userID];
     
     [TTNetMannger postWithUrl:url param:paramDic headerDic:nil complete:^(NSDictionary *dic) {
-        
-        if (dic[@"error"]) {
-            [self showHudMessage:dic[@"error"][@"message"]];
-            //如果请求失败  再次请求
-            static int requestcount = 0;
-            requestcount ++;
-            if (requestcount<2) {
-                [self getstream];
+        if(dic) {
+            if (dic[@"error"]) {
+                [self showHudMessage:dic[@"error"][@"message"]];
+                //如果请求失败  再次请求
+                static int requestcount = 0;
+                requestcount ++;
+                if (requestcount<2) {
+                    [self getstreamUrl];
+                } else {
+                    [self hideLoading];
+                }
             } else {
+                NSString *streamUrlString = dic[stream_url_key];
+                NSLog(@"----------------%@",streamUrlString);
+                NSRange range = [streamUrlString rangeOfString:@"rtmp/"];
+                
+                NSString * rmtpUrlString = [streamUrlString substringToIndex:range.location + range.length -1];
+                NSString *streamKey = [streamUrlString substringFromIndex:range.location + range.length];
+                _streamKey = streamKey;
+                
+                [[TTCoreDataClass shareInstance] updatePlatformWithName:faceBook rtmp:rmtpUrlString streamKey:streamKey customString:nil enabel:YES selected:YES];
+                
                 [self hideLoading];
+                [self showHudMessage:@"get streamkey success!"];
             }
         } else {
-            NSLog(@"----------------%@",dic);
-            NSString *streamUrlString = dic[stream_url_key];
-            
-            NSRange range = [streamUrlString rangeOfString:@"rtmp/"];
-            
-            NSString * rmtpUrlString = [streamUrlString substringToIndex:range.location + range.length];
-            NSString *streamKey = [streamUrlString substringFromIndex:range.location + range.length];
-            _streamKey = streamKey;
-            
-            [[TTCoreDataClass shareInstance] updatePlatformWithName:faceBook rtmp:rmtpUrlString streamKey:streamKey customString:nil enabel:YES selected:YES];
-            
             [self hideLoading];
-            [self showHudMessage:@"get streamkey success!"];
+            [self showHudMessage:@"No network connection"];
         }
     }];
 }
@@ -222,7 +236,7 @@ static NSString const*verification_uri_key = @"verification_uri";
 }
 
 #pragma mark – Target action methods
-
+//2.在弹出的webviewController中登录facebook,登录成功,填入之前获取的user_code,然后用户授权。
 - (void)linkLabelClick {
     WebViewController * vc = [[WebViewController alloc] init];
     vc.url = _verificationDic[verification_uri_key];

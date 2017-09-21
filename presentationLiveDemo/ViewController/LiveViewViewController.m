@@ -700,10 +700,12 @@ static enum ButtonEnable RecordVideoEnable;
 
 /** 使能相关按钮 */
 -(void)enableControl{
-    _takephotoBtn.enabled=true;
-    _liveStreamBtn.enabled=true;
-    _recordBtn.enabled=true;
-    _configureBtn.enabled = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _takephotoBtn.enabled=true;
+        _liveStreamBtn.enabled=true;
+        _recordBtn.enabled=true;
+        _configureBtn.enabled = YES;
+    });
 }
 
 /** 禁用相关按钮 */
@@ -1635,6 +1637,7 @@ bool VideoRecordIsEnable = NO;
     
     if (_selectedPlatformModel) {
         rtmpUrl = [NSString stringWithFormat:@"%@/%@",_selectedPlatformModel.rtmp,_selectedPlatformModel.streamKey];
+        NSLog(@"---________-----%@",rtmpUrl);
     }
     
     if (rtmpUrl) {
@@ -1742,13 +1745,12 @@ bool VideoRecordIsEnable = NO;
         [self showHudMessage:networkStatusInfo];
     }
     NSLog(@"liveStateDidChange : networkStatusInfo :%@",networkStatusInfo);
-    
 }
 
 
 -(void)liveSession:(LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode{
     NSLog(@"liveSession :errorCode :%lu",(unsigned long)errorCode);
-    //    self.networkStatusLable .text =[NSString stringWithFormat: @"直播错误,代码:%d",(int)errorCode ];
+//    self.networkStatusLable.text =[NSString stringWithFormat: @"直播错误,代码:%d",(int)errorCode];
 }
 
 -(void)setStartStreamStatus{

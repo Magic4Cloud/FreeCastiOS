@@ -34,7 +34,8 @@
 #import "TTSearchDeviceClass.h"
 #import "CommonAppHeaders.h"
 
-@interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+#define Kmargin  (40.f * RATIO)
+@interface TTPlatformSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong)Scanner * device_Scan;
 
 @property (nonatomic, copy) NSString * userip;
@@ -180,24 +181,14 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
-        case 2://uStream
-        {
-            
-        }
-            break;
-        case 3://Twitch
+        case 2://Twitch
         {
             TTTwicthViewController * vc = [[TTTwicthViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
 
         }
             break;
-        case 4://LiveStream
-        {
-            
-        }
-            break;
-        case 5://Custom
+        case 3://Custom
         {
             TTPlatformCustomViewController * vc = [[TTPlatformCustomViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -207,8 +198,6 @@
         default:
             break;
     }
-
-
 }
 
 #pragma mark - praivate methods
@@ -226,10 +215,10 @@
 }
 
 #pragma mark - collectionView  delegate & datasource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    
     if (section == 0) {
-        return 6;
+        return 4;
     }
     return 3;
 }
@@ -295,22 +284,13 @@
                 [cell setModel:[self getPlatformByName:youtubu] andPlatformName:youtubu];
             }
                 break;
-            case 2://uStream
+            case 2://twitch
             {
-                [cell setModel:[self getPlatformByName:uStream] andPlatformName:uStream];
-            }
-                break;
-            case 3://Twitch
-            {
+
                 [cell setModel:[self getPlatformByName:twitch] andPlatformName:twitch];
             }
                 break;
-            case 4://LiveStream
-            {
-                [cell setModel:[self getPlatformByName:liveStream] andPlatformName:liveStream];
-            }
-                break;
-            case 5://Custom
+            case 3://Custom
             {
                 [cell setModel:[self getPlatformByName:custom] andPlatformName:custom];
             }
@@ -408,23 +388,13 @@
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
-            case 2://uStream
-            {
-                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
-            }
-                break;
-            case 3://Twitch
+            case 2://Twitch
             {
                 TTTwicthViewController * vc = [[TTTwicthViewController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
-            case 4://LiveStream
-            {
-                [self showHudMessage:NSLocalizedString(@"Notyetopened", nil)];
-            }
-                break;
-            case 5://Custom
+            case 3://Custom
             {
                 TTPlatformCustomViewController * vc = [[TTPlatformCustomViewController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
@@ -480,6 +450,39 @@
     
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == 0) {
+        return CGSizeMake(ScreenWidth * 4/9.f,ScreenWidth * 3/9.f);
+    } else {
+        return CGSizeMake(ScreenWidth/3, ScreenWidth/3);
+    }
+    
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    if (section == 0) {
+        return UIEdgeInsetsMake(0, SCREENWIDTH/27.f, 0, SCREENWIDTH/27.f);
+    }else {
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    if (section == 0) {
+        return ScreenWidth/27.f;
+    }else {
+        return 0;
+    }
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    if (section == 0) {
+        return ScreenWidth/27.f;
+    } else {
+        return 0;
+    }
+}
 
 #pragma mark - setter
 - (UICollectionView *)collectionView
@@ -510,14 +513,6 @@
 {
     return UIInterfaceOrientationMaskPortrait;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
