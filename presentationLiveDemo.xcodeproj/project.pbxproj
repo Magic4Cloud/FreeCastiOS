@@ -5912,7 +5912,7 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9cfd2cf6-93cb-40fa-82f2-26da6d75eb56";
+				PROVISIONING_PROFILE = "7250e918-ce6c-456f-ab5f-6db7e9ccaf31";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
@@ -5977,7 +5977,7 @@
 				OTHER_TAPI_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "aea43c1f-9b83-4da8-be9c-0c6101a7c766";
+				PROVISIONING_PROFILE = "7003efe1-00b8-4c84-b606-aca2a1a958cb";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};

@@ -937,11 +937,12 @@ bool VideoRecordIsEnable = NO;
     if (_isLiveView){
         [self addBannerSubtitle];
         if ((resultH!=kHeight)||(resultW!=kWidth)) {
-            
+
             CGFloat videoviewH = (MIN(height, width) > kHeight)? _viewH: _viewH * (resultW/resultH);
             CGFloat videoviewW = (MAX(height, width) > kWidth )? _viewW: _viewW * (resultH/resultW);
-            
+
             self.videoView.frame = CGRectMake((_viewW - videoviewW)/2.f, (_viewH - videoviewH)/2.f, _viewW  , _viewH);
+//            self.videoView.frame = [UIScreen mainScreen].bounds;
 
             [self.videoView setView1Frame:self.videoView.frame];
         }
@@ -1190,7 +1191,7 @@ bool VideoRecordIsEnable = NO;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskLandscape;
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 
@@ -1731,9 +1732,11 @@ bool VideoRecordIsEnable = NO;
             errorAlert.view.hidden = YES;
             
             [self presentViewController:errorAlert animated:YES completion:^{
-                if(([UIApplication sharedApplication].statusBarOrientation ==     UIInterfaceOrientationLandscapeLeft)||([UIApplication sharedApplication].statusBarOrientation ==UIInterfaceOrientationLandscapeRight)){//因为有可能弹框出现在二级界面上所以判断
-                    errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);}
-                errorAlert.view.hidden = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(([UIApplication sharedApplication].statusBarOrientation ==     UIInterfaceOrientationLandscapeLeft)||([UIApplication sharedApplication].statusBarOrientation ==UIInterfaceOrientationLandscapeRight)){//因为有可能弹框出现在二级界面上所以判断
+                        errorAlert.view.transform = CGAffineTransformMakeRotation(M_PI/2);}
+                    errorAlert.view.hidden = NO;
+                });
             }];
         }
             break;

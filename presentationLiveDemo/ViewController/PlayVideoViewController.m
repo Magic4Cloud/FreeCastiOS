@@ -93,7 +93,8 @@
         NSURL *url=[self getFileUrl];
         _moviePlayer=[[MPMoviePlayerController alloc]initWithContentURL:url];
         _moviePlayer.view.frame=self.view.bounds;
-        _moviePlayer.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        _moviePlayer.view.autoresizingMask=UIViewAutoresizingFlexibleWidth
+        |UIViewAutoresizingFlexibleHeight;
         _moviePlayer.controlStyle = MPMovieControlStyleFullscreen;
         _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
         [self.view addSubview:_moviePlayer.view];

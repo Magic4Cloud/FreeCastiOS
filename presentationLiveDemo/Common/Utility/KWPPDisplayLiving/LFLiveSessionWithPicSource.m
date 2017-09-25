@@ -529,7 +529,8 @@ UIImage *pauseImage=nil;
 
 
     NSUInteger videoBitRate = [_videoEncoder videoBitRate];
-    if(status == LFLiveBuffferIncrease){
+    if(status == LFLiveBuffferDecline){//写反了吧 （debug:Frank Li）
+//    if(status == LFLiveBuffferIncrease){
         if(videoBitRate < _videoConfiguration.videoMaxBitRate){
             videoBitRate = videoBitRate + 50 * 1000;
             [_videoEncoder setVideoBitRate:videoBitRate];

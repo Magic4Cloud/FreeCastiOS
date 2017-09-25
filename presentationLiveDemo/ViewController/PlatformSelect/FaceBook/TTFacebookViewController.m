@@ -47,14 +47,10 @@ static NSString const*verification_uri_key = @"verification_uri";
 @property (nonatomic, copy) NSString * accesstoken;
 
 @property (nonatomic, copy) NSString * userID;
-
-
 @end
 
 @implementation TTFacebookViewController
-
 #pragma mark - Setters/Getters
-
 #pragma mark – View lifecycle
 
 - (void)viewDidLoad {
