@@ -16,7 +16,7 @@
 #import "LFLiveStreamInfo.h"
 #import "LFGPUImageBeautyFilter.h"
 #import "PicToBufferToPic.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "H264HardwareCodec.h"
 
 

@@ -7,15 +7,9 @@
 //
 
 #import "ConfigureAudioViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 
 @interface ConfigureAudioViewController ()
-{
-    CGFloat viewH;
-    CGFloat viewW;
-    CGFloat totalHeight;//各部分比例
-    CGFloat totalWeight;//各部分比例
-}
 @end
 
 @implementation ConfigureAudioViewController
@@ -24,11 +18,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    
-    viewH=self.view.frame.size.height;
-    viewW=self.view.frame.size.width;
-    totalHeight=64+71+149+149+149+80+5;//各部分比例
-    totalWeight=375;//各部分比例
     
     //顶部
     _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
@@ -202,7 +191,7 @@
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

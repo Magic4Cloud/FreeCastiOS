@@ -7,7 +7,6 @@
 //
 
 #import "EditionViewController.h"
-#import "CommanParameter.h"
 #import "UpdateFirmwareViewController.h"
 #import "Scanner.h"
 #import "MBProgressHUD.h"

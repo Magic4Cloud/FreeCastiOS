@@ -7,7 +7,7 @@
 //
 
 #import "UpdateFirmwareViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "HttpRequest.h"
 #import "ProgressView.h"
 #import "Scanner.h"
@@ -46,10 +46,6 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     RAKAsyncSocket* GCDSocket;//用于建立TCP socket
     int updatePort;
     NSString* updateIP;
-    CGFloat viewH;
-    CGFloat viewW;
-    CGFloat totalHeight;
-    CGFloat totalWeight;
 }
 
 @property (nonatomic, strong) NSURLSessionDownloadTask * downloadTask;
@@ -85,11 +81,6 @@ NSString *postVerVersion=@"cmdtype=5&param=WXXXXXX0000000000%2C";
     docDir = [paths objectAtIndex:0];
     
     self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    
-    viewH=self.view.frame.size.height;
-    viewW=self.view.frame.size.width;
-    totalHeight=64+71+149+149+149+80+5;//各部分比例
-    totalWeight=375;//各部分比例
     
     //顶部
     _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@""]];

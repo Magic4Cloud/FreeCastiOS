@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "LiveViewViewController.h"
 #import "Scanner.h"
 #import "BrowseViewController.h"

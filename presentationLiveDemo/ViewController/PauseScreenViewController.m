@@ -7,7 +7,6 @@
 //
 
 #import "PauseScreenViewController.h"
-#import "CommanParameter.h"
 #import "PicToBufferToPic.h"
 #import "CommanParameters.h"
 

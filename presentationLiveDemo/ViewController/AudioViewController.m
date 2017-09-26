@@ -7,10 +7,9 @@
 //
 
 #import "AudioViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "HttpRequest.h"
 #import "MBProgressHUD.h"
-#import "CommanParameters.h"
 #import "CommonAppHeaders.h"
 
 @interface AudioViewController ()

@@ -7,7 +7,7 @@
 //
 
 #import "BrowseViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "AlbumObject.h"
 #import "MediaData.h"
 #import "MediaGroup.h"
@@ -27,7 +27,6 @@
 
 #import <ShareSDKExtension/ShareSDK+Extension.h>
 #import <MOBFoundation/MOBFoundation.h>
-#import "CommanParameters.h"
 
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "CommonAppHeaders.h"

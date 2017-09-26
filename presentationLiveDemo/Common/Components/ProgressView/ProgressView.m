@@ -7,7 +7,7 @@
 //
 
 #import "ProgressView.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 
 @implementation ProgressView
 

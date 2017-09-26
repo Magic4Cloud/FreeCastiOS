@@ -7,7 +7,7 @@
 //
 
 #import "PlayPhotoViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PlayPhotoViewController ()
@@ -23,9 +23,7 @@
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor blackColor];
     // Do any additional setup after loading the view.
-    CGFloat viewH=self.view.frame.size.height;
-    CGFloat totalHeight=64+71+149+149+149+80+5;//各部分比例
-    
+   
     playPhotoViewImage=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"file_bg.png"]];
     playPhotoViewImage.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     playPhotoViewImage.userInteractionEnabled=YES;

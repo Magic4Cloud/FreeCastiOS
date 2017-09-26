@@ -7,7 +7,6 @@
 //
 
 #import "MenuViewController.h"
-#import "CommanParameter.h"
 #import "UpdateFirmwareViewController.h"
 #import "EditionViewController.h"
 #import "CopyrightViewController.h"

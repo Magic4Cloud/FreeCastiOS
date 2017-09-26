@@ -8,7 +8,7 @@
 
 #import "PlayVideoViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 
 @interface PlayVideoViewController ()
 @property (nonatomic,strong) MPMoviePlayerController *moviePlayer;//视频播放控制器
@@ -28,8 +28,6 @@
     [self addNotification];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor blackColor];
-    CGFloat viewH=self.view.frame.size.height;
-    CGFloat totalHeight=64+71+149+149+149+80+5;//各部分比例
     
     playVideoBack=[UIButton buttonWithType:UIButtonTypeCustom];
     playVideoBack.frame = CGRectMake(0, diff_top, viewH*44/totalHeight, viewH*44/totalHeight);

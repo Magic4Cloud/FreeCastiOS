@@ -7,7 +7,7 @@
 //
 
 #import "PasswordViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "HttpRequest.h"
 #import "MBProgressHUD.h"
 #import <SystemConfiguration/CaptiveNetwork.h>

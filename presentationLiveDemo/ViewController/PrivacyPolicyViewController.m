@@ -7,7 +7,6 @@
 //
 
 #import "PrivacyPolicyViewController.h"
-#import "CommanParameter.h"
 #import "CommanParameters.h"
 
 @interface PrivacyPolicyViewController ()

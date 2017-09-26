@@ -7,7 +7,7 @@
 //
 
 #import "ConfigureViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "PasswordViewController.h"
 #import "ConfigureVideoViewController.h"
 #import "ConfigureAudioViewController.h"
@@ -22,11 +22,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
-    
-    CGFloat viewH=self.view.frame.size.height;
-    CGFloat viewW=self.view.frame.size.width;
-    CGFloat totalHeight=64+71+149+149+149+80+5;//各部分比例
-    CGFloat totalWeight=375;//各部分比例
     
     //顶部
     _topBg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nav bar_bg@3x.png"]];
@@ -50,8 +45,8 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = [UIColor colorWithRed:232/255.0 green:59/255.0 blue:14/255.0 alpha:1.0];
-    _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _titleLabel.textAlignment=UITextAlignmentCenter;
+    _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.numberOfLines = 0;
     [self.view addSubview:_titleLabel];
     
@@ -138,8 +133,7 @@
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 

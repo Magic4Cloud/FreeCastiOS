@@ -7,7 +7,7 @@
 //
 
 #import "BannerViewController.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "PicToBufferToPic.h"
 #import "MBProgressHUD.h"
 #import "HttpRequest.h"

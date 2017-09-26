@@ -7,7 +7,6 @@
 //
 
 #import "SubtitleViewController.h"
-#import "CommanParameter.h"
 #import "MBProgressHUD.h"
 #import "HttpRequest.h"
 #import "RAKAsyncSocket.h"

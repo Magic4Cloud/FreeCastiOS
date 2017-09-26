@@ -35,7 +35,7 @@
 #import "AlbumObject.h"
 #import "TTCoreDataClass.h"
 #import "TTSearchDeviceClass.h"
-#import "CommanParameter.h"
+#import "CommanParameters.h"
 #import "MBProgressHUD.h"
 #import "HttpRequest.h"
 #import "LFLiveStreamInfo.h"
@@ -111,13 +111,13 @@ static enum ButtonEnable RecordVideoEnable;
 @property (nonatomic, assign) BOOL isGetedData;//获取到数据了
 //@property (nonatomic, assign) BOOL videoViewIsNill;
 
-@property (nonatomic, assign) CGFloat viewH;
-@property (nonatomic, assign) CGFloat viewW;
+@property (nonatomic, assign) CGFloat viewHeight;
+@property (nonatomic, assign) CGFloat viewWidth;
 @property (nonatomic, assign) CGFloat temp;
 @property (nonatomic, assign) CGFloat tempviewW;
 @property (nonatomic, assign) CGFloat tempviewH;
-@property (nonatomic, assign) CGFloat totalWeight;//各部分比例
-@property (nonatomic, assign) CGFloat totalHeight;
+@property (nonatomic, assign) CGFloat landscapeWidth;//各部分比例
+@property (nonatomic, assign) CGFloat landscapeHeight;
 @property (nonatomic, assign) CGFloat imgAlpha;
 
 @property (nonatomic, assign) NSInteger count_duration;
@@ -308,10 +308,10 @@ static enum ButtonEnable RecordVideoEnable;
 }
 
 - (void)propertysInitialAndSetDefaultValue {
-    _viewH = self.view.frame.size.width;
-    _viewW = self.view.frame.size.height;
-    _totalWeight = 64+71+149+149+149+80+5;//各部分比例
-    _totalHeight = 375;//各部分比例
+    _viewHeight = self.view.frame.size.width;
+    _viewWidth  = self.view.frame.size.height;
+    _landscapeWidth = 64+71+149+149+149+80+5;//各部分比例
+    _landscapeHeight = 375;//各部分比例
     
     _userip = @"192.168.100.1";
     _username = @"admin";
@@ -411,11 +411,11 @@ static enum ButtonEnable RecordVideoEnable;
 
 - (void)getViewHAndViewWWithRightSize {
     
-    _viewH = self.view.frame.size.width;
-    _viewW = self.view.frame.size.height;
-    if (_viewH > _viewW) {
-        _viewW = self.view.frame.size.width;
-        _viewH = self.view.frame.size.height;
+    _viewHeight = self.view.frame.size.width;
+    _viewWidth = self.view.frame.size.height;
+    if (_viewHeight > _viewWidth) {
+        _viewWidth = self.view.frame.size.width;
+        _viewHeight = self.view.frame.size.height;
     }
 }
 
@@ -423,31 +423,31 @@ static enum ButtonEnable RecordVideoEnable;
     
     //文字和角标
     _upperLeftImg=[[UIImageView alloc]init];
-    _upperLeftImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
+    _upperLeftImg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight/6);
     _upperLeftImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_upperLeftImg];
     _upperLeftImg.hidden=YES;
     
     _upperRightImg=[[UIImageView alloc]init];
-    _upperRightImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
+    _upperRightImg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight/6);
     _upperRightImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_upperRightImg];
     _upperRightImg.hidden=YES;
     
     _lowerLeftImg=[[UIImageView alloc]init];
-    _lowerLeftImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
+    _lowerLeftImg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight/6);
     _lowerLeftImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_lowerLeftImg];
     _lowerLeftImg.hidden=YES;
     
     _lowerRightImg=[[UIImageView alloc]init];
-    _lowerRightImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
+    _lowerRightImg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight/6);
     _lowerRightImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_lowerRightImg];
     _lowerRightImg.hidden=YES;
     
     _wordImg=[[UIImageView alloc]init];
-    _wordImg.frame = CGRectMake(0, 0, _viewW, _viewH/6);
+    _wordImg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight/6);
     _wordImg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_wordImg];
     _wordImg.hidden=YES;
@@ -456,30 +456,30 @@ static enum ButtonEnable RecordVideoEnable;
     _topBg=[[UIImageView alloc]init];
     _topBg.userInteractionEnabled=YES;
     _topBg.backgroundColor=[UIColor colorWithRed:97/255.0 green:98/255.0 blue:100/255.0 alpha:0.4];
-    _topBg.frame = CGRectMake(0, 0, _viewW, _viewH*55/_totalHeight);
+    _topBg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight*55/_landscapeHeight);
     _topBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_topBg];
     
     UIImageView *backImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_back"]];
-    backImage.frame = CGRectMake(_viewW*13/_totalHeight, _viewH*20/_totalHeight, _viewH*24.5/_totalHeight, _viewH*24.5/_totalHeight);
+    backImage.frame = CGRectMake(_viewWidth*13/_landscapeHeight, _viewHeight*20/_landscapeHeight, _viewHeight*24.5/_landscapeHeight, _viewHeight*24.5/_landscapeHeight);
     [_topBg addSubview:backImage];
     
     _backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 0, _viewW*80/_totalWeight, _viewH*64/_totalHeight);
+    _backBtn.frame = CGRectMake(0, 0, _viewWidth*80/_landscapeWidth, _viewHeight*64/_landscapeHeight);
     _backBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     [_backBtn addTarget:self action:@selector(backBtnOnClicked) forControlEvents:UIControlEventTouchUpInside];
     [_topBg  addSubview:_backBtn];
     
     _connectImg=[[UIImageView alloc]init];
     _connectImg.image=[UIImage imageNamed:@"wifi"];
-    _connectImg.frame = CGRectMake(_viewH*66/_totalHeight, _viewH*23/_totalHeight, _viewH*15/_totalHeight, _viewH*15/_totalHeight);
+    _connectImg.frame = CGRectMake(_viewHeight*66/_landscapeHeight, _viewHeight*23/_landscapeHeight, _viewHeight*15/_landscapeHeight, _viewHeight*15/_landscapeHeight);
     //    _connectImg.center=CGPointMake(_connectImg.center.x, _backBtn.center.y);
     _connectImg.contentMode=UIViewContentModeScaleToFill;
     [_topBg addSubview:_connectImg];
     
-    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(_viewH*88/_totalHeight, _viewH*23/_totalHeight, _viewH*150/_totalHeight, _viewH*15/_totalHeight)];
+    _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(_viewHeight*88/_landscapeHeight, _viewHeight*23/_landscapeHeight, _viewHeight*150/_landscapeHeight, _viewHeight*15/_landscapeHeight)];
     _topLabel.text = [self getWifiName];
-    _topLabel.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
+    _topLabel.font = [UIFont systemFontOfSize: _viewHeight*16/_landscapeHeight*0.8];
     _topLabel.backgroundColor = [UIColor clearColor];
     _topLabel.textColor = MAIN_COLOR;
     _topLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -502,7 +502,7 @@ static enum ButtonEnable RecordVideoEnable;
     _bottomBg=[[UIImageView alloc] init];
     _bottomBg.userInteractionEnabled=YES;
     _bottomBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _bottomBg.frame = CGRectMake(0, _viewH-55, ScreenWidth, 55);
+    _bottomBg.frame = CGRectMake(0, _viewHeight-55, ScreenWidth, 55);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
     
@@ -554,7 +554,7 @@ static enum ButtonEnable RecordVideoEnable;
     
     
     _livePauseBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = _viewH*44/_totalHeight;
+    CGFloat width = _viewHeight*44/_landscapeHeight;
     _livePauseBtn.frame = CGRectMake((ScreenWidth - width)/2, (ScreenHeight - width)/2, width, width);
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_nor@3x.png"] forState:UIControlStateNormal];
     [_livePauseBtn setImage:[UIImage imageNamed:@"pause live_pre@3x.png"] forState:UIControlStateHighlighted];
@@ -574,33 +574,33 @@ static enum ButtonEnable RecordVideoEnable;
     
     //视频状态栏
     _statusBg=[[UIImageView alloc]init];
-    _statusBg.frame = CGRectMake(0, 0, _viewW, _viewH*44/_totalHeight);
+    _statusBg.frame = CGRectMake(0, 0, _viewWidth, _viewHeight*44/_landscapeHeight);
     _statusBg.backgroundColor= [UIColor clearColor];
     _statusBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_statusBg];
     
     _powerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"power_01@3x.png"]];
-    _powerView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*14/_totalHeight*90/42, _viewH*14/_totalHeight);
-    _powerView.center=CGPointMake(_viewW-_powerView.frame.size.width/2-diff_x, _statusBg.center.y);
+    _powerView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewHeight*14/_landscapeHeight*90/42, _viewHeight*14/_landscapeHeight);
+    _powerView.center=CGPointMake(_viewWidth-_powerView.frame.size.width/2-diff_x, _statusBg.center.y);
     _powerView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_powerView];
     
     _audioView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"audio mode 1@3x.png"]];
-    _audioView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*14/_totalHeight*90/42, _viewH*14/_totalHeight);
-    _audioView.center=CGPointMake(_powerView.frame.origin.x-_audioView.frame.size.width/2-_viewW*20/_totalWeight, _statusBg.center.y);
+    _audioView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewHeight*14/_landscapeHeight*90/42, _viewHeight*14/_landscapeHeight);
+    _audioView.center=CGPointMake(_powerView.frame.origin.x-_audioView.frame.size.width/2-_viewWidth*20/_landscapeWidth, _statusBg.center.y);
     _audioView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_audioView];
     
     _onliveView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"live view_Indicator light_gray@3x.png"]];
-    _onliveView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewH*18/_totalHeight, _viewH*18/_totalHeight);
-    _onliveView.center=CGPointMake(_viewW/2, _statusBg.center.y+_viewH*2/_totalHeight);
+    _onliveView.frame = CGRectMake(0, _statusBg.frame.origin.y, _viewHeight*18/_landscapeHeight, _viewHeight*18/_landscapeHeight);
+    _onliveView.center=CGPointMake(_viewWidth/2, _statusBg.center.y+_viewHeight*2/_landscapeHeight);
     _onliveView.contentMode=UIViewContentModeScaleToFill;
     [_statusBg addSubview:_onliveView];
     
-    _onliveLabel = [[UILabel alloc] initWithFrame:CGRectMake(_onliveView.frame.origin.x+_onliveView.frame.size.width, _statusBg.frame.origin.y, _viewW*120/_totalWeight, _statusBg.frame.size.height)];
+    _onliveLabel = [[UILabel alloc] initWithFrame:CGRectMake(_onliveView.frame.origin.x+_onliveView.frame.size.width, _statusBg.frame.origin.y, _viewWidth*120/_landscapeWidth, _statusBg.frame.size.height)];
     _onliveLabel.center=CGPointMake(_onliveLabel.center.x, _statusBg.center.y);
     _onliveLabel.text = NSLocalizedString(@"not_live", nil);
-    _onliveLabel.font = [UIFont systemFontOfSize: _viewH*16/_totalHeight*0.8];
+    _onliveLabel.font = [UIFont systemFontOfSize: _viewHeight*16/_landscapeHeight*0.8];
     _onliveLabel.backgroundColor = [UIColor clearColor];
     _onliveLabel.textColor = [UIColor whiteColor];
     _onliveLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -608,9 +608,9 @@ static enum ButtonEnable RecordVideoEnable;
     _onliveLabel.numberOfLines = 0;
     [_statusBg addSubview:_onliveLabel];
     
-    _recordTimeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _statusBg.frame.origin.y+_statusBg.frame.size.height+_viewH*2/_totalWeight, _viewW-diff_x, _viewH*20/_totalWeight)];
+    _recordTimeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _statusBg.frame.origin.y+_statusBg.frame.size.height+_viewHeight*2/_landscapeWidth, _viewWidth-diff_x, _viewHeight*20/_landscapeWidth)];
     _recordTimeLabel.text = @"REC 00:00";
-    _recordTimeLabel.font = [UIFont systemFontOfSize: _viewH*18/_totalHeight*0.8];
+    _recordTimeLabel.font = [UIFont systemFontOfSize: _viewHeight*18/_landscapeHeight*0.8];
     _recordTimeLabel.backgroundColor = [UIColor clearColor];
     _recordTimeLabel.textColor = [UIColor redColor];
     _recordTimeLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -620,13 +620,13 @@ static enum ButtonEnable RecordVideoEnable;
     [self.view addSubview:_recordTimeLabel];
     
     
-    _searchDeviceImageView =[[UIImageView alloc] initWithFrame:CGRectMake(_viewW*304/_totalWeight,129*_viewH/_totalHeight, _viewW*58.5/_totalWeight, _viewW*58.5/_totalWeight)];
+    _searchDeviceImageView =[[UIImageView alloc] initWithFrame:CGRectMake(_viewWidth*304/_landscapeWidth,129*_viewHeight/_landscapeHeight, _viewWidth*58.5/_landscapeWidth, _viewWidth*58.5/_landscapeWidth)];
     
     _searchDeviceImageView.image=[UIImage imageNamed:@"logo_148"];
     
     [self.view addSubview:_searchDeviceImageView];
     
-    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,129*_viewH/_totalHeight +  _viewW*58.5/_totalWeight + 10*_viewH/_totalHeight, _viewW*300/_totalWeight, _viewH*40/_totalHeight)];
+    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,129*_viewHeight/_landscapeHeight +  _viewWidth*58.5/_landscapeWidth + 10*_viewHeight/_landscapeHeight, _viewWidth*300/_landscapeWidth, _viewHeight*40/_landscapeHeight)];
     _tipLabel.center = CGPointMake(_searchDeviceImageView.center.x,_tipLabel.center.y);
     _tipLabel.text = NSLocalizedString(@"video_connecting", nil);
     _tipLabel.textColor = MAIN_COLOR;
@@ -938,10 +938,10 @@ bool VideoRecordIsEnable = NO;
         [self addBannerSubtitle];
         if ((resultH!=kHeight)||(resultW!=kWidth)) {
 
-            CGFloat videoviewH = (MIN(height, width) > kHeight)? _viewH: _viewH * (resultW/resultH);
-            CGFloat videoviewW = (MAX(height, width) > kWidth )? _viewW: _viewW * (resultH/resultW);
+            CGFloat videoviewH = (MIN(height, width) > kHeight)? _viewHeight: _viewHeight * (resultW/resultH);
+            CGFloat videoviewW = (MAX(height, width) > kWidth )? _viewWidth: _viewWidth * (resultH/resultW);
 
-            self.videoView.frame = CGRectMake((_viewW - videoviewW)/2.f, (_viewH - videoviewH)/2.f, _viewW  , _viewH);
+            self.videoView.frame = CGRectMake((_viewWidth - videoviewW)/2.f, (_viewHeight - videoviewH)/2.f, _viewWidth  , _viewHeight);
 //            self.videoView.frame = [UIScreen mainScreen].bounds;
 
             [self.videoView setView1Frame:self.videoView.frame];
@@ -1059,11 +1059,11 @@ bool VideoRecordIsEnable = NO;
     }else{
         if (_play_success ==NO){
             //            ActivityIndicatorView.hidden=YES;
-            if (_viewW<_viewH) {
-                _tipLabel.center=CGPointMake(_viewH*0.5, _tipLabel.center.y);
+            if (_viewWidth<_viewHeight) {
+                _tipLabel.center=CGPointMake(_viewHeight*0.5, _tipLabel.center.y);
             }
             else{
-                _tipLabel.center=CGPointMake(_viewW*0.5, _tipLabel.center.y);
+                _tipLabel.center=CGPointMake(_viewWidth*0.5, _tipLabel.center.y);
             }
             _tipLabel.textAlignment=NSTextAlignmentCenter;
             _tipLabel.text = NSLocalizedString(@"no_video", nil);
@@ -1073,11 +1073,11 @@ bool VideoRecordIsEnable = NO;
     if (_isPlaying) {
         _playCount=0;
         //        ActivityIndicatorView.hidden=YES;
-        if (_viewW<_viewH) {
-            _tipLabel.center=CGPointMake(_viewH*0.5, _tipLabel.center.y);
+        if (_viewWidth<_viewHeight) {
+            _tipLabel.center=CGPointMake(_viewHeight*0.5, _tipLabel.center.y);
         }
         else{
-            _tipLabel.center=CGPointMake(_viewW*0.5, _tipLabel.center.y);
+            _tipLabel.center=CGPointMake(_viewWidth*0.5, _tipLabel.center.y);
         }
         _tipLabel.textAlignment=NSTextAlignmentCenter;
     } else {
@@ -1976,11 +1976,11 @@ int posStep=1;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            CGFloat newViewW=_viewW;
-            CGFloat newViewH=_viewH;
-            if (_viewH>_viewW) {
-                newViewW=_viewH;
-                newViewH=_viewW;
+            CGFloat newViewW=_viewWidth;
+            CGFloat newViewH=_viewHeight;
+            if (_viewHeight>_viewWidth) {
+                newViewW=_viewHeight;
+                newViewH=_viewWidth;
             }
             
             if (_isShowBanner&&_isShowSubtitle) {
@@ -2114,21 +2114,21 @@ int posStep=1;
  * 输入直播地址弹窗
  */
 -(void)inputAddressViewInit{
-    _inputAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_viewH,_viewW,_viewH)];
+    _inputAddressView=[[UIView alloc]initWithFrame:CGRectMake(0,_viewHeight,_viewWidth,_viewHeight)];
     _inputAddressView.backgroundColor=[UIColor clearColor];
     _inputAddressView.userInteractionEnabled = YES;
     //    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_inputAddressViewCancelClick)];
     //    [_inputAddressView addGestureRecognizer:singleTap];
     [_streamView addSubview:_inputAddressView];
     
-    _inputAddressViewLayout=[[UIView alloc]initWithFrame:CGRectMake(0,0,_viewW*283/_totalWeight,_viewH*281/_totalHeight)];
-    [[_inputAddressViewLayout layer]setCornerRadius:_viewW*10/_totalWeight];//圆角
+    _inputAddressViewLayout=[[UIView alloc]initWithFrame:CGRectMake(0,0,_viewWidth*283/_landscapeWidth,_viewHeight*281/_landscapeHeight)];
+    [[_inputAddressViewLayout layer]setCornerRadius:_viewWidth*10/_landscapeWidth];//圆角
     _inputAddressViewLayout.backgroundColor=[UIColor whiteColor];
-    _inputAddressViewLayout.center=CGPointMake(_viewW*0.5, _viewH*0.5);
+    _inputAddressViewLayout.center=CGPointMake(_viewWidth*0.5, _viewHeight*0.5);
     _inputAddressViewLayout.userInteractionEnabled = YES;
     [_inputAddressView addSubview:_inputAddressViewLayout];
     
-    myTextField=[[CAAutoFillTextField alloc]initWithFrame:CGRectMake(_viewW*19/_totalWeight, _viewH*30/_totalHeight, _viewW*246/_totalWeight, _viewH*40/_totalHeight)];
+    myTextField=[[CAAutoFillTextField alloc]initWithFrame:CGRectMake(_viewWidth*19/_landscapeWidth, _viewHeight*30/_landscapeHeight, _viewWidth*246/_landscapeWidth, _viewHeight*40/_landscapeHeight)];
     myTextField.userInteractionEnabled=YES;
     [_inputAddressViewLayout addSubview:myTextField];
     
@@ -2143,13 +2143,13 @@ int posStep=1;
     myTextField.delegate = self;
     
     UIView *line=[[UIView alloc]init];
-    line.frame=CGRectMake(_viewW*19/_totalWeight,_viewH*247/_totalHeight,_viewW*246/_totalWeight,1);
+    line.frame=CGRectMake(_viewWidth*19/_landscapeWidth,_viewHeight*247/_landscapeHeight,_viewWidth*246/_landscapeWidth,1);
     line.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:237/255.0 alpha:1.0];
     [_inputAddressViewLayout addSubview:line];
     
     UIButton *_clearBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     _clearBtn.backgroundColor=[UIColor whiteColor];
-    _clearBtn.frame = CGRectMake(0, 0, _viewH*44/_totalHeight, _viewH*44/_totalHeight);
+    _clearBtn.frame = CGRectMake(0, 0, _viewHeight*44/_landscapeHeight, _viewHeight*44/_landscapeHeight);
     _clearBtn.center=CGPointMake(_inputAddressViewLayout.frame.size.width*0.5, line.center.y);
     [_clearBtn setImage:[UIImage imageNamed:@"Clear the record@3x.png"] forState:UIControlStateNormal];
     //[_clearBtn setTitle:NSLocalizedString(@"clear_history", nil) forState:UIControlStateNormal];
@@ -2236,14 +2236,14 @@ int posStep=1;
                               delay:0.0
                             options:0
                          animations:^{
-                             [infoView setFrame:CGRectMake(0, _viewH+infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
+                             [infoView setFrame:CGRectMake(0, _viewHeight+infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
                          }
                          completion:^(BOOL finished) {
                              [UIView animateWithDuration:0.1
                                                    delay:0.0
                                                  options:UIViewAnimationCurveEaseIn
                                               animations:^{
-                                                  [infoView setFrame:CGRectMake(0, _viewH-infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
+                                                  [infoView setFrame:CGRectMake(0, _viewHeight-infoView.frame.size.height, infoView.frame.size.width, infoView.frame.size.height)];
                                               }
                                               completion:^(BOOL finished) {
                                                   infoView.backgroundColor=[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
@@ -2929,7 +2929,7 @@ bool _isTakePhoto=NO;
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        if (((view.center.x + translation.x)>=3*_viewW/8)&&((view.center.x + translation.x)<=5*_viewW/8)){
+        if (((view.center.x + translation.x)>=3*_viewWidth/8)&&((view.center.x + translation.x)<=5*_viewWidth/8)){
             [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y}];
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
         }

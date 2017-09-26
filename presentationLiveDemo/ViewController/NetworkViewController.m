@@ -7,7 +7,6 @@
 //
 
 #import "NetworkViewController.h"
-#import "CommanParameter.h"
 #import "HttpRequest.h"
 #import "CommanParameters.h"
 

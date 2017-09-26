@@ -7,7 +7,6 @@
 //
 
 #import "DisclaimerViewController.h"
-#import "CommanParameter.h"
 #import "CommanParameters.h"
 @interface DisclaimerViewController ()
 
@@ -46,8 +45,8 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     //_topLabel.textColor = [UIColor colorWithRed:180/255.0 green:181/255.0 blue:186/255.0 alpha:1.0];
     _titleLabel.textColor = MAIN_COLOR;
-    _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-    _titleLabel.textAlignment=UITextAlignmentCenter;
+    _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.numberOfLines = 0;
     [self.view addSubview:_titleLabel];
     
@@ -94,7 +93,7 @@
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

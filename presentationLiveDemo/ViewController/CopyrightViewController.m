@@ -7,7 +7,6 @@
 //
 
 #import "CopyrightViewController.h"
-#import "CommanParameter.h"
 #import "CommanParameters.h"
 
 @interface CopyrightViewController ()
