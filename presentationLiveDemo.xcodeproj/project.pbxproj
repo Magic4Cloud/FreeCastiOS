@@ -214,7 +214,6 @@
 		847E13411E8A4FBB00486BA7 /* WIFI.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E133E1E8A4FBB00486BA7 /* WIFI.png */; };
 		847E13421E8A4FBB00486BA7 /* WIFI@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E133F1E8A4FBB00486BA7 /* WIFI@2x.png */; };
 		847E13431E8A4FBB00486BA7 /* WIFI@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 847E13401E8A4FBB00486BA7 /* WIFI@3x.png */; };
-		847E4D631E84EE9E005EA0AD /* CommanParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 847E4D621E84EE9E005EA0AD /* CommanParameters.m */; };
 		848312401DC6E0C0002CDF1D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8483123F1DC6E0C0002CDF1D /* BannerViewController.m */; };
 		848312431DC6ECFB002CDF1D /* PauseScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848312421DC6ECFB002CDF1D /* PauseScreenViewController.m */; };
 		848312461DC70FB2002CDF1D /* AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848312451DC70FB2002CDF1D /* AudioViewController.m */; };
@@ -970,6 +969,7 @@
 		9775405A1F79F6C1003E0F09 /* MediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 977540571F79F6C1003E0F09 /* MediaGroup.m */; };
 		9775405E1F79FCB0003E0F09 /* UIViewLinkmanTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9775405D1F79FCB0003E0F09 /* UIViewLinkmanTouch.m */; };
 		977540611F79FCF0003E0F09 /* RotateNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977540601F79FCF0003E0F09 /* RotateNavigationControllerViewController.m */; };
+		977540671F7A2B5E003E0F09 /* CommanParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 977540661F7A2B5D003E0F09 /* CommanParameters.m */; };
 		97E53BB21F553F4000D40A71 /* CoreNibFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53BB11F553F4000D40A71 /* CoreNibFileCache.m */; };
 		97E53BB71F553F6C00D40A71 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53BB51F553F6C00D40A71 /* ALAssetsLibrary+CustomPhotoAlbum.m */; };
 		97E53BB81F553F6C00D40A71 /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E53BB61F553F6C00D40A71 /* UIViewController+Navigation.m */; };
@@ -1209,8 +1209,6 @@
 		847E133E1E8A4FBB00486BA7 /* WIFI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WIFI.png; sourceTree = "<group>"; };
 		847E133F1E8A4FBB00486BA7 /* WIFI@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WIFI@2x.png"; sourceTree = "<group>"; };
 		847E13401E8A4FBB00486BA7 /* WIFI@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WIFI@3x.png"; sourceTree = "<group>"; };
-		847E4D611E84EE9E005EA0AD /* CommanParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanParameters.h; sourceTree = "<group>"; };
-		847E4D621E84EE9E005EA0AD /* CommanParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommanParameters.m; sourceTree = "<group>"; };
 		8483123E1DC6E0C0002CDF1D /* BannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerViewController.h; sourceTree = "<group>"; };
 		8483123F1DC6E0C0002CDF1D /* BannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerViewController.m; sourceTree = "<group>"; };
 		848312411DC6ECFB002CDF1D /* PauseScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseScreenViewController.h; sourceTree = "<group>"; };
@@ -2320,6 +2318,8 @@
 		9775405D1F79FCB0003E0F09 /* UIViewLinkmanTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewLinkmanTouch.m; sourceTree = "<group>"; };
 		9775405F1F79FCF0003E0F09 /* RotateNavigationControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateNavigationControllerViewController.h; sourceTree = "<group>"; };
 		977540601F79FCF0003E0F09 /* RotateNavigationControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotateNavigationControllerViewController.m; sourceTree = "<group>"; };
+		977540651F7A2B5D003E0F09 /* CommanParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanParameters.h; sourceTree = "<group>"; };
+		977540661F7A2B5D003E0F09 /* CommanParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommanParameters.m; sourceTree = "<group>"; };
 		97E53BB01F553F4000D40A71 /* CoreNibFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreNibFileCache.h; sourceTree = "<group>"; };
 		97E53BB11F553F4000D40A71 /* CoreNibFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreNibFileCache.m; sourceTree = "<group>"; };
 		97E53BB31F553F6C00D40A71 /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
@@ -2848,8 +2848,6 @@
 				848312451DC70FB2002CDF1D /* AudioViewController.m */,
 				848312471DC71D65002CDF1D /* NetworkViewController.h */,
 				848312481DC71D65002CDF1D /* NetworkViewController.m */,
-				847E4D611E84EE9E005EA0AD /* CommanParameters.h */,
-				847E4D621E84EE9E005EA0AD /* CommanParameters.m */,
 				97E53F261F55438C00D40A71 /* StartViewController.h */,
 				97E53EE81F5541EF00D40A71 /* StartViewController.m */,
 				97E53F271F55438C00D40A71 /* StreamViewController.h */,
@@ -4377,6 +4375,8 @@
 		9739DFB81F4ADCF000E7B7CF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				977540651F7A2B5D003E0F09 /* CommanParameters.h */,
+				977540661F7A2B5D003E0F09 /* CommanParameters.m */,
 				9739DFE71F4ADCF000E7B7CF /* PodsHeaders.h */,
 				9739DFC21F4ADCF000E7B7CF /* AppConstants.h */,
 				9739DFCE1F4ADCF000E7B7CF /* CommonAppHeaders.h */,
@@ -5504,7 +5504,6 @@
 				97370AE71F7385FD0079D1F2 /* GPUImageMovieWriter.m in Sources */,
 				9737080F1F7385A90079D1F2 /* TTNetMannger.m in Sources */,
 				973707F01F73849D0079D1F2 /* TTTwicthViewController.m in Sources */,
-				847E4D631E84EE9E005EA0AD /* CommanParameters.m in Sources */,
 				97370AD61F7385FD0079D1F2 /* GPUImageToneCurveFilter.m in Sources */,
 				97370A321F7385FD0079D1F2 /* LFLiveAudioConfiguration.m in Sources */,
 				97370AE01F7385FD0079D1F2 /* GPUImageVignetteFilter.m in Sources */,
@@ -5629,6 +5628,7 @@
 				97370AB21F7385FD0079D1F2 /* GPUImagePrewittEdgeDetectionFilter.m in Sources */,
 				9739DFA31F4ADCE500E7B7CF /* CALayer+Extension.m in Sources */,
 				97370AEB1F7385FD0079D1F2 /* amf.c in Sources */,
+				977540671F7A2B5E003E0F09 /* CommanParameters.m in Sources */,
 				97370ABD1F7385FD0079D1F2 /* GPUImageSepiaFilter.m in Sources */,
 				9739E01F1F4ADCF000E7B7CF /* MCMarqueeView.m in Sources */,
 				97370A711F7385FD0079D1F2 /* GPUImageFramebuffer.m in Sources */,

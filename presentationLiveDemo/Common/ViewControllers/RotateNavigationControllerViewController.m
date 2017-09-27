@@ -30,25 +30,35 @@
     [super viewWillAppear:animated];
 
 }
-
-- (BOOL)shouldAutorotate
-{
-//    NSLog(@"shouldAutorotate = %u",self.topViewController.shouldAutorotate);
-    return self.topViewController.shouldAutorotate;
+- (BOOL)shouldAutorotate{
+    return [[self.viewControllers lastObject] shouldAutorotate];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    //NSLog(@"RotateNavigationControllerViewController supportedInterfaceOrientations = %i", self.topViewController.supportedInterfaceOrientations);
-//    NSLog(@"？？？？？？？？？topviewcontroller = %@",self.topViewController);
-//    NSLog(@"----------------%lu",(unsigned long)self.topViewController.supportedInterfaceOrientations);
-    return self.topViewController.supportedInterfaceOrientations;
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return [[self.viewControllers lastObject] supportedInterfaceOrientations];
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    //NSLog(@"RotateNavigationControllerViewController preferredInterfaceOrientationForPresentation = %i", [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation]);
-//    NSLog(@">>>>>>>>>>>%lu",(unsigned long)[self.topViewController preferredInterfaceOrientationForPresentation]);
-    return [self.topViewController preferredInterfaceOrientationForPresentation];
-    
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation];
 }
+//- (BOOL)shouldAutorotate
+//{
+////    NSLog(@"shouldAutorotate = %u",self.topViewController.shouldAutorotate);
+//    return self.topViewController.shouldAutorotate;
+//}
+//
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+//    //NSLog(@"RotateNavigationControllerViewController supportedInterfaceOrientations = %i", self.topViewController.supportedInterfaceOrientations);
+////    NSLog(@"？？？？？？？？？topviewcontroller = %@",self.topViewController);
+////    NSLog(@"----------------%lu",(unsigned long)self.topViewController.supportedInterfaceOrientations);
+//    return self.topViewController.supportedInterfaceOrientations;
+//}
+//
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+//{
+//    //NSLog(@"RotateNavigationControllerViewController preferredInterfaceOrientationForPresentation = %i", [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation]);
+////    NSLog(@">>>>>>>>>>>%lu",(unsigned long)[self.topViewController preferredInterfaceOrientationForPresentation]);
+//    return [self.topViewController preferredInterfaceOrientationForPresentation];
+//    
+//}
 @end

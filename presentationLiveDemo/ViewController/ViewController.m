@@ -356,6 +356,7 @@ Scanner *_Scan;
     [_liveViewImgBtn draw:MAIN_COLOR_T];
     LiveViewViewController *v = [[LiveViewViewController alloc] init];
     v.isLiveView=YES;
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     [self.navigationController pushViewController: v animated:true];
     //[self presentViewController:v animated:YES completion:nil];
 }

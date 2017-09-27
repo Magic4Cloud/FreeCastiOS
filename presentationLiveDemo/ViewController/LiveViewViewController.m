@@ -187,6 +187,7 @@ static enum ButtonEnable RecordVideoEnable;
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -206,10 +207,11 @@ static enum ButtonEnable RecordVideoEnable;
     
     [self replayVideoView];
     [super viewDidAppear:animated];
-    if (_isBroswer) {
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
-        _isBroswer = NO;
-    }
+//    if (_isBroswer) {
+//        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+//        _isBroswer = NO;
+//    }
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
 }
 
@@ -349,7 +351,7 @@ static enum ButtonEnable RecordVideoEnable;
     //调用手机摄像头显示画面才显示出来
     self.livingPreView.hidden = YES;
     
-    _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, MAX(ScreenWidth, ScreenHeight),MIN(ScreenWidth, ScreenHeight))];
     _videoView.userInteractionEnabled = YES;
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesImage)];
@@ -366,7 +368,6 @@ static enum ButtonEnable RecordVideoEnable;
 - (void)viewControllerSettings {
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor=[UIColor blackColor];
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     self.view.transform = CGAffineTransformMakeRotation(M_PI/2);
     [self prefersStatusBarHidden:YES];
 }
@@ -491,7 +492,7 @@ static enum ButtonEnable RecordVideoEnable;
     NSMutableArray * buttonFrameArray = [NSMutableArray array];
     CGFloat buttonWidth = 30.f;
     CGFloat buttonMargin = 31.5;
-    CGFloat firstX = (ScreenWidth - buttonWidth*6 - buttonMargin*5)/2;
+    CGFloat firstX = (MAX(ScreenWidth, ScreenHeight) - buttonWidth*6 - buttonMargin*5)/2;
     for (int i =0; i<6; i++) {
         
         CGRect rect = CGRectMake(firstX + i *(buttonWidth +buttonMargin), 12, buttonWidth, buttonWidth);
@@ -502,7 +503,7 @@ static enum ButtonEnable RecordVideoEnable;
     _bottomBg=[[UIImageView alloc] init];
     _bottomBg.userInteractionEnabled=YES;
     _bottomBg.backgroundColor=[UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:0.4];
-    _bottomBg.frame = CGRectMake(0, _viewHeight-55, ScreenWidth, 55);
+    _bottomBg.frame = CGRectMake(0, _viewHeight-55, MAX(ScreenHeight, ScreenWidth), 55);
     _bottomBg.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:_bottomBg];
     
@@ -828,7 +829,9 @@ bool VideoRecordIsEnable = NO;
     [_updateUITimer setFireDate:[NSDate distantPast]];//启动
     [self disableControl];
     [[TTSearchDeviceClass shareInstance] searDeviceWithSecond:5 CompletionHandler:^(Scanner *resultinfo) {
-        [self scanDeviceOver:resultinfo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self scanDeviceOver:resultinfo];
+        });
     }];
 }
 

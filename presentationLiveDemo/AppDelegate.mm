@@ -294,7 +294,7 @@
                       break;
               }
           }];
-    
+
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     //左侧菜单栏

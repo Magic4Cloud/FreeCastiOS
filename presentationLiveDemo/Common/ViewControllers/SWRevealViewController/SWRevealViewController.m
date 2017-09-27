@@ -617,19 +617,34 @@ const int FrontViewPositionNone = 0xff;
     return NO;
 }
 
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
+//
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+//
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+//{
+//    return UIInterfaceOrientationPortrait;
+//}
+
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return  [self.childViewControllers.firstObject shouldAutorotate];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait;
+    return  [self.childViewControllers.firstObject supportedInterfaceOrientations];
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return UIInterfaceOrientationPortrait;
+    return  [self.childViewControllers.firstObject preferredInterfaceOrientationForPresentation];
 }
 
 #pragma mark - Init
