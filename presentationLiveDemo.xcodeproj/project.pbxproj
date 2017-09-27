@@ -4705,8 +4705,8 @@
 				TargetAttributes = {
 					D8BA26B41D6AD13500D28C0F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 8YE8AXL3F3;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 29MHFKT8DQ;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -5866,8 +5866,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5916,10 +5916,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_TAPI_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7250e918-ce6c-456f-ab5f-6db7e9ccaf31";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;
@@ -5930,9 +5930,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Sichuan Hoo View Technology Co., Ltd. (8YE8AXL3F3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5981,10 +5981,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_TAPI_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7003efe1-00b8-4c84-b606-aca2a1a958cb";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;
