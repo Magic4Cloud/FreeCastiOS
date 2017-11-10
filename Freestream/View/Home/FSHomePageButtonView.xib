@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSHomePageButtonView">
+            <connections>
+                <outlet property="button" destination="e8I-8T-71v" id="qb6-Sv-pGj"/>
+                <outlet property="imageView" destination="rX3-xv-22d" id="ybl-LN-Mla"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="FC5-mH-f1X">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8I-8T-71v">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
+                    <connections>
+                        <action selector="buttonTouchDown:" destination="-1" eventType="touchDown" id="a7l-VK-8mh"/>
+                        <action selector="buttonTouchDragOutside:" destination="-1" eventType="touchDragOutside" id="K0T-on-fkn"/>
+                        <action selector="buttonTouchUpInside:" destination="-1" eventType="touchUpInside" id="d6s-m3-5mb"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rX3-xv-22d">
+                    <rect key="frame" x="147" y="27" width="81" height="81"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="81" id="Kpk-ZM-afu"/>
+                        <constraint firstAttribute="width" constant="81" id="pbm-ZT-895"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="2X4-eI-UU4" firstAttribute="trailing" secondItem="e8I-8T-71v" secondAttribute="trailing" id="BBh-s6-D1r"/>
+                <constraint firstItem="rX3-xv-22d" firstAttribute="centerX" secondItem="FC5-mH-f1X" secondAttribute="centerX" id="FPA-Xu-M5I"/>
+                <constraint firstItem="rX3-xv-22d" firstAttribute="centerY" secondItem="FC5-mH-f1X" secondAttribute="centerY" id="WAr-mf-Ln8"/>
+                <constraint firstItem="e8I-8T-71v" firstAttribute="top" secondItem="2X4-eI-UU4" secondAttribute="top" id="cp6-lM-Q8N"/>
+                <constraint firstItem="e8I-8T-71v" firstAttribute="leading" secondItem="2X4-eI-UU4" secondAttribute="leading" id="gvy-NG-m35"/>
+                <constraint firstItem="2X4-eI-UU4" firstAttribute="bottom" secondItem="e8I-8T-71v" secondAttribute="bottom" id="k9g-hi-GbJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="2X4-eI-UU4"/>
+            <point key="canvasLocation" x="84.5" y="463.5"/>
+        </view>
+    </objects>
+</document>
