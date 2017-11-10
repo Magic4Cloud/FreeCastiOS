@@ -1,0 +1,647 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		44DA42671278C599A97BECEF /* libPods-Freestream.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7259D11CEF2F7B196912D014 /* libPods-Freestream.a */; };
+		97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328E741FB32AA3005FC554 /* AppDelegate.m */; };
+		97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97328E7C1FB32AA3005FC554 /* App.xcassets */; };
+		97328E831FB32AA3005FC554 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328E821FB32AA3005FC554 /* main.m */; };
+		97328E981FB3F333005FC554 /* Base.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97328E971FB3F333005FC554 /* Base.xcassets */; };
+		97328E9E1FB3F3FC005FC554 /* FSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328E9D1FB3F3FC005FC554 /* FSBaseViewController.m */; };
+		97328EA11FB3F411005FC554 /* FSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EA01FB3F411005FC554 /* FSBaseWebViewController.m */; };
+		97328EA41FB3F537005FC554 /* FSNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EA31FB3F537005FC554 /* FSNavigationViewController.m */; };
+		97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EA61FB3F586005FC554 /* FSNavigationViewController+StatusBar.m */; };
+		97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EAF1FB3F738005FC554 /* FSLeftSideMenuViewController.m */; };
+		97328EB21FB3F738005FC554 /* FSLeftSideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328EB01FB3F738005FC554 /* FSLeftSideMenuViewController.xib */; };
+		97328EB71FB3FB34005FC554 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97328EB91FB3FB34005FC554 /* Localizable.strings */; };
+		97328EBE1FB4023C005FC554 /* UIColor+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EBD1FB4023C005FC554 /* UIColor+App.m */; };
+		97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EC11FB43374005FC554 /* FSLeftSideTableViewCell.m */; };
+		97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328EC21FB43374005FC554 /* FSLeftSideTableViewCell.xib */; };
+		97328EC81FB436A2005FC554 /* FSHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EC61FB436A2005FC554 /* FSHomeViewController.m */; };
+		97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328EC71FB436A2005FC554 /* FSHomeViewController.xib */; };
+		97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328ECC1FB4382C005FC554 /* FSHomePageButtonView.m */; };
+		97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */; };
+		97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97328ED61FB44FE0005FC554 /* Home.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		20ED9EDB49FC7B22B83D2DE2 /* Pods-Freestream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.release.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.release.xcconfig"; sourceTree = "<group>"; };
+		7259D11CEF2F7B196912D014 /* libPods-Freestream.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Freestream.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97328E701FB32AA3005FC554 /* Freestream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freestream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97328E731FB32AA3005FC554 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		97328E741FB32AA3005FC554 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		97328E7C1FB32AA3005FC554 /* App.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = App.xcassets; sourceTree = "<group>"; };
+		97328E811FB32AA3005FC554 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97328E821FB32AA3005FC554 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		97328E961FB33A49005FC554 /* CommonAppHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonAppHeader.h; sourceTree = "<group>"; };
+		97328E971FB3F333005FC554 /* Base.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Base.xcassets; sourceTree = "<group>"; };
+		97328E9C1FB3F3FC005FC554 /* FSBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSBaseViewController.h; sourceTree = "<group>"; };
+		97328E9D1FB3F3FC005FC554 /* FSBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSBaseViewController.m; sourceTree = "<group>"; };
+		97328E9F1FB3F411005FC554 /* FSBaseWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSBaseWebViewController.h; sourceTree = "<group>"; };
+		97328EA01FB3F411005FC554 /* FSBaseWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSBaseWebViewController.m; sourceTree = "<group>"; };
+		97328EA21FB3F537005FC554 /* FSNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSNavigationViewController.h; sourceTree = "<group>"; };
+		97328EA31FB3F537005FC554 /* FSNavigationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSNavigationViewController.m; sourceTree = "<group>"; };
+		97328EA51FB3F586005FC554 /* FSNavigationViewController+StatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSNavigationViewController+StatusBar.h"; sourceTree = "<group>"; };
+		97328EA61FB3F586005FC554 /* FSNavigationViewController+StatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FSNavigationViewController+StatusBar.m"; sourceTree = "<group>"; };
+		97328EAE1FB3F738005FC554 /* FSLeftSideMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLeftSideMenuViewController.h; sourceTree = "<group>"; };
+		97328EAF1FB3F738005FC554 /* FSLeftSideMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLeftSideMenuViewController.m; sourceTree = "<group>"; };
+		97328EB01FB3F738005FC554 /* FSLeftSideMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSLeftSideMenuViewController.xib; sourceTree = "<group>"; };
+		97328EBA1FB3FB3B005FC554 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		97328EBB1FB3FC54005FC554 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		97328EBC1FB4023C005FC554 /* UIColor+App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+App.h"; sourceTree = "<group>"; };
+		97328EBD1FB4023C005FC554 /* UIColor+App.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+App.m"; sourceTree = "<group>"; };
+		97328EC01FB43374005FC554 /* FSLeftSideTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLeftSideTableViewCell.h; sourceTree = "<group>"; };
+		97328EC11FB43374005FC554 /* FSLeftSideTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLeftSideTableViewCell.m; sourceTree = "<group>"; };
+		97328EC21FB43374005FC554 /* FSLeftSideTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSLeftSideTableViewCell.xib; sourceTree = "<group>"; };
+		97328EC51FB436A2005FC554 /* FSHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSHomeViewController.h; sourceTree = "<group>"; };
+		97328EC61FB436A2005FC554 /* FSHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSHomeViewController.m; sourceTree = "<group>"; };
+		97328EC71FB436A2005FC554 /* FSHomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSHomeViewController.xib; sourceTree = "<group>"; };
+		97328ECB1FB4382C005FC554 /* FSHomePageButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSHomePageButtonView.h; sourceTree = "<group>"; };
+		97328ECC1FB4382C005FC554 /* FSHomePageButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSHomePageButtonView.m; sourceTree = "<group>"; };
+		97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSHomePageButtonView.xib; sourceTree = "<group>"; };
+		97328ED61FB44FE0005FC554 /* Home.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Home.xcassets; sourceTree = "<group>"; };
+		EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97328E6D1FB32AA3005FC554 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44DA42671278C599A97BECEF /* libPods-Freestream.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		14DB3452D69BEC219DB49923 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7259D11CEF2F7B196912D014 /* libPods-Freestream.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4419DA1367A5D0E8CAFE2E25 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */,
+				20ED9EDB49FC7B22B83D2DE2 /* Pods-Freestream.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		97328E671FB32AA3005FC554 = {
+			isa = PBXGroup;
+			children = (
+				97328E721FB32AA3005FC554 /* Freestream */,
+				97328E711FB32AA3005FC554 /* Products */,
+				4419DA1367A5D0E8CAFE2E25 /* Pods */,
+				14DB3452D69BEC219DB49923 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		97328E711FB32AA3005FC554 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97328E701FB32AA3005FC554 /* Freestream.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97328E721FB32AA3005FC554 /* Freestream */ = {
+			isa = PBXGroup;
+			children = (
+				97328E731FB32AA3005FC554 /* AppDelegate.h */,
+				97328E741FB32AA3005FC554 /* AppDelegate.m */,
+				97328E8C1FB33214005FC554 /* Common */,
+				97328E891FB3311E005FC554 /* Controller */,
+				97328E8B1FB33142005FC554 /* Model */,
+				97328E8A1FB3313B005FC554 /* View */,
+				97328E8D1FB33223005FC554 /* RESTfulAPI */,
+				97328E901FB3328E005FC554 /* Libs */,
+				97328E8E1FB3324F005FC554 /* Resource */,
+				97328E911FB332AA005FC554 /* Suporting Files */,
+			);
+			path = Freestream;
+			sourceTree = "<group>";
+		};
+		97328E891FB3311E005FC554 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				97328EAD1FB3F627005FC554 /* LeftSide */,
+				97328EA81FB3F5DB005FC554 /* Home */,
+				97328EAC1FB3F619005FC554 /* Browse */,
+				97328EAB1FB3F60E005FC554 /* Configure */,
+				97328EAA1FB3F5F5005FC554 /* Stream */,
+				97328EA91FB3F5E9005FC554 /* LiveView */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		97328E8A1FB3313B005FC554 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				97328ECA1FB437CB005FC554 /* Home */,
+				97328EBF1FB43336005FC554 /* LeftSide */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		97328E8B1FB33142005FC554 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		97328E8C1FB33214005FC554 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				97328E961FB33A49005FC554 /* CommonAppHeader.h */,
+				97328E9B1FB3F39B005FC554 /* Categories */,
+				97328E9A1FB3F390005FC554 /* Views */,
+				97328E991FB3F379005FC554 /* ViewControllers */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		97328E8D1FB33223005FC554 /* RESTfulAPI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RESTfulAPI;
+			sourceTree = "<group>";
+		};
+		97328E8E1FB3324F005FC554 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				97328E7C1FB32AA3005FC554 /* App.xcassets */,
+				97328E971FB3F333005FC554 /* Base.xcassets */,
+				97328ED61FB44FE0005FC554 /* Home.xcassets */,
+				97328E8F1FB3325C005FC554 /* file */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		97328E8F1FB3325C005FC554 /* file */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = file;
+			sourceTree = "<group>";
+		};
+		97328E901FB3328E005FC554 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		97328E911FB332AA005FC554 /* Suporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				97328E811FB32AA3005FC554 /* Info.plist */,
+				97328E821FB32AA3005FC554 /* main.m */,
+				97328EB91FB3FB34005FC554 /* Localizable.strings */,
+			);
+			path = "Suporting Files";
+			sourceTree = "<group>";
+		};
+		97328E991FB3F379005FC554 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				97328E9C1FB3F3FC005FC554 /* FSBaseViewController.h */,
+				97328E9D1FB3F3FC005FC554 /* FSBaseViewController.m */,
+				97328E9F1FB3F411005FC554 /* FSBaseWebViewController.h */,
+				97328EA01FB3F411005FC554 /* FSBaseWebViewController.m */,
+				97328EA21FB3F537005FC554 /* FSNavigationViewController.h */,
+				97328EA31FB3F537005FC554 /* FSNavigationViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		97328E9A1FB3F390005FC554 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		97328E9B1FB3F39B005FC554 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				97328EA51FB3F586005FC554 /* FSNavigationViewController+StatusBar.h */,
+				97328EA61FB3F586005FC554 /* FSNavigationViewController+StatusBar.m */,
+				97328EBC1FB4023C005FC554 /* UIColor+App.h */,
+				97328EBD1FB4023C005FC554 /* UIColor+App.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		97328EA81FB3F5DB005FC554 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				97328EC51FB436A2005FC554 /* FSHomeViewController.h */,
+				97328EC61FB436A2005FC554 /* FSHomeViewController.m */,
+				97328EC71FB436A2005FC554 /* FSHomeViewController.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		97328EA91FB3F5E9005FC554 /* LiveView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LiveView;
+			sourceTree = "<group>";
+		};
+		97328EAA1FB3F5F5005FC554 /* Stream */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Stream;
+			sourceTree = "<group>";
+		};
+		97328EAB1FB3F60E005FC554 /* Configure */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Configure;
+			sourceTree = "<group>";
+		};
+		97328EAC1FB3F619005FC554 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		97328EAD1FB3F627005FC554 /* LeftSide */ = {
+			isa = PBXGroup;
+			children = (
+				97328EAE1FB3F738005FC554 /* FSLeftSideMenuViewController.h */,
+				97328EAF1FB3F738005FC554 /* FSLeftSideMenuViewController.m */,
+				97328EB01FB3F738005FC554 /* FSLeftSideMenuViewController.xib */,
+			);
+			path = LeftSide;
+			sourceTree = "<group>";
+		};
+		97328EBF1FB43336005FC554 /* LeftSide */ = {
+			isa = PBXGroup;
+			children = (
+				97328EC01FB43374005FC554 /* FSLeftSideTableViewCell.h */,
+				97328EC11FB43374005FC554 /* FSLeftSideTableViewCell.m */,
+				97328EC21FB43374005FC554 /* FSLeftSideTableViewCell.xib */,
+			);
+			path = LeftSide;
+			sourceTree = "<group>";
+		};
+		97328ECA1FB437CB005FC554 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				97328ECB1FB4382C005FC554 /* FSHomePageButtonView.h */,
+				97328ECC1FB4382C005FC554 /* FSHomePageButtonView.m */,
+				97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		97328E6F1FB32AA3005FC554 /* Freestream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97328E861FB32AA3005FC554 /* Build configuration list for PBXNativeTarget "Freestream" */;
+			buildPhases = (
+				8D25766964DD2BB8CF120BDF /* [CP] Check Pods Manifest.lock */,
+				97328E6C1FB32AA3005FC554 /* Sources */,
+				97328E6D1FB32AA3005FC554 /* Frameworks */,
+				97328E6E1FB32AA3005FC554 /* Resources */,
+				ED00BAE0C0CF8CD7A864F84A /* [CP] Embed Pods Frameworks */,
+				1CA92B556D9E84506DDAA806 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Freestream;
+			productName = Freestream;
+			productReference = 97328E701FB32AA3005FC554 /* Freestream.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97328E681FB32AA3005FC554 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = FS;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = Cloud4Magic;
+				TargetAttributes = {
+					97328E6F1FB32AA3005FC554 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 97328E6B1FB32AA3005FC554 /* Build configuration list for PBXProject "Freestream" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 97328E671FB32AA3005FC554;
+			productRefGroup = 97328E711FB32AA3005FC554 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97328E6F1FB32AA3005FC554 /* Freestream */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		97328E6E1FB32AA3005FC554 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97328EB71FB3FB34005FC554 /* Localizable.strings in Resources */,
+				97328EB21FB3F738005FC554 /* FSLeftSideMenuViewController.xib in Resources */,
+				97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */,
+				97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */,
+				97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */,
+				97328E981FB3F333005FC554 /* Base.xcassets in Resources */,
+				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
+				97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1CA92B556D9E84506DDAA806 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Freestream/Pods-Freestream-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freestream/Pods-Freestream-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D25766964DD2BB8CF120BDF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Freestream-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED00BAE0C0CF8CD7A864F84A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freestream/Pods-Freestream-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97328E6C1FB32AA3005FC554 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97328E831FB32AA3005FC554 /* main.m in Sources */,
+				97328EBE1FB4023C005FC554 /* UIColor+App.m in Sources */,
+				97328EA11FB3F411005FC554 /* FSBaseWebViewController.m in Sources */,
+				97328E9E1FB3F3FC005FC554 /* FSBaseViewController.m in Sources */,
+				97328EC81FB436A2005FC554 /* FSHomeViewController.m in Sources */,
+				97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */,
+				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
+				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
+				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
+				97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */,
+				97328EA41FB3F537005FC554 /* FSNavigationViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		97328EB91FB3FB34005FC554 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97328EBA1FB3FB3B005FC554 /* Base */,
+				97328EBB1FB3FC54005FC554 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		97328E841FB32AA3005FC554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		97328E851FB32AA3005FC554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97328E871FB32AA3005FC554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				INFOPLIST_FILE = "$(SRCROOT)/Freestream/Suporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7250e918-ce6c-456f-ab5f-6db7e9ccaf31";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97328E881FB32AA3005FC554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 20ED9EDB49FC7B22B83D2DE2 /* Pods-Freestream.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				INFOPLIST_FILE = "$(SRCROOT)/Freestream/Suporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7003efe1-00b8-4c84-b606-aca2a1a958cb";
+				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97328E6B1FB32AA3005FC554 /* Build configuration list for PBXProject "Freestream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97328E841FB32AA3005FC554 /* Debug */,
+				97328E851FB32AA3005FC554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97328E861FB32AA3005FC554 /* Build configuration list for PBXNativeTarget "Freestream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97328E871FB32AA3005FC554 /* Debug */,
+				97328E881FB32AA3005FC554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97328E681FB32AA3005FC554 /* Project object */;
+}
