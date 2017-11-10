@@ -25,27 +25,24 @@
     self.layer.borderWidth  = 2.f;
     self.layer.cornerRadius = 10 * RATIO;
     self.layer.masksToBounds = YES;
-    self.imageView.size = CGSizeMake(70 * RATIO, 70 * RATIO);
-    self.imageView.center = self.button.center;
 }
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    
-    self.imageView.size = CGSizeMake(70 * RATIO, 70 * RATIO);
+    self.imageView.size = CGSizeMake(80 * RATIO, 80 * RATIO);
     self.imageView.center = self.button.center;
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.imageView.size = CGSizeMake(70 * RATIO, 70 * RATIO);
-    self.imageView.center = self.button.center;
+    
+    [self layoutIfNeeded];
 }
-
 - (void)layoutIfNeeded {
     [super layoutIfNeeded];
-    self.imageView.size = CGSizeMake(70 * RATIO, 70 * RATIO);
+    self.imageView.size = CGSizeMake(80 * RATIO, 80 * RATIO);
     self.imageView.center = self.button.center;
+    
 }
 
 - (void)setupButtonViewWithTag:(FSHomePageButtonTag)tag {
@@ -78,6 +75,15 @@
     [self.imageView setImage:[UIImage imageNamed:self.normalImageName]];
 }
 
+- (IBAction)buttonTouchCancel:(UIButton *)sender {
+    
+    [self.imageView setImage:[UIImage imageNamed:self.normalImageName]];
+}
+- (IBAction)buttonTouchUpOutside:(UIButton *)sender {
+    
+    [self.imageView setImage:[UIImage imageNamed:self.normalImageName]];
+}
+
 - (IBAction)buttonTouchUpInside:(UIButton *)sender {
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(buttonViewDidSelected:)]) {
@@ -85,5 +91,4 @@
     }
     [self.imageView setImage:[UIImage imageNamed:self.normalImageName]];
 }
-
 @end

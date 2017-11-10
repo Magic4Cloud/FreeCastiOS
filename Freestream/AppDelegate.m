@@ -62,8 +62,9 @@
     FSLeftSideMenuViewController *leftVC = [[FSLeftSideMenuViewController alloc] init];
     FSNavigationViewController *naviVC = [[FSNavigationViewController alloc] initWithRootViewController:homeVC];
     LGSideMenuController *sideMenuController = [[LGSideMenuController alloc] initWithRootViewController:naviVC leftViewController:leftVC rightViewController:nil];
+    sideMenuController.swipeGestureArea = LGSideMenuSwipeGestureAreaFull;
     sideMenuController.leftViewWidth = 200.0 * RATIO;
-    sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleSlideBelow;
+    sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleScaleFromBig;
     self.window.rootViewController = sideMenuController;
 }
 

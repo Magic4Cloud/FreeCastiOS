@@ -7,13 +7,7 @@
 //
 
 #import <M4CoreFoundation/M4CoreFoundation.h>
-
-typedef NS_ENUM(NSInteger, FSLeftSideTitle) {
-    FSLeftSideTitleVersion = 0,
-    FSLeftSideTitleDisclaimer,
-    FSLeftSideTitlePrivacyPolicy,
-    FSLeftSideTitleCopyRight,
-};
+#import "FSLeftSideModel.h"
 
 @protocol FSLeftSideTableViewCellDelegate <NSObject>
 @required

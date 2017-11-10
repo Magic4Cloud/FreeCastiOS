@@ -27,6 +27,9 @@
 		97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328ECC1FB4382C005FC554 /* FSHomePageButtonView.m */; };
 		97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */; };
 		97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97328ED61FB44FE0005FC554 /* Home.xcassets */; };
+		97328EDC1FB577CE005FC554 /* FSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EDA1FB577CE005FC554 /* FSTextViewController.m */; };
+		97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328EDB1FB577CE005FC554 /* FSTextViewController.xib */; };
+		97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EF01FB59869005FC554 /* FSLeftSideModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +68,11 @@
 		97328ECC1FB4382C005FC554 /* FSHomePageButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSHomePageButtonView.m; sourceTree = "<group>"; };
 		97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSHomePageButtonView.xib; sourceTree = "<group>"; };
 		97328ED61FB44FE0005FC554 /* Home.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Home.xcassets; sourceTree = "<group>"; };
+		97328ED91FB577CE005FC554 /* FSTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSTextViewController.h; sourceTree = "<group>"; };
+		97328EDA1FB577CE005FC554 /* FSTextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSTextViewController.m; sourceTree = "<group>"; };
+		97328EDB1FB577CE005FC554 /* FSTextViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSTextViewController.xib; sourceTree = "<group>"; };
+		97328EEF1FB59869005FC554 /* FSLeftSideModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLeftSideModel.h; sourceTree = "<group>"; };
+		97328EF01FB59869005FC554 /* FSLeftSideModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLeftSideModel.m; sourceTree = "<group>"; };
 		EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,10 +145,10 @@
 			children = (
 				97328EAD1FB3F627005FC554 /* LeftSide */,
 				97328EA81FB3F5DB005FC554 /* Home */,
-				97328EAC1FB3F619005FC554 /* Browse */,
-				97328EAB1FB3F60E005FC554 /* Configure */,
-				97328EAA1FB3F5F5005FC554 /* Stream */,
 				97328EA91FB3F5E9005FC554 /* LiveView */,
+				97328EAA1FB3F5F5005FC554 /* Stream */,
+				97328EAB1FB3F60E005FC554 /* Configure */,
+				97328EAC1FB3F619005FC554 /* Browse */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -157,6 +165,7 @@
 		97328E8B1FB33142005FC554 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97328EEE1FB59834005FC554 /* LeftSide */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,6 +295,7 @@
 		97328EAD1FB3F627005FC554 /* LeftSide */ = {
 			isa = PBXGroup;
 			children = (
+				97328ED81FB5776F005FC554 /* BaseTextViewController */,
 				97328EAE1FB3F738005FC554 /* FSLeftSideMenuViewController.h */,
 				97328EAF1FB3F738005FC554 /* FSLeftSideMenuViewController.m */,
 				97328EB01FB3F738005FC554 /* FSLeftSideMenuViewController.xib */,
@@ -311,6 +321,25 @@
 				97328ECE1FB4383A005FC554 /* FSHomePageButtonView.xib */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		97328ED81FB5776F005FC554 /* BaseTextViewController */ = {
+			isa = PBXGroup;
+			children = (
+				97328ED91FB577CE005FC554 /* FSTextViewController.h */,
+				97328EDA1FB577CE005FC554 /* FSTextViewController.m */,
+				97328EDB1FB577CE005FC554 /* FSTextViewController.xib */,
+			);
+			path = BaseTextViewController;
+			sourceTree = "<group>";
+		};
+		97328EEE1FB59834005FC554 /* LeftSide */ = {
+			isa = PBXGroup;
+			children = (
+				97328EEF1FB59869005FC554 /* FSLeftSideModel.h */,
+				97328EF01FB59869005FC554 /* FSLeftSideModel.m */,
+			);
+			path = LeftSide;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,6 +409,7 @@
 				97328EB21FB3F738005FC554 /* FSLeftSideMenuViewController.xib in Resources */,
 				97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */,
 				97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */,
+				97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */,
 				97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */,
 				97328E981FB3F333005FC554 /* Base.xcassets in Resources */,
 				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
@@ -450,11 +480,13 @@
 			files = (
 				97328E831FB32AA3005FC554 /* main.m in Sources */,
 				97328EBE1FB4023C005FC554 /* UIColor+App.m in Sources */,
+				97328EDC1FB577CE005FC554 /* FSTextViewController.m in Sources */,
 				97328EA11FB3F411005FC554 /* FSBaseWebViewController.m in Sources */,
 				97328E9E1FB3F3FC005FC554 /* FSBaseViewController.m in Sources */,
 				97328EC81FB436A2005FC554 /* FSHomeViewController.m in Sources */,
 				97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */,
 				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
+				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
 				97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */,

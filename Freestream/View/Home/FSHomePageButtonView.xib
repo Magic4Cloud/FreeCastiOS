@@ -24,16 +24,18 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8I-8T-71v">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
                     <connections>
+                        <action selector="buttonTouchCancel:" destination="-1" eventType="touchCancel" id="dQs-km-xEi"/>
                         <action selector="buttonTouchDown:" destination="-1" eventType="touchDown" id="a7l-VK-8mh"/>
                         <action selector="buttonTouchDragOutside:" destination="-1" eventType="touchDragOutside" id="K0T-on-fkn"/>
                         <action selector="buttonTouchUpInside:" destination="-1" eventType="touchUpInside" id="d6s-m3-5mb"/>
+                        <action selector="buttonTouchUpOutside:" destination="-1" eventType="touchUpOutside" id="zbD-0M-X5u"/>
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rX3-xv-22d">
-                    <rect key="frame" x="147" y="27" width="81" height="81"/>
+                    <rect key="frame" x="167.5" y="47.5" width="40" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="81" id="Kpk-ZM-afu"/>
-                        <constraint firstAttribute="width" constant="81" id="pbm-ZT-895"/>
+                        <constraint firstAttribute="height" constant="40" id="Kpk-ZM-afu"/>
+                        <constraint firstAttribute="width" constant="40" id="pbm-ZT-895"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -48,7 +50,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="2X4-eI-UU4"/>
-            <point key="canvasLocation" x="84.5" y="463.5"/>
+            <point key="canvasLocation" x="-299" y="464"/>
         </view>
     </objects>
 </document>

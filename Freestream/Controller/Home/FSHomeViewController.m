@@ -23,18 +23,19 @@
 
 #pragma mark - Setters/Getters
 
-
 #pragma mark – View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
     [self setupButtonViews];
     [self addEffectViewForBgImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.sideMenuController.leftViewSwipeGestureEnabled = YES; 
     [self.navigationController setNavigationBarHidden:YES];
 }
 
@@ -88,18 +89,6 @@
     [self showLeftViewAnimated:nil];
 }
 
-- (IBAction)selectedLiveViewButton:(UIButton *)sender {
-}
-
-- (IBAction)selectedStreamButton:(UIButton *)sender {
-}
-
-- (IBAction)selectedConfigureButton:(UIButton *)sender {
-}
-
-- (IBAction)selectedBrowseButton:(UIButton *)sender {
-}
-
 #pragma mark - IBActions
 
 #pragma mark – Public methods
@@ -114,21 +103,18 @@
 - (void)buttonViewDidSelected:(FSHomePageButtonTag)tag {
     switch (tag) {
         case FSHomePageButtonLiveView:
-            [self performSelector:@selector(selectedLiveViewButton:) withObject:nil];
+            
             break;
         case FSHomePageButtonStream:
-            [self performSelector:@selector(selectedStreamButton:) withObject:nil];
+            
             break;
         case FSHomePageButtonConfigure:
-            [self performSelector:@selector(selectedConfigureButton:) withObject:nil];
+            
             break;
         case FSHomePageButtonBrowse:
-            [self performSelector:@selector(selectedBrowseButton:) withObject:nil];
-            break;
-        default:
+            
             break;
     }
 }
-
 
 @end

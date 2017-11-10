@@ -1,36 +1,38 @@
 //
-//  FSBaseViewController.m
+//  FSTextViewController.m
 //  Freestream
 //
-//  Created by Frank Li on 2017/11/9.
+//  Created by Frank Li on 2017/11/10.
 //  Copyright © 2017年 Cloud4Magic. All rights reserved.
 //
 
-#import "FSBaseViewController.h"
+#import "FSTextViewController.h"
 #import "CommonAppHeader.h"
-@interface FSBaseViewController ()
-
+@interface FSTextViewController ()
+@property (weak, nonatomic) IBOutlet UITextView *contentTextView;
+@property (nonatomic,strong) NSArray <NSString *>*dataSource;
 @end
 
-@implementation FSBaseViewController
+@implementation FSTextViewController
 
 #pragma mark - Setters/Getters
-
-
-#pragma mark – View lifecycle
-- (void)setup {
-    [super setup];
-    
+- (NSArray<NSString *> *)dataSource {
+    if (!_dataSource) {
+        _dataSource = [FSLeftSideModel getLeftSideViewControllersContents].copy;
+    }
+    return _dataSource;
 }
+#pragma mark – View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setupTextView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.sideMenuController.leftViewSwipeGestureEnabled = NO;
+    
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -54,7 +56,9 @@
 #pragma mark – Request service methods
 
 #pragma mark – Private methods
-
+- (void)setupTextView {
+    self.contentTextView.text = self.dataSource[self.leftSideTitleTag];
+}
 #pragma mark – Target action methods
 
 #pragma mark - IBActions
@@ -66,17 +70,7 @@
 #pragma mark – Override properties
 
 #pragma mark - Override super methods
-- (BOOL)prefersStatusBarHidden {
-    return NO;
-}
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleDefault;
-}
-
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    return UIStatusBarAnimationNone;
-}
 #pragma mark – Delegate
 
 

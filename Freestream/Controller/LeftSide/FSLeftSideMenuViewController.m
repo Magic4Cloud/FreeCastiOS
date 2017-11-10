@@ -7,8 +7,14 @@
 //
 
 #import "FSLeftSideMenuViewController.h"
-#import "FSLeftSideTableViewCell.h"
+
 #import "CommonAppHeader.h"
+//model
+#import "FSLeftSideModel.h"
+//view
+#import "FSLeftSideTableViewCell.h"
+//controller
+#import "FSTextViewController.h"
 
 static NSInteger const KCellCount = 4;
 
@@ -16,18 +22,15 @@ static NSInteger const KCellCount = 4;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic,strong,nonnull) NSMutableArray <NSString *>*dataSource;
+@property (nonatomic,strong,nonnull) NSArray <NSString *>*dataSource;
 @end
 
 @implementation FSLeftSideMenuViewController
 #pragma mark - Setters/Getters
 
-- (NSMutableArray<NSString *> *)dataSource {
+- (NSArray<NSString *> *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[NSLocalizedString(@"Version", nil),
-                        NSLocalizedString(@"Disclaimer", nil),
-                        NSLocalizedString(@"Privacy Policy", nil),
-                        NSLocalizedString(@"Copyright", nil),].mutableCopy;
+        _dataSource = [FSLeftSideModel getLeftSideTableViewCellTitles].copy;
     }
     return _dataSource;
 }
@@ -76,6 +79,18 @@ static NSInteger const KCellCount = 4;
     [self.view bringSubviewToFront:self.logoImageView];
     
 }
+
+- (FSNavigationViewController *)naviVC{
+    return (FSNavigationViewController *)self.sideMenuController.rootViewController;
+}
+
+- (void)pushTextViewControllerWithCellTag:(FSLeftSideTitle)cellTag {
+    FSTextViewController * textVC = [[FSTextViewController alloc] init];
+    textVC.title = self.dataSource[cellTag];
+    textVC.leftSideTitleTag = cellTag;
+    [[self naviVC] pushViewController:textVC animated:NO];
+}
+
 #pragma mark – Target action methods
 
 #pragma mark - IBActions
@@ -108,20 +123,27 @@ static NSInteger const KCellCount = 4;
 #pragma mark - FSLeftSideTableViewCellDelegate
 
 - (void)didSelectedCell:(FSLeftSideTitle)cellTitle {
+    [self.sideMenuController hideLeftView];
     switch (cellTitle) {
-        case FSLeftSideTitleVersion:
+        case FSLeftSideTitleVersion: {
             
+        }
             break;
-        case FSLeftSideTitleDisclaimer:
-            
+        case FSLeftSideTitleDisclaimer: {
+            [self pushTextViewControllerWithCellTag:cellTitle];
+        }
             break;
-        case FSLeftSideTitlePrivacyPolicy:
-            
+        case FSLeftSideTitlePrivacyPolicy: {
+            [self pushTextViewControllerWithCellTag:cellTitle];
+        }
             break;
-        case FSLeftSideTitleCopyRight:
-            
+        case FSLeftSideTitleCopyRight: {
+            [self pushTextViewControllerWithCellTag:cellTitle];
+        }
             break;
     }
 }
+
+
 
 @end
