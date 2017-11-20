@@ -8,6 +8,7 @@
 
 #import "FSNavigationViewController.h"
 #import "CommonAppHeader.h"
+#import "FSLiveViewViewController.h"
 @interface FSNavigationViewController ()
 
 @end
@@ -28,4 +29,43 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+//navigation是否旋转
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
+- (NSUInteger)supportedInterfaceOrientations
+#else
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+#endif
+{
+    
+//    if ([[self.viewControllers lastObject] isKindOfClass:[FSLiveViewViewController class]]) {
+//        return UIInterfaceOrientationMaskLandscapeRight;
+//    }
+    return UIInterfaceOrientationMaskPortrait;
+//    return [[self.viewControllers lastObject] supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+//    if ([[self.viewControllers lastObject] isKindOfClass:[FSLiveViewViewController class]]) {
+//        return UIInterfaceOrientationLandscapeRight;
+//    }
+    return UIInterfaceOrientationPortrait;
+//    return [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation];
+}
+
+- (BOOL)shouldAutorotate{
+//    if ([[self.viewControllers lastObject] isKindOfClass:[FSLiveViewViewController class]]) {
+//        return NO;
+//    }
+    return NO;
+//        return [[self.viewControllers lastObject] shouldAutorotate];
+}
+
+-(BOOL)prefersStatusBarHidden{
+//    if ([[self.viewControllers lastObject] isKindOfClass:[FSLiveViewViewController class]]) {
+//        return NO;
+//    }
+    return NO;
+//    return [[self.viewControllers lastObject] prefersStatusBarHidden];
+}
 @end

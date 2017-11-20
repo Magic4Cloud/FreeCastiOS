@@ -10,12 +10,17 @@
 #import "FSHomePageButtonView.h"
 #import "CommonAppHeader.h"
 
+//controllers
+#import "FSLiveViewViewController.h"
+
 @interface FSHomeViewController ()<FSHomePageButtonViewDelegate,LGSideMenuDelegate>
 @property (weak, nonatomic) IBOutlet UIView               *effectView;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *liveViewButton;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *streamButton;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *configureButton;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *browseButton;
+
+@property (strong, nonatomic) FBSDKLoginButton *loginButton;
 
 @end
 
@@ -35,8 +40,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.sideMenuController.leftViewSwipeGestureEnabled = YES; 
     [self.navigationController setNavigationBarHidden:YES];
+//    启用侧滑手势
+    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -102,14 +109,59 @@
 #pragma mark – Delegate
 - (void)buttonViewDidSelected:(FSHomePageButtonTag)tag {
     switch (tag) {
-        case FSHomePageButtonLiveView:
+        case FSHomePageButtonLiveView: {
             
+            FSLiveViewViewController *liveViewController = [[FSLiveViewViewController alloc] init];
+//            FSNavigationViewController *naviVC = [[FSNavigationViewController alloc] initWithRootViewController:liveViewController];
+            [self presentViewController:liveViewController animated:YES completion:^{}];
+            
+//            [self.navigationController pushViewController:naviVC animated:NO];
+//            FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+//            [login
+//             logInWithPublishPermissions: @[@"publish_actions",@"publish_pages",]
+//             fromViewController:self
+//             handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+//                 if (error) {
+//                     NSLog(@"Process error");
+//                 } else if (result.isCancelled) {
+//                     NSLog(@"Cancelled");
+//                 } else {
+//                     NSString *tokenString = result.token.tokenString;
+//                     NSLog(@"----------------tokenString %@",tokenString);
+//
+//                 }
+//             }];
+        }
             break;
-        case FSHomePageButtonStream:
+        case FSHomePageButtonStream: {
+//            [[FSFaceBookAPIRESTfulService sharedSingleton] requestVerificationUriAndUserCodeRestultBlock:^(ServiceResultInfo *statusInfo) {
+//                NSLog(@"----------------%@",statusInfo);
+//            }];
             
-            break;
-        case FSHomePageButtonConfigure:
             
+//            FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+//            [login
+//             logInWithReadPermissions: @[@"",@"manage_pages",@"user_managed_groups",@"user_events"]
+//             fromViewController:self
+//             handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+//                 if (error) {
+//                     NSLog(@"Process error");
+//                 } else if (result.isCancelled) {
+//                     NSLog(@"Cancelled");
+//                 } else {
+//                     NSString *tokenString = result.token.tokenString;
+//                     NSLog(@"----------------tokenString %@",tokenString);
+//
+//                 }
+//             }];
+
+        }   break;
+        case FSHomePageButtonConfigure: {
+            
+//            FSBaseWebViewController * webVC = [[FSBaseWebViewController alloc] init];
+//            webVC.urlString = [NSString stringWithFormat:@"https://www.facebook.com/device?access_token=%@",FBSDKAccessToken.currentAccessToken.tokenString];
+//            [self.navigationController pushViewController:webVC animated:NO];
+        }
             break;
         case FSHomePageButtonBrowse:
             

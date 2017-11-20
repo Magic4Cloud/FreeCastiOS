@@ -66,10 +66,8 @@
 #pragma mark – Override properties
 
 #pragma mark - Override super methods
-- (BOOL)prefersStatusBarHidden {
-    return NO;
-}
 
+//基类设置是否旋转屏幕 以及屏幕支持方向
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleDefault;
 }
@@ -77,6 +75,27 @@
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     return UIStatusBarAnimationNone;
 }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
+- (NSUInteger)supportedInterfaceOrientations
+#else
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+#endif
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
 #pragma mark – Delegate
 
 

@@ -31,7 +31,9 @@
 
 
 //************************** Live View **************************
-
+"No wireless LAN connection" = "No wireless LAN connection";
+"On live"                  = "On live";
+"Not live"                 = "Not live";
 
 
 //************************** Stream **************************
@@ -58,8 +60,8 @@
 
 "connected_device"         = "Connected Device";
 "disconnected_device"      = "Disconnected Device";
-"on_live"                  = "On live";
-"not_live"                 = "Not live";
+//"on_live"                  = "On live";
+//"not_live"                 = "Not live";
 "pause_live"               = "On Pause";
 "video_connecting"="Connecting...";
 "save_video"="Save video to album success";

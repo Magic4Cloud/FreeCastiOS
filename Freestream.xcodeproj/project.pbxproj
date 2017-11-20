@@ -30,6 +30,21 @@
 		97328EDC1FB577CE005FC554 /* FSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EDA1FB577CE005FC554 /* FSTextViewController.m */; };
 		97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97328EDB1FB577CE005FC554 /* FSTextViewController.xib */; };
 		97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EF01FB59869005FC554 /* FSLeftSideModel.m */; };
+		97328EF61FB9404C005FC554 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97328EF41FB9404B005FC554 /* FBSDKCoreKit.framework */; };
+		97328EF71FB9404C005FC554 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97328EF51FB9404C005FC554 /* FBSDKLoginKit.framework */; };
+		97328EF91FB944CB005FC554 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97328EF81FB944CA005FC554 /* Bolts.framework */; };
+		97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */; };
+		97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328F021FB98DE8005FC554 /* FSNetWorkManager.m */; };
+		9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9740412B1FBE86F300E23E31 /* FSStreamViewController.m */; };
+		9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */; };
+		974041311FBE8D7800E23E31 /* LGSideMenuController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */; };
+		974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 974041321FBEE09500E23E31 /* LiveView.xcassets */; };
+		9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */; };
+		9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */; };
+		9789E6781FC2F03500386902 /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6751FC2F03500386902 /* libWisView.a */; };
+		9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */; };
+		9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E67D1FC30C1D00386902 /* libstdc++.tbd */; };
+		9789E6861FC30C9700386902 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6851FC30C9700386902 /* libiconv.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +88,36 @@
 		97328EDB1FB577CE005FC554 /* FSTextViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSTextViewController.xib; sourceTree = "<group>"; };
 		97328EEF1FB59869005FC554 /* FSLeftSideModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLeftSideModel.h; sourceTree = "<group>"; };
 		97328EF01FB59869005FC554 /* FSLeftSideModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLeftSideModel.m; sourceTree = "<group>"; };
+		97328EF41FB9404B005FC554 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		97328EF51FB9404C005FC554 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		97328EF81FB944CA005FC554 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		97328EFA1FB94C2C005FC554 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
+		97328EFB1FB98795005FC554 /* FSFaceBookAPIRESTfulService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSFaceBookAPIRESTfulService.h; sourceTree = "<group>"; };
+		97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSFaceBookAPIRESTfulService.m; sourceTree = "<group>"; };
+		97328EFE1FB98823005FC554 /* FSFaceBookAPIURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSFaceBookAPIURL.h; sourceTree = "<group>"; };
+		97328EFF1FB98848005FC554 /* FSBaseAPIURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSBaseAPIURL.h; sourceTree = "<group>"; };
+		97328F011FB98DE8005FC554 /* FSNetWorkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSNetWorkManager.h; sourceTree = "<group>"; };
+		97328F021FB98DE8005FC554 /* FSNetWorkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSNetWorkManager.m; sourceTree = "<group>"; };
+		9740412A1FBE86F300E23E31 /* FSStreamViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSStreamViewController.h; sourceTree = "<group>"; };
+		9740412B1FBE86F300E23E31 /* FSStreamViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSStreamViewController.m; sourceTree = "<group>"; };
+		9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSStreamViewController.xib; sourceTree = "<group>"; };
+		9740412F1FBE8D7800E23E31 /* LGSideMenuController+Rotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LGSideMenuController+Rotation.h"; sourceTree = "<group>"; };
+		974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "LGSideMenuController+Rotation.m"; sourceTree = "<group>"; };
+		974041321FBEE09500E23E31 /* LiveView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LiveView.xcassets; sourceTree = "<group>"; };
+		9741AF641FBDBD6A00D4290D /* FSLiveViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLiveViewViewController.h; sourceTree = "<group>"; };
+		9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLiveViewViewController.m; sourceTree = "<group>"; };
+		9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSLiveViewViewController.xib; sourceTree = "<group>"; };
+		9789E6741FC2F03500386902 /* EasyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyConfig.h; sourceTree = "<group>"; };
+		9789E6751FC2F03500386902 /* libWisView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWisView.a; sourceTree = "<group>"; };
+		9789E6761FC2F03500386902 /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
+		9789E6771FC2F03500386902 /* WisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WisView.h; sourceTree = "<group>"; };
+		9789E67A1FC2F42B00386902 /* FSSearchDeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSSearchDeviceManager.h; sourceTree = "<group>"; };
+		9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSSearchDeviceManager.m; sourceTree = "<group>"; };
+		9789E67D1FC30C1D00386902 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		9789E67F1FC30C3D00386902 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9789E6811FC30C5400386902 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		9789E6831FC30C7600386902 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		9789E6851FC30C9700386902 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,7 +126,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9789E6781FC2F03500386902 /* libWisView.a in Frameworks */,
 				44DA42671278C599A97BECEF /* libPods-Freestream.a in Frameworks */,
+				9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */,
+				97328EF61FB9404C005FC554 /* FBSDKCoreKit.framework in Frameworks */,
+				9789E6861FC30C9700386902 /* libiconv.tbd in Frameworks */,
+				97328EF71FB9404C005FC554 /* FBSDKLoginKit.framework in Frameworks */,
+				97328EF91FB944CB005FC554 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +142,11 @@
 		14DB3452D69BEC219DB49923 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9789E6851FC30C9700386902 /* libiconv.tbd */,
+				9789E6831FC30C7600386902 /* libc++.tbd */,
+				9789E6811FC30C5400386902 /* libicucore.tbd */,
+				9789E67F1FC30C3D00386902 /* libz.tbd */,
+				9789E67D1FC30C1D00386902 /* libstdc++.tbd */,
 				7259D11CEF2F7B196912D014 /* libPods-Freestream.a */,
 			);
 			name = Frameworks;
@@ -134,6 +190,7 @@
 				97328E8A1FB3313B005FC554 /* View */,
 				97328E8D1FB33223005FC554 /* RESTfulAPI */,
 				97328E901FB3328E005FC554 /* Libs */,
+				97328EF21FB93FF1005FC554 /* Frameworks */,
 				97328E8E1FB3324F005FC554 /* Resource */,
 				97328E911FB332AA005FC554 /* Suporting Files */,
 			);
@@ -174,8 +231,11 @@
 			isa = PBXGroup;
 			children = (
 				97328E961FB33A49005FC554 /* CommonAppHeader.h */,
+				97328EFA1FB94C2C005FC554 /* AppConstants.h */,
+				9789E6791FC2F3F900386902 /* SearchManager */,
 				97328E9B1FB3F39B005FC554 /* Categories */,
 				97328E9A1FB3F390005FC554 /* Views */,
+				97328F001FB98DB0005FC554 /* Network */,
 				97328E991FB3F379005FC554 /* ViewControllers */,
 			);
 			path = Common;
@@ -184,6 +244,10 @@
 		97328E8D1FB33223005FC554 /* RESTfulAPI */ = {
 			isa = PBXGroup;
 			children = (
+				97328EFF1FB98848005FC554 /* FSBaseAPIURL.h */,
+				97328EFE1FB98823005FC554 /* FSFaceBookAPIURL.h */,
+				97328EFB1FB98795005FC554 /* FSFaceBookAPIRESTfulService.h */,
+				97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */,
 			);
 			path = RESTfulAPI;
 			sourceTree = "<group>";
@@ -194,6 +258,7 @@
 				97328E7C1FB32AA3005FC554 /* App.xcassets */,
 				97328E971FB3F333005FC554 /* Base.xcassets */,
 				97328ED61FB44FE0005FC554 /* Home.xcassets */,
+				974041321FBEE09500E23E31 /* LiveView.xcassets */,
 				97328E8F1FB3325C005FC554 /* file */,
 			);
 			path = Resource;
@@ -209,6 +274,7 @@
 		97328E901FB3328E005FC554 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				9789E6731FC2F03500386902 /* LX520View */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -250,6 +316,8 @@
 				97328EA61FB3F586005FC554 /* FSNavigationViewController+StatusBar.m */,
 				97328EBC1FB4023C005FC554 /* UIColor+App.h */,
 				97328EBD1FB4023C005FC554 /* UIColor+App.m */,
+				9740412F1FBE8D7800E23E31 /* LGSideMenuController+Rotation.h */,
+				974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -267,6 +335,9 @@
 		97328EA91FB3F5E9005FC554 /* LiveView */ = {
 			isa = PBXGroup;
 			children = (
+				9741AF641FBDBD6A00D4290D /* FSLiveViewViewController.h */,
+				9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */,
+				9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */,
 			);
 			path = LiveView;
 			sourceTree = "<group>";
@@ -274,6 +345,9 @@
 		97328EAA1FB3F5F5005FC554 /* Stream */ = {
 			isa = PBXGroup;
 			children = (
+				9740412A1FBE86F300E23E31 /* FSStreamViewController.h */,
+				9740412B1FBE86F300E23E31 /* FSStreamViewController.m */,
+				9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */,
 			);
 			path = Stream;
 			sourceTree = "<group>";
@@ -340,6 +414,53 @@
 				97328EF01FB59869005FC554 /* FSLeftSideModel.m */,
 			);
 			path = LeftSide;
+			sourceTree = "<group>";
+		};
+		97328EF21FB93FF1005FC554 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97328EF31FB94009005FC554 /* FacebookSDK */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		97328EF31FB94009005FC554 /* FacebookSDK */ = {
+			isa = PBXGroup;
+			children = (
+				97328EF81FB944CA005FC554 /* Bolts.framework */,
+				97328EF41FB9404B005FC554 /* FBSDKCoreKit.framework */,
+				97328EF51FB9404C005FC554 /* FBSDKLoginKit.framework */,
+			);
+			path = FacebookSDK;
+			sourceTree = "<group>";
+		};
+		97328F001FB98DB0005FC554 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				97328F011FB98DE8005FC554 /* FSNetWorkManager.h */,
+				97328F021FB98DE8005FC554 /* FSNetWorkManager.m */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		9789E6731FC2F03500386902 /* LX520View */ = {
+			isa = PBXGroup;
+			children = (
+				9789E6741FC2F03500386902 /* EasyConfig.h */,
+				9789E6751FC2F03500386902 /* libWisView.a */,
+				9789E6761FC2F03500386902 /* Scanner.h */,
+				9789E6771FC2F03500386902 /* WisView.h */,
+			);
+			path = LX520View;
+			sourceTree = "<group>";
+		};
+		9789E6791FC2F3F900386902 /* SearchManager */ = {
+			isa = PBXGroup;
+			children = (
+				9789E67A1FC2F42B00386902 /* FSSearchDeviceManager.h */,
+				9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */,
+			);
+			path = SearchManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,7 +533,10 @@
 				97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */,
 				97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */,
 				97328E981FB3F333005FC554 /* Base.xcassets in Resources */,
+				9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */,
+				974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */,
 				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
+				9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */,
 				97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,11 +605,17 @@
 				97328E831FB32AA3005FC554 /* main.m in Sources */,
 				97328EBE1FB4023C005FC554 /* UIColor+App.m in Sources */,
 				97328EDC1FB577CE005FC554 /* FSTextViewController.m in Sources */,
+				97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */,
 				97328EA11FB3F411005FC554 /* FSBaseWebViewController.m in Sources */,
 				97328E9E1FB3F3FC005FC554 /* FSBaseViewController.m in Sources */,
 				97328EC81FB436A2005FC554 /* FSHomeViewController.m in Sources */,
+				9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */,
 				97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */,
+				9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */,
+				97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */,
 				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
+				9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */,
+				974041311FBE8D7800E23E31 /* LGSideMenuController+Rotation.m in Sources */,
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
@@ -542,6 +672,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -598,6 +729,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -622,14 +754,23 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Freestream/Frameworks/FacebookSDK",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Freestream/Suporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Freestream/Libs/LX520View",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7250e918-ce6c-456f-ab5f-6db7e9ccaf31";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Debug;
 		};
@@ -641,14 +782,23 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Freestream/Frameworks/FacebookSDK",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Freestream/Suporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Freestream/Libs/LX520View",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7003efe1-00b8-4c84-b606-aca2a1a958cb";
 				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
 			name = Release;
 		};

@@ -10,5 +10,5 @@
 #import <M4CoreFoundation/M4CoreFoundation.h>
 
 @interface FSBaseWebViewController : BaseWebViewController
-
+@property (nonatomic, copy) NSString * urlString;
 @end

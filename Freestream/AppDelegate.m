@@ -12,6 +12,9 @@
 #import "FSHomeViewController.h"
 #import "FSLeftSideMenuViewController.h"
 #import "FSNavigationViewController.h"
+//SDK
+
+#import <FBSDKCoreKit/FBSDKCoreKit.h>//Facebook
 
 @interface AppDelegate ()
 
@@ -22,15 +25,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    self.window.rootViewController = [[UIViewController alloc]init];
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
+    
+//    配置facebook
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+                             didFinishLaunchingWithOptions:launchOptions];
     [self rootViewController];
-//    self.window.rootViewController = [[FSLeftSideMenuViewController alloc] init];
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                  openURL:url
+                                                        sourceApplication:sourceApplication
+                                                               annotation:annotation];
+    return handled;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -58,14 +75,20 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 - (void)rootViewController {
+    
     FSHomeViewController *homeVC = [[FSHomeViewController alloc] init];
+    
     FSLeftSideMenuViewController *leftVC = [[FSLeftSideMenuViewController alloc] init];
+    
     FSNavigationViewController *naviVC = [[FSNavigationViewController alloc] initWithRootViewController:homeVC];
+    
     LGSideMenuController *sideMenuController = [[LGSideMenuController alloc] initWithRootViewController:naviVC leftViewController:leftVC rightViewController:nil];
     sideMenuController.swipeGestureArea = LGSideMenuSwipeGestureAreaFull;
     sideMenuController.leftViewWidth = 200.0 * RATIO;
     sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleScaleFromBig;
+   
     self.window.rootViewController = sideMenuController;
+    
 }
 
 @end
