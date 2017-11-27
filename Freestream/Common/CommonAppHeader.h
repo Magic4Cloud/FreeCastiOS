@@ -13,6 +13,7 @@
 #import "AppConstants.h"
 #import "FSNetWorkManager.h"
 #import "FSSearchDeviceManager.h"
+#import "FSAlertController.h"
 
 //pods
 #import <M4CoreFoundation/M4CoreFoundation.h>
@@ -26,6 +27,9 @@
 
 //categories
 #import "UIColor+App.h"
+#import "CoreStore+App.h"
+#import "FSBaseViewController+WifiInfo.h"
+#import "FSBaseViewController+AlertController.h"
 
 //viewControllers
 #import "FSBaseViewController.h"

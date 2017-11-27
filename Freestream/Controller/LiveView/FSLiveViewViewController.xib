@@ -21,6 +21,7 @@
                 <outlet property="cameraButton" destination="XkT-f9-sIY" id="75O-HX-koT"/>
                 <outlet property="configureButton" destination="Hzu-1R-Sxr" id="va4-kS-ukQ"/>
                 <outlet property="contentView" destination="wUe-W1-zqL" id="mQY-Q6-RMj"/>
+                <outlet property="contentViewTapGesture" destination="yB6-Kf-K8k" id="Co9-1z-ZOb"/>
                 <outlet property="liveStopButton" destination="NUg-FT-kvI" id="P0C-NU-ot3"/>
                 <outlet property="logoCenterImageView" destination="nDC-GK-rlr" id="WqA-Qd-Gyf"/>
                 <outlet property="platformButton" destination="6y7-d9-phk" id="QRQ-Fn-d2v"/>
@@ -74,7 +75,7 @@
                             <state key="normal" image="pause_live_nor"/>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="NUg-FT-kvI" firstAttribute="centerY" secondItem="wUe-W1-zqL" secondAttribute="centerY" id="7u9-Dq-h2q"/>
@@ -271,6 +272,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="1RY-Mn-54C" firstAttribute="leading" secondItem="ub8-Lm-lP1" secondAttribute="trailing" id="0Uz-eT-sSJ"/>
                 <constraint firstItem="T53-ZS-RU2" firstAttribute="centerY" secondItem="ub8-Lm-lP1" secondAttribute="centerY" constant="-8" id="58x-Tv-xJK"/>

@@ -8,6 +8,8 @@
 
 #import "FSBaseViewController.h"
 #import "CommonAppHeader.h"
+
+
 @interface FSBaseViewController ()
 
 @end
@@ -96,6 +98,7 @@
 }
 
 #pragma mark – Delegate
+
 
 
 @end

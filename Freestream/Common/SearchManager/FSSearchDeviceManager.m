@@ -84,7 +84,7 @@ static BOOL isFirstAccess = YES;
     }
     self.completionBlock = completionHandle;
     self.isSearching = YES;
-    
+    NSLog(@"----------------searchDuration=%lf",duration);
     WEAK(self);
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         Scanner *resultInfo = [self.scanner ScanDeviceWithTime:duration];

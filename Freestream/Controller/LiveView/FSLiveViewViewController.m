@@ -12,8 +12,7 @@
 //controller
 #import "FSStreamViewController.h"
 
-//获取wifi名
-#import <SystemConfiguration/CaptiveNetwork.h>
+
 
 #import <Photos/Photos.h>
 
@@ -26,8 +25,10 @@
 #define FSLiveViewVideoType @"h264"
 static NSString *const fsLiveViewVideoFormat = @"h264";//视频格式
 static NSInteger const configPort = 80;//端口号
+static NSInteger const searchDurationMax = 8;
+NSInteger increaseSearchDuration = 5;
 
-@interface FSLiveViewViewController ()<LFLiveSessionDelegate>
+@interface FSLiveViewViewController ()<LFLiveSessionDelegate,WisViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *recordLabel;
@@ -55,6 +56,8 @@ static NSInteger const configPort = 80;//端口号
 @property (weak, nonatomic) IBOutlet UIButton *configureButton;
 @property (weak, nonatomic) IBOutlet UIButton *platformButton;
 
+@property (weak, nonatomic) IBOutlet UITapGestureRecognizer *contentViewTapGesture;
+
 @property (nonatomic, strong)        WisView  *videoView;
 
 @property (nonatomic,assign) BOOL             hidenTopBarAndBottomBar;//隐藏上面的条和下面的条
@@ -74,23 +77,17 @@ static NSInteger const configPort = 80;//端口号
 @implementation FSLiveViewViewController
 
 #pragma mark - Setters/Getters
-//- (LFLiveSession*)session {
-//    if (!_session) {
-//        _session = [[LFLiveSession alloc] initWithAudioConfiguration:[LFLiveAudioConfiguration defaultConfiguration] videoConfiguration:[LFLiveVideoConfiguration defaultConfiguration]];
-//        _session.preView = self.contentView;
-//        _session.delegate = self;
-//    }
-//    return _session;
-//}
 
-//- (UIView *)livePreView {
-//    if (!_livePreView) {
-//        _livePreView = [[UIView alloc] init];
-//        _livePreView.frame = [UIScreen mainScreen].bounds;
-//        [self.view insertSubview:_livePreView aboveSubview:self.contentView];
-//    }
-//    return _livePreView;
-//}
+- (WisView *)videoView {
+    if (!_videoView) {
+        _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, FSAbsoluteLong, FSAbsoluteShort)];
+        [_videoView delegate:self];
+//        [self.contentView addSubview:_videoView];
+//        [self.view insertSubview:_videoView belowSubview:self.contentView];
+        self.contentViewTapGesture.enabled = YES;
+    }
+    return _videoView;
+}
 
 - (void)startLive {
     LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
@@ -107,20 +104,23 @@ static NSInteger const configPort = 80;//端口号
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self beginSearchDevice];
     
     [self requestAccessForAudio];
     [self requestAccessForVideo];
-    [self configCameraSession];
     
+    [self beginSearchDevice];
+    
+//    [self configCameraSession];
+    
+//    在初始化界面的时候都禁用tap手势,避免在创建videoview的时候卡顿,这时候继续点击,会导致点击的布局不对。
+    self.contentViewTapGesture.enabled = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO];
-    
-    
+    [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
     [self updateUI];
 }
 
@@ -130,11 +130,13 @@ static NSInteger const configPort = 80;//端口号
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
 //    [self stopSearchDevice];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
 }
 
 
@@ -163,31 +165,6 @@ static NSInteger const configPort = 80;//端口号
     self.wifiNameLabel.text = wifiName;
 }
 
-- (NSString *)getWifiName {
-    NSString *wifiName = nil;
-    
-    CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();
-    
-    if (!wifiInterfaces) {
-        return nil;
-    }
-    
-    NSArray *interfaces = (__bridge NSArray *)wifiInterfaces;
-    
-    for (NSString *interfaceName in interfaces) {
-        CFDictionaryRef dictRef = CNCopyCurrentNetworkInfo((__bridge CFStringRef)(interfaceName));
-        
-        if (dictRef) {
-            NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
-            wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
-            
-            CFRelease(dictRef);
-        }
-    }
-    CFRelease(wifiInterfaces);
-    return wifiName;
-}
-
 - (void)showTopAndBottomBgView {
     self.hidenTopBarAndBottomBar = YES;
     [self performSelector:@selector(tapContentView:) withObject:nil];
@@ -199,24 +176,36 @@ static NSInteger const configPort = 80;//端口号
     self.liveStopButton.hidden = YES;
 }
 
+- (void)showSearchAndConnectTips {
+    self.tipLabel.text = NSLocalizedString(@"Search And Connect", nil);
+    self.tipLabel.hidden = NO;
+    self.logoCenterImageView.hidden = NO;
+}
 
 - (void)beginSearchDevice {
+    
     [self disableButtons];
+    [self showSearchAndConnectTips];
+
     WEAK(self);
-    [[FSSearchDeviceManager shareInstance] beginSearchDeviceDuration:5.f completionHandle:^(Scanner *resultInfo) {
+    [[FSSearchDeviceManager shareInstance] beginSearchDeviceDuration:increaseSearchDuration completionHandle:^(Scanner *resultInfo) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself scanDeviceOver:resultInfo];
             [weakself enableButtons];
         });
     }];
+    
+    increaseSearchDuration = (increaseSearchDuration < searchDurationMax) ? (increaseSearchDuration + 1) : increaseSearchDuration;//小于最大搜索时间,每次重新搜索的时间间隔+1秒
 }
 
 - (void)scanDeviceOver:(Scanner *)result {
     
     if (result.Device_ID_Arr.count < 1) {
         [self showActionSheet];
+//        [self configCameraSession];
         return;
     }
+
     //使用扫描到的第一个设备
     self.userIP = [result.Device_IP_Arr objectAtIndex:0];
     self.userID = [result.Device_ID_Arr objectAtIndex:0];
@@ -224,11 +213,30 @@ static NSInteger const configPort = 80;//端口号
     NSString *liveViewUrlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", self.userIP,fsLiveViewVideoFormat];
     
     [self getDeviceConfigure];
+    [self.videoView play:liveViewUrlString useTcp:YES];
+    [self.videoView sound:YES];
+    [self.videoView startGetYUVData:YES];
+    [self.videoView startGetAudioData:YES];
+    [self.videoView startGetH264Data:YES];
+    [self.videoView show_view:YES];
     
 }
-
+//当搜索没有结果的时候显示提示菜单
 - (void)showActionSheet {
-    
+    WEAK(self);
+    [self showAlertSheetWithTitle:@"" Message:NSLocalizedString(@"NoResultAlert", nil) action1text:NSLocalizedString(@"Continue Search", nil) action2text:NSLocalizedString(@"Use iPhone Camera", nil) action3text:NSLocalizedString(@"Cancel", nil) action1Handler:^(UIAlertAction * _Nullable action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself beginSearchDevice];
+        });
+    } action2Handler:^(UIAlertAction * _Nullable action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself configCameraSession];
+        });
+    } action3Handler:^(UIAlertAction * _Nullable action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself backButtonDidClicked:nil];
+        });
+    }];
 }
 
 - (void)getDeviceConfigure {
@@ -253,7 +261,6 @@ static NSInteger const configPort = 80;//端口号
             getFaild = YES;
         }
         dispatch_group_leave(getConfigureGroup);
-        
     }];
     
     dispatch_group_enter(getConfigureGroup);
@@ -263,9 +270,7 @@ static NSInteger const configPort = 80;//端口号
         } else {
             getFaild = YES;
         }
-        
         dispatch_group_leave(getConfigureGroup);
-        
     }];
     
     dispatch_group_enter(getConfigureGroup);
@@ -276,14 +281,12 @@ static NSInteger const configPort = 80;//端口号
             getFaild = YES;
         }
         dispatch_group_leave(getConfigureGroup);
-        
     }];
-    
     
     WEAK(self);
     dispatch_group_notify(getConfigureGroup, dispatch_get_main_queue(), ^{
         if (getFaild) {
-//            失败了
+//            失败
         } else {
 //            成功
             weakself.resolution = resolution;
@@ -292,16 +295,13 @@ static NSInteger const configPort = 80;//端口号
             NSLog(@"----------------resolution:%lf",weakself.resolution);
             NSLog(@"----------------quality:%lf",weakself.quality*3000/52);
             NSLog(@"----------------fps:%lf",weakself.fps);
-//            [self getSessionWithRakisrak:YES];
-            [self configCameraSession];
+            [self getSessionWithRakisrak:YES];
         }
-
-        
     });
 }
 
 //RAK设备的直播参数
-- (LFLiveSession *)getSessionWithRakisrak:(BOOL)rak {
+- (void)getSessionWithRakisrak:(BOOL)rak {
     
     /**
      *  构造音频配置器
@@ -377,12 +377,10 @@ static NSInteger const configPort = 80;//端口号
     
     self.session.preView = self.contentView;
     self.session.delegate = self;
-    
-    return self.session;
+
 }
 
 - (void)configCameraSession {
-    dispatch_async(dispatch_get_main_queue(), ^{
         /**
          *  构造音频配置器**/
         LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
@@ -397,6 +395,8 @@ static NSInteger const configPort = 80;//端口号
         _session.running = YES;
         _session.preView = self.contentView;
         
+        self.contentViewTapGesture.enabled = YES;
+        
         //                return _session;
 //        self.livingPreView.hidden = NO;
 //        [self hidenSearchingMessageTips];
@@ -404,7 +404,6 @@ static NSInteger const configPort = 80;//端口号
 //        _play_success = YES;
 //        _liveCameraSource = IphoneBackCamera;
 //        [self enableButtons];
-    });
 }
 
 
@@ -427,6 +426,13 @@ static NSInteger const configPort = 80;//端口号
     self.platformButton.userInteractionEnabled  = enable;
 }
 
+
+- (void)addApplicationActiveNotifications {
+    // app从后台进入前台都会调用这个方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    // 添加检测app进入后台的观察者
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
+}
 
 #pragma mark -- 请求权限
 - (void)requestAccessForVideo {
@@ -508,6 +514,17 @@ static NSInteger const configPort = 80;//端口号
     }
 }
 
+- (void)videoViewStop {
+    [self.videoView sound:NO];
+    [self.videoView stop];
+}
+
+- (void)setStopStreamStatus {
+    
+}
+
+
+
 #pragma mark – Target action methods
 
 #pragma mark - IBActions
@@ -516,7 +533,7 @@ static NSInteger const configPort = 80;//端口号
     
     CGFloat topBgViewHeight = CGRectGetHeight(self.topBgView.frame);
     CGFloat bottomBgViewHeight = CGRectGetHeight(self.bottomBgView.frame);
-    
+
     if(self.hidenTopBarAndBottomBar == YES) {
         topBgViewHeight    = -topBgViewHeight;
         bottomBgViewHeight = -bottomBgViewHeight;
@@ -525,10 +542,9 @@ static NSInteger const configPort = 80;//端口号
     [UIView animateWithDuration:0.2 animations:^{
         weakself.topBgView.originY = weakself.topBgView.originY - topBgViewHeight;
         weakself.bottomBgView.originY = weakself.bottomBgView.originY + bottomBgViewHeight;
-        weakself.liveStopButton.hidden = !self.isLiving;
+        weakself.liveStopButton.hidden = !weakself.isLiving;
     } completion:^(BOOL finished) {}];
-    
-    self.hidenTopBarAndBottomBar = !self.hidenTopBarAndBottomBar;
+    weakself.hidenTopBarAndBottomBar = !weakself.hidenTopBarAndBottomBar;
 }
 
 - (IBAction)backButtonDidClicked:(UIButton *)sender {
@@ -596,6 +612,40 @@ static NSInteger const configPort = 80;//端口号
 }
 
 - (void)liveSession:(LFLiveSession *)session liveStateDidChange:(LFLiveState)state {
+    
+}
+
+#pragma mark - WisViewDelegate
+- (void)state_changed:(int)state {//回调显示正常播放的时状态
+
+}
+
+- (void)video_info:(NSString *)codecName codecLongName:(NSString *)codecLongName {//视频格式
+    
+}
+
+- (void)audio_info:(NSString *)codecName codecLongName:(NSString *)codecLongName sampleRate:(int)sampleRate channels:(int)channels {//音频格式
+    
+}
+- (void)take_photo:(UIImage *)image {//回调获取拍照后的image
+
+}
+
+- (void)take_imageRef:(CGImageRef)imageRef{//回调获取rgb555 le格式的imageRef
+    
+}
+
+- (void)GetYUVData:(int)width :(int)height
+                  :(Byte*)yData :(Byte*)uData :(Byte*)vData
+                  :(int)ySize :(int)uSize :(int)vSize {//回调获取解码后的YUV数据
+    
+}
+
+- (void)GetAudioData:(Byte*)data :(int)size {//回调获取解码后的YUV数据
+    
+}
+
+- (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data {//回调获取H264数据
     
 }
 

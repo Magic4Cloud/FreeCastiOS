@@ -32,8 +32,13 @@
 
 //************************** Live View **************************
 "No wireless LAN connection" = "No wireless LAN connection";
-"On live"                  = "On live";
-"Not live"                 = "Not live";
+"On live"                    = "On live";
+"Not live"                   = "Not live";
+"NoResultAlert"              = "No search for equipment, whether to continue searching or using a mobile phone camera？";
+"Continue Search"            = "Continue Search";
+"Use iPhone Camera"          = "Use iPhone Camera";
+"Cancel"                     = "Cancel";
+"Search And Connect"         = "Connecting...";
 
 
 //************************** Stream **************************
@@ -63,7 +68,7 @@
 //"on_live"                  = "On live";
 //"not_live"                 = "Not live";
 "pause_live"               = "On Pause";
-"video_connecting"="Connecting...";
+//"video_connecting"="Connecting...";
 "save_video"="Save video to album success";
 "save_photo"="Save photo to album success";
 "save_photo_failed"="Save photo to album failed";
