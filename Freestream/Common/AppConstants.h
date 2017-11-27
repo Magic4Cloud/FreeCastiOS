@@ -12,6 +12,9 @@
 #define FSAbsoluteLong    MAX(SCREENWIDTH, SCREENHEIGHT)
 #define FSAbsoluteShort   MIN(SCREENWIDTH, SCREENHEIGHT)
 
+#define FSRATIO    MIN(SCREENWIDTH, SCREENHEIGHT) / 375.0f
+
+
 //weak宏定义
 #define WEAK(object) __weak typeof(object) weak##object = object;
 

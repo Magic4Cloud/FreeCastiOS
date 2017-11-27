@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - LFLiveKit (2.6)
   - LGSideMenuController (2.1.1)
   - M4CoreFoundation (0.2.0):
     - AFNetworking
@@ -21,6 +22,7 @@ PODS:
     - YYCategories
     - YYModel
     - YYWebImage
+  - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.14)
   - YYCache (1.0.4)
   - YYCategories (1.0.4):
@@ -35,13 +37,17 @@ PODS:
     - YYImage
 
 DEPENDENCIES:
+  - LFLiveKit
   - LGSideMenuController
   - M4CoreFoundation
+  - MBProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  LFLiveKit: 2219563721f8aa0f188effc3395a06e2d53b23f2
   LGSideMenuController: ae40c80983ab8b8801c7cef0a6804d43aaa72d45
   M4CoreFoundation: f2c8b6bd00c06df0a0b55c1e083ba95b71cf095b
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: 6642e35b3227a5447b9fd5e17c552c90196c9859
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
@@ -49,6 +55,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYWebImage: 5f7f36aee2ae293f016d418c7d6ba05c4863e928
 
-PODFILE CHECKSUM: ffd33839b5eed64ffc91adf1560660761095feab
+PODFILE CHECKSUM: 4573f3b74f643c7cd6a76387c5178ea283191ae9
 
 COCOAPODS: 1.3.1

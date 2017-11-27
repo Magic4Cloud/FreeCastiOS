@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4320FEAEAC7C75600DD0990A3D0AD3D3'
+               BlueprintIdentifier = 'AA17AEA93E497C30BCFEF81B6F071BF7'
                BlueprintName = 'Pods-Freestream'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-Freestream.a'>

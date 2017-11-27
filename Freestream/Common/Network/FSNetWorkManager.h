@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef void(^completionHandler)(NSDictionary *dic);
+typedef void(^completionHandler)(NSDictionary * _Nullable dic);
+
 @interface FSNetWorkManager : NSObject
 
-+ (void)getRequestUrl:(NSString *)urlString param:(NSDictionary *)paramDic headerDic:(NSDictionary *)headerDic completionHandler:(completionHandler )completionHandler;
++ (void)getRequestUrl:(NSString *_Nonnull)urlString param:(NSDictionary *_Nullable)paramDic headerDic:(NSDictionary *_Nullable)headerDic completionHandler:(void (^ __nonnull)(NSDictionary * _Nullable dic))completionHandler;
 
-+ (void)postWithUrl:(NSString *)urlString param:(NSDictionary *)parameDic headerDic:(NSDictionary *)headerDic complete:(completionHandler )completionHandler;
++ (void)postWithUrl:(nonnull NSString *)urlString param:(nullable NSDictionary *)parameDic headerDic:(nullable NSDictionary *)headerDic completionHandler:(void (^ __nonnull)(NSDictionary * _Nullable dic))completionHandler;
 
 @end

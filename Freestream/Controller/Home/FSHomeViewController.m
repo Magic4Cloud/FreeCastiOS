@@ -33,7 +33,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
     [self setupButtonViews];
     [self addEffectViewForBgImage];
 }
@@ -41,13 +40,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
-//    启用侧滑手势
-    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    //    启用侧滑手势
+    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

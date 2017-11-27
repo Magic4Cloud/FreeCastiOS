@@ -45,6 +45,7 @@
 		9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */; };
 		9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E67D1FC30C1D00386902 /* libstdc++.tbd */; };
 		9789E6861FC30C9700386902 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6851FC30C9700386902 /* libiconv.tbd */; };
+		97E6ADCA1FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6ADC91FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,8 @@
 		9789E6811FC30C5400386902 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		9789E6831FC30C7600386902 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9789E6851FC30C9700386902 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		97E6ADC81FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDeviceConfigureAPIRESTfulService.h; sourceTree = "<group>"; };
+		97E6ADC91FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDeviceConfigureAPIRESTfulService.m; sourceTree = "<group>"; };
 		EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -248,6 +251,8 @@
 				97328EFE1FB98823005FC554 /* FSFaceBookAPIURL.h */,
 				97328EFB1FB98795005FC554 /* FSFaceBookAPIRESTfulService.h */,
 				97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */,
+				97E6ADC81FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.h */,
+				97E6ADC91FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m */,
 			);
 			path = RESTfulAPI;
 			sourceTree = "<group>";
@@ -498,7 +503,7 @@
 				TargetAttributes = {
 					97328E6F1FB32AA3005FC554 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -616,6 +621,7 @@
 				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
 				9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */,
 				974041311FBE8D7800E23E31 /* LGSideMenuController+Rotation.m in Sources */,
+				97E6ADCA1FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m in Sources */,
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
@@ -752,8 +758,9 @@
 			baseConfigurationReference = EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Freestream/Frameworks/FacebookSDK",
@@ -765,10 +772,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Freestream/Libs/LX520View",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7250e918-ce6c-456f-ab5f-6db7e9ccaf31";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_developments_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};
@@ -779,9 +786,9 @@
 			baseConfigurationReference = 20ED9EDB49FC7B22B83D2DE2 /* Pods-Freestream.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YE8AXL3F3;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29MHFKT8DQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Freestream/Frameworks/FacebookSDK",
@@ -793,10 +800,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Freestream/Libs/LX520View",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freestream;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.freecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7003efe1-00b8-4c84-b606-aca2a1a958cb";
-				PROVISIONING_PROFILE_SPECIFIER = freestream_adhoc_profile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s armv8";
 			};

@@ -29,12 +29,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = [[UIViewController alloc]init];
+    
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
     
 //    配置facebook
-    [[FBSDKApplicationDelegate sharedInstance] application:application
-                             didFinishLaunchingWithOptions:launchOptions];
+//    [[FBSDKApplicationDelegate sharedInstance] application:application                       didFinishLaunchingWithOptions:launchOptions];
     [self rootViewController];
     return YES;
 }
@@ -78,14 +77,14 @@
     
     FSHomeViewController *homeVC = [[FSHomeViewController alloc] init];
     
-    FSLeftSideMenuViewController *leftVC = [[FSLeftSideMenuViewController alloc] init];
-    
     FSNavigationViewController *naviVC = [[FSNavigationViewController alloc] initWithRootViewController:homeVC];
+    
+    FSLeftSideMenuViewController *leftVC = [[FSLeftSideMenuViewController alloc] init];
     
     LGSideMenuController *sideMenuController = [[LGSideMenuController alloc] initWithRootViewController:naviVC leftViewController:leftVC rightViewController:nil];
     sideMenuController.swipeGestureArea = LGSideMenuSwipeGestureAreaFull;
-    sideMenuController.leftViewWidth = 200.0 * RATIO;
-    sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleScaleFromBig;
+    sideMenuController.leftViewWidth = 200.0 * FSRATIO;
+    sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleSlideBelow;
    
     self.window.rootViewController = sideMenuController;
     

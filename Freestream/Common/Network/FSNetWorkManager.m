@@ -7,11 +7,11 @@
 //
 
 #import "FSNetWorkManager.h"
+#import "CommonAppHeader.h"
 
 @implementation FSNetWorkManager
 
-+ (void)getRequestUrl:(NSString *)urlString param:(NSDictionary *)paramDic headerDic:(NSDictionary *)headerDic completionHandler:(completionHandler )completionHandler
-{
++ (void)getRequestUrl:(NSString *)urlString param:(NSDictionary *)paramDic headerDic:(NSDictionary *)headerDic completionHandler:(void (^)(NSDictionary * _Nullable))completionHandler {
     
     NSMutableString * url = [NSMutableString stringWithString:urlString];
     [url appendString:@"?"];
@@ -30,9 +30,6 @@
         [request addValue:objString forHTTPHeaderField:keyString];
     }];
     
-    
-    
-    
     NSURLSession * session = [NSURLSession sharedSession];
     
     NSURLSessionDataTask * task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -43,16 +40,13 @@
         }
         NSDictionary * responseData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
         
-        NSLog(@"get;data:%@\nresponseData:%@\nerror:%@",data,responseData,jsonError);
+//        NSLog(@"\n get;\n data:%@\n responseData:%@\n error:%@",data,responseData,jsonError);
         completionHandler(responseData);
     }];
-    NSLog(@"get request :%@",request);
     [task resume];
-    
 }
 
-+ (void)postWithUrl:(NSString *)urlString param:(NSDictionary *)parameDic headerDic:(NSDictionary *)headerDic complete:(completionHandler )completionHandler
-{
++ (void)postWithUrl:(NSString *)urlString param:(NSDictionary *)parameDic headerDic:(NSDictionary *)headerDic completionHandler:(void (^)(NSDictionary * _Nullable))completionHandler{
     
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     request.HTTPMethod = @"POST";
@@ -69,15 +63,13 @@
             NSString * keyString = [key description];
             NSString * valueString = [obj description];
             
-            
-            
             [body appendFormat:@"%@=%@&",keyString,valueString];
         }];
-        [body deleteCharactersInRange:NSMakeRange(body.length-1, 1)];
+        if (parameDic.allKeys.count > 0) {
+            [body deleteCharactersInRange:NSMakeRange(body.length-1, 1)];
+        }
     }
-    
-    
-    
+
     request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
     NSURLSession *session = [NSURLSession sharedSession];
@@ -90,12 +82,11 @@
         
         NSError *jsonError;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
-        NSLog(@"post\nresponseData:%@\nerror:%@",dict,jsonError);
+//        NSLog(@"\n post;\n responseData:%@\n error:%@",dict,jsonError);
         completionHandler(dict);
         
     }];
     
-    NSLog(@"post request :%@",request);
     [sessionDataTask resume];
     
 }

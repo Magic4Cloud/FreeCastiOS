@@ -21,12 +21,15 @@
                 <outlet property="cameraButton" destination="XkT-f9-sIY" id="75O-HX-koT"/>
                 <outlet property="configureButton" destination="Hzu-1R-Sxr" id="va4-kS-ukQ"/>
                 <outlet property="contentView" destination="wUe-W1-zqL" id="mQY-Q6-RMj"/>
+                <outlet property="liveStopButton" destination="NUg-FT-kvI" id="P0C-NU-ot3"/>
+                <outlet property="logoCenterImageView" destination="nDC-GK-rlr" id="WqA-Qd-Gyf"/>
                 <outlet property="platformButton" destination="6y7-d9-phk" id="QRQ-Fn-d2v"/>
                 <outlet property="powerStatusImageView" destination="T53-ZS-RU2" id="q3b-gZ-FCh"/>
                 <outlet property="recordButton" destination="g0y-2M-2ku" id="A3I-ev-gv3"/>
                 <outlet property="recordLabel" destination="vGy-Yj-Oeq" id="yaI-Jd-JQZ"/>
                 <outlet property="statusView" destination="haR-nC-Pwh" id="AyZ-3L-Ojh"/>
                 <outlet property="streamButton" destination="XJm-Dh-hEb" id="W0J-VV-XWJ"/>
+                <outlet property="tipLabel" destination="Q5K-SY-Vcc" id="XUH-G5-2WD"/>
                 <outlet property="topBgView" destination="X9N-xT-yy1" id="bl9-1j-S61"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wifiImageView" destination="1RY-Mn-54C" id="aGb-G2-rfh"/>
@@ -40,8 +43,46 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wUe-W1-zqL" userLabel="ContentView">
                     <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idi-Tw-Poj">
+                            <rect key="frame" x="633" y="68" width="103" height="49"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="push"/>
+                            <connections>
+                                <action selector="pushVC:" destination="-1" eventType="touchUpInside" id="7qD-7R-gwM"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="nDC-GK-rlr" userLabel="logoCenterImageView">
+                            <rect key="frame" x="338" y="157" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="SYD-QI-EtZ"/>
+                                <constraint firstAttribute="height" constant="60" id="rrk-hT-rrY"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO VIDEO,PLEASE CHECK VIDEO SOURCE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5K-SY-Vcc" userLabel="TipsLabel">
+                            <rect key="frame" x="203" y="227" width="330" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NUg-FT-kvI" userLabel="LiveStopButton">
+                            <rect key="frame" x="343" y="182" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="IbV-LO-f9W"/>
+                                <constraint firstAttribute="width" constant="50" id="zLg-IN-0SY"/>
+                            </constraints>
+                            <state key="normal" image="pause_live_nor"/>
+                        </button>
+                    </subviews>
                     <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstItem="NUg-FT-kvI" firstAttribute="centerY" secondItem="wUe-W1-zqL" secondAttribute="centerY" id="7u9-Dq-h2q"/>
+                        <constraint firstItem="NUg-FT-kvI" firstAttribute="centerX" secondItem="wUe-W1-zqL" secondAttribute="centerX" id="G1j-pu-J1b"/>
+                        <constraint firstItem="nDC-GK-rlr" firstAttribute="centerY" secondItem="wUe-W1-zqL" secondAttribute="centerY" constant="-20" id="NY1-1G-g9N"/>
+                        <constraint firstItem="nDC-GK-rlr" firstAttribute="centerX" secondItem="wUe-W1-zqL" secondAttribute="centerX" id="wJX-5t-pyo"/>
+                        <constraint firstItem="Q5K-SY-Vcc" firstAttribute="top" secondItem="nDC-GK-rlr" secondAttribute="bottom" constant="10" id="zSc-aI-HMG"/>
+                    </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="yB6-Kf-K8k" appends="YES" id="A2C-aT-M8f"/>
                     </connections>
@@ -223,25 +264,6 @@
                         <constraint firstItem="WJb-9d-SqQ" firstAttribute="centerX" secondItem="ZTg-ee-Cdw" secondAttribute="centerX" id="bWa-l1-792"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9fb-Fy-kDp">
-                    <rect key="frame" x="342" y="177" width="52" height="60"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQU-0M-10d">
-                            <rect key="frame" x="0.0" y="0.0" width="52" height="30"/>
-                            <state key="normal" title="dismiss"/>
-                            <connections>
-                                <action selector="dismiss:" destination="-1" eventType="touchUpInside" id="LxH-uj-gV2"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idi-Tw-Poj">
-                            <rect key="frame" x="0.0" y="30" width="52" height="30"/>
-                            <state key="normal" title="push"/>
-                            <connections>
-                                <action selector="pushVC:" destination="-1" eventType="touchUpInside" id="7qD-7R-gwM"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                </stackView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REC 00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGy-Yj-Oeq" userLabel="RecordLabel">
                     <rect key="frame" x="646.33333333333337" y="47" width="69.666666666666629" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -256,8 +278,9 @@
                 <constraint firstAttribute="trailing" secondItem="X9N-xT-yy1" secondAttribute="trailing" id="CoM-rY-8tk"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="ZTg-ee-Cdw" secondAttribute="bottom" id="DGN-HR-ceG"/>
                 <constraint firstItem="wUe-W1-zqL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JwJ-Eh-KoR"/>
-                <constraint firstItem="9fb-Fy-kDp" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="P1v-ok-FLg"/>
                 <constraint firstItem="X9N-xT-yy1" firstAttribute="leading" secondItem="ub8-Lm-lP1" secondAttribute="leading" id="QfO-oe-CD0"/>
+                <constraint firstItem="Q5K-SY-Vcc" firstAttribute="leading" secondItem="WJb-9d-SqQ" secondAttribute="leading" id="SvP-xQ-BCj"/>
+                <constraint firstItem="Q5K-SY-Vcc" firstAttribute="trailing" secondItem="WJb-9d-SqQ" secondAttribute="trailing" id="UNO-yL-sl4"/>
                 <constraint firstItem="X9N-xT-yy1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UuB-tC-hLe"/>
                 <constraint firstItem="QWa-TD-0b0" firstAttribute="centerY" secondItem="ub8-Lm-lP1" secondAttribute="centerY" constant="-8" id="Vyx-Id-Thy"/>
                 <constraint firstItem="vGy-Yj-Oeq" firstAttribute="bottom" secondItem="ub8-Lm-lP1" secondAttribute="bottom" id="WE2-s7-Vbf"/>
@@ -266,14 +289,13 @@
                 <constraint firstItem="1RY-Mn-54C" firstAttribute="centerY" secondItem="ub8-Lm-lP1" secondAttribute="centerY" id="ZOG-6y-Oy7"/>
                 <constraint firstItem="X9N-xT-yy1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="drG-ba-VV1"/>
                 <constraint firstItem="ZTg-ee-Cdw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="esI-C8-XOq"/>
-                <constraint firstItem="9fb-Fy-kDp" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fEY-PI-OaQ"/>
                 <constraint firstItem="X9N-xT-yy1" firstAttribute="bottom" secondItem="ub8-Lm-lP1" secondAttribute="bottom" id="iDY-AZ-sIb"/>
                 <constraint firstItem="wUe-W1-zqL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lnJ-Oj-j0I"/>
                 <constraint firstAttribute="trailing" secondItem="wUe-W1-zqL" secondAttribute="trailing" id="snD-3y-VCW"/>
                 <constraint firstAttribute="trailing" secondItem="ZTg-ee-Cdw" secondAttribute="trailing" id="yOk-F1-zLT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="-49" y="4"/>
+            <point key="canvasLocation" x="-3" y="15"/>
         </view>
         <tapGestureRecognizer id="yB6-Kf-K8k">
             <connections>
@@ -296,7 +318,9 @@
         <image name="icon_stream_normal_nor" width="50" height="50"/>
         <image name="icon_stream_normal_pre" width="50" height="50"/>
         <image name="live_stream_normal" width="54" height="51"/>
+        <image name="logo" width="70" height="70"/>
         <image name="nav_btn_back_nor" width="23" height="23"/>
+        <image name="pause_live_nor" width="44" height="44"/>
         <image name="power_01" width="30" height="14"/>
         <image name="wifi" width="60" height="60"/>
     </resources>

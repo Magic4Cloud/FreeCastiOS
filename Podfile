@@ -12,5 +12,8 @@ target 'Freestream' do
   # ignore warnings from a specific pod
   pod 'M4CoreFoundation'
   pod 'LGSideMenuController'
+  pod 'MBProgressHUD'
+  pod 'LFLiveKit'
+  
   
 end

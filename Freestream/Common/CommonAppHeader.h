@@ -18,6 +18,7 @@
 #import <M4CoreFoundation/M4CoreFoundation.h>
 #import <LGSideMenuController/LGSideMenuController.h>
 #import <LGSideMenuController/UIViewController+LGSideMenuController.h>
+#import <LFLiveKit/LFLiveKit.h>
 
 //SDK
 #import <FBSDKCoreKit/FBSDKCoreKit.h>

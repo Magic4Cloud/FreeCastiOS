@@ -32,10 +32,10 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rX3-xv-22d">
-                    <rect key="frame" x="167.5" y="47.5" width="40" height="40"/>
+                    <rect key="frame" x="147.5" y="27.5" width="80" height="80"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Kpk-ZM-afu"/>
-                        <constraint firstAttribute="width" constant="40" id="pbm-ZT-895"/>
+                        <constraint firstAttribute="height" constant="80" id="Kpk-ZM-afu"/>
+                        <constraint firstAttribute="width" constant="80" id="pbm-ZT-895"/>
                     </constraints>
                 </imageView>
             </subviews>

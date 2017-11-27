@@ -23,13 +23,13 @@
 
     self.layer.borderColor  = [UIColor FSMainTextNormalColor].CGColor;
     self.layer.borderWidth  = 2.f;
-    self.layer.cornerRadius = 10 * RATIO;
+    self.layer.cornerRadius = 10 * FSRATIO;
     self.layer.masksToBounds = YES;
 }
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    self.imageView.size = CGSizeMake(80 * RATIO, 80 * RATIO);
+    self.imageView.size = CGSizeMake(80 * FSRATIO, 80 * FSRATIO);
     self.imageView.center = self.button.center;
 }
 
@@ -40,7 +40,7 @@
 }
 - (void)layoutIfNeeded {
     [super layoutIfNeeded];
-    self.imageView.size = CGSizeMake(80 * RATIO, 80 * RATIO);
+    self.imageView.size = CGSizeMake(80 * FSRATIO, 80 * FSRATIO);
     self.imageView.center = self.button.center;
     
 }

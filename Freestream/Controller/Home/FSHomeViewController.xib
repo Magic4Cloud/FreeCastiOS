@@ -107,7 +107,6 @@
                 <constraint firstItem="Ykj-9n-pcL" firstAttribute="leading" secondItem="bYO-2s-dWD" secondAttribute="leading" id="Agf-5V-FTr"/>
                 <constraint firstItem="7rc-6e-vdA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BkM-Y8-Y4Y"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="qTK-jE-6Uv" secondAttribute="trailing" id="Oei-ko-FlD"/>
-                <constraint firstItem="Ykj-9n-pcL" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="30" id="Pze-qf-AAb"/>
                 <constraint firstItem="Ykj-9n-pcL" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="30" id="TmN-VM-Cml"/>
                 <constraint firstItem="qTK-jE-6Uv" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="WlO-HS-ZPO"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="7rc-6e-vdA" secondAttribute="trailing" id="YJO-2c-JQL"/>
@@ -116,6 +115,7 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Ykj-9n-pcL" secondAttribute="bottom" constant="60" id="hIA-f0-u8g"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="qTK-jE-6Uv" secondAttribute="bottom" id="i6f-Rq-Uu8"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Ykj-9n-pcL" secondAttribute="trailing" constant="30" id="wXI-22-vRb"/>
+                <constraint firstItem="Ykj-9n-pcL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="yxs-yI-GUZ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="33" y="53"/>

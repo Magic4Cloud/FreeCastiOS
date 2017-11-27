@@ -35,7 +35,7 @@
 }
 
 + (CGFloat) heightForLeftSideMenu {
-    return 50 * RATIO;
+    return 50 * FSRATIO;
 }
 
 - (IBAction)buttonTouchUpInside:(UIButton *)sender {
