@@ -11,8 +11,13 @@
 @implementation CoreStore (App)
 /////////////////////////////get///////////////////////////////////
 
-- (NSString *)currentUseDeviceID {
-    return [self stringDataForKey:APP_CURRENT_DEVICE_ID];
+
+- (NSString *)cacheUseDeviceIP {
+    return [self stringDataForKey:APP_CACHE_USER_DEVICE_IP];
+}
+
+- (NSString *)cacheUseDeviceID {
+    return [self stringDataForKey:APP_CACHE_USER_DEVICE_ID];
 }
 
 - (FSAudioInputMode)audioInput {
@@ -45,8 +50,12 @@
 
 /////////////////////////////set///////////////////////////////////
 
-- (void)setCurrentUseDeviceID:(NSString *)currentUseDeviceID {
-    [self setStringData:currentUseDeviceID forKey:APP_CURRENT_DEVICE_ID];
+- (void)setCacheUseDeviceIP:(NSString *)cacheUseDeviceIP {
+    [self setStringData:cacheUseDeviceIP forKey:APP_CACHE_USER_DEVICE_IP];
+}
+
+- (void)setCacheUseDeviceID:(NSString *)cacheUseDeviceID{
+    [self setStringData:cacheUseDeviceID forKey:APP_CACHE_USER_DEVICE_ID];
 }
 
 - (void)setAudioInput:(FSAudioInputMode)audioInput {

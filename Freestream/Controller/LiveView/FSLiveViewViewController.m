@@ -63,7 +63,7 @@ NSInteger increaseSearchDuration = 5;
 @property (nonatomic,assign) BOOL             hidenTopBarAndBottomBar;//隐藏上面的条和下面的条
 @property (nonatomic,assign) BOOL             isLiving;//是否正在直播中
 
-@property (nonatomic,  copy) NSString         *userIP;
+@property (nonatomic,  copy) NSString         *userConnectingDeviceIP;//用户正在连接的设备的IP
 @property (nonatomic,  copy) NSString         *userID;
 @property (nonatomic,assign) CGFloat          resolution;
 @property (nonatomic,assign) CGFloat          quality;
@@ -82,15 +82,14 @@ NSInteger increaseSearchDuration = 5;
     if (!_videoView) {
         _videoView = [[WisView alloc] initWithFrame:CGRectMake(0, 0, FSAbsoluteLong, FSAbsoluteShort)];
         [_videoView delegate:self];
-//        [self.contentView addSubview:_videoView];
-//        [self.view insertSubview:_videoView belowSubview:self.contentView];
+        [self.view insertSubview:_videoView belowSubview:self.contentView];
         self.contentViewTapGesture.enabled = YES;
     }
     return _videoView;
 }
 
 - (void)startLive {
-    LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
+    LFLiveStreamInfo *streamInfo = [[LFLiveStreamInfo alloc] init];
     streamInfo.url = @"your server rtmp url";
     [self.session startLive:streamInfo];
 }
@@ -105,15 +104,17 @@ NSInteger increaseSearchDuration = 5;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self requestAccessForAudio];
-    [self requestAccessForVideo];
+    [self userInterfaceSettings];
     
-    [self beginSearchDevice];
-    
-//    [self configCameraSession];
+//    NSLog(@"-------wifiSsid---------%@",[self getWifiSSID]);
     
 //    在初始化界面的时候都禁用tap手势,避免在创建videoview的时候卡顿,这时候继续点击,会导致点击的布局不对。
     self.contentViewTapGesture.enabled = NO;
+    
+//    LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
+//    streamInfo.url = @"rtmp://live-api-a.facebook.com:80/rtmp/2006270569650246_0?ds=1&a=ATjuPr7v49Oq6-Xs";
+//    [self.session startLive:streamInfo];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,6 +123,7 @@ NSInteger increaseSearchDuration = 5;
     [self.navigationController setNavigationBarHidden:NO];
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
     [self updateUI];
+    [self connectFreestreamDevice];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -150,12 +152,25 @@ NSInteger increaseSearchDuration = 5;
 
 #pragma mark – Private methods
 
+- (void)userInterfaceSettings {
+    [self hidenCenterViews];
+}
+
+- (void)connectFreestreamDevice {
+    
+    if ([CoreStore sharedStore].cacheUseDeviceIP.length > 0) {
+        self.userConnectingDeviceIP = [CoreStore sharedStore].cacheUseDeviceIP;
+        [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
+    } else {
+      [self beginSearchDevice];
+    }
+}
+
 - (void)updateUI {
     [self updateWifiName];
     [self showTopAndBottomBgView];
-    [self hidenCenterViews];
-    
 }
+
 
 - (void)updateWifiName {
     NSString *wifiName = [self getWifiName];
@@ -195,24 +210,31 @@ NSInteger increaseSearchDuration = 5;
         });
     }];
     
-    increaseSearchDuration = (increaseSearchDuration < searchDurationMax) ? (increaseSearchDuration + 1) : increaseSearchDuration;//小于最大搜索时间,每次重新搜索的时间间隔+1秒
+    //小于最大搜索时间,每次重新搜索的时间间隔+1秒
+    increaseSearchDuration = (increaseSearchDuration < searchDurationMax) ? (increaseSearchDuration + 1) : increaseSearchDuration;
 }
 
 - (void)scanDeviceOver:(Scanner *)result {
     
-    if (result.Device_ID_Arr.count < 1) {
+    if (result.Device_IP_Arr.count < 1) {
         [self showActionSheet];
-//        [self configCameraSession];
         return;
     }
 
-    //使用扫描到的第一个设备
-    self.userIP = [result.Device_IP_Arr objectAtIndex:0];
-    self.userID = [result.Device_ID_Arr objectAtIndex:0];
+//    使用扫描到的第一个设备
+    self.userConnectingDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
+//    self.userID = [result.Device_ID_Arr objectAtIndex:0];
     
-    NSString *liveViewUrlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", self.userIP,fsLiveViewVideoFormat];
+//    缓存这个IP
+    [CoreStore sharedStore].cacheUseDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
+
+    [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
+}
+
+//使用DeviceIP配置Url,接收Freestream设备传回的画面和音频
+- (void)startReceiveVideoViewWithDeviceIP:(NSString *)connectingDeviceIP {
+    NSString *liveViewUrlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", connectingDeviceIP,fsLiveViewVideoFormat];
     
-    [self getDeviceConfigure];
     [self.videoView play:liveViewUrlString useTcp:YES];
     [self.videoView sound:YES];
     [self.videoView startGetYUVData:YES];
@@ -220,7 +242,13 @@ NSInteger increaseSearchDuration = 5;
     [self.videoView startGetH264Data:YES];
     [self.videoView show_view:YES];
     
+    [self hidenCenterViews];
+    
+    
+    [self getDeviceConfigure];
 }
+
+
 //当搜索没有结果的时候显示提示菜单
 - (void)showActionSheet {
     WEAK(self);
@@ -241,11 +269,11 @@ NSInteger increaseSearchDuration = 5;
 
 - (void)getDeviceConfigure {
     
-    NSString *resolutionUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerResolutionWithConfigureIp:self.userIP configurePort:configPort];
+    NSString *resolutionUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerResolutionWithConfigureIp:self.userConnectingDeviceIP configurePort:configPort];
     
-    NSString *qualityUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerQualityWithConfigureIp:self.userIP configurePort:configPort];
+    NSString *qualityUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerQualityWithConfigureIp:self.userConnectingDeviceIP configurePort:configPort];
     
-    NSString *fpsUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerFPSWithConfigureIp:self.userIP configurePort:configPort];
+    NSString *fpsUrl = [FSDeviceConfigureAPIRESTfulService getDeviceConfiguerFPSWithConfigureIp:self.userConnectingDeviceIP configurePort:configPort];
     
     __block CGFloat resolution;
     __block CGFloat quality;
@@ -295,7 +323,7 @@ NSInteger increaseSearchDuration = 5;
             NSLog(@"----------------resolution:%lf",weakself.resolution);
             NSLog(@"----------------quality:%lf",weakself.quality*3000/52);
             NSLog(@"----------------fps:%lf",weakself.fps);
-            [self getSessionWithRakisrak:YES];
+            [weakself getSessionWithRakisrak:YES];
         }
     });
 }
@@ -324,7 +352,7 @@ NSInteger increaseSearchDuration = 5;
     NSInteger minbitrate;
     NSInteger videoFrameRate;//设备的fps
     //设备的分辨率
-    if ((int)_resolution  == 3)
+    if ((int)self.resolution  == 3)
     {
         videoConfiguration.sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
@@ -333,7 +361,7 @@ NSInteger increaseSearchDuration = 5;
         minbitrate      = 200*1024;
         maxbitRate      = 1000*1024;
         videoFrameRate  = 30;
-    } else if ((int)_resolution == 2) {
+    } else if ((int)self.resolution == 2) {
         videoConfiguration.sessionPreset = LFCaptureSessionPreset720x1280;
         videosizeWidth  = 720;
         videosizeHeight = 1280;
@@ -369,10 +397,12 @@ NSInteger increaseSearchDuration = 5;
         videoConfiguration.videoSize = CGSizeMake(videosizeWidth, videosizeHeight);  //视频大小
     }
     
-    
     //利用两设备配置 来构造一个直播会话
 //    _session.isRAK=rak;
 //    _session.isIphoneAudio = _isIphoneAudio;
+    
+    [self requestAccessForAudio];
+    
     self.session.running = YES;
     
     self.session.preView = self.contentView;
@@ -381,6 +411,8 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (void)configCameraSession {
+    
+    [self requestAccessForVideo];
         /**
          *  构造音频配置器**/
         LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
@@ -548,6 +580,17 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (IBAction)backButtonDidClicked:(UIButton *)sender {
+    [self videoViewStop];
+    
+    [self.videoView removeFromSuperview];
+    [self.topBgView removeFromSuperview];
+    [self.bottomBgView removeFromSuperview];
+    [self.recordLabel removeFromSuperview];
+    [self.logoCenterImageView removeFromSuperview];
+    [self.tipLabel removeFromSuperview];
+    [self.liveStopButton removeFromSuperview];
+    [sender removeFromSuperview];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -608,11 +651,35 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (void)liveSession:(LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode {
-    
+//    LFLiveSocketError_PreView = 201,              ///< 预览失败
+//    LFLiveSocketError_GetStreamInfo = 202,        ///< 获取流媒体信息失败
+//    LFLiveSocketError_ConnectSocket = 203,        ///< 连接socket失败
+//    LFLiveSocketError_Verification = 204,         ///< 验证服务器失败
+//    LFLiveSocketError_ReConnectTimeOut = 205      ///< 重新连接服务器超时
+    NSLog(@"----------------%ld",errorCode);
 }
 
 - (void)liveSession:(LFLiveSession *)session liveStateDidChange:(LFLiveState)state {
-    
+    switch (state) {
+        case LFLiveReady:
+            NSLog(@"----------------ready");
+            break;
+        case LFLivePending:
+            NSLog(@"----------------pending...");
+            break;
+        case LFLiveStart:
+            NSLog(@"----------------livestart");
+            break;
+        case LFLiveRefresh:
+            NSLog(@"----------------refresh!!!");
+            break;
+        case LFLiveStop:
+            NSLog(@"----------------stop!");
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - WisViewDelegate
