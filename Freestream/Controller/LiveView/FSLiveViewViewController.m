@@ -26,7 +26,7 @@
 static NSString *const fsLiveViewVideoFormat = @"h264";//视频格式
 static NSInteger const configPort = 80;//端口号
 static NSInteger const searchDurationMax = 8;
-NSInteger increaseSearchDuration = 5;
+
 
 @interface FSLiveViewViewController ()<LFLiveSessionDelegate,WisViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *contentView;
@@ -62,6 +62,9 @@ NSInteger increaseSearchDuration = 5;
 
 @property (nonatomic,assign) BOOL             hidenTopBarAndBottomBar;//隐藏上面的条和下面的条
 @property (nonatomic,assign) BOOL             isLiving;//是否正在直播中
+@property (nonatomic,assign) BOOL             liveViewIsPlaying;//liveView是否在播放
+@property (nonatomic,assign) BOOL             isExit;//是否已退出
+@property (nonatomic,assign) NSInteger        increaseSearchDuration;//搜索时间(随着重搜次数增长1秒)
 
 @property (nonatomic,  copy) NSString         *userConnectingDeviceIP;//用户正在连接的设备的IP
 @property (nonatomic,  copy) NSString         *userID;
@@ -84,6 +87,7 @@ NSInteger increaseSearchDuration = 5;
         [_videoView delegate:self];
         [self.view insertSubview:_videoView belowSubview:self.contentView];
         self.contentViewTapGesture.enabled = YES;
+        [_videoView set_log_level:2];
     }
     return _videoView;
 }
@@ -105,6 +109,7 @@ NSInteger increaseSearchDuration = 5;
     [super viewDidLoad];
     
     [self userInterfaceSettings];
+    [self setDefaultValue];
     
 //    NSLog(@"-------wifiSsid---------%@",[self getWifiSSID]);
     
@@ -156,14 +161,17 @@ NSInteger increaseSearchDuration = 5;
     [self hidenCenterViews];
 }
 
+- (void)setDefaultValue {
+    self.increaseSearchDuration = 5;
+}
+
 - (void)connectFreestreamDevice {
-    
+    [self showSearchAndConnectTips];
     if ([CoreStore sharedStore].cacheUseDeviceIP.length > 0) {
         self.userConnectingDeviceIP = [CoreStore sharedStore].cacheUseDeviceIP;
         [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
-    } else {
-      [self beginSearchDevice];
     }
+        [self beginSearchDevice];
 }
 
 - (void)updateUI {
@@ -197,13 +205,21 @@ NSInteger increaseSearchDuration = 5;
     self.logoCenterImageView.hidden = NO;
 }
 
+- (void)hidenSearchAndConnectTips {
+    self.tipLabel.hidden = YES;
+    self.logoCenterImageView.hidden = YES;
+}
+
 - (void)beginSearchDevice {
-    
-    [self disableButtons];
+    if (self.isExit) {
+        return;
+    }
     [self showSearchAndConnectTips];
+    [self disableButtons];
 
     WEAK(self);
-    [[FSSearchDeviceManager shareInstance] beginSearchDeviceDuration:increaseSearchDuration completionHandle:^(Scanner *resultInfo) {
+    
+    [[FSSearchDeviceManager shareInstance] beginSearchDeviceDuration:self.increaseSearchDuration completionHandle:^(Scanner *resultInfo) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself scanDeviceOver:resultInfo];
             [weakself enableButtons];
@@ -211,10 +227,14 @@ NSInteger increaseSearchDuration = 5;
     }];
     
     //小于最大搜索时间,每次重新搜索的时间间隔+1秒
-    increaseSearchDuration = (increaseSearchDuration < searchDurationMax) ? (increaseSearchDuration + 1) : increaseSearchDuration;
+    self.increaseSearchDuration = (self.increaseSearchDuration < searchDurationMax) ? (self.increaseSearchDuration + 1) : self.increaseSearchDuration;
 }
 
 - (void)scanDeviceOver:(Scanner *)result {
+
+    if (self.isExit) {
+        return;
+    }
     
     if (result.Device_IP_Arr.count < 1) {
         [self showActionSheet];
@@ -225,14 +245,23 @@ NSInteger increaseSearchDuration = 5;
     self.userConnectingDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
 //    self.userID = [result.Device_ID_Arr objectAtIndex:0];
     
-//    缓存这个IP
-    [CoreStore sharedStore].cacheUseDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
+    if (![self.userConnectingDeviceIP isEqualToString:[CoreStore sharedStore].cacheUseDeviceIP]) {
+        //    缓存这个新的IP
+        [CoreStore sharedStore].cacheUseDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
+        //    接收videoView使用新的ip
+        [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
+    }
+    
 
-    [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
+
 }
 
 //使用DeviceIP配置Url,接收Freestream设备传回的画面和音频
 - (void)startReceiveVideoViewWithDeviceIP:(NSString *)connectingDeviceIP {
+    if (self.isExit) {
+        return;
+    }
+    
     NSString *liveViewUrlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", connectingDeviceIP,fsLiveViewVideoFormat];
     
     [self.videoView play:liveViewUrlString useTcp:YES];
@@ -242,15 +271,13 @@ NSInteger increaseSearchDuration = 5;
     [self.videoView startGetH264Data:YES];
     [self.videoView show_view:YES];
     
-    [self hidenCenterViews];
-    
-    
     [self getDeviceConfigure];
 }
 
 
 //当搜索没有结果的时候显示提示菜单
 - (void)showActionSheet {
+    
     WEAK(self);
     [self showAlertSheetWithTitle:@"" Message:NSLocalizedString(@"NoResultAlert", nil) action1text:NSLocalizedString(@"Continue Search", nil) action2text:NSLocalizedString(@"Use iPhone Camera", nil) action3text:NSLocalizedString(@"Cancel", nil) action1Handler:^(UIAlertAction * _Nullable action) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -413,21 +440,22 @@ NSInteger increaseSearchDuration = 5;
 - (void)configCameraSession {
     
     [self requestAccessForVideo];
-        /**
-         *  构造音频配置器**/
-        LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
-        
-        LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
-        
-        //利用两设备配置 来构造一个直播会话
-        _session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
-        _session.captureDevicePosition = AVCaptureDevicePositionBack;
-        _session.delegate  = self;
-//        _session.isRAK = NO;
-        _session.running = YES;
-        _session.preView = self.contentView;
-        
-        self.contentViewTapGesture.enabled = YES;
+    /**
+     *  构造音频配置器
+     */
+    LFLiveAudioConfiguration *audioConfiguration = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_High];
+    
+    LFLiveVideoConfiguration * videoConfiguration = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1 outputImageOrientation:UIInterfaceOrientationLandscapeRight];
+    
+    //利用两设备配置 来构造一个直播会话
+    _session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfiguration videoConfiguration:videoConfiguration];
+    _session.captureDevicePosition = AVCaptureDevicePositionBack;
+    _session.delegate  = self;
+//    _session.isRAK = NO;
+    _session.running = YES;
+    _session.preView = self.contentView;
+    
+    self.contentViewTapGesture.enabled = YES;
         
         //                return _session;
 //        self.livingPreView.hidden = NO;
@@ -448,7 +476,7 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (void)buttonsEnable:(BOOL)enable {
-    self.backButton.userInteractionEnabled      = enable;
+//    self.backButton.userInteractionEnabled      = enable;
     
     self.cameraButton.userInteractionEnabled    = enable;
     self.recordButton.userInteractionEnabled    = enable;
@@ -477,6 +505,7 @@ NSInteger increaseSearchDuration = 5;
                 if (granted) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakself.session setRunning:YES];
+                        [weakself hidenSearchAndConnectTips];
                     });
                 }
             }];
@@ -486,6 +515,7 @@ NSInteger increaseSearchDuration = 5;
             // 已经开启授权，可继续
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself.session setRunning:YES];
+                [weakself hidenSearchAndConnectTips];
             });
             break;
         }
@@ -580,8 +610,13 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (IBAction)backButtonDidClicked:(UIButton *)sender {
-    [self videoViewStop];
+    if (self.liveViewIsPlaying) {
+        [self videoViewStop];
+    }
     
+//    [[FSSearchDeviceManager shareInstance] stopSearchDevice];
+    self.isExit = YES;
+
     [self.videoView removeFromSuperview];
     [self.topBgView removeFromSuperview];
     [self.bottomBgView removeFromSuperview];
@@ -589,7 +624,6 @@ NSInteger increaseSearchDuration = 5;
     [self.logoCenterImageView removeFromSuperview];
     [self.tipLabel removeFromSuperview];
     [self.liveStopButton removeFromSuperview];
-    [sender removeFromSuperview];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -684,7 +718,50 @@ NSInteger increaseSearchDuration = 5;
 
 #pragma mark - WisViewDelegate
 - (void)state_changed:(int)state {//回调显示正常播放的时状态
-
+    NSLog(@"WisviewDelegate state_changed state = %d", state);
+    switch (state) {
+        case 0: //STATE_IDLE
+        {
+//            _play_success = NO;
+            break;
+        }
+        case 1: //STATE_PREPARING
+        {
+//            _play_success = NO;
+            break;
+        }
+        case 2: //STATE_PLAYING
+        {
+//            _play_success = YES;
+            self.liveViewIsPlaying = YES;
+//            if (_isLiveView) {
+//                [self enableControl];
+                dispatch_async(dispatch_get_main_queue(),^ {
+//                    [self noHiddenStatus];
+//                    [self hidenSearchingMessageTips];
+                    [self hidenSearchAndConnectTips];
+                });
+//            }
+            break;
+        }
+        case 3: //STATE_STOPPED
+        {
+//            _play_success = NO;
+            break;
+        }
+        case 4: //STATE_OPEN_URL_FAILED
+        {
+//            _play_success = NO;
+            NSLog(@"STATE_OPEN_URL_FAILED");
+            dispatch_async(dispatch_get_main_queue(),^ {
+//                [self replayVideoView];
+            });
+            
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)video_info:(NSString *)codecName codecLongName:(NSString *)codecLongName {//视频格式
@@ -709,7 +786,7 @@ NSInteger increaseSearchDuration = 5;
 }
 
 - (void)GetAudioData:(Byte*)data :(int)size {//回调获取解码后的YUV数据
-    
+    NSLog(@"------------size = ----%d",size);
 }
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data {//回调获取H264数据

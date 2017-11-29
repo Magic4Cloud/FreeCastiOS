@@ -12,7 +12,7 @@ static FSSearchDeviceManager * _sharedSingleton = nil;
 static BOOL isFirstAccess = YES;
 
 @interface FSSearchDeviceManager()
-@property (nonatomic, assign) BOOL  isSearching;
+
 @property (nonatomic, strong) Scanner *scanner;
 @property (nonatomic, copy)   searchResultBlock completionBlock;
 
@@ -79,22 +79,31 @@ static BOOL isFirstAccess = YES;
 }
 
 - (void)beginSearchDeviceDuration:(NSTimeInterval)duration completionHandle:(searchResultBlock)completionHandle {
+    NSLog(@"想要搜索-----————————————-----");
     if (self.isSearching) {
         return;
     }
+    NSLog(@"--------_____开始搜索--------");
     self.completionBlock = completionHandle;
     self.isSearching = YES;
-    NSLog(@"----------------searchDuration=%lf",duration);
+    NSLog(@"--------searchDuration=%lf",duration);
     WEAK(self);
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        Scanner *resultInfo = [self.scanner ScanDeviceWithTime:duration];
-//        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+        __block Scanner *resultInfo = [self.scanner ScanDeviceWithTime:duration];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"----------------结束搜索---+++");
             weakself.isSearching = NO;
-            weakself.completionBlock(resultInfo);
-//        });
+            
+            if (weakself.completionBlock) {
+                weakself.completionBlock(resultInfo);
+            }
+        });
     });
-    
 }
 
+- (void)stopSearchDevice {
+    
+}
 
 @end

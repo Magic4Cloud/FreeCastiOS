@@ -11,6 +11,7 @@
 @implementation FSBaseViewController (WifiInfo)
 
 - (NSString *)getWifiName {
+    
     NSString *wifiName = nil;
     
     CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();

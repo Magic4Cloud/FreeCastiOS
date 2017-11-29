@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Freestream/Controller/LiveView/FSLiveViewViewController.m"
-            timestampString = "533545527.533429"
+            timestampString = "533555944.296972"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
-            landmarkName = "-connectFreestreamDevice"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
+            landmarkName = "-videoViewStop"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,54 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Freestream/Controller/LiveView/FSLiveViewViewController.m"
-            timestampString = "533545527.533829"
+            timestampString = "533555944.297649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "-connectFreestreamDevice"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
+            landmarkName = "-videoViewStop"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Freestream/Controller/LiveView/FSLiveViewViewController.m"
+            timestampString = "533555944.298001"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "-scanDeviceOver:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "Yes"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Freestream/Common/SearchManager/FSSearchDeviceManager.m"
+            timestampString = "533555944.298321"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "-beginSearchDeviceDuration:completionHandle:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

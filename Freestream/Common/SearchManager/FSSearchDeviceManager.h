@@ -15,5 +15,10 @@ typedef void(^searchResultBlock)(Scanner * resultInfo);
 
 + (instancetype)shareInstance;
 
+@property (nonatomic, assign) BOOL  isSearching;
+@property (nonatomic, assign) BOOL  isExit;//退出搜索
+
 - (void)beginSearchDeviceDuration:(NSTimeInterval)duration completionHandle:(searchResultBlock)completionHandle;
+
+- (void)stopSearchDevice;
 @end
