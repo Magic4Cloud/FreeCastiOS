@@ -26,8 +26,8 @@
 #import <net/if.h>
 
 typedef NS_ENUM(NSInteger, FSLiveViewSource) {
-    FSLiveViewSourceFreestreamDevice,
-    FSLiveViewSourceBackCamera,
+    FSLiveViewSourceFreestreamDevice,//通过freestream设备获取的视频源
+    FSLiveViewSourceBackCamera,//通过手机自带后置摄像获取的视频源
 };
 
 #define FSLiveViewVideoType @"h264"
@@ -64,27 +64,29 @@ static NSInteger const searchDurationMax = 8;
 @property (weak, nonatomic) IBOutlet UIButton *configureButton;
 @property (weak, nonatomic) IBOutlet UIButton *platformButton;
 
-@property (nonatomic,strong) UITapGestureRecognizer *contentViewTapGesture;
 
-@property (nonatomic,strong) UITapGestureRecognizer *videoViewTapGesture;
+
 @property (nonatomic,strong) WisView          *videoView;
 
-@property (nonatomic,assign) BOOL             topBarAndBottomBarIsHiden;//隐藏上面的条和下面的条
+//@property (nonatomic,assign) BOOL             topBarAndBottomBarIsHiden;//上面和下面的条是否隐藏
 @property (nonatomic,assign) BOOL             isLiving;//是否正在直播中
 @property (nonatomic,assign) BOOL             liveViewIsPlaying;//liveView是否在播放
+@property (nonatomic,assign) BOOL             isPushVC;//是否push到其他界面
 @property (nonatomic,assign) BOOL             isExit;//是否已退出
 @property (nonatomic,assign) NSInteger        increaseSearchDuration;//搜索时间(随着重搜次数增长1秒)
-@property (nonatomic,assign) FSLiveViewSource liveViewSource;
+@property (nonatomic,assign) FSLiveViewSource liveViewSource;//视频源
 
 @property (nonatomic,  copy) NSString         *userConnectingDeviceIP;//用户正在连接的设备的IP
-@property (nonatomic,  copy) NSString         *userID;
+//@property (nonatomic,  copy) NSString         *userID;
 @property (nonatomic,assign) CGFloat          resolution;
 @property (nonatomic,assign) CGFloat          quality;
 @property (nonatomic,assign) CGFloat          fps;
 
 @property (nonatomic,strong) LFLiveSession    *session;
-//@property (nonatomic,strong) UIView           *livePreView;
+@property (nonatomic,strong) NSTimer          *liveViewMonitorTimer;
 
+@property (nonatomic,strong) UITapGestureRecognizer *contentViewTapGesture;
+@property (nonatomic,strong) UITapGestureRecognizer *videoViewTapGesture;
 @end
 
 @implementation FSLiveViewViewController
@@ -98,7 +100,7 @@ static NSInteger const searchDurationMax = 8;
         [_videoView addGestureRecognizer:self.videoViewTapGesture];
         [self.view insertSubview:_videoView belowSubview:self.contentView];
         
-        [_videoView set_log_level:2];
+        [_videoView set_log_level:4];
     }
     return _videoView;
 }
@@ -112,23 +114,17 @@ static NSInteger const searchDurationMax = 8;
 
 - (UITapGestureRecognizer *)contentViewTapGesture {
     if (!_contentViewTapGesture) {
-        _contentViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(tapContentView)];
+        _contentViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContentView)];
     }
     return _contentViewTapGesture;
 }
 
-
-//- (void)startLive {
-//    LFLiveStreamInfo *streamInfo = [[LFLiveStreamInfo alloc] init];
-//    streamInfo.url = @"your server rtmp url";
-//    [self.session startLive:streamInfo];
-//}
-//
-//- (void)stopLive {
-//    [self.session stopLive];
-//}
-
+- (NSTimer *)liveViewMonitorTimer {
+    if (!_liveViewMonitorTimer) {
+        _liveViewMonitorTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(monitoringTheliveView) userInfo:nil repeats:YES];
+    }
+    return _liveViewMonitorTimer;
+}
 
 #pragma mark – View lifecycle
 
@@ -136,14 +132,11 @@ static NSInteger const searchDurationMax = 8;
     [super viewDidLoad];
     
     [self userInterfaceSettings];
-    [self setDefaultValue];
     [self addApplicationActiveNotifications];
-    
     
 //    LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
 //    streamInfo.url = @"rtmp://live-api-a.facebook.com:80/rtmp/2006270569650246_0?ds=1&a=ATjuPr7v49Oq6-Xs";
 //    [self.session startLive:streamInfo];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,7 +144,8 @@ static NSInteger const searchDurationMax = 8;
     
     [self.navigationController setNavigationBarHidden:NO];
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
-//    self.isExit = NO;
+
+    [self setDefaultValue];
     [self updateUI];
     [self connectFreestreamDevice];
 }
@@ -162,15 +156,18 @@ static NSInteger const searchDurationMax = 8;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-//    [self stopSearchDevice];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [UIApplication sharedApplication].idleTimerDisabled = NO;//屏幕取消常亮
+    
+    if(self.isPushVC) {
+        [self.liveViewMonitorTimer setFireDate:[NSDate distantFuture]];
+        [self videoViewStop];
+    }
 }
-
 
 #pragma mark – Initialization & Memory management methods
 
@@ -187,25 +184,23 @@ static NSInteger const searchDurationMax = 8;
     [self.contentView addGestureRecognizer:self.contentViewTapGesture];
 }
 
-- (void)setDefaultValue {
-    self.increaseSearchDuration = 5;
-
+- (void)addApplicationActiveNotifications {
+    // app从后台进入前台都会调用这个方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    // 添加检测app进入后台的观察者
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
-- (void)connectFreestreamDevice {
-    [self showSearchAndConnectTips];
-    if ([CoreStore sharedStore].cacheUseDeviceIP.length > 0) {
-        self.userConnectingDeviceIP = [CoreStore sharedStore].cacheUseDeviceIP;
-        [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
-    }
-        [self beginSearchDevice];
+- (void)setDefaultValue {
+    self.increaseSearchDuration = 5;
+    self.isExit = NO;
+    self.isPushVC = NO;
 }
 
 - (void)updateUI {
     [self updateWifiName];
-    [self showTopBarAndBottomBar];
+    [self showTopBarAndBottomBarAnimation];
 }
-
 
 - (void)updateWifiName {
     NSString *wifiName = [self getWifiName];
@@ -222,37 +217,99 @@ static NSInteger const searchDurationMax = 8;
 }
 
 - (void)showSearchAndConnectTips {
-    
     self.tipLabel.text = NSLocalizedString(@"Search And Connect", nil);
     self.tipLabel.hidden = NO;
     self.logoCenterImageView.hidden = NO;
 }
 
-- (void)showNoDeviceResultTips {
-    
-    self.tipLabel.text = NSLocalizedString(@"No Device Found", nil);
+- (void)showNoLiveVideoTips {
+    self.tipLabel.text = NSLocalizedString(@"No Live Video", nil);
     self.tipLabel.hidden = NO;
     self.logoCenterImageView.hidden = NO;
 }
 
+- (void)showNoDeviceResultTips {
+    self.tipLabel.text = NSLocalizedString(@"No Device Found", nil);
+    self.tipLabel.hidden = NO;
+    self.logoCenterImageView.hidden = NO;
+}
 
 - (void)hidenSearchAndConnectTips {
     self.tipLabel.hidden = YES;
     self.logoCenterImageView.hidden = YES;
 }
 
+- (void)showTopBarAndBottomBarAnimation {
+    if (self.topBgView.hidden) {
+        [self performSelectorOnMainThread:@selector(tapContentView) withObject:nil  waitUntilDone:YES];
+    }
+}
+
+- (void)hidenTopBarAndBottomBarAnimation {
+    if (!self.topBgView.hidden) {
+        [self performSelectorOnMainThread:@selector(tapContentView) withObject:nil waitUntilDone:YES];
+    }
+}
+
+- (void)topBgViewAndBottomBgViewsHiden:(BOOL)hiden {
+    
+    self.topBgView.hidden = hiden;
+    self.bottomBgView.hidden = hiden;
+    if (hiden) {
+        self.liveStopButton.hidden = hiden;
+    } else {
+        self.liveStopButton.hidden = !self.isLiving;
+    }
+}
+
+- (void)disableButtons {
+    [self buttonsEnable:NO];
+}
+
+- (void)enableButtons {
+    [self buttonsEnable:YES];
+}
+
+- (void)buttonsEnable:(BOOL)enable {
+    //    self.backButton.userInteractionEnabled      = enable;
+    self.cameraButton.userInteractionEnabled    = enable;
+    self.recordButton.userInteractionEnabled    = enable;
+    self.streamButton.userInteractionEnabled    = enable;
+    self.browserButton.userInteractionEnabled   = enable;
+    self.configureButton.userInteractionEnabled = enable;
+    self.platformButton.userInteractionEnabled  = enable;
+}
+
+- (void)videoViewStop {
+    if (self.liveViewIsPlaying) {
+        [self.videoView sound:NO];
+        [self.videoView stop];
+    }
+}
+
+- (void)connectFreestreamDevice {
+    [self showSearchAndConnectTips];
+    if ([CoreStore sharedStore].cacheUseDeviceIP.length > 0) {
+        self.userConnectingDeviceIP = [CoreStore sharedStore].cacheUseDeviceIP;
+        [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
+    }
+    [self beginSearchDevice];
+}
+
 - (void)beginSearchDevice {
     if (self.isExit) {
         return;
     }
-//    [self showSearchAndConnectTips];
+    [self showSearchAndConnectTips];
     [self disableButtons];
 
     WEAK(self);
     
     [[FSSearchDeviceManager shareInstance] beginSearchDeviceDuration:_increaseSearchDuration completionHandle:^(Scanner *resultInfo) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            if (weakself.isExit || weakself.liveViewIsPlaying) {
+                return ;
+            }
             [weakself scanDeviceOver:resultInfo];
             [weakself enableButtons];
         });
@@ -262,13 +319,10 @@ static NSInteger const searchDurationMax = 8;
     self.increaseSearchDuration = (self.increaseSearchDuration < searchDurationMax) ? (self.increaseSearchDuration + 1) : self.increaseSearchDuration;
 }
 
+//搜索完成
 - (void)scanDeviceOver:(Scanner *)result {
 
-    if (self.isExit) {
-        return;
-    }
-    
-    if (result.Device_IP_Arr.count < 1) {
+    if (result.Device_IP_Arr.count < 1 ) {
         [self showNoDeviceResultTips];
         [self showActionSheet];
         return;
@@ -276,7 +330,6 @@ static NSInteger const searchDurationMax = 8;
 
 //    使用扫描到的第一个设备
     self.userConnectingDeviceIP = [result.Device_IP_Arr objectAtIndex:0];
-//    self.userID = [result.Device_ID_Arr objectAtIndex:0];
     
     if (![self.userConnectingDeviceIP isEqualToString:[CoreStore sharedStore].cacheUseDeviceIP]) {
         //    缓存这个新的IP
@@ -284,17 +337,14 @@ static NSInteger const searchDurationMax = 8;
         //    接收videoView使用新的ip
         [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
     } else {
-        if (self.liveViewIsPlaying && !self.tipLabel.isHidden) {
-            [self hidenSearchAndConnectTips];
+        if (!self.liveViewIsPlaying) {
+            [self startReceiveVideoViewWithDeviceIP:self.userConnectingDeviceIP];
         }
     }
 }
 
 //使用DeviceIP配置Url,接收Freestream设备传回的画面和音频
 - (void)startReceiveVideoViewWithDeviceIP:(NSString *)connectingDeviceIP {
-    if (self.isExit) {
-        return;
-    }
     
     NSString *liveViewUrlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", connectingDeviceIP,fsLiveViewVideoFormat];
     
@@ -308,7 +358,6 @@ static NSInteger const searchDurationMax = 8;
     [self getDeviceConfigure];
 }
 
-
 //当搜索没有结果的时候显示提示菜单
 - (void)showActionSheet {
     
@@ -319,7 +368,7 @@ static NSInteger const searchDurationMax = 8;
         });
     } action2Handler:^(UIAlertAction * _Nullable action) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself configCameraSession];
+            [weakself configureSessionWithCamera];
         });
     } action3Handler:^(UIAlertAction * _Nullable action) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -376,6 +425,7 @@ static NSInteger const searchDurationMax = 8;
     dispatch_group_notify(getConfigureGroup, dispatch_get_main_queue(), ^{
         if (getFaild) {
 //            失败
+            
         } else {
 //            成功
             weakself.resolution = resolution;
@@ -384,14 +434,13 @@ static NSInteger const searchDurationMax = 8;
             NSLog(@"----------------resolution:%lf",weakself.resolution);
             NSLog(@"----------------quality:%lf",weakself.quality*3000/52);
             NSLog(@"----------------fps:%lf",weakself.fps);
-            [weakself getSessionWithRakisrak:YES];
+            [weakself configureSessionWithFreestreamDevice];
         }
     });
 }
 
-//RAK设备的直播参数
-- (void)getSessionWithRakisrak:(BOOL)rak {
-    
+//使用RAK设备的配置直播参数
+- (void)configureSessionWithFreestreamDevice {
     /**
      *  构造音频配置器
      */
@@ -470,8 +519,8 @@ static NSInteger const searchDurationMax = 8;
     self.session.delegate = self;
 
 }
-
-- (void)configCameraSession {
+//使用手机自带摄像头配置直播参数
+- (void)configureSessionWithCamera {
     
     [self requestAccessForVideo];
     [self requestAccessForAudio];
@@ -490,6 +539,7 @@ static NSInteger const searchDurationMax = 8;
     _session.running = YES;
     _session.preView = self.contentView;
     self.liveViewSource = FSLiveViewSourceFreestreamDevice;
+    
 //    self.contentViewTapGesture.enabled = YES;
     
         //                return _session;
@@ -499,34 +549,6 @@ static NSInteger const searchDurationMax = 8;
 //        _play_success = YES;
 //        _liveCameraSource = IphoneBackCamera;
 //        [self enableButtons];
-}
-
-
-- (void)disableButtons {
-    [self buttonsEnable:NO];
-}
-
-- (void)enableButtons {
-    [self buttonsEnable:YES];
-}
-
-- (void)buttonsEnable:(BOOL)enable {
-//    self.backButton.userInteractionEnabled      = enable;
-    
-    self.cameraButton.userInteractionEnabled    = enable;
-    self.recordButton.userInteractionEnabled    = enable;
-    self.streamButton.userInteractionEnabled    = enable;
-    self.browserButton.userInteractionEnabled   = enable;
-    self.configureButton.userInteractionEnabled = enable;
-    self.platformButton.userInteractionEnabled  = enable;
-}
-
-
-- (void)addApplicationActiveNotifications {
-    // app从后台进入前台都会调用这个方法
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
-    // 添加检测app进入后台的观察者
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name: UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 #pragma mark -- 请求权限
@@ -611,65 +633,98 @@ static NSInteger const searchDurationMax = 8;
     }
 }
 
-- (void)videoViewStop {
-    [self.videoView sound:NO];
-    [self.videoView stop];
-}
+
 
 - (void)setStopStreamStatus {
     
 }
 
+- (void)invalidateTimers {
+    [self.liveViewMonitorTimer invalidate];
+}
+
+
+
+#pragma mark – Target action methods
+
+- (void)tapContentView{
+    //    取消执行@selector(hidenTopBarAndBottomBar)
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidenTopBarAndBottomBarAnimation) object:nil];
+    
+    if (self.topBgView.hidden) {
+        
+        CATransition *anima = [CATransition animation];
+        anima.type = kCATransitionMoveIn;//设置动画的类型
+        anima.subtype = kCATransitionFromBottom; //设置动画的方向
+        [_topBgView.layer addAnimation:anima forKey:@"moveInAnimation"];
+        
+        anima.subtype = kCATransitionFromTop; //设置动画的方向
+        anima.duration = 0.3f;
+        [_bottomBgView.layer addAnimation:anima forKey:@"moveInAnimation"];
+    } else {
+        
+        CATransition *anima = [CATransition animation];
+        anima.type = kCATransitionMoveIn;//设置动画的类型
+        anima.subtype = kCATransitionFromTop; //设置动画的方向
+        [_topBgView.layer addAnimation:anima forKey:@"revealAnimation"];
+        
+        anima.subtype = kCATransitionFromBottom; //设置动画的方向
+        anima.duration = 0.3f;
+        [_bottomBgView.layer addAnimation:anima forKey:@"revealAnimation"];
+        
+    }
+    [self topBgViewAndBottomBgViewsHiden:!self.topBgView.hidden];
+    
+    if (!self.topBgView.hidden) {
+        //        如果没有隐藏 那么3s后隐藏
+        [self performSelector:@selector(hidenTopBarAndBottomBarAnimation) withObject:nil afterDelay:3.f];
+    }
+}
+
 - (void)applicationBecomeActive {
     
     NSLog(@"----------进入前台");
-    
-    
-    if(!self.isExit) {
-        [self updateUI];
-        [self performSelectorOnMainThread:@selector(viewWillAppear:) withObject:@1 waitUntilDone:YES];
+    if (self.isExit) {
+        return;
     }
+    [self updateUI];
     
-    
-//
-//    BOOL isSameWIfi = ([CoreStore sharedStore].currentUseDeviceID == [self getWifiSSID]);
-//    BOOL isNotnil  = ([self getWifiSSID].length > 0);
-//    NSLog(@"----------------%u,%u,%u",isSameWIfi,isNotnil,_searchDeviceHasResult);
-//    if (([[CoreStore sharedStore].currentUseDeviceID isEqualToString:[self getWifiSSID]])&&([self getWifiSSID].length > 0)&&_searchDeviceHasResult) {
-//        if(!_isExit&&!_isBroswer){
-//            [self getDeviceConfig];
-//            NSString *urlString = [NSString stringWithFormat:@"rtsp://admin:admin@%@/cam1/%@", _userip,video_type];
-//            NSLog(@"----------------log%@",urlString);
-//
-//            [self.videoView play:urlString useTcp:NO];
-//            [self.videoView sound:YES];
-//            [self.videoView startGetYUVData:YES];
-//            [self.videoView startGetAudioData:YES];
-//            [self.videoView startGetH264Data:YES];
-//            [self.videoView show_view:YES];
-//            self.videoisplaying = YES;
-//        }
-//    } else if (_liveCameraSource == IphoneBackCamera) {
-//
-//    } else {
-//
-//        [_updateUITimer setFireDate:[NSDate distantFuture]];
-//        _tipLabel.text = @"PLEASE CHECK WIFI CONECT TO EXTERNAL DEVICE";
-//        [self showSearchingMessagesTips];
-//    }
+    if (self.liveViewSource == FSLiveViewSourceFreestreamDevice) {
+        [self connectFreestreamDevice];
+    } else {
+        
+    }
 }
 
 - (void)applicationEnterBackground {
-//    [self closeLivingSession];
-//    [self stopVideo];
-    
+    //    [self closeLivingSession];
+    [self videoViewStop];
+    //    如果正在录像的话需要保存并停止
     NSLog(@"----------进入后台");
-//    [CoreStore sharedStore].currentUseDeviceID = [self getWifiSSID];
-//    NSLog(@"----------------+++%@",[CoreStore sharedStore].currentUseDeviceID);
+    
 }
 
-
-
+//检测Freestream传回的画面的流畅度
+- (void)monitoringTheliveView {
+    NSLog(@"定时器在运行----------------");
+    if (self.liveViewIsPlaying) {
+        NSLog(@"------———定时器在检测刷新");
+        WEAK(self);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            int netFlow = [weakself checkNetworkflow];
+            int flow = (int)(netFlow/1024);
+            NSLog(@"--------------——————------flow = %d------------------",flow);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (flow >0 && flow < 40) {
+                    [weakself showNoLiveVideoTips];
+                } else {
+                    [weakself hidenSearchAndConnectTips];
+                }
+            });
+        });
+    }
+}
 
 //监测流量判断是否接入相机并作相应的提示
 - (int)checkNetworkflow {
@@ -706,92 +761,40 @@ static NSInteger const searchDurationMax = 8;
         lastFlow = allFlow;
     }
     flow = allFlow - lastFlow;
-//    NSString *networkFlow      = [self bytesToAvaiUnit:flow];
+    //    NSString *networkFlow      = [self bytesToAvaiUnit:flow];
     lastFlow = allFlow;
     //    NSLog(@"networkFlow==%@",networkFlow);
     return flow;
 }
 
-
 - (NSString *)bytesToAvaiUnit:(int)bytes {
-    if(bytes < 1024)        // B
-    {
+    if (bytes < 1024) {     // B
+    
         return [NSString stringWithFormat:@"%dB", bytes];
-    }
-    else if(bytes >= 1024 && bytes < 1024 * 1024)    // KB
-    {
+    } else if (bytes >= 1024 && bytes < 1024 * 1024) {   // KB
+    
         return [NSString stringWithFormat:@"%.1fKB", (double)bytes / 1024];
-    }
-    else if(bytes >= 1024 * 1024 && bytes < 1024 * 1024 * 1024)    // MB
-    {
+    } else if (bytes >= 1024 * 1024 && bytes < 1024 * 1024 * 1024) {   // MB
+        
         return [NSString stringWithFormat:@"%.2fMB", (double)bytes / (1024 * 1024)];
-    }
-    else    // GB
-    {
+    } else {   // GB
+        
         return [NSString stringWithFormat:@"%.3fGB", (double)bytes / (1024 * 1024 * 1024)];
     }
 }
 
-#pragma mark – Target action methods
-
 #pragma mark - IBActions
 
-- (void)showTopBarAndBottomBar {
-    if (self.topBarAndBottomBarIsHiden) {
-        [self performSelectorOnMainThread:@selector(tapContentView) withObject:nil  waitUntilDone:YES];
-    }
-}
-
-- (void)hidenTopBarAndBottomBar {
-    if (!self.topBarAndBottomBarIsHiden) {
-        [self performSelectorOnMainThread:@selector(tapContentView) withObject:nil waitUntilDone:YES];
-    }
-    
-}
-
-- (void)tapContentView{
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidenTopBarAndBottomBar) object:nil];
-    
-    CGFloat topBgViewHeight = CGRectGetHeight(self.topBgView.frame);
-    CGFloat bottomBgViewHeight = CGRectGetHeight(self.bottomBgView.frame);
-    CGFloat topBgViewAddHeight;
-    CGFloat bottomBgViewAddHeight;
-    
-    if(self.topBarAndBottomBarIsHiden == NO) {
-        //        显示的时候
-        topBgViewAddHeight    = -topBgViewHeight;//topBar.y减去一个高度就隐藏了
-        bottomBgViewAddHeight = bottomBgViewHeight;//bottombar.y 加上一个高度就隐藏了
-    } else {
-        //        隐藏的时候
-        topBgViewAddHeight    = topBgViewHeight;//topBar.y加一个高度就显示出来了
-        bottomBgViewAddHeight = -bottomBgViewHeight;//bottombar.y 减去一个高度就显示出来了
-    }
-    
-    //    NSLog(@"topBgViewAddHeight  = %lf,self.topBarAndBottomBarIsHiden = %u,topBgViewOriginY = %lf",topBgViewAddHeight,self.topBarAndBottomBarIsHiden ,self.topBgView.originY);
-    
-    WEAK(self);
-    [UIView animateWithDuration:0.2 animations:^{
-        weakself.topBgView.originY = weakself.topBgView.originY + topBgViewAddHeight;
-        weakself.bottomBgView.originY = weakself.bottomBgView.originY + bottomBgViewAddHeight;
-        weakself.liveStopButton.hidden = !weakself.isLiving;
-        weakself.topBarAndBottomBarIsHiden = !weakself.topBarAndBottomBarIsHiden;
-    } completion:^(BOOL finished) {
-        if (weakself.topBarAndBottomBarIsHiden == NO) {
-            //        如果没有隐藏 那么3s后隐藏
-            [weakself performSelector:@selector(hidenTopBarAndBottomBar) withObject:nil afterDelay:3.f];
-        }
-    }];
-}
-
 - (IBAction)backButtonDidClicked:(UIButton *)sender {
-    if (self.liveViewIsPlaying) {
-        [self videoViewStop];
-    }
+    
+    [self videoViewStop];
+    
+    [self invalidateTimers];
+    
+    self.isExit = YES;
     
 //    [[FSSearchDeviceManager shareInstance] stopSearchDevice];
-    self.isExit = YES;
-
+    
     [self.videoView removeFromSuperview];
     [self.topBgView removeFromSuperview];
     [self.bottomBgView removeFromSuperview];
@@ -823,6 +826,7 @@ static NSInteger const searchDurationMax = 8;
 }
 
 - (IBAction)pushVC:(UIButton *)sender {
+    self.isPushVC = YES;
     [self presentViewController:[[FSStreamViewController alloc
                                   ] init] animated:YES completion:nil];
 }
@@ -854,7 +858,7 @@ static NSInteger const searchDurationMax = 8;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    NSLog(@"--____------__________-------___________------dealloc");
+    NSLog(@"______________-------dealloc-------_______________");
 }
 #pragma mark – Delegate
 
@@ -900,56 +904,48 @@ static NSInteger const searchDurationMax = 8;
     if (self.isExit) {//退出了本页面，不需响应任何
         return;
     }
-    
-    NSLog(@"WisviewDelegate state_changed state = %d", state);
+
+//    NSLog(@"WisviewDelegate state_changed state = %d", state);
     switch (state) {
-        case 0: //STATE_IDLE
-        {
-//            _play_success = NO;
+        case 0: {//STATE_IDLE
             
-                self.liveViewIsPlaying = NO;
-            
+            self.liveViewIsPlaying = NO;
             break;
         }
-        case 1: //STATE_PREPARING
-        {
-//            _play_success = NO;
-            
-                self.liveViewIsPlaying = NO;
-            
+        case 1: {//STATE_PREPARING
+        
+            self.liveViewIsPlaying = NO;
             break;
         }
-        case 2: //STATE_PLAYING
-        {
-//            _play_success = YES;
-            
-//            if (_isLiveView) {
-//                [self enableControl];
-                dispatch_async(dispatch_get_main_queue(),^ {
-//                    [self noHiddenStatus];
-                    self.liveViewIsPlaying = YES;
-                    [self hidenSearchAndConnectTips];
-                });
-//            }
+        case 2: {//STATE_PLAYING
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                self.liveViewIsPlaying = YES;
+                [self hidenSearchAndConnectTips];
+                
+                if (self.isPushVC) {
+                    [self.liveViewMonitorTimer setFireDate:[NSDate distantFuture]];
+                    [self videoViewStop];
+                } else {
+                    [self.liveViewMonitorTimer setFireDate:[NSDate distantPast]];
+                }
+            });
             break;
         }
-        case 3: //STATE_STOPPED
-        {
+        case 3: {//STATE_STOPPED
             
-                self.liveViewIsPlaying = NO;
-            
+            self.liveViewIsPlaying = NO;
+            [self.liveViewMonitorTimer setFireDate:[NSDate distantFuture]];
             break;
         }
-        case 4: //STATE_OPEN_URL_FAILED
-        {
+        case 4: {//STATE_OPEN_URL_FAILED
             NSLog(@"STATE_OPEN_URL_FAILED");
-            
-                dispatch_async(dispatch_get_main_queue(),^ {
-//                [self replayVideoView];
-                    self.liveViewIsPlaying = NO;
-                    [self showNoDeviceResultTips];
-                    [self.videoView stop];
-                });
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                self.liveViewIsPlaying = NO;
+                [self showNoDeviceResultTips];
+                [self.videoView stop];
+            });
             break;
         }
         default:
@@ -980,7 +976,8 @@ static NSInteger const searchDurationMax = 8;
 }
 
 - (void)GetAudioData:(Byte*)data :(int)size {//回调获取解码后的YUV数据
-    NSLog(@"------------size = ----%d",size);
+//    NSLog(@"------------size = ----%d",size);
+
 }
 
 - (void)GetH264Data:(int)width :(int)height :(int)size :(Byte*)data {//回调获取H264数据
@@ -988,3 +985,50 @@ static NSInteger const searchDurationMax = 8;
 }
 
 @end
+//
+//- (void)tapContentView{
+//
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidenTopBarAndBottomBar) object:nil];
+//
+//    CGFloat topBgViewHeight = CGRectGetHeight(self.topBgView.frame);
+//    CGFloat bottomBgViewHeight = CGRectGetHeight(self.bottomBgView.frame);
+//    CGFloat topBgViewAddHeight;
+//    CGFloat bottomBgViewAddHeight;
+//
+//    if(self.topBarAndBottomBarIsHiden == NO) {
+//        //        显示的时候
+//        topBgViewAddHeight    = -topBgViewHeight;//topBar.y减去一个高度就隐藏了
+//        bottomBgViewAddHeight = bottomBgViewHeight;//bottombar.y 加上一个高度就隐藏了
+//    } else {
+//        //        隐藏的时候
+//        topBgViewAddHeight    = topBgViewHeight;//topBar.y加一个高度就显示出来了
+//        bottomBgViewAddHeight = -bottomBgViewHeight;//bottombar.y 减去一个高度就显示出来了
+//    }
+//
+////    NSLog(@"topBgViewAddHeight  = %lf,self.topBarAndBottomBarIsHiden = %u,topBgViewOriginY = %lf",topBgViewAddHeight,self.topBarAndBottomBarIsHiden ,self.topBgView.originY);
+//
+//    WEAK(self);
+//    [UIView animateWithDuration:0.2 animations:^{
+//        weakself.topBgView.originY = weakself.topBgView.originY + topBgViewAddHeight;
+//        weakself.bottomBgView.originY = weakself.bottomBgView.originY + bottomBgViewAddHeight;
+//        weakself.liveStopButton.hidden = !weakself.isLiving;
+//        weakself.topBarAndBottomBarIsHiden = !weakself.topBarAndBottomBarIsHiden;
+//    } completion:^(BOOL finished) {
+//
+//        if (weakself.topBarAndBottomBarIsHiden == NO) {
+//            //        如果没有隐藏 那么3s后隐藏
+//            [weakself performSelector:@selector(hidenTopBarAndBottomBar) withObject:nil afterDelay:3.f];
+//        }
+//    }];
+//
+//}
+
+//- (void)startLive {
+//    LFLiveStreamInfo *streamInfo = [[LFLiveStreamInfo alloc] init];
+//    streamInfo.url = @"your server rtmp url";
+//    [self.session startLive:streamInfo];
+//}
+//
+//- (void)stopLive {
+//    [self.session stopLive];
+//}
