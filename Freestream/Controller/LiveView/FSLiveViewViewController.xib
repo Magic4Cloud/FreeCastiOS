@@ -21,7 +21,6 @@
                 <outlet property="cameraButton" destination="XkT-f9-sIY" id="75O-HX-koT"/>
                 <outlet property="configureButton" destination="Hzu-1R-Sxr" id="va4-kS-ukQ"/>
                 <outlet property="contentView" destination="wUe-W1-zqL" id="mQY-Q6-RMj"/>
-                <outlet property="contentViewTapGesture" destination="yB6-Kf-K8k" id="Co9-1z-ZOb"/>
                 <outlet property="liveStopButton" destination="NUg-FT-kvI" id="P0C-NU-ot3"/>
                 <outlet property="logoCenterImageView" destination="nDC-GK-rlr" id="WqA-Qd-Gyf"/>
                 <outlet property="platformButton" destination="6y7-d9-phk" id="QRQ-Fn-d2v"/>
@@ -86,9 +85,6 @@
                         <constraint firstItem="nDC-GK-rlr" firstAttribute="centerX" secondItem="wUe-W1-zqL" secondAttribute="centerX" id="wJX-5t-pyo"/>
                         <constraint firstItem="Q5K-SY-Vcc" firstAttribute="top" secondItem="nDC-GK-rlr" secondAttribute="bottom" constant="10" id="zSc-aI-HMG"/>
                     </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="yB6-Kf-K8k" appends="YES" id="A2C-aT-M8f"/>
-                    </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9N-xT-yy1" userLabel="TopBgView">
                     <rect key="frame" x="0.0" y="0.0" width="736" height="64"/>
@@ -274,7 +270,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="1RY-Mn-54C" firstAttribute="leading" secondItem="ub8-Lm-lP1" secondAttribute="trailing" id="0Uz-eT-sSJ"/>
                 <constraint firstItem="T53-ZS-RU2" firstAttribute="centerY" secondItem="ub8-Lm-lP1" secondAttribute="centerY" constant="-8" id="58x-Tv-xJK"/>
@@ -301,12 +297,6 @@
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="-3" y="15"/>
         </view>
-        <tapGestureRecognizer id="yB6-Kf-K8k">
-            <connections>
-                <action selector="tapContentView:" destination="-1" id="4aY-CL-N3X"/>
-                <outlet property="delegate" destination="-1" id="1OC-aL-euT"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="audio_mode_1" width="30" height="14"/>
