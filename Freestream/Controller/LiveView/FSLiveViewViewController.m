@@ -852,7 +852,7 @@ static NSInteger const searchDurationMax = 8;
 }
 
 -(BOOL)prefersStatusBarHidden{
-    
+
     return NO;
 }
 

@@ -62,5 +62,15 @@
     NSLog(@"----------------%s",__func__);
     self.titleLabel.textColor = [UIColor FSMainTextNormalColor];
 }
+- (IBAction)buttonTouchDragExit:(UIButton *)sender {
+    NSLog(@"----------------%s",__func__);
+    self.titleLabel.textColor = [UIColor FSMainTextNormalColor];
+}
+
+- (IBAction)buttonTouchCancel:(UIButton *)sender {
+    NSLog(@"----------------%s",__func__);
+    self.titleLabel.textColor = [UIColor FSMainTextNormalColor];
+}
+
 
 @end

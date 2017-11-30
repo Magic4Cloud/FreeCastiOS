@@ -31,7 +31,7 @@
     [self.window makeKeyAndVisible];
     
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
-    
+
 //    配置facebook
 //    [[FBSDKApplicationDelegate sharedInstance] application:application                       didFinishLaunchingWithOptions:launchOptions];
     [self rootViewController];
@@ -81,13 +81,13 @@
     
     FSLeftSideMenuViewController *leftVC = [[FSLeftSideMenuViewController alloc] init];
     
-    LGSideMenuController *sideMenuController = [[LGSideMenuController alloc] initWithRootViewController:naviVC leftViewController:leftVC rightViewController:nil];
-    sideMenuController.swipeGestureArea = LGSideMenuSwipeGestureAreaFull;
-    sideMenuController.leftViewWidth = 200.0 * FSRATIO;
-    sideMenuController.leftViewPresentationStyle = LGSideMenuPresentationStyleSlideBelow;
-   
-    self.window.rootViewController = sideMenuController;
+    MMDrawerController *sideMenuController  = [[MMDrawerController alloc] initWithCenterViewController:naviVC leftDrawerViewController:leftVC];
     
+    sideMenuController.openDrawerGestureModeMask = MMOpenDrawerGestureModeBezelPanningCenterView;
+    sideMenuController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+    sideMenuController.maximumLeftDrawerWidth = 200 *FSRATIO;
+    sideMenuController.shouldStretchDrawer = NO;
+    self.window.rootViewController = sideMenuController;
 }
 
 @end

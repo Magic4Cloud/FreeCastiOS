@@ -48,6 +48,8 @@ static NSInteger const KCellCount = 4;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    //    启用侧滑手势
+    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -81,13 +83,15 @@ static NSInteger const KCellCount = 4;
 }
 
 - (FSNavigationViewController *)naviVC{
-    return (FSNavigationViewController *)self.sideMenuController.rootViewController;
+    
+    return (FSNavigationViewController *)self.mm_drawerController.centerViewController;
 }
 
 - (void)pushTextViewControllerWithCellTag:(FSLeftSideTitle)cellTag {
     FSTextViewController * textVC = [[FSTextViewController alloc] init];
     textVC.title = self.dataSource[cellTag];
     textVC.leftSideTitleTag = cellTag;
+
     [[self naviVC] pushViewController:textVC animated:NO];
 }
 
@@ -123,7 +127,9 @@ static NSInteger const KCellCount = 4;
 #pragma mark - FSLeftSideTableViewCellDelegate
 
 - (void)didSelectedCell:(FSLeftSideTitle)cellTitle {
-    [self.sideMenuController hideLeftView];
+#warning ...
+//    [self.sideMenuController hideLeftView];
+    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     switch (cellTitle) {
         case FSLeftSideTitleVersion: {
             

@@ -31,7 +31,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.sideMenuController.leftViewSwipeGestureEnabled = NO;
+#warning .....
+    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -34,7 +34,9 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
+                            <action selector="buttonTouchCancel:" destination="KGk-i7-Jjw" eventType="touchCancel" id="8Ll-Xs-kSS"/>
                             <action selector="buttonTouchDown:" destination="KGk-i7-Jjw" eventType="touchDown" id="KcP-sp-qbe"/>
+                            <action selector="buttonTouchDragExit:" destination="KGk-i7-Jjw" eventType="touchDragExit" id="X7A-0t-8v0"/>
                             <action selector="buttonTouchDragOutside:" destination="KGk-i7-Jjw" eventType="touchDragOutside" id="Lxb-9q-MHu"/>
                             <action selector="buttonTouchUpInside:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="qkQ-0C-DeT"/>
                             <action selector="buttonTouchUpOutside:" destination="KGk-i7-Jjw" eventType="touchUpOutside" id="2Oz-wn-UdI"/>

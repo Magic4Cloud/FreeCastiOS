@@ -43,7 +43,6 @@
 		97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328F021FB98DE8005FC554 /* FSNetWorkManager.m */; };
 		9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9740412B1FBE86F300E23E31 /* FSStreamViewController.m */; };
 		9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */; };
-		974041311FBE8D7800E23E31 /* LGSideMenuController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */; };
 		974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 974041321FBEE09500E23E31 /* LiveView.xcassets */; };
 		9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */; };
 		9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */; };
@@ -120,8 +119,6 @@
 		9740412A1FBE86F300E23E31 /* FSStreamViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSStreamViewController.h; sourceTree = "<group>"; };
 		9740412B1FBE86F300E23E31 /* FSStreamViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSStreamViewController.m; sourceTree = "<group>"; };
 		9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSStreamViewController.xib; sourceTree = "<group>"; };
-		9740412F1FBE8D7800E23E31 /* LGSideMenuController+Rotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LGSideMenuController+Rotation.h"; sourceTree = "<group>"; };
-		974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "LGSideMenuController+Rotation.m"; sourceTree = "<group>"; };
 		974041321FBEE09500E23E31 /* LiveView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LiveView.xcassets; sourceTree = "<group>"; };
 		9741AF641FBDBD6A00D4290D /* FSLiveViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLiveViewViewController.h; sourceTree = "<group>"; };
 		9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLiveViewViewController.m; sourceTree = "<group>"; };
@@ -361,8 +358,6 @@
 				97328EA61FB3F586005FC554 /* FSNavigationViewController+StatusBar.m */,
 				97328EBC1FB4023C005FC554 /* UIColor+App.h */,
 				97328EBD1FB4023C005FC554 /* UIColor+App.m */,
-				9740412F1FBE8D7800E23E31 /* LGSideMenuController+Rotation.h */,
-				974041301FBE8D7800E23E31 /* LGSideMenuController+Rotation.m */,
 				970307751FCC80E300A9E5EF /* CoreStore+App.h */,
 				970307761FCC80E300A9E5EF /* CoreStore+App.m */,
 				970307831FCC871300A9E5EF /* FSBaseViewController+WifiInfo.h */,
@@ -669,7 +664,6 @@
 				97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */,
 				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
 				9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */,
-				974041311FBE8D7800E23E31 /* LGSideMenuController+Rotation.m in Sources */,
 				97E6ADCA1FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m in Sources */,
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,

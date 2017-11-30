@@ -9,7 +9,7 @@
 #import "FSNavigationViewController.h"
 #import "CommonAppHeader.h"
 #import "FSLiveViewViewController.h"
-@interface FSNavigationViewController ()
+@interface FSNavigationViewController ()<UIPopoverControllerDelegate,UIGestureRecognizerDelegate>
 
 @end
 
@@ -20,7 +20,7 @@
     
     
     self.interactivePopGestureRecognizer.delegate = nil;
-    
+    self.interactivePopGestureRecognizer.delegate = self;
     [self.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor FSMainTextNormalColor],NSFontAttributeName : [UIFont boldSystemFontOfSize:20]}];
 }
 

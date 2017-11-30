@@ -17,8 +17,8 @@
 
 //pods
 #import <M4CoreFoundation/M4CoreFoundation.h>
-#import <LGSideMenuController/LGSideMenuController.h>
-#import <LGSideMenuController/UIViewController+LGSideMenuController.h>
+#import <MMDrawerController/MMDrawerController.h>
+#import <MMDrawerController/UIViewController+MMDrawerController.h>
 #import <LFLiveKit/LFLiveKit.h>
 
 //SDK

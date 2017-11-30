@@ -13,7 +13,7 @@
 //controllers
 #import "FSLiveViewViewController.h"
 
-@interface FSHomeViewController ()<FSHomePageButtonViewDelegate,LGSideMenuDelegate>
+@interface FSHomeViewController ()<FSHomePageButtonViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView               *effectView;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *liveViewButton;
 @property (weak, nonatomic) IBOutlet FSHomePageButtonView *streamButton;
@@ -45,7 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //    启用侧滑手势
-    self.sideMenuController.leftViewSwipeGestureEnabled = YES;
+    [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -91,7 +91,9 @@
 #pragma mark – Target action methods
 
 - (IBAction)showLeftMenu:(UIButton *)sender {
-    [self showLeftViewAnimated:nil];
+    
+//    [self.mm_drawerController toggleLeftViewAnimated:nil];
+    [self.mm_drawerController openDrawerSide: MMDrawerSideLeft animated:YES completion:nil];
 }
 
 #pragma mark - IBActions
