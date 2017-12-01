@@ -41,6 +41,9 @@
 		97328EF91FB944CB005FC554 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97328EF81FB944CA005FC554 /* Bolts.framework */; };
 		97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */; };
 		97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328F021FB98DE8005FC554 /* FSNetWorkManager.m */; };
+		973FC9411FD133AE00C57F33 /* Stream.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973FC9401FD133AE00C57F33 /* Stream.xcassets */; };
+		973FC9481FD142DB00C57F33 /* FSPlatformButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 973FC9471FD142DB00C57F33 /* FSPlatformButtonView.m */; };
+		973FC94A1FD142FE00C57F33 /* FSPlatformButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 973FC9491FD142FE00C57F33 /* FSPlatformButtonView.xib */; };
 		9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9740412B1FBE86F300E23E31 /* FSStreamViewController.m */; };
 		9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */; };
 		974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 974041321FBEE09500E23E31 /* LiveView.xcassets */; };
@@ -116,6 +119,10 @@
 		97328EFF1FB98848005FC554 /* FSBaseAPIURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSBaseAPIURL.h; sourceTree = "<group>"; };
 		97328F011FB98DE8005FC554 /* FSNetWorkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSNetWorkManager.h; sourceTree = "<group>"; };
 		97328F021FB98DE8005FC554 /* FSNetWorkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSNetWorkManager.m; sourceTree = "<group>"; };
+		973FC9401FD133AE00C57F33 /* Stream.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stream.xcassets; sourceTree = "<group>"; };
+		973FC9461FD142DB00C57F33 /* FSPlatformButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformButtonView.h; sourceTree = "<group>"; };
+		973FC9471FD142DB00C57F33 /* FSPlatformButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformButtonView.m; sourceTree = "<group>"; };
+		973FC9491FD142FE00C57F33 /* FSPlatformButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformButtonView.xib; sourceTree = "<group>"; };
 		9740412A1FBE86F300E23E31 /* FSStreamViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSStreamViewController.h; sourceTree = "<group>"; };
 		9740412B1FBE86F300E23E31 /* FSStreamViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSStreamViewController.m; sourceTree = "<group>"; };
 		9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSStreamViewController.xib; sourceTree = "<group>"; };
@@ -249,6 +256,7 @@
 		97328E8A1FB3313B005FC554 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				973FC9421FD13E7500C57F33 /* Stream */,
 				97328ECA1FB437CB005FC554 /* Home */,
 				97328EBF1FB43336005FC554 /* LeftSide */,
 			);
@@ -299,6 +307,7 @@
 				97328E971FB3F333005FC554 /* Base.xcassets */,
 				97328ED61FB44FE0005FC554 /* Home.xcassets */,
 				974041321FBEE09500E23E31 /* LiveView.xcassets */,
+				973FC9401FD133AE00C57F33 /* Stream.xcassets */,
 				97328E8F1FB3325C005FC554 /* file */,
 			);
 			path = Resource;
@@ -489,6 +498,16 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		973FC9421FD13E7500C57F33 /* Stream */ = {
+			isa = PBXGroup;
+			children = (
+				973FC9461FD142DB00C57F33 /* FSPlatformButtonView.h */,
+				973FC9471FD142DB00C57F33 /* FSPlatformButtonView.m */,
+				973FC9491FD142FE00C57F33 /* FSPlatformButtonView.xib */,
+			);
+			path = Stream;
+			sourceTree = "<group>";
+		};
 		9789E6731FC2F03500386902 /* LX520View */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,11 +597,13 @@
 				97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */,
 				97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */,
 				97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */,
+				973FC94A1FD142FE00C57F33 /* FSPlatformButtonView.xib in Resources */,
 				97328E981FB3F333005FC554 /* Base.xcassets in Resources */,
 				9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */,
 				974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */,
 				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
 				9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */,
+				973FC9411FD133AE00C57F33 /* Stream.xcassets in Resources */,
 				97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,6 +689,7 @@
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
+				973FC9481FD142DB00C57F33 /* FSPlatformButtonView.m in Sources */,
 				97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */,
 				970307771FCC80E300A9E5EF /* CoreStore+App.m in Sources */,
 				970307881FCC883C00A9E5EF /* FSBaseViewController+AlertController.m in Sources */,

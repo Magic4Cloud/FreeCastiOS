@@ -27,7 +27,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO];
+    if (self.navigationController) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -58,6 +60,10 @@
 #pragma mark – Private methods
 
 #pragma mark – Target action methods
+
+- (IBAction)backButtonClicked:(UIButton *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (IBAction)dismiss:(UIButton *)sender {
     [self dismissViewControllerAnimated:YES completion:nil];

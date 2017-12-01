@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSPlatformButtonView"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="u3f-0f-Og5">
+            <rect key="frame" x="0.0" y="0.0" width="149" height="108"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OMs-oS-G6c" userLabel="ContentBgView">
+                    <rect key="frame" x="0.0" y="0.0" width="149" height="108"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="25A-ls-hXW">
+                            <rect key="frame" x="44" y="24" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="25A-ls-hXW" secondAttribute="height" id="2L2-6c-dTp"/>
+                                <constraint firstAttribute="width" constant="60" id="EFF-fD-erM"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ils-Ae-kii">
+                            <rect key="frame" x="105" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="K1M-2L-V83"/>
+                                <constraint firstAttribute="width" constant="44" id="RBy-bg-c5m"/>
+                            </constraints>
+                            <state key="normal" title="Button" image="Platform_edit"/>
+                            <connections>
+                                <action selector="editPlatformRtmpAdress:" destination="-1" eventType="touchUpInside" id="y0t-Ij-WCb"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ils-Ae-kii" firstAttribute="top" secondItem="OMs-oS-G6c" secondAttribute="top" id="5n7-oq-kyV"/>
+                        <constraint firstItem="25A-ls-hXW" firstAttribute="centerX" secondItem="OMs-oS-G6c" secondAttribute="centerX" id="HpM-4j-9nw"/>
+                        <constraint firstItem="25A-ls-hXW" firstAttribute="centerY" secondItem="OMs-oS-G6c" secondAttribute="centerY" id="UaH-1T-pvw"/>
+                        <constraint firstAttribute="trailing" secondItem="ils-Ae-kii" secondAttribute="trailing" id="Y3D-UO-pz4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="OMs-oS-G6c" secondAttribute="trailing" id="Xl5-lc-DJu"/>
+                <constraint firstItem="OMs-oS-G6c" firstAttribute="top" secondItem="u3f-0f-Og5" secondAttribute="top" id="aig-1m-DMV"/>
+                <constraint firstAttribute="bottom" secondItem="OMs-oS-G6c" secondAttribute="bottom" id="dMI-X8-SBe"/>
+                <constraint firstItem="OMs-oS-G6c" firstAttribute="leading" secondItem="u3f-0f-Og5" secondAttribute="leading" id="uOo-we-Sr0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="PDu-dz-Q5R"/>
+            <point key="canvasLocation" x="-9.5" y="-15"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Platform_edit" width="100" height="100"/>
+    </resources>
+</document>

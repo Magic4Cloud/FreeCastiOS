@@ -12,6 +12,8 @@
 
 //controllers
 #import "FSLiveViewViewController.h"
+#import "FSStreamViewController.h"
+
 
 @interface FSHomeViewController ()<FSHomePageButtonViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView               *effectView;
@@ -134,6 +136,12 @@
         }
             break;
         case FSHomePageButtonStream: {
+            
+            FSStreamViewController * streamVC = [[FSStreamViewController alloc] init];
+            streamVC.title = @"Stream";
+            [self.navigationController pushViewController:streamVC animated:YES];
+            
+            
 //            [[FSFaceBookAPIRESTfulService sharedSingleton] requestVerificationUriAndUserCodeRestultBlock:^(ServiceResultInfo *statusInfo) {
 //                NSLog(@"----------------%@",statusInfo);
 //            }];
