@@ -827,8 +827,10 @@ static NSInteger const searchDurationMax = 8;
 
 - (IBAction)pushVC:(UIButton *)sender {
     self.isPushVC = YES;
-    [self presentViewController:[[FSStreamViewController alloc
-                                  ] init] animated:YES completion:nil];
+    FSStreamViewController *streamVC = [[FSStreamViewController alloc] init];
+    streamVC.isPressented = YES;
+    FSNavigationViewController *navi = [[FSNavigationViewController alloc] initWithRootViewController:streamVC];
+    [self presentViewController:navi animated:YES completion:nil];
 }
 
 #pragma mark – Public methods

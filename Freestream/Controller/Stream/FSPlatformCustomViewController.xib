@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSPlatformCustomViewController">
+            <connections>
+                <outlet property="contentView" destination="8ip-8Y-cVU" id="mkm-gJ-sx3"/>
+                <outlet property="saveButton" destination="nc0-p5-Qpe" id="nQ8-FX-G4n"/>
+                <outlet property="streamAddressTextField" destination="kVK-jq-f0S" id="fpC-ql-KFQ"/>
+                <outlet property="streamKeyTextField" destination="loK-gt-JEU" id="nUU-2A-dbP"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ip-8Y-cVU" userLabel="contentView">
+                    <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="5dY-Zw-eU8">
+                            <rect key="frame" x="30" y="133.5" width="260" height="177"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Xak-f3-Z9n" userLabel="AdressStack View">
+                                    <rect key="frame" x="0.0" y="0.0" width="260" height="68.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customize your address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmA-26-gY0">
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.69803921570000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0kz-vJ-MNm">
+                                            <rect key="frame" x="0.0" y="40.5" width="260" height="28"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="your address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kVK-jq-f0S">
+                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="17"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hhG-7k-GvG" userLabel="SeparationView">
+                                                    <rect key="frame" x="0.0" y="27" width="260" height="1"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="cgq-DI-gd5"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Pki-yJ-FIL" userLabel="StreamKeyStack View">
+                                    <rect key="frame" x="0.0" y="108.5" width="260" height="68.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stream Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iue-tW-poU">
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.69803921570000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MgK-92-Vy9">
+                                            <rect key="frame" x="0.0" y="40.5" width="260" height="28"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Stream key" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="loK-gt-JEU">
+                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="17"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="42g-KQ-FtT" userLabel="SeparationView">
+                                                    <rect key="frame" x="0.0" y="27" width="260" height="1"/>
+                                                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="AMm-47-907"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc0-p5-Qpe">
+                            <rect key="frame" x="50" y="350.5" width="220" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="j2V-VV-HXL"/>
+                                <constraint firstAttribute="width" constant="220" id="maA-TQ-JSH"/>
+                            </constraints>
+                            <state key="normal" title="Save" backgroundImage="SaveCustomStreamAdressAndKey"/>
+                            <connections>
+                                <action selector="buttonClickAction:" destination="-1" eventType="touchUpInside" id="IEJ-hq-Exb"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="5dY-Zw-eU8" firstAttribute="centerY" secondItem="8ip-8Y-cVU" secondAttribute="centerY" constant="-30" id="5xi-CS-nTn"/>
+                        <constraint firstItem="5dY-Zw-eU8" firstAttribute="leading" secondItem="8ip-8Y-cVU" secondAttribute="leading" constant="30" id="Lgw-jS-hry"/>
+                        <constraint firstAttribute="trailing" secondItem="5dY-Zw-eU8" secondAttribute="trailing" constant="30" id="daJ-nE-CG3"/>
+                        <constraint firstItem="nc0-p5-Qpe" firstAttribute="centerX" secondItem="8ip-8Y-cVU" secondAttribute="centerX" id="ipW-id-68p"/>
+                        <constraint firstItem="nc0-p5-Qpe" firstAttribute="top" secondItem="5dY-Zw-eU8" secondAttribute="bottom" constant="40" id="iwJ-Da-FLs"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="8ip-8Y-cVU" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="8xD-8P-wvH"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="8ip-8Y-cVU" secondAttribute="trailing" id="SZY-EC-Gkg"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="8ip-8Y-cVU" secondAttribute="bottom" id="kqB-94-9bb"/>
+                <constraint firstItem="8ip-8Y-cVU" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="lz4-xJ-WKQ"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="34" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="SaveCustomStreamAdressAndKey" width="440" height="70"/>
+    </resources>
+</document>

@@ -13,7 +13,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FSStreamViewController">
             <connections>
+                <outlet property="customButtonView" destination="uJq-9F-yfC" id="GUW-Gh-aaw"/>
+                <outlet property="facebookButtonView" destination="JzB-QL-Btg" id="07B-og-raB"/>
+                <outlet property="twitchButtonView" destination="YzX-L9-gut" id="U3A-6d-xkL"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="youtubeButtonView" destination="sMc-b1-C0z" id="YR4-kq-BE4"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -70,11 +74,11 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vOw-jR-Tbe" userLabel="FirstStackView">
                                     <rect key="frame" x="0.0" y="0.0" width="280" height="105.5"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JzB-QL-Btg" userLabel="FacebookView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JzB-QL-Btg" userLabel="FacebookView" customClass="FSPlatformButtonView">
                                             <rect key="frame" x="0.0" y="0.0" width="130" height="105.5"/>
                                             <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMc-b1-C0z" userLabel="YoutubeView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMc-b1-C0z" userLabel="YoutubeView" customClass="FSPlatformButtonView">
                                             <rect key="frame" x="150" y="0.0" width="130" height="105.5"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
@@ -83,11 +87,11 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="XB6-4S-3Ar" userLabel="SecondStack View">
                                     <rect key="frame" x="0.0" y="125.5" width="280" height="105.5"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YzX-L9-gut" userLabel="TwichView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YzX-L9-gut" userLabel="TwichView" customClass="FSPlatformButtonView">
                                             <rect key="frame" x="0.0" y="0.0" width="130" height="105.5"/>
                                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uJq-9F-yfC" userLabel="CustermView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uJq-9F-yfC" userLabel="CustermView" customClass="FSPlatformButtonView">
                                             <rect key="frame" x="150" y="0.0" width="130" height="105.5"/>
                                             <color key="backgroundColor" red="1" green="0.35294117650000001" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>

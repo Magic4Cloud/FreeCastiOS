@@ -49,6 +49,15 @@
 		974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 974041321FBEE09500E23E31 /* LiveView.xcassets */; };
 		9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */; };
 		9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */; };
+		977DB6A91FD64216006A22E1 /* FSStreamPlatformModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6A81FD64216006A22E1 /* FSStreamPlatformModel.m */; };
+		977DB6AD1FD695C3006A22E1 /* FSPlatformCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6AB1FD695C3006A22E1 /* FSPlatformCustomViewController.m */; };
+		977DB6AE1FD695C3006A22E1 /* FSPlatformCustomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */; };
+		977DB6B21FD695D7006A22E1 /* FSPlatformFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */; };
+		977DB6B31FD695D7006A22E1 /* FSPlatformFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */; };
+		977DB6B71FD695E7006A22E1 /* FSPlatformYoutubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */; };
+		977DB6B81FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */; };
+		977DB6C11FD69639006A22E1 /* FSPlatformTwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */; };
+		977DB6C21FD69639006A22E1 /* FSPlatformTwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6C01FD69639006A22E1 /* FSPlatformTwitchViewController.xib */; };
 		9789E6781FC2F03500386902 /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6751FC2F03500386902 /* libWisView.a */; };
 		9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */; };
 		9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E67D1FC30C1D00386902 /* libstdc++.tbd */; };
@@ -130,6 +139,20 @@
 		9741AF641FBDBD6A00D4290D /* FSLiveViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLiveViewViewController.h; sourceTree = "<group>"; };
 		9741AF651FBDBD6A00D4290D /* FSLiveViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLiveViewViewController.m; sourceTree = "<group>"; };
 		9741AF661FBDBD6A00D4290D /* FSLiveViewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSLiveViewViewController.xib; sourceTree = "<group>"; };
+		977DB6A71FD64216006A22E1 /* FSStreamPlatformModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSStreamPlatformModel.h; sourceTree = "<group>"; };
+		977DB6A81FD64216006A22E1 /* FSStreamPlatformModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSStreamPlatformModel.m; sourceTree = "<group>"; };
+		977DB6AA1FD695C3006A22E1 /* FSPlatformCustomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformCustomViewController.h; sourceTree = "<group>"; };
+		977DB6AB1FD695C3006A22E1 /* FSPlatformCustomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformCustomViewController.m; sourceTree = "<group>"; };
+		977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformCustomViewController.xib; sourceTree = "<group>"; };
+		977DB6AF1FD695D7006A22E1 /* FSPlatformFacebookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformFacebookViewController.h; sourceTree = "<group>"; };
+		977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformFacebookViewController.m; sourceTree = "<group>"; };
+		977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformFacebookViewController.xib; sourceTree = "<group>"; };
+		977DB6B41FD695E7006A22E1 /* FSPlatformYoutubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformYoutubeViewController.h; sourceTree = "<group>"; };
+		977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformYoutubeViewController.m; sourceTree = "<group>"; };
+		977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformYoutubeViewController.xib; sourceTree = "<group>"; };
+		977DB6BE1FD69639006A22E1 /* FSPlatformTwitchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformTwitchViewController.h; sourceTree = "<group>"; };
+		977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformTwitchViewController.m; sourceTree = "<group>"; };
+		977DB6C01FD69639006A22E1 /* FSPlatformTwitchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformTwitchViewController.xib; sourceTree = "<group>"; };
 		9789E6741FC2F03500386902 /* EasyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyConfig.h; sourceTree = "<group>"; };
 		9789E6751FC2F03500386902 /* libWisView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWisView.a; sourceTree = "<group>"; };
 		9789E6761FC2F03500386902 /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
@@ -191,6 +214,8 @@
 			children = (
 				9703077C1FCC833D00A9E5EF /* FSAudioInputInfo.h */,
 				9703077D1FCC833D00A9E5EF /* FSAudioInputInfo.m */,
+				977DB6A71FD64216006A22E1 /* FSStreamPlatformModel.h */,
+				977DB6A81FD64216006A22E1 /* FSStreamPlatformModel.m */,
 			);
 			path = Stream;
 			sourceTree = "<group>";
@@ -403,6 +428,18 @@
 				9740412A1FBE86F300E23E31 /* FSStreamViewController.h */,
 				9740412B1FBE86F300E23E31 /* FSStreamViewController.m */,
 				9740412C1FBE86F300E23E31 /* FSStreamViewController.xib */,
+				977DB6AA1FD695C3006A22E1 /* FSPlatformCustomViewController.h */,
+				977DB6AB1FD695C3006A22E1 /* FSPlatformCustomViewController.m */,
+				977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */,
+				977DB6AF1FD695D7006A22E1 /* FSPlatformFacebookViewController.h */,
+				977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */,
+				977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */,
+				977DB6B41FD695E7006A22E1 /* FSPlatformYoutubeViewController.h */,
+				977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */,
+				977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */,
+				977DB6BE1FD69639006A22E1 /* FSPlatformTwitchViewController.h */,
+				977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */,
+				977DB6C01FD69639006A22E1 /* FSPlatformTwitchViewController.xib */,
 			);
 			path = Stream;
 			sourceTree = "<group>";
@@ -592,7 +629,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				97328EB71FB3FB34005FC554 /* Localizable.strings in Resources */,
+				977DB6C21FD69639006A22E1 /* FSPlatformTwitchViewController.xib in Resources */,
 				97328EB21FB3F738005FC554 /* FSLeftSideMenuViewController.xib in Resources */,
+				977DB6B81FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib in Resources */,
 				97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */,
 				97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */,
 				97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */,
@@ -602,6 +641,8 @@
 				9740412E1FBE86F300E23E31 /* FSStreamViewController.xib in Resources */,
 				974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */,
 				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
+				977DB6AE1FD695C3006A22E1 /* FSPlatformCustomViewController.xib in Resources */,
+				977DB6B31FD695D7006A22E1 /* FSPlatformFacebookViewController.xib in Resources */,
 				9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */,
 				973FC9411FD133AE00C57F33 /* Stream.xcassets in Resources */,
 				97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */,
@@ -682,13 +723,18 @@
 				9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */,
 				97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */,
 				9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */,
+				977DB6C11FD69639006A22E1 /* FSPlatformTwitchViewController.m in Sources */,
 				97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */,
 				97328EA71FB3F586005FC554 /* FSNavigationViewController+StatusBar.m in Sources */,
 				9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */,
 				97E6ADCA1FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m in Sources */,
+				977DB6A91FD64216006A22E1 /* FSStreamPlatformModel.m in Sources */,
+				977DB6B71FD695E7006A22E1 /* FSPlatformYoutubeViewController.m in Sources */,
+				977DB6AD1FD695C3006A22E1 /* FSPlatformCustomViewController.m in Sources */,
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
+				977DB6B21FD695D7006A22E1 /* FSPlatformFacebookViewController.m in Sources */,
 				973FC9481FD142DB00C57F33 /* FSPlatformButtonView.m in Sources */,
 				97328ECD1FB4382C005FC554 /* FSHomePageButtonView.m in Sources */,
 				970307771FCC80E300A9E5EF /* CoreStore+App.m in Sources */,

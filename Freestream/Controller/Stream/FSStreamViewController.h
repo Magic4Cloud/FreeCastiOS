@@ -9,5 +9,5 @@
 #import "FSBaseViewController.h"
 
 @interface FSStreamViewController : FSBaseViewController
-
+@property (nonatomic,assign) BOOL  isPressented;
 @end
