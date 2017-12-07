@@ -20,7 +20,7 @@
 }
 
 - (NSArray<FSStreamPlatformModel *> *)streamPlatformModels {
-    NSArray <FSStreamPlatformModel *> *streamPlatformModels = [self jsonDataForKey:APP_STREAM_PLATFORM_MODELS type:[FSStreamPlatformModel class]];
+    NSArray <FSStreamPlatformModel *> *streamPlatformModels = [self jsonArrayForKey:APP_STREAM_PLATFORM_MODELS type:[FSStreamPlatformModel class]];
     return streamPlatformModels;
 }
 //

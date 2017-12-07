@@ -7,11 +7,11 @@
 //
 
 #import "FSPlatformButtonView.h"
-
+#import "CommonAppHeader.h"
 @interface FSPlatformButtonView()
 
-@property (weak, nonatomic) IBOutlet UIView   *contentBgView;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIView      *contentBgView;
+@property (weak, nonatomic) IBOutlet UIButton    *editButton;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
@@ -26,30 +26,10 @@
 
 - (void)setModel:(FSStreamPlatformModel *)model {
     _model = model;
-    [self updateUIWithModel];
+    [self updateUIWhileDataSoureceChange];
 }
 
-- (void)setButtonDisselected {
-    switch (self.model.buttonStatus) {
-        case FSStreamPlatformButtonStatusNormal: {
-            self.model.buttonStatus = FSStreamPlatformButtonStatusNormal;
-        }
-            break;
-        case FSStreamPlatformButtonStatusSelected: {
-            self.model.buttonStatus = FSStreamPlatformButtonStatusActivation;
-        }
-            break;
-        case FSStreamPlatformButtonStatusActivation: {
-            self.model.buttonStatus = FSStreamPlatformButtonStatusActivation;
-        }
-            break;
-        default:
-            break;
-    }
-    [self updateUIWithModel];
-}
-
-- (void)updateUIWithModel {
+- (void)updateUIWhileDataSoureceChange {
     switch (self.model.buttonStatus) {
         case FSStreamPlatformButtonStatusNormal: {
             self.imageView.image = [UIImage imageNamed:self.model.normalImageName];
@@ -58,7 +38,7 @@
         }break;
         case FSStreamPlatformButtonStatusSelected: {
             self.imageView.image = [UIImage imageNamed:self.model.highlightedImageName];
-            self.contentBgView.backgroundColor = [UIColor blueColor];
+            self.contentBgView.backgroundColor = [UIColor FSPlatformButtonSelectedBackgroundColor];
             self.editButton.hidden = NO;
         }break;
         case FSStreamPlatformButtonStatusActivation: {
@@ -76,7 +56,6 @@
         self.goConfigureStreamAdressBlock(self.model.streamPlatform);
     }
 }
-
 
 - (void)tapAction {
     switch (self.model.buttonStatus) {

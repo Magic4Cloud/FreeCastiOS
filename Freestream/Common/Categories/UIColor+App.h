@@ -17,4 +17,6 @@
 + (CGColorRef)FSLeftBgColor1;
 
 + (CGColorRef)FSLeftBgColor2;
+
++ (UIColor *)FSPlatformButtonSelectedBackgroundColor;
 @end

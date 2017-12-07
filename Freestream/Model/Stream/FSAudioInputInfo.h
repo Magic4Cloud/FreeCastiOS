@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Cloud4Magic. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <M4CoreFoundation/M4CoreFoundation.h>
 
 typedef NS_ENUM(NSInteger, FSAudioInputMode) {//Audio输出方式
     FSAudioInputModeNoAudio = 0,        //无声音
@@ -15,6 +15,6 @@ typedef NS_ENUM(NSInteger, FSAudioInputMode) {//Audio输出方式
     FSAudioInputModeInternalAudio,      //无声音,做App内部判断
 };
 
-@interface FSAudioInputInfo : NSObject
+@interface FSAudioInputInfo : ModelBaseClass
 
 @end

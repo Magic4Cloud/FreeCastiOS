@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupUI];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -51,6 +51,7 @@
         [self.navigationController setNavigationBarHidden:YES];
     }
     [self requestDataSource];
+    [self setupUI];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -58,7 +59,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self saveModelsToLocal];
     [super viewWillDisappear:animated];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -83,6 +86,9 @@
 
 - (void)requestDataSource {
     self.platformModelsArray = [CoreStore sharedStore].streamPlatformModels.mutableCopy;
+    for (FSStreamPlatformModel *model in self.platformModelsArray) {
+        NSLog(@"--------------model.streamPlatform = --%ld",model.streamPlatform);
+    }
 }
 
 #pragma mark – Private methods
@@ -105,55 +111,70 @@
     WEAK(self);
     
     self.facebookButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
-        
+        [weakself saveModelsToLocal];
     };
     self.youtubeButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
-        
+        [weakself saveModelsToLocal];
     };
     self.twitchButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
-        
+        [weakself saveModelsToLocal];
     };
     self.customButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
+        
+        [weakself saveModelsToLocal];
         FSPlatformCustomViewController *customVC = [[FSPlatformCustomViewController alloc] init];
         [weakself.navigationController pushViewController:customVC animated:YES];
     };
 //
     self.facebookButtonView.selectStreamPlatformBlock = ^(FSStreamPlatform streamPlatform) {
         weakself.facebookButtonView.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
-        [weakself.youtubeButtonView setButtonDisselected];
-        [weakself.twitchButtonView setButtonDisselected];
-        [weakself.customButtonView setButtonDisselected];
+//        [weakself.youtubeButtonView setButtonDisselected];
+//        [weakself.twitchButtonView setButtonDisselected];
+//        [weakself.customButtonView setButtonDisselected];
     };
     self.youtubeButtonView.selectStreamPlatformBlock = ^(FSStreamPlatform streamPlatform) {
         weakself.youtubeButtonView.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
-        [weakself.facebookButtonView setButtonDisselected];
-        [weakself.twitchButtonView setButtonDisselected];
-        [weakself.customButtonView setButtonDisselected];
+//        [weakself.facebookButtonView setButtonDisselected];
+//        [weakself.twitchButtonView setButtonDisselected];
+//        [weakself.customButtonView setButtonDisselected];
     };
     self.twitchButtonView.selectStreamPlatformBlock = ^(FSStreamPlatform streamPlatform) {
         weakself.twitchButtonView.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
-        [weakself.facebookButtonView setButtonDisselected];
-        [weakself.youtubeButtonView setButtonDisselected];
-        [weakself.customButtonView setButtonDisselected];
+//        [weakself.facebookButtonView setButtonDisselected];
+//        [weakself.youtubeButtonView setButtonDisselected];
+//        [weakself.customButtonView setButtonDisselected];
     };
     self.customButtonView.selectStreamPlatformBlock = ^(FSStreamPlatform streamPlatform) {
         weakself.customButtonView.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
-        [weakself.facebookButtonView setButtonDisselected];
-        [weakself.youtubeButtonView setButtonDisselected];
-        [weakself.twitchButtonView setButtonDisselected];
+//        [weakself.facebookButtonView setButtonDisselected];
+//        [weakself.youtubeButtonView setButtonDisselected];
+//        [weakself.twitchButtonView setButtonDisselected];
     };
     
+}
+
+- (void)updatePlatformUI {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.facebookButtonView updateUIWhileDataSoureceChange];
+        [self.youtubeButtonView  updateUIWhileDataSoureceChange];
+        [self.twitchButtonView   updateUIWhileDataSoureceChange];
+        [self.customButtonView   updateUIWhileDataSoureceChange];
+    });
 }
 
 #pragma mark – Target action methods
 
 - (IBAction)backButtonClicked:(UIButton *)sender {
-    
     if (self.isPressented) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (void)saveModelsToLocal {
+    [CoreStore sharedStore].streamPlatformModels = @[self.facebookButtonView.model,self.youtubeButtonView.model,self.twitchButtonView.model,self.customButtonView.model].copy;
 }
 
 #pragma mark - IBActions

@@ -25,4 +25,10 @@
 + (CGColorRef)FSLeftBgColor2 {
     return CORE_RGBACOLOR(29, 27, 27, 1).CGColor;
 }
+
++ (UIColor *)FSPlatformButtonSelectedBackgroundColor {
+    return CORE_RGBCOLOR(0, 178, 225);
+}
+
+
 @end

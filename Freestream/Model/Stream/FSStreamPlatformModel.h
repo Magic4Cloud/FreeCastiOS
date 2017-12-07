@@ -6,13 +6,13 @@
 //  Copyright © 2017年 Cloud4Magic. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <M4CoreFoundation/M4CoreFoundation.h>
 
 typedef NS_ENUM(NSInteger, FSStreamPlatform) {
     FSStreamPlatformFaceBook = 0,
-    FSStreamPlatformYouTube,
-    FSStreamPlatformTwitch,
-    FSStreamPlatformCustom,
+    FSStreamPlatformYouTube = 1,
+    FSStreamPlatformTwitch = 2,
+    FSStreamPlatformCustom = 3,
 };
 
 typedef NS_ENUM(NSInteger, FSStreamPlatformButtonStatus) {
@@ -21,9 +21,9 @@ typedef NS_ENUM(NSInteger, FSStreamPlatformButtonStatus) {
     FSStreamPlatformButtonStatusActivation = 2,
 };
 
-@interface FSStreamPlatformModel : NSObject
+@interface FSStreamPlatformModel : ModelBaseClass
 
-@property (nonatomic,assign,readonly) FSStreamPlatform             streamPlatform;
+@property (nonatomic,assign)          FSStreamPlatform             streamPlatform;
 @property (nonatomic,assign)          FSStreamPlatformButtonStatus buttonStatus;
 @property (nonatomic,assign)          BOOL                         streamKayBeUsed;
 @property (nonatomic,copy)            NSString                     *streamAdress;
@@ -35,11 +35,6 @@ typedef NS_ENUM(NSInteger, FSStreamPlatformButtonStatus) {
 
 - (instancetype)initWithStreamPlatform:(FSStreamPlatform)streamPlatform;
 
-//- (NSString *)getNormalImageNameWithStreamPlatform:(FSStreamPlatform)streamPlatform;
-//- (NSString *)getHighlightedImageNameWithStreamPlatform:(FSStreamPlatform)streamPlatform;
-//- (NSString *)getActivationImageNameWithStreamPlatform:(FSStreamPlatform)streamPlatform;
-
-//@property (nonatomic,assign) BOOL                           canBeSelected;
-//@property (nonatomic,assign) BOOL                           selected;
+- (void)deselected;
 
 @end

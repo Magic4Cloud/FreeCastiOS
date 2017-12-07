@@ -18,9 +18,11 @@
 
 //URLS
 #import "FSDeviceConfigureAPIRESTfulService.h"
-
+//Views
 #import "WisView.h"
-
+#import "FSLiveViewStatusView.h"
+//Models
+#import "FSLiveViewModel.h"
 //检测流量用
 #import <ifaddrs.h>
 #import <net/if.h>
@@ -45,7 +47,7 @@ static NSInteger const searchDurationMax = 8;
 @property (weak, nonatomic) IBOutlet UIView *topBgView;
 @property (weak, nonatomic) IBOutlet UIImageView *wifiImageView;
 @property (weak, nonatomic) IBOutlet UILabel *wifiNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet FSLiveViewStatusView *statusView;
 @property (weak, nonatomic) IBOutlet UIImageView *audioModelImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *powerStatusImageView;
 
@@ -87,6 +89,10 @@ static NSInteger const searchDurationMax = 8;
 
 @property (nonatomic,strong) UITapGestureRecognizer *contentViewTapGesture;
 @property (nonatomic,strong) UITapGestureRecognizer *videoViewTapGesture;
+
+@property (nonatomic,  copy) NSString         *streamUrl;
+@property (nonatomic,  copy) NSString         *streamKey;
+
 @end
 
 @implementation FSLiveViewViewController
@@ -182,6 +188,7 @@ static NSInteger const searchDurationMax = 8;
 - (void)userInterfaceSettings {
     [self hidenCenterViews];
     [self.contentView addGestureRecognizer:self.contentViewTapGesture];
+    [self updatePlatformConfigure];
 }
 
 - (void)addApplicationActiveNotifications {
@@ -195,6 +202,15 @@ static NSInteger const searchDurationMax = 8;
     self.increaseSearchDuration = 5;
     self.isExit = NO;
     self.isPushVC = NO;
+}
+
+- (void)updatePlatformConfigure {
+    FSStreamPlatformModel *model = [FSLiveViewModel getCurrentSelectedPlatformModel];
+    if (model) {
+        self.streamUrl = model.streamAdress;
+        self.streamKey = model.streamKey;
+        [self.platformButton setImage:[UIImage imageNamed:[FSLiveViewModel getSelectedPlatformImageNameWithPlatformModel:model]] forState:UIControlStateNormal];
+    }
 }
 
 - (void)updateUI {
@@ -698,6 +714,7 @@ static NSInteger const searchDurationMax = 8;
 
 - (void)applicationEnterBackground {
     //    [self closeLivingSession];
+    [self.session stopLive];
     [self videoViewStop];
     //    如果正在录像的话需要保存并停止
     NSLog(@"----------进入后台");
@@ -811,26 +828,51 @@ static NSInteger const searchDurationMax = 8;
 }
 
 - (IBAction)recordButtonDidClicked:(UIButton *)sender {
+    
 }
 
 - (IBAction)streamButtonDidClicked:(UIButton *)sender {
+    
+    if (self.statusView.streamStatus == FSLiveViewStreamStatusNormal) {
+        LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
+        streamInfo.url = [NSString stringWithFormat:@"%@/%@",self.streamUrl,self.streamKey];
+        NSLog(@"--------streamInfo.url = %@--------",streamInfo.url);
+        
+        [self.session startLive:streamInfo];
+        
+        [sender setImage:[UIImage imageNamed:@"icon_stream_stop_nor"] forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"icon_stream_stop_pre"] forState:UIControlStateHighlighted];
+        self.liveStopButton.hidden = NO;
+    } else {
+        [self liveStopButtonDidClicked:self.liveStopButton];
+    }
 }
 
 - (IBAction)browserButtonDidClicked:(UIButton *)sender {
+    self.isPushVC = YES;
+//    streamVC.isPressented = YES;
 }
 
 - (IBAction)configureButtonDidClicked:(UIButton *)sender {
+    self.isPushVC = YES;
+//    streamVC.isPressented = YES;
+    
 }
 
 - (IBAction)platformButtonDidClicked:(UIButton *)sender {
-}
-
-- (IBAction)pushVC:(UIButton *)sender {
     self.isPushVC = YES;
+    
     FSStreamViewController *streamVC = [[FSStreamViewController alloc] init];
     streamVC.isPressented = YES;
     FSNavigationViewController *navi = [[FSNavigationViewController alloc] initWithRootViewController:streamVC];
     [self presentViewController:navi animated:YES completion:nil];
+}
+
+- (IBAction)liveStopButtonDidClicked:(UIButton *)sender {
+    [self.streamButton setImage:[UIImage imageNamed:@"icon_stream_normal_nor"] forState:UIControlStateNormal];
+    [self.streamButton setImage:[UIImage imageNamed:@"icon_stream_normal_pre"] forState:UIControlStateHighlighted];
+    self.liveStopButton.hidden = YES;
+    [self.session stopLive];
 }
 
 #pragma mark – Public methods
@@ -882,18 +924,28 @@ static NSInteger const searchDurationMax = 8;
     switch (state) {
         case LFLiveReady:
             NSLog(@"----------------ready");
+            self.isLiving = NO;
+            self.statusView.streamStatus = FSLiveViewStreamStatusNormal;
             break;
         case LFLivePending:
             NSLog(@"----------------pending...");
+            self.isLiving = YES;
+            self.statusView.streamStatus = FSLiveViewStreamStatusPending;
             break;
         case LFLiveStart:
+            self.isLiving = YES;
+            self.statusView.streamStatus = FSLiveViewStreamStatusLiveStart;
             NSLog(@"----------------livestart");
             break;
         case LFLiveRefresh:
             NSLog(@"----------------refresh!!!");
+            self.isLiving = NO;
+            self.statusView.streamStatus = FSLiveViewStreamStatusNormal;
             break;
         case LFLiveStop:
             NSLog(@"----------------stop!");
+            self.isLiving = NO;
+            self.statusView.streamStatus = FSLiveViewStreamStatusNormal;
             break;
             
         default:

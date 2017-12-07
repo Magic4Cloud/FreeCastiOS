@@ -44,16 +44,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wUe-W1-zqL" userLabel="ContentView">
                     <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idi-Tw-Poj">
-                            <rect key="frame" x="633" y="68" width="103" height="49"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="push">
-                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="pushVC:" destination="-1" eventType="touchUpInside" id="7qD-7R-gwM"/>
-                            </connections>
-                        </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="nDC-GK-rlr" userLabel="logoCenterImageView">
                             <rect key="frame" x="338" y="157" width="60" height="60"/>
                             <constraints>
@@ -74,6 +64,9 @@
                                 <constraint firstAttribute="width" constant="50" id="zLg-IN-0SY"/>
                             </constraints>
                             <state key="normal" image="pause_live_nor"/>
+                            <connections>
+                                <action selector="liveStopButtonDidClicked:" destination="-1" eventType="touchUpInside" id="6Si-HW-YsP"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -96,36 +89,16 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No wireless LAN connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ze-yt-du3">
-                            <rect key="frame" x="92.666666666666686" y="24" width="241" height="16"/>
+                            <rect key="frame" x="92.666666666666671" y="24" width="240.66666666666663" height="16"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.70196078429999997" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="haR-nC-Pwh" userLabel="StatusView">
-                            <rect key="frame" x="333.66666666666669" y="24.666666666666671" width="69.333333333333314" height="16"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live_stream_normal" translatesAutoresizingMaskIntoConstraints="NO" id="T6h-ji-vCu" userLabel="PointStatus">
-                                    <rect key="frame" x="0.33333333333331439" y="0.0" width="16" height="16"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="T6h-ji-vCu" secondAttribute="height" id="VTO-uP-EDn"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Live" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBr-Os-9Qq">
-                                    <rect key="frame" x="16.333333333333318" y="-2" width="53.333333333333343" height="16"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="haR-nC-Pwh" userLabel="StatusView" customClass="FSLiveViewStatusView">
+                            <rect key="frame" x="333.33333333333331" y="24.666666666666671" width="70" height="16"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="T6h-ji-vCu" firstAttribute="top" secondItem="haR-nC-Pwh" secondAttribute="top" id="LfO-XB-l60"/>
-                                <constraint firstItem="pBr-Os-9Qq" firstAttribute="top" secondItem="haR-nC-Pwh" secondAttribute="top" constant="-2" id="RSi-9s-y23"/>
-                                <constraint firstItem="pBr-Os-9Qq" firstAttribute="leading" secondItem="T6h-ji-vCu" secondAttribute="trailing" id="RcZ-RF-ycJ"/>
-                                <constraint firstAttribute="bottom" secondItem="pBr-Os-9Qq" secondAttribute="bottom" constant="2" id="TcG-mf-kNt"/>
-                                <constraint firstItem="T6h-ji-vCu" firstAttribute="leading" secondItem="haR-nC-Pwh" secondAttribute="leading" id="YMx-YB-k6v"/>
-                                <constraint firstAttribute="bottom" secondItem="T6h-ji-vCu" secondAttribute="bottom" id="lzL-sS-s3z"/>
-                                <constraint firstAttribute="trailing" secondItem="pBr-Os-9Qq" secondAttribute="trailing" id="rGt-Ek-sdu"/>
+                                <constraint firstAttribute="width" constant="70" id="bLS-o4-9rM"/>
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="audio_mode_1" translatesAutoresizingMaskIntoConstraints="NO" id="QWa-TD-0b0" userLabel="AudioModelImageView">
@@ -311,7 +284,6 @@
         <image name="icon_record_normal_pre" width="49" height="49"/>
         <image name="icon_stream_normal_nor" width="50" height="50"/>
         <image name="icon_stream_normal_pre" width="50" height="50"/>
-        <image name="live_stream_normal" width="54" height="51"/>
         <image name="logo" width="70" height="70"/>
         <image name="nav_btn_back_nor" width="23" height="23"/>
         <image name="pause_live_nor" width="44" height="44"/>

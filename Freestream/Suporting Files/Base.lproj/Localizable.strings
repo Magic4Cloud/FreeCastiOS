@@ -27,6 +27,7 @@
 "No wireless LAN connection" = "No wireless LAN connection";
 "On live"                    = "On live";
 "Not live"                   = "Not live";
+"Pending"                    = "Pending";
 "NoResultAlert"              = "No search for equipment, whether to continue searching or using a mobile phone camera？";
 "Continue Search"            = "Continue Search";
 "Use iPhone Camera"          = "Use iPhone Camera";
@@ -39,7 +40,10 @@
 //************************** Stream **************************
 "Custom"                     = "Custom";
 "CustomUrlFillError"         = "Please fill in the correct Url or key";
+"Reset"                      = "Reset";
+"Save"                       = "Save";
 "SaveSuccess"                = "Save Success!";
+
 //************************** Configure **************************
 
 

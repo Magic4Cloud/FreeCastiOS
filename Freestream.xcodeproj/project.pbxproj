@@ -64,6 +64,9 @@
 		9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */; };
 		9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E67D1FC30C1D00386902 /* libstdc++.tbd */; };
 		9789E6861FC30C9700386902 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6851FC30C9700386902 /* libiconv.tbd */; };
+		97E2B0651FD91B5400426464 /* FSLiveViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E2B0641FD91B5400426464 /* FSLiveViewModel.m */; };
+		97E2B0691FD9269E00426464 /* FSLiveViewStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E2B0681FD9269E00426464 /* FSLiveViewStatusView.m */; };
+		97E2B06B1FD926AB00426464 /* FSLiveViewStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97E2B06A1FD926AB00426464 /* FSLiveViewStatusView.xib */; };
 		97E6ADCA1FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6ADC91FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +173,11 @@
 		9789E6811FC30C5400386902 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		9789E6831FC30C7600386902 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9789E6851FC30C9700386902 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		97E2B0631FD91B5400426464 /* FSLiveViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLiveViewModel.h; sourceTree = "<group>"; };
+		97E2B0641FD91B5400426464 /* FSLiveViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLiveViewModel.m; sourceTree = "<group>"; };
+		97E2B0671FD9269E00426464 /* FSLiveViewStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSLiveViewStatusView.h; sourceTree = "<group>"; };
+		97E2B0681FD9269E00426464 /* FSLiveViewStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSLiveViewStatusView.m; sourceTree = "<group>"; };
+		97E2B06A1FD926AB00426464 /* FSLiveViewStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSLiveViewStatusView.xib; sourceTree = "<group>"; };
 		97E6ADC81FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDeviceConfigureAPIRESTfulService.h; sourceTree = "<group>"; };
 		97E6ADC91FC6741B0047C882 /* FSDeviceConfigureAPIRESTfulService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDeviceConfigureAPIRESTfulService.m; sourceTree = "<group>"; };
 		EEAFE4D793E61A9D8D7D21ED /* Pods-Freestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freestream/Pods-Freestream.debug.xcconfig"; sourceTree = "<group>"; };
@@ -287,6 +295,7 @@
 		97328E8A1FB3313B005FC554 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				97E2B0661FD9266700426464 /* Live View */,
 				973FC9421FD13E7500C57F33 /* Stream */,
 				97328ECA1FB437CB005FC554 /* Home */,
 				97328EBF1FB43336005FC554 /* LeftSide */,
@@ -297,6 +306,7 @@
 		97328E8B1FB33142005FC554 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97E2B0621FD91AE300426464 /* Live View */,
 				9703077F1FCC839700A9E5EF /* Configure */,
 				970307781FCC818200A9E5EF /* Stream */,
 				97328EEE1FB59834005FC554 /* LeftSide */,
@@ -575,6 +585,25 @@
 			path = SearchManager;
 			sourceTree = "<group>";
 		};
+		97E2B0621FD91AE300426464 /* Live View */ = {
+			isa = PBXGroup;
+			children = (
+				97E2B0631FD91B5400426464 /* FSLiveViewModel.h */,
+				97E2B0641FD91B5400426464 /* FSLiveViewModel.m */,
+			);
+			path = "Live View";
+			sourceTree = "<group>";
+		};
+		97E2B0661FD9266700426464 /* Live View */ = {
+			isa = PBXGroup;
+			children = (
+				97E2B0671FD9269E00426464 /* FSLiveViewStatusView.h */,
+				97E2B0681FD9269E00426464 /* FSLiveViewStatusView.m */,
+				97E2B06A1FD926AB00426464 /* FSLiveViewStatusView.xib */,
+			);
+			path = "Live View";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -645,6 +674,7 @@
 				97328ED71FB44FE0005FC554 /* Home.xcassets in Resources */,
 				97328E7D1FB32AA3005FC554 /* App.xcassets in Resources */,
 				97328EDD1FB577CE005FC554 /* FSTextViewController.xib in Resources */,
+				97E2B06B1FD926AB00426464 /* FSLiveViewStatusView.xib in Resources */,
 				97328ECF1FB4383A005FC554 /* FSHomePageButtonView.xib in Resources */,
 				973FC94A1FD142FE00C57F33 /* FSPlatformButtonView.xib in Resources */,
 				97328E981FB3F333005FC554 /* Base.xcassets in Resources */,
@@ -743,6 +773,7 @@
 				977DB6A91FD64216006A22E1 /* FSStreamPlatformModel.m in Sources */,
 				977DB6B71FD695E7006A22E1 /* FSPlatformYoutubeViewController.m in Sources */,
 				977DB6AD1FD695C3006A22E1 /* FSPlatformCustomViewController.m in Sources */,
+				97E2B0691FD9269E00426464 /* FSLiveViewStatusView.m in Sources */,
 				97328EF11FB59869005FC554 /* FSLeftSideModel.m in Sources */,
 				97328E751FB32AA3005FC554 /* AppDelegate.m in Sources */,
 				97328EC31FB43374005FC554 /* FSLeftSideTableViewCell.m in Sources */,
@@ -753,6 +784,7 @@
 				970307881FCC883C00A9E5EF /* FSBaseViewController+AlertController.m in Sources */,
 				97328EA41FB3F537005FC554 /* FSNavigationViewController.m in Sources */,
 				970307851FCC871300A9E5EF /* FSBaseViewController+WifiInfo.m in Sources */,
+				97E2B0651FD91B5400426464 /* FSLiveViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

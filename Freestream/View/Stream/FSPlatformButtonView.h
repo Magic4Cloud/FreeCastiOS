@@ -10,16 +10,14 @@
 #import "FSStreamPlatformModel.h"
 
 typedef void(^GotoConfigureStreamAdressBlock)(FSStreamPlatform streamPlatform);
-typedef void(^SelectStreamPlatformBlock)(FSStreamPlatform streamPlatform);
+typedef void(^SelectStreamPlatformBlock)     (FSStreamPlatform streamPlatform);
+
 @interface FSPlatformButtonView : CoreDesignableXibUIView
 
 @property (nonatomic,strong) FSStreamPlatformModel          *model;
-//@property (nonatomic,assign) FSStreamPlatformButtonStatus   buttonStatus;
-//@property (nonatomic,assign) BOOL                           canBeSelected;
-//@property (nonatomic,assign) FSStreamPlatform               streamPlatform;
 
 @property (nonatomic,copy  ) GotoConfigureStreamAdressBlock goConfigureStreamAdressBlock;
 @property (nonatomic,copy  ) SelectStreamPlatformBlock      selectStreamPlatformBlock;
 
-- (void)setButtonDisselected;
+- (void)updateUIWhileDataSoureceChange;
 @end

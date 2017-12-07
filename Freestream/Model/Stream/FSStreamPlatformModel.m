@@ -18,6 +18,9 @@
         _streamKey = @"";
         _streamAdress = @"";
         _streamKayBeUsed = NO;
+        _normalImageName = [self getActivationImageNameWithStreamPlatform:_streamPlatform];
+        _highlightedImageName = [self getHighlightedImageNameWithStreamPlatform:_streamPlatform];
+        _activationImageName = [self getNormalImageNameWithStreamPlatform:_streamPlatform];
     }
     return self;
 }
@@ -62,6 +65,25 @@
                                   @"button_custom_act"];
     //    NSInteger idx = ;activation
     return activationImageNames[streamPlatform];
+}
+
+- (void)deselected {
+    switch (self.buttonStatus) {
+        case FSStreamPlatformButtonStatusNormal: {
+            self.buttonStatus = FSStreamPlatformButtonStatusNormal;
+        }
+            break;
+        case FSStreamPlatformButtonStatusSelected: {
+            self.buttonStatus = FSStreamPlatformButtonStatusActivation;
+        }
+            break;
+        case FSStreamPlatformButtonStatusActivation: {
+            self.buttonStatus = FSStreamPlatformButtonStatusActivation;
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end

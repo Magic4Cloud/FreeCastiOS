@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Cloud4Magic. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <M4CoreFoundation/M4CoreFoundation.h>
 
 typedef NS_ENUM(NSInteger, FSResolution) {
     FSResolution480P  = 0,
@@ -14,6 +14,6 @@ typedef NS_ENUM(NSInteger, FSResolution) {
     FSResolution1080P = 2,
 };
 
-@interface FSDeviceConfigureInfo : NSObject
+@interface FSDeviceConfigureInfo : ModelBaseClass
 
 @end

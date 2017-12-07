@@ -10,6 +10,7 @@
 #import "FSAudioInputInfo.h"
 #import "FSDeviceConfigureInfo.h"
 #import "FSStreamPlatformModel.h"
+
 //typedef NS_ENUM(NSInteger, FSSubtitleTypeSelected) {
 //    FSSubtitleTypeSelectedNone = 0,
 //    FSSubtitleTypeSelectedFix,

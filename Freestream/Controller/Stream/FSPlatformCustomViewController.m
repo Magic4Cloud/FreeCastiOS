@@ -11,18 +11,17 @@
 
 @interface FSPlatformCustomViewController ()<UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField    *streamAddressTextField;
-@property (weak, nonatomic) IBOutlet UITextField    *streamKeyTextField;
-@property (weak, nonatomic) IBOutlet UIButton       *saveButton;
-@property (weak, nonatomic) IBOutlet UIView         *contentView;
+@property (weak, nonatomic) IBOutlet UITextField                      *streamAddressTextField;
+@property (weak, nonatomic) IBOutlet UITextField                      *streamKeyTextField;
+@property (weak, nonatomic) IBOutlet UIButton                         *saveButton;
+@property (weak, nonatomic) IBOutlet UIView                           *contentView;
 
-@property (nonatomic,strong) UITapGestureRecognizer *tapGesture;
-@property (nonatomic,assign) CGFloat                keyboardHeight;
+@property (nonatomic,strong) UITapGestureRecognizer                   *tapGesture;
+@property (nonatomic,assign) CGFloat                                  keyboardHeight;
 
-@property (nonatomic,assign) CGFloat                buttonBottomToSuperView;
+@property (nonatomic,assign) CGFloat                                  buttonBottomToSuperView;
 
-@property (nonatomic,strong) FSStreamPlatformModel  *model;
-@property (nonatomic,strong) NSMutableArray <FSStreamPlatformModel *>*modelsArray;
+@property (nonatomic,strong) NSMutableArray <FSStreamPlatformModel *> *modelsArray;
 
 @end
 
@@ -94,15 +93,13 @@
     self.modelsArray = [CoreStore sharedStore].streamPlatformModels.mutableCopy;
     for (FSStreamPlatformModel * model in self.modelsArray) {
         if (model.streamPlatform == FSStreamPlatformCustom) {
-            self.model = model;
+            self.streamKeyTextField.text = model.streamKey;
+            self.streamAddressTextField.text = model.streamAdress;
+            
+            if(model.streamKey.length > 0 && model.streamAdress.length >0 ){
+                [self.saveButton setTitle:NSLocalizedString(@"Reset", nil) forState:UIControlStateNormal];
+            }
         }
-    }
-    if (!self.model) {
-        self.model = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformCustom];
-    } else {
-        self.streamKeyTextField.text = self.model.streamKey;
-        self.streamAddressTextField.text = self.model.streamAdress;
-        [self.saveButton setTitle:@"Reset" forState:UIControlStateNormal];
     }
 }
 
@@ -120,22 +117,19 @@
                                                   object:nil];
 }
 
-- (void)keyBoardChange:(NSNotification *)note
-{
-    //获取键盘弹出或收回时frame
-    CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+- (void)keyBoardChange:(NSNotification *)note {
     
-    //获取键盘弹出所需时长
+    CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+
     float duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
-    //添加弹出动画
     if (keyboardFrame.origin.y == SCREENHEIGHT) {
-        [UIView animateWithDuration:duration animations:^{//收起
+        [UIView animateWithDuration:duration animations:^{//收起动画
             self.contentView.transform = CGAffineTransformIdentity;
             self.tapGesture.enabled = NO;
         }];
     } else {
-        [UIView animateWithDuration:duration animations:^{//弹出
+        [UIView animateWithDuration:duration animations:^{//弹出动画
             self.contentView.transform = CGAffineTransformMakeTranslation(0, -ABS(keyboardFrame.origin.y - self.buttonBottomToSuperView));
             self.tapGesture.enabled = YES;
         }];
@@ -143,7 +137,7 @@
 }
 
 - (void)dismissKeyboardActions {
-
+    
     [self tryDismissKeyborad:self.streamAddressTextField];
     [self tryDismissKeyborad:self.streamKeyTextField];    
 }
@@ -158,13 +152,18 @@
 
 #pragma mark – Target action methods
 
+
+#pragma mark - IBActions
+
 - (IBAction)buttonClickAction:(UIButton *)sender {
+    
     [self dismissKeyboardActions];
-    if ([sender.currentTitle isEqualToString:@"Reset"]) {
+    
+    if ([sender.currentTitle isEqualToString:NSLocalizedString(@"Reset", nil)]) {
         self.streamAddressTextField.text = @"";
         self.streamKeyTextField.text = @"";
-        [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    } else if ([sender.currentTitle isEqualToString:@"Save"]) {
+        [self.saveButton setTitle:NSLocalizedString(@"Save", nil) forState:UIControlStateNormal];
+    } else if ([sender.currentTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
         
         NSString * streamUrl = self.streamAddressTextField.text;
         NSString * streamKey = self.streamKeyTextField.text;
@@ -184,30 +183,24 @@
             return;
         }
         
-        self.model.streamAdress = streamUrl;
-        self.model.streamKey = streamKey;
-        self.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
-        NSInteger idx = -1;
         for (FSStreamPlatformModel * model in self.modelsArray) {
             if (model.streamPlatform == FSStreamPlatformCustom) {
-               idx = [self.modelsArray indexOfObject:model];
+                model.buttonStatus = FSStreamPlatformButtonStatusSelected;
+                model.streamKey    = streamKey;
+                model.streamAdress = streamUrl;
+            } else {
+                [model deselected];
             }
         }
         
-        if (idx > -1) {
-            [self.modelsArray replaceObjectAtIndex:idx withObject:self.model];
-        } else {
-            [self.modelsArray addObject:self.model];
-        }
-        
         [CoreStore sharedStore].streamPlatformModels = self.modelsArray;
-        
         [self showHudMessage:NSLocalizedString(@"SaveSuccess", nil)];
+        
+#warning ...wait remove...
+        NSArray<FSStreamPlatformModel *> * array = [CoreStore sharedStore].streamPlatformModels;
+        NSLog(@"----------------%@",array);
     }
 }
-
-#pragma mark - IBActions
-
 #pragma mark – Public methods
 
 #pragma mark – Class methods

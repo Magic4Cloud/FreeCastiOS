@@ -127,8 +127,7 @@ static NSInteger const KCellCount = 4;
 #pragma mark - FSLeftSideTableViewCellDelegate
 
 - (void)didSelectedCell:(FSLeftSideTitle)cellTitle {
-#warning ...
-//    [self.sideMenuController hideLeftView];
+    
     [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     switch (cellTitle) {
         case FSLeftSideTitleVersion: {

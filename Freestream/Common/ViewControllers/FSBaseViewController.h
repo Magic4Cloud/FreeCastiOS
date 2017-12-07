@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 #import <M4CoreFoundation/M4CoreFoundation.h>
 @interface FSBaseViewController : BaseUIViewController
-
+@property (nonatomic,assign) BOOL  isPressented;
 @end
