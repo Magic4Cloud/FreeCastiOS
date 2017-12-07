@@ -27,10 +27,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="186" height="119"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="25A-ls-hXW">
-                            <rect key="frame" x="62.5" y="29.5" width="60" height="60"/>
+                            <rect key="frame" x="57.5" y="24.5" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="25A-ls-hXW" secondAttribute="height" id="2L2-6c-dTp"/>
-                                <constraint firstAttribute="width" constant="60" id="EFF-fD-erM"/>
+                                <constraint firstAttribute="width" constant="70" id="EFF-fD-erM"/>
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ils-Ae-kii">

@@ -28,10 +28,10 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="5dY-Zw-eU8">
-                            <rect key="frame" x="30" y="133.5" width="260" height="177"/>
+                            <rect key="frame" x="30" y="61.5" width="260" height="181"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Xak-f3-Z9n" userLabel="AdressStack View">
-                                    <rect key="frame" x="0.0" y="0.0" width="260" height="68.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="260" height="70.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customize your address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmA-26-gY0">
                                             <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
@@ -40,16 +40,19 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0kz-vJ-MNm">
-                                            <rect key="frame" x="0.0" y="40.5" width="260" height="28"/>
+                                            <rect key="frame" x="0.0" y="40.5" width="260" height="30"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="your address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kVK-jq-f0S">
-                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="17"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="your address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kVK-jq-f0S">
+                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="19"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="-1" id="mng-gN-rAR"/>
+                                                    </connections>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hhG-7k-GvG" userLabel="SeparationView">
-                                                    <rect key="frame" x="0.0" y="27" width="260" height="1"/>
+                                                    <rect key="frame" x="0.0" y="29" width="260" height="1"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="cgq-DI-gd5"/>
@@ -60,7 +63,7 @@
                                     </subviews>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Pki-yJ-FIL" userLabel="StreamKeyStack View">
-                                    <rect key="frame" x="0.0" y="108.5" width="260" height="68.5"/>
+                                    <rect key="frame" x="0.0" y="110.5" width="260" height="70.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stream Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iue-tW-poU">
                                             <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
@@ -69,16 +72,19 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MgK-92-Vy9">
-                                            <rect key="frame" x="0.0" y="40.5" width="260" height="28"/>
+                                            <rect key="frame" x="0.0" y="40.5" width="260" height="30"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Stream key" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="loK-gt-JEU">
-                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="17"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Stream key" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="loK-gt-JEU">
+                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="19"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="-1" id="VdQ-Vp-rjO"/>
+                                                    </connections>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="42g-KQ-FtT" userLabel="SeparationView">
-                                                    <rect key="frame" x="0.0" y="27" width="260" height="1"/>
+                                                    <rect key="frame" x="0.0" y="29" width="260" height="1"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="AMm-47-907"/>
@@ -91,7 +97,7 @@
                             </subviews>
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc0-p5-Qpe">
-                            <rect key="frame" x="50" y="350.5" width="220" height="35"/>
+                            <rect key="frame" x="50" y="282.5" width="220" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="35" id="j2V-VV-HXL"/>
                                 <constraint firstAttribute="width" constant="220" id="maA-TQ-JSH"/>
@@ -104,7 +110,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="5dY-Zw-eU8" firstAttribute="centerY" secondItem="8ip-8Y-cVU" secondAttribute="centerY" constant="-30" id="5xi-CS-nTn"/>
+                        <constraint firstItem="5dY-Zw-eU8" firstAttribute="centerY" secondItem="8ip-8Y-cVU" secondAttribute="centerY" constant="-100" id="5xi-CS-nTn"/>
                         <constraint firstItem="5dY-Zw-eU8" firstAttribute="leading" secondItem="8ip-8Y-cVU" secondAttribute="leading" constant="30" id="Lgw-jS-hry"/>
                         <constraint firstAttribute="trailing" secondItem="5dY-Zw-eU8" secondAttribute="trailing" constant="30" id="daJ-nE-CG3"/>
                         <constraint firstItem="nc0-p5-Qpe" firstAttribute="centerX" secondItem="8ip-8Y-cVU" secondAttribute="centerX" id="ipW-id-68p"/>

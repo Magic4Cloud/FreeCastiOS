@@ -36,8 +36,9 @@
 "No Live Video"              = "没有收到实时视频,请检查视频源！";
 
 //************************** Stream **************************
-
-
+"Custom"                     = "自定义";
+"CustomUrlFillError"         = "请输入正确的推流地址和推流码";
+"SaveSuccess"                = "保存成功";
 
 //************************** Configure **************************
 
@@ -47,8 +48,8 @@
 
 
 "getyoutubeStreamKeyError" = "获取推流地址失败";
-"CustomUrlFillError"       = "请填写正确的推流地址";
-"SaveSuccess"              = "保存成功";
+//"CustomUrlFillError"       = "请填写正确的推流地址";
+
 "SaveFail"                 = "保存失败";
 "password_modify_failed"   = "密码修改失败";
 "Notyetopened"             = "暂未开通";

@@ -37,9 +37,9 @@
 
 
 //************************** Stream **************************
-
-
-
+"Custom"                     = "Custom";
+"CustomUrlFillError"         = "Please fill in the correct Url or key";
+"SaveSuccess"                = "Save Success!";
 //************************** Configure **************************
 
 
@@ -49,7 +49,7 @@
 
 "getyoutubeStreamKeyError" = "Get streamkey faild!";
 "CustomUrlFillError"       = "Please fill in the correct Url or key";
-"SaveSuccess"              = "Save Success!";
+
 "SaveFail"                 = "Save Fail!";
 "password_modify_failed"   = "Password modify failed";
 "Notyetopened"             = "Not yet opened";

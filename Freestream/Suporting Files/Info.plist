@@ -27,15 +27,6 @@
 			</array>
 		</dict>
 	</array>
-    <key>NSCameraUsageDescription</key>
-    <string>Do you allow this APP to use your camera?</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Do you allow this APP to use your microphone?</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Do you allow this APP save photos to Photo Library?</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Do you allow this APP to access your album?</string>
-    
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
@@ -51,6 +42,14 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Do you allow this APP to use your camera?</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Do you allow this APP to use your microphone?</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Do you allow this APP save photos to Photo Library?</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Do you allow this APP to access your album?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

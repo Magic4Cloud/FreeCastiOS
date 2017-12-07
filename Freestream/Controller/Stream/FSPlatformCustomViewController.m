@@ -7,26 +7,56 @@
 //
 
 #import "FSPlatformCustomViewController.h"
+#import "CommonAppHeader.h"
 
-@interface FSPlatformCustomViewController ()
+@interface FSPlatformCustomViewController ()<UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *streamAddressTextField;
-@property (weak, nonatomic) IBOutlet UITextField *streamKeyTextField;
-@property (weak, nonatomic) IBOutlet UIButton    *saveButton;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UITextField    *streamAddressTextField;
+@property (weak, nonatomic) IBOutlet UITextField    *streamKeyTextField;
+@property (weak, nonatomic) IBOutlet UIButton       *saveButton;
+@property (weak, nonatomic) IBOutlet UIView         *contentView;
 
-@property (nonatomic,assign) CGFloat             keyboardHeight;;
+@property (nonatomic,strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic,assign) CGFloat                keyboardHeight;
+
+@property (nonatomic,assign) CGFloat                buttonBottomToSuperView;
+
+@property (nonatomic,strong) FSStreamPlatformModel  *model;
+@property (nonatomic,strong) NSMutableArray <FSStreamPlatformModel *>*modelsArray;
+
 @end
 
 @implementation FSPlatformCustomViewController
 
 #pragma mark - Setters/Getters
+- (UITapGestureRecognizer *)tapGesture {
+    if (!_tapGesture) {
+        _tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboardActions)];
+        _tapGesture.enabled = NO;
+        [self.contentView addGestureRecognizer:_tapGesture];
+    }
+    return _tapGesture;
+}
 
+- (CGFloat)buttonBottomToSuperView {
+    if (_buttonBottomToSuperView == 0 ){
+        _buttonBottomToSuperView = SCREENHEIGHT - CGRectGetMidY(self.saveButton.frame);
+    }
+    return _buttonBottomToSuperView;
+}
+
+- (NSMutableArray<FSStreamPlatformModel *> *)modelsArray {
+    if (!_modelsArray) {
+        _modelsArray = @[].mutableCopy;
+    }
+    return _modelsArray;
+}
 
 #pragma mark – View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = NSLocalizedString(@"Custom", nil);
     [self requestDataSource];
     [self addNotifacation];
     
@@ -34,6 +64,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO];
     
 }
 
@@ -60,82 +91,119 @@
 #pragma mark – Request service methods
 
 - (void)requestDataSource {
-    
-    
+    self.modelsArray = [CoreStore sharedStore].streamPlatformModels.mutableCopy;
+    for (FSStreamPlatformModel * model in self.modelsArray) {
+        if (model.streamPlatform == FSStreamPlatformCustom) {
+            self.model = model;
+        }
+    }
+    if (!self.model) {
+        self.model = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformCustom];
+    } else {
+        self.streamKeyTextField.text = self.model.streamKey;
+        self.streamAddressTextField.text = self.model.streamAdress;
+        [self.saveButton setTitle:@"Reset" forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark – Private methods
 
 - (void)addNotifacation {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+    //监听键盘弹出或收回通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)removeObservers {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
+                                                    name:UIKeyboardWillChangeFrameNotification
                                                   object:nil];
 }
 
-
-- (void)keyboardWillShow:(NSNotification *)notification {
+- (void)keyBoardChange:(NSNotification *)note
+{
+    //获取键盘弹出或收回时frame
+    CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-//    if (!_streamKeyTextField.isFirstResponder) {
-//        return;
-//    }
-    CGFloat curkeyBoardHeight = [[[notification userInfo] objectForKey:@"UIKeyboardBoundsUserInfoKey"] CGRectValue].size.height;
-    CGRect begin = [[[notification userInfo] objectForKey:@"UIKeyboardFrameBeginUserInfoKey"] CGRectValue];
-    CGRect end = [[[notification userInfo] objectForKey:@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
+    //获取键盘弹出所需时长
+    float duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
-    float duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    // 第三方键盘回调三次问题，监听仅执行最后一次
-    
-    __weak typeof(self) weakself = self;
-    if(begin.size.height>0 && (begin.origin.y-end.origin.y>0)){
-        _keyboardHeight = curkeyBoardHeight;
-    
-    CGFloat offsetY = 0;
-    CGFloat maxY = CGRectGetMaxY(_saveButton.frame);
-    offsetY = _keyboardHeight - (SCREENHEIGHT - maxY);
-    if (offsetY > 0) {
-        offsetY += 10;
-        [UIView animateWithDuration:duration animations:^{
-           weakself.contentView.frame = CGRectMake(0, -offsetY, SCREENWIDTH, SCREENHEIGHT+offsetY);
-        } completion:^(BOOL finished) {
-            
+    //添加弹出动画
+    if (keyboardFrame.origin.y == SCREENHEIGHT) {
+        [UIView animateWithDuration:duration animations:^{//收起
+            self.contentView.transform = CGAffineTransformIdentity;
+            self.tapGesture.enabled = NO;
+        }];
+    } else {
+        [UIView animateWithDuration:duration animations:^{//弹出
+            self.contentView.transform = CGAffineTransformMakeTranslation(0, -ABS(keyboardFrame.origin.y - self.buttonBottomToSuperView));
+            self.tapGesture.enabled = YES;
         }];
     }
+}
+
+- (void)dismissKeyboardActions {
+
+    [self tryDismissKeyborad:self.streamAddressTextField];
+    [self tryDismissKeyborad:self.streamKeyTextField];    
+}
+
+- (void)tryDismissKeyborad:(UITextField *)textField {
+    
+    if ([textField isFirstResponder]) {
+        [textField resignFirstResponder];
+        [textField endEditing:YES];
     }
-    
 }
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    
-    _keyboardHeight = 0;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.contentView.frame = CGRectMake(0, 0, SCREENWIDTH,SCREENHEIGHT);
-    } completion:^(BOOL finished) {
-    }];
-    
-}
-
 
 #pragma mark – Target action methods
 
 - (IBAction)buttonClickAction:(UIButton *)sender {
-    
-    
+    [self dismissKeyboardActions];
+    if ([sender.currentTitle isEqualToString:@"Reset"]) {
+        self.streamAddressTextField.text = @"";
+        self.streamKeyTextField.text = @"";
+        [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    } else if ([sender.currentTitle isEqualToString:@"Save"]) {
+        
+        NSString * streamUrl = self.streamAddressTextField.text;
+        NSString * streamKey = self.streamKeyTextField.text;
+        
+        if (streamUrl.length == 0 || streamKey.length == 0) {
+            [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
+            return;
+        }
+        
+        if ([streamUrl hasContainsChineseCharacter] || [streamKey hasContainsChineseCharacter]) {
+            [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
+            return;
+        }
+        
+        if (![streamUrl hasPrefix:@"rtmp:"] && ![streamUrl hasPrefix:@"RTMP:"]) {
+            [self showHudMessage:NSLocalizedString(@"CustomUrlFillError", nil)];
+            return;
+        }
+        
+        self.model.streamAdress = streamUrl;
+        self.model.streamKey = streamKey;
+        self.model.buttonStatus = FSStreamPlatformButtonStatusSelected;
+        NSInteger idx = -1;
+        for (FSStreamPlatformModel * model in self.modelsArray) {
+            if (model.streamPlatform == FSStreamPlatformCustom) {
+               idx = [self.modelsArray indexOfObject:model];
+            }
+        }
+        
+        if (idx > -1) {
+            [self.modelsArray replaceObjectAtIndex:idx withObject:self.model];
+        } else {
+            [self.modelsArray addObject:self.model];
+        }
+        
+        [CoreStore sharedStore].streamPlatformModels = self.modelsArray;
+        
+        [self showHudMessage:NSLocalizedString(@"SaveSuccess", nil)];
+    }
 }
 
 #pragma mark - IBActions
@@ -149,6 +217,21 @@
 #pragma mark - Override super methods
 
 #pragma mark – Delegate
+#pragma mark – UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.streamAddressTextField){
+        [self.streamKeyTextField becomeFirstResponder];}
+    else if(textField == self.streamKeyTextField){
+        [textField resignFirstResponder];
+        [self performSelector:@selector(buttonClickAction:) withObject:self.saveButton];
+    }
+    return YES;
+}
 
 
 @end

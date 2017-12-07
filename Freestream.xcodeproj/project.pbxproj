@@ -58,6 +58,8 @@
 		977DB6B81FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */; };
 		977DB6C11FD69639006A22E1 /* FSPlatformTwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */; };
 		977DB6C21FD69639006A22E1 /* FSPlatformTwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6C01FD69639006A22E1 /* FSPlatformTwitchViewController.xib */; };
+		977DB6C51FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6C41FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.m */; };
+		977DB6C81FD7E099006A22E1 /* NSString+FSApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6C71FD7E099006A22E1 /* NSString+FSApp.m */; };
 		9789E6781FC2F03500386902 /* libWisView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E6751FC2F03500386902 /* libWisView.a */; };
 		9789E67C1FC2F42B00386902 /* FSSearchDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9789E67B1FC2F42B00386902 /* FSSearchDeviceManager.m */; };
 		9789E67E1FC30C1D00386902 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9789E67D1FC30C1D00386902 /* libstdc++.tbd */; };
@@ -153,6 +155,10 @@
 		977DB6BE1FD69639006A22E1 /* FSPlatformTwitchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformTwitchViewController.h; sourceTree = "<group>"; };
 		977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformTwitchViewController.m; sourceTree = "<group>"; };
 		977DB6C01FD69639006A22E1 /* FSPlatformTwitchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformTwitchViewController.xib; sourceTree = "<group>"; };
+		977DB6C31FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSBaseViewController+MBProgressHud.h"; sourceTree = "<group>"; };
+		977DB6C41FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FSBaseViewController+MBProgressHud.m"; sourceTree = "<group>"; };
+		977DB6C61FD7E099006A22E1 /* NSString+FSApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+FSApp.h"; sourceTree = "<group>"; };
+		977DB6C71FD7E099006A22E1 /* NSString+FSApp.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+FSApp.m"; sourceTree = "<group>"; };
 		9789E6741FC2F03500386902 /* EasyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyConfig.h; sourceTree = "<group>"; };
 		9789E6751FC2F03500386902 /* libWisView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWisView.a; sourceTree = "<group>"; };
 		9789E6761FC2F03500386902 /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
@@ -398,6 +404,10 @@
 				970307841FCC871300A9E5EF /* FSBaseViewController+WifiInfo.m */,
 				970307861FCC883C00A9E5EF /* FSBaseViewController+AlertController.h */,
 				970307871FCC883C00A9E5EF /* FSBaseViewController+AlertController.m */,
+				977DB6C31FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.h */,
+				977DB6C41FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.m */,
+				977DB6C61FD7E099006A22E1 /* NSString+FSApp.h */,
+				977DB6C71FD7E099006A22E1 /* NSString+FSApp.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -712,6 +722,7 @@
 			files = (
 				97328E831FB32AA3005FC554 /* main.m in Sources */,
 				97328EBE1FB4023C005FC554 /* UIColor+App.m in Sources */,
+				977DB6C51FD7DDBD006A22E1 /* FSBaseViewController+MBProgressHud.m in Sources */,
 				97328EDC1FB577CE005FC554 /* FSTextViewController.m in Sources */,
 				9703077E1FCC833D00A9E5EF /* FSAudioInputInfo.m in Sources */,
 				97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */,
@@ -720,6 +731,7 @@
 				97328EC81FB436A2005FC554 /* FSHomeViewController.m in Sources */,
 				970307741FCBF94E00A9E5EF /* FSAlertController.m in Sources */,
 				970307821FCC83E400A9E5EF /* FSDeviceConfigureInfo.m in Sources */,
+				977DB6C81FD7E099006A22E1 /* NSString+FSApp.m in Sources */,
 				9740412D1FBE86F300E23E31 /* FSStreamViewController.m in Sources */,
 				97328EB11FB3F738005FC554 /* FSLeftSideMenuViewController.m in Sources */,
 				9741AF671FBDBD6A00D4290D /* FSLiveViewViewController.m in Sources */,

@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *youtubeButtonView;
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *twitchButtonView;
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *customButtonView;
+@property (weak, nonatomic) IBOutlet UIView *fakeNavigationView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *fakeNavigationViewTopConstraint;
 
 @end
 
@@ -40,7 +42,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self requestDataSource];
     [self setupUI];
 }
 
@@ -49,6 +50,7 @@
     if (self.navigationController) {
         [self.navigationController setNavigationBarHidden:YES];
     }
+    [self requestDataSource];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -57,11 +59,18 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [CoreStore sharedStore].streamPlatformModels = self.platformModelsArray;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews {
+    if ([Device currentDeviceSysVerLess:@"11"]) {
+        self.fakeNavigationViewTopConstraint.constant = -20.f;
+        [self.view layoutIfNeeded];
+        [self.view layoutSubviews];
+    }
 }
 
 #pragma mark – Initialization & Memory management methods
@@ -74,22 +83,25 @@
 
 - (void)requestDataSource {
     self.platformModelsArray = [CoreStore sharedStore].streamPlatformModels.mutableCopy;
-    if (self.platformModelsArray.count < 4) {
-        FSStreamPlatformModel *faceBookPlatform = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformFaceBook];
-        FSStreamPlatformModel *youTubePlatform = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformYouTube];
-        FSStreamPlatformModel *twitchPlatform = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformTwitch];
-        FSStreamPlatformModel *customPlatform = [[FSStreamPlatformModel alloc] initWithStreamPlatform:FSStreamPlatformCustom];
-        self.platformModelsArray = @[faceBookPlatform,youTubePlatform,twitchPlatform,customPlatform].mutableCopy;
-    }
 }
 
 #pragma mark – Private methods
 
+- (FSStreamPlatformModel *)getModelWithPlatform:(FSStreamPlatform)platform {
+    for (FSStreamPlatformModel * model in self.platformModelsArray) {
+        if (model.streamPlatform == platform) {
+            return model;
+        }
+    }
+    return [[FSStreamPlatformModel alloc] initWithStreamPlatform:platform];
+}
+
 - (void)setupUI {
-    self.facebookButtonView.model = self.platformModelsArray[0];
-    self.youtubeButtonView.model  = self.platformModelsArray[1];
-    self.twitchButtonView.model   = self.platformModelsArray[2];
-    self.customButtonView.model   = self.platformModelsArray[3];
+    
+    self.facebookButtonView.model = [self getModelWithPlatform:FSStreamPlatformFaceBook];
+    self.youtubeButtonView.model  = [self getModelWithPlatform:FSStreamPlatformYouTube];
+    self.twitchButtonView.model   = [self getModelWithPlatform:FSStreamPlatformTwitch];
+    self.customButtonView.model   = [self getModelWithPlatform:FSStreamPlatformCustom];
     WEAK(self);
     
     self.facebookButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {

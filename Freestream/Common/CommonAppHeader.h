@@ -20,6 +20,7 @@
 #import <MMDrawerController/MMDrawerController.h>
 #import <MMDrawerController/UIViewController+MMDrawerController.h>
 #import <LFLiveKit/LFLiveKit.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 //SDK
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -30,6 +31,8 @@
 #import "CoreStore+App.h"
 #import "FSBaseViewController+WifiInfo.h"
 #import "FSBaseViewController+AlertController.h"
+#import "FSBaseViewController+MBProgressHud.h"
+#import "NSString+FSApp.h"
 
 //viewControllers
 #import "FSBaseViewController.h"
