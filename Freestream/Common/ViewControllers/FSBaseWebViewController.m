@@ -17,6 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]]];
+    
+    self.webView.frame = [UIScreen mainScreen].bounds;
+    
 }
 
 - (void)didReceiveMemoryWarning {

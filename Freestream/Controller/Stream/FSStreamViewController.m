@@ -8,15 +8,21 @@
 
 #import "FSStreamViewController.h"
 #import "CommonAppHeader.h"
+
 //Controllers
 #import "FSPlatformCustomViewController.h"
+#import "FSPlatformFacebookViewController.h"
+#import "FSLiveViewViewController.h"
+
 //Cells
 //Views
 #import "FSPlatformButtonView.h"
+
 //API
 
 //Models
 #import "FSStreamPlatformModel.h"
+
 @interface FSStreamViewController ()
 @property (nonatomic,strong) NSMutableArray  <FSStreamPlatformModel *>*platformModelsArray;
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *facebookButtonView;
@@ -24,7 +30,8 @@
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *twitchButtonView;
 @property (weak, nonatomic) IBOutlet FSPlatformButtonView *customButtonView;
 @property (weak, nonatomic) IBOutlet UIView *fakeNavigationView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *fakeNavigationViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *fakeNavigationAndStatusBarView;
+@property (weak, nonatomic) IBOutlet UIView *BGView;
 
 @end
 
@@ -47,9 +54,20 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.navigationController) {
-        [self.navigationController setNavigationBarHidden:YES];
+    if (self.isPressented) {
+//        [self.navigationController setNavigationBarHidden:YES];
+        
+        
+    } else {
+        [self.navigationController setNavigationBarHidden:NO];
+        self.fakeNavigationAndStatusBarView.hidden = YES;
+        
+        [self.fakeNavigationAndStatusBarView removeFromSuperview];
+        
+        NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:self.BGView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:64];
+        [self.view addConstraint:constraint];
     }
+    
     [self requestDataSource];
     [self setupUI];
 }
@@ -70,9 +88,9 @@
 
 - (void)viewDidLayoutSubviews {
     if ([Device currentDeviceSysVerLess:@"11"]) {
-        self.fakeNavigationViewTopConstraint.constant = -20.f;
-        [self.view layoutIfNeeded];
-        [self.view layoutSubviews];
+//        self.fakeNavigationViewTopConstraint.constant = -20.f;
+//        [self.view layoutIfNeeded];
+//        [self.view layoutSubviews];
     }
 }
 
@@ -85,9 +103,11 @@
 #pragma mark – Request service methods
 
 - (void)requestDataSource {
+    
     self.platformModelsArray = [CoreStore sharedStore].streamPlatformModels.mutableCopy;
+    
     for (FSStreamPlatformModel *model in self.platformModelsArray) {
-        NSLog(@"--------------model.streamPlatform = --%ld",model.streamPlatform);
+        NSLog(@"--------------model.streamPlatform = --%ld",(long)model.streamPlatform);
     }
 }
 
@@ -112,6 +132,8 @@
     
     self.facebookButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
         [weakself saveModelsToLocal];
+        FSPlatformFacebookViewController *facebookVC = [[FSPlatformFacebookViewController alloc] init];
+        [weakself.navigationController pushViewController:facebookVC animated:YES];
     };
     self.youtubeButtonView.goConfigureStreamAdressBlock = ^(FSStreamPlatform streamPlatform) {
         [weakself saveModelsToLocal];
@@ -170,6 +192,23 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+- (IBAction)gotoLiveViewVC:(UIButton *)sender {
+    
+    if (self.isPressented) {
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    } else {
+        
+        [self.navigationController popViewControllerAnimated:NO];
+
+        FSLiveViewViewController *liveViewController = [[FSLiveViewViewController alloc] init];
+        
+        MMDrawerController *sideMenuController = (MMDrawerController *)  self.view.window.rootViewController;
+        
+        [sideMenuController.centerViewController presentViewController:liveViewController animated:YES completion:^{}];
     }
 }
 

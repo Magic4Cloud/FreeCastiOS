@@ -151,6 +151,9 @@ static NSInteger const searchDurationMax = 8;
     [self.navigationController setNavigationBarHidden:NO];
     [UIApplication sharedApplication].idleTimerDisabled = YES; //不让手机休眠
 
+    if(self.isPushVC) {
+        return;
+    }
     [self setDefaultValue];
     [self updateUI];
     [self connectFreestreamDevice];
