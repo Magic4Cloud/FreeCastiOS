@@ -15,6 +15,9 @@
 #import "FSSearchDeviceManager.h"
 #import "FSAlertController.h"
 
+//Tools
+#import "FSGlobalization.h"
+
 //pods
 #import <M4CoreFoundation/M4CoreFoundation.h>
 #import <MMDrawerController/MMDrawerController.h>

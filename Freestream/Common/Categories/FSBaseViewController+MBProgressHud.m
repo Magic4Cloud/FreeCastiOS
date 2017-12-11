@@ -25,7 +25,8 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.mode = MBProgressHUDModeText;
+        hud.mode = 0;
+        hud.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     });
 }
 

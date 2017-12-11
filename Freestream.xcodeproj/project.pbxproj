@@ -41,6 +41,9 @@
 		97328EF91FB944CB005FC554 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97328EF81FB944CA005FC554 /* Bolts.framework */; };
 		97328EFD1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328EFC1FB98795005FC554 /* FSFaceBookAPIRESTfulService.m */; };
 		97328F031FB98DE8005FC554 /* FSNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97328F021FB98DE8005FC554 /* FSNetWorkManager.m */; };
+		97384E781FDE36AE00A7D607 /* FSFacebookStreamModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97384E771FDE36AE00A7D607 /* FSFacebookStreamModel.m */; };
+		97384E7C1FDE7D7400A7D607 /* FSGlobalization.m in Sources */ = {isa = PBXBuildFile; fileRef = 97384E7B1FDE7D7400A7D607 /* FSGlobalization.m */; };
+		97384E7D1FDE86C800A7D607 /* FSPlatformFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97384E7F1FDE86C800A7D607 /* FSPlatformFacebookViewController.xib */; };
 		973FC9411FD133AE00C57F33 /* Stream.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973FC9401FD133AE00C57F33 /* Stream.xcassets */; };
 		973FC9481FD142DB00C57F33 /* FSPlatformButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 973FC9471FD142DB00C57F33 /* FSPlatformButtonView.m */; };
 		973FC94A1FD142FE00C57F33 /* FSPlatformButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 973FC9491FD142FE00C57F33 /* FSPlatformButtonView.xib */; };
@@ -53,7 +56,6 @@
 		977DB6AD1FD695C3006A22E1 /* FSPlatformCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6AB1FD695C3006A22E1 /* FSPlatformCustomViewController.m */; };
 		977DB6AE1FD695C3006A22E1 /* FSPlatformCustomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */; };
 		977DB6B21FD695D7006A22E1 /* FSPlatformFacebookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */; };
-		977DB6B31FD695D7006A22E1 /* FSPlatformFacebookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */; };
 		977DB6B71FD695E7006A22E1 /* FSPlatformYoutubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */; };
 		977DB6B81FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */; };
 		977DB6C11FD69639006A22E1 /* FSPlatformTwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 977DB6BF1FD69639006A22E1 /* FSPlatformTwitchViewController.m */; };
@@ -133,6 +135,12 @@
 		97328EFF1FB98848005FC554 /* FSBaseAPIURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSBaseAPIURL.h; sourceTree = "<group>"; };
 		97328F011FB98DE8005FC554 /* FSNetWorkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSNetWorkManager.h; sourceTree = "<group>"; };
 		97328F021FB98DE8005FC554 /* FSNetWorkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSNetWorkManager.m; sourceTree = "<group>"; };
+		97384E761FDE36AE00A7D607 /* FSFacebookStreamModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSFacebookStreamModel.h; sourceTree = "<group>"; };
+		97384E771FDE36AE00A7D607 /* FSFacebookStreamModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSFacebookStreamModel.m; sourceTree = "<group>"; };
+		97384E7A1FDE7D7400A7D607 /* FSGlobalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSGlobalization.h; sourceTree = "<group>"; };
+		97384E7B1FDE7D7400A7D607 /* FSGlobalization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSGlobalization.m; sourceTree = "<group>"; };
+		97384E7E1FDE86C800A7D607 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FSPlatformFacebookViewController.xib; sourceTree = "<group>"; };
+		97384E811FDE86CC00A7D607 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/FSPlatformFacebookViewController.strings"; sourceTree = "<group>"; };
 		973FC9401FD133AE00C57F33 /* Stream.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stream.xcassets; sourceTree = "<group>"; };
 		973FC9461FD142DB00C57F33 /* FSPlatformButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformButtonView.h; sourceTree = "<group>"; };
 		973FC9471FD142DB00C57F33 /* FSPlatformButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformButtonView.m; sourceTree = "<group>"; };
@@ -151,7 +159,6 @@
 		977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformCustomViewController.xib; sourceTree = "<group>"; };
 		977DB6AF1FD695D7006A22E1 /* FSPlatformFacebookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformFacebookViewController.h; sourceTree = "<group>"; };
 		977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformFacebookViewController.m; sourceTree = "<group>"; };
-		977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformFacebookViewController.xib; sourceTree = "<group>"; };
 		977DB6B41FD695E7006A22E1 /* FSPlatformYoutubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSPlatformYoutubeViewController.h; sourceTree = "<group>"; };
 		977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSPlatformYoutubeViewController.m; sourceTree = "<group>"; };
 		977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSPlatformYoutubeViewController.xib; sourceTree = "<group>"; };
@@ -226,6 +233,7 @@
 		970307781FCC818200A9E5EF /* Stream */ = {
 			isa = PBXGroup;
 			children = (
+				97384E751FDE366F00A7D607 /* Facebook */,
 				9703077C1FCC833D00A9E5EF /* FSAudioInputInfo.h */,
 				9703077D1FCC833D00A9E5EF /* FSAudioInputInfo.m */,
 				977DB6A71FD64216006A22E1 /* FSStreamPlatformModel.h */,
@@ -317,6 +325,7 @@
 		97328E8C1FB33214005FC554 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				97384E791FDE7D2400A7D607 /* Tools */,
 				97328E961FB33A49005FC554 /* CommonAppHeader.h */,
 				97328EFA1FB94C2C005FC554 /* AppConstants.h */,
 				9789E6791FC2F3F900386902 /* SearchManager */,
@@ -453,7 +462,7 @@
 				977DB6AC1FD695C3006A22E1 /* FSPlatformCustomViewController.xib */,
 				977DB6AF1FD695D7006A22E1 /* FSPlatformFacebookViewController.h */,
 				977DB6B01FD695D7006A22E1 /* FSPlatformFacebookViewController.m */,
-				977DB6B11FD695D7006A22E1 /* FSPlatformFacebookViewController.xib */,
+				97384E7F1FDE86C800A7D607 /* FSPlatformFacebookViewController.xib */,
 				977DB6B41FD695E7006A22E1 /* FSPlatformYoutubeViewController.h */,
 				977DB6B51FD695E7006A22E1 /* FSPlatformYoutubeViewController.m */,
 				977DB6B61FD695E7006A22E1 /* FSPlatformYoutubeViewController.xib */,
@@ -553,6 +562,24 @@
 				97328F021FB98DE8005FC554 /* FSNetWorkManager.m */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		97384E751FDE366F00A7D607 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				97384E761FDE36AE00A7D607 /* FSFacebookStreamModel.h */,
+				97384E771FDE36AE00A7D607 /* FSFacebookStreamModel.m */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
+		97384E791FDE7D2400A7D607 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				97384E7A1FDE7D7400A7D607 /* FSGlobalization.h */,
+				97384E7B1FDE7D7400A7D607 /* FSGlobalization.m */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		973FC9421FD13E7500C57F33 /* Stream */ = {
@@ -682,7 +709,7 @@
 				974041331FBEE09500E23E31 /* LiveView.xcassets in Resources */,
 				97328EC91FB436A2005FC554 /* FSHomeViewController.xib in Resources */,
 				977DB6AE1FD695C3006A22E1 /* FSPlatformCustomViewController.xib in Resources */,
-				977DB6B31FD695D7006A22E1 /* FSPlatformFacebookViewController.xib in Resources */,
+				97384E7D1FDE86C800A7D607 /* FSPlatformFacebookViewController.xib in Resources */,
 				9741AF681FBDBD6A00D4290D /* FSLiveViewViewController.xib in Resources */,
 				973FC9411FD133AE00C57F33 /* Stream.xcassets in Resources */,
 				97328EC41FB43374005FC554 /* FSLeftSideTableViewCell.xib in Resources */,
@@ -784,6 +811,8 @@
 				970307881FCC883C00A9E5EF /* FSBaseViewController+AlertController.m in Sources */,
 				97328EA41FB3F537005FC554 /* FSNavigationViewController.m in Sources */,
 				970307851FCC871300A9E5EF /* FSBaseViewController+WifiInfo.m in Sources */,
+				97384E781FDE36AE00A7D607 /* FSFacebookStreamModel.m in Sources */,
+				97384E7C1FDE7D7400A7D607 /* FSGlobalization.m in Sources */,
 				97E2B0651FD91B5400426464 /* FSLiveViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -798,6 +827,15 @@
 				97328EBB1FB3FC54005FC554 /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		97384E7F1FDE86C800A7D607 /* FSPlatformFacebookViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97384E7E1FDE86C800A7D607 /* Base */,
+				97384E811FDE86CC00A7D607 /* zh-Hans */,
+			);
+			name = FSPlatformFacebookViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

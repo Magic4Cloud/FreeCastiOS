@@ -71,10 +71,13 @@
     }
 
     request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
-    
+    request.timeoutInterval = 30.f;
     NSURLSession *session = [NSURLSession sharedSession];
     
     NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSLog(@"----------------%@-------------",error.description);
+        
         if (!data) {
             completionHandler(nil);
             return ;
@@ -83,6 +86,7 @@
         NSError *jsonError;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
 //        NSLog(@"\n post;\n responseData:%@\n error:%@",dict,jsonError);
+
         completionHandler(dict);
         
     }];

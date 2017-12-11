@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "Authentication Code"; ObjectID = "0F5-tB-vO1"; */
+"0F5-tB-vO1.text" = "设备用户码";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "31t-Bn-FBg"; */
+"31t-Bn-FBg.text" = "获取中...";
+
+/* Class = "UILabel"; text = "Copy the code above by tapping on it"; ObjectID = "Cmi-7e-0qq"; */
+"Cmi-7e-0qq.text" = "点击设备用户码,将会自动复制设备用户码到剪切板";
+
+/* Class = "UILabel"; text = "The code will expire after 240 seconds"; ObjectID = "Igp-oc-zY1"; */
+"Igp-oc-zY1.text" = "设备用户码将会在 240 秒后过期";
+
+/* Class = "UILabel"; text = "Step 1"; ObjectID = "KFT-c8-ku7"; */
+"KFT-c8-ku7.text" = "第1步";
+
+/* Class = "UILabel"; text = "Step 3"; ObjectID = "QAl-XN-4Lo"; */
+"QAl-XN-4Lo.text" = "第3步";
+
+/* Class = "UILabel"; text = "Step 2"; ObjectID = "V8A-Nc-TvB"; */
+"V8A-Nc-TvB.text" = "第2步";
+
+/* Class = "UILabel"; text = "Click 'Allow access' to authorize FREESTREAM to stream to your account"; ObjectID = "p1W-VG-AEX"; */
+"p1W-VG-AEX.text" = "登录成功Facebook账号后,点击允许Freestream将直播发布到Facebook";

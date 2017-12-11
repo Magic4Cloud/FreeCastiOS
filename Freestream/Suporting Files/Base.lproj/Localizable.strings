@@ -38,12 +38,30 @@
 
 
 //************************** Stream **************************
-"Custom"                     = "Custom";
-"CustomUrlFillError"         = "Please fill in the correct Url or key";
-"Reset"                      = "Reset";
-"Save"                       = "Save";
-"SaveSuccess"                = "Save Success!";
-"Authentication"             = "Authentication";
+"Custom"                        = "Custom";
+"CustomUrlFillError"            = "Please fill in the correct Url or key";
+"Reset"                         = "Reset";
+"Save"                          = "Save";
+"SaveSuccess"                   = "Save Success!";
+"Authentication"                = "Authentication";
+//face book
+"Copy successful"               = "Copy successful!";
+"Copy faild"                    = "Copy faild!";
+"No Network Conection"          = "No Network Conection!";
+"Code Expired Alert Message"    = "THE CODE EXPIRED!TAP THE CODE GET NEW CODE";
+"Code Expired Interval Message" = "The code will expire after %ld seconds";
+"Refresh Code"                  = "Refresh Code";
+"Loading..."                    = "Loading...";
+
+//youtube
+
+
+//twitch
+
+
+//custom
+
+
 //************************** Configure **************************
 
 

@@ -19,4 +19,13 @@
 + (CGColorRef)FSLeftBgColor2;
 
 + (UIColor *)FSPlatformButtonSelectedBackgroundColor;
+
++ (UIColor *)FSExpireLabelNormalColor;
+
++ (UIColor *)FSExpireLabelAlertColor;
+
++ (UIColor *)FSAuthenticationCodeLabelNormalColor;
+
++ (UIColor *)FSAuthenticationCodeLabelAlertColor;
+
 @end

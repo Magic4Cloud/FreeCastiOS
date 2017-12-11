@@ -43,6 +43,26 @@
 "Save"                       = "保存";
 "SaveSuccess"                = "保存成功";
 "Authentication"             = "Facebook认证";
+
+
+//face book
+"Copy successful"            = "已复制到剪切板";
+"Copy faild"                 = "复制失败";
+"No Network Conection"       = "无网络链接,请检查网络！";
+
+"Code Expired Interval Message" = "设备用户码将会在 %ld 秒后过期";
+"Code Expired Alert Message"    = "设备用户码已过期!点击获取新的设备用户码";
+"Refresh Code"                  = "刷新";
+"Loading..."                    = "获取中...";
+//youtube
+
+
+//twitch
+
+
+//custom
+
+
 //************************** Configure **************************
 
 

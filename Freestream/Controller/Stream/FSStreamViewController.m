@@ -54,19 +54,40 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.isPressented) {
-//        [self.navigationController setNavigationBarHidden:YES];
-        
+    
+    self.title = @"Stream";
+    [self.navigationController setNavigationBarHidden:NO];
+    if (@available(iOS 11.0, *)) {
         
     } else {
-        [self.navigationController setNavigationBarHidden:NO];
-        self.fakeNavigationAndStatusBarView.hidden = YES;
-        
-        [self.fakeNavigationAndStatusBarView removeFromSuperview];
-        
         NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:self.BGView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:64];
         [self.view addConstraint:constraint];
     }
+    
+    if (self.isPressented) {
+        
+        UIImage *normalImage = [UIImage imageNamed:@"nav_btn_back_nor"];
+        UIImage *hightlightedImage = [UIImage imageNamed:@"nav_btn_back_pre"];
+        
+        UIButton *backBtn = [self setupNavigationBarButton:normalImage highlightedImage:hightlightedImage target:self aciton:@selector(backButtonClicked:) sidePosition:ButtonInLeftNavigationBar];
+        self.navigationItem.backBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    }
+
+    
+//    if (self.isPressented) {
+////        [self.navigationController setNavigationBarHidden:YES];
+//        
+//        
+//    } else {
+//        
+//        self.fakeNavigationAndStatusBarView.hidden = YES;
+//        
+//        [self.fakeNavigationAndStatusBarView removeFromSuperview];
+//        
+//        NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:self.BGView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:64];
+//        [self.view addConstraint:constraint];
+//    }
     
     [self requestDataSource];
     [self setupUI];
@@ -187,12 +208,10 @@
 
 #pragma mark – Target action methods
 
-- (IBAction)backButtonClicked:(UIButton *)sender {
+- (void)backButtonClicked:(UIButton *)sender {
     if (self.isPressented) {
         [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    } 
 }
 - (IBAction)gotoLiveViewVC:(UIButton *)sender {
     

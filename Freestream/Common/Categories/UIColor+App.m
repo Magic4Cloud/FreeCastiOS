@@ -30,5 +30,20 @@
     return CORE_RGBCOLOR(0, 178, 225);
 }
 
++ (UIColor *)FSExpireLabelNormalColor {
+    return CORE_RGBCOLOR(102, 255, 225);
+}
+
++ (UIColor *)FSExpireLabelAlertColor {
+    return [UIColor redColor];
+}
+
++ (UIColor *)FSAuthenticationCodeLabelNormalColor {
+   return CORE_RGBCOLOR(0, 122, 255);
+}
+
++ (UIColor *)FSAuthenticationCodeLabelAlertColor {
+    return [UIColor redColor];
+}
 
 @end
